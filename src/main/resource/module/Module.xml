@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Modules SYSTEM '../dtd/Module.dtd'>
+<Modules>
+	<Module ignore="false">
+		<MainModule>
+			<BeanId>projectBusinessMaterial</BeanId>
+			<ModuleName>ProjectBusinessMaterial</ModuleName>
+			<TableName>BIZ_PROJECT_BUSINESS_MATERIAL</TableName>
+			<ModuleZHName>项目业务材料</ModuleZHName>
+			<PackageName>com.eplugger.business.projectBusiness</PackageName>
+			<SuperClassMap>
+				<Clazz key="entity" value="BusinessEntity" />
+				<Clazz key="bo" value="BusinessBO" />
+				<Clazz key="action" value="BusinessAction" />
+			</SuperClassMap>
+			<Fields>
+				<Field dataType="String">
+					<FieldName>项目ID</FieldName>
+					<FieldId>projectId</FieldId>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>业务计划ID</FieldName>
+					<FieldId>businessPlanId</FieldId>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>提交状态</FieldName>
+					<FieldId>submitStatus</FieldId>
+					<CategoryName>BUSINESS_STATUS</CategoryName>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="VProject" association="ManyToOne" ignoreImport="true" updateInsert="false">
+					<FieldName>项目</FieldName>
+					<FieldId>project</FieldId>
+					<JoinColumn>PROJECT_ID</JoinColumn>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>项目名称</FieldName>
+					<FieldId>project.name</FieldId>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>项目ID</FieldName>
+					<FieldId>project.id</FieldId>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>负责人</FieldName>
+					<FieldId>project.chargerName</FieldId>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>负责人ID</FieldName>
+					<FieldId>project.chargerCode</FieldId>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>所属单位</FieldName>
+					<FieldId>project.unitId</FieldId>
+				</Field>
+				<Field dataType="Date" onlyMeta="true">
+					<FieldName>立项日期</FieldName>
+					<FieldId>project.authorizeDate</FieldId>
+				</Field>
+				<Field dataType="Date" onlyMeta="true">
+					<FieldName>计划完成日期</FieldName>
+					<FieldId>project.planEndDate</FieldId>
+				</Field>
+			</Fields>
+		</MainModule>
+	</Module>
+	<Module ignore="false">
+		<MainModule>
+			<BeanId>projectBusinessPlan</BeanId>
+			<ModuleName>ProjectBusinessPlan</ModuleName>
+			<TableName>BIZ_PROJECT_BUSINESS_PLAN</TableName>
+			<ModuleZHName>项目业务计划</ModuleZHName>
+			<PackageName>com.eplugger.business.projectBusiness</PackageName>
+			<SuperClassMap>
+				<Clazz key="entity" value="BusinessEntity" />
+				<Clazz key="bo" value="BusinessBO" />
+				<Clazz key="action" value="BusinessAction" />
+			</SuperClassMap>
+			<Fields>
+				<Field dataType="String">
+					<FieldName>计划名称</FieldName>
+					<FieldId>name</FieldId>
+					<Precision>500</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>项目分类</FieldName>
+					<FieldId>projectType</FieldId>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>项目性质</FieldName>
+					<FieldId>projectClass</FieldId>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="Date">
+					<FieldName>开始日期</FieldName>
+					<FieldId>startDate</FieldId>
+				</Field>
+				<Field dataType="Date">
+					<FieldName>结束日期</FieldName>
+					<FieldId>endDate</FieldId>
+				</Field>
+				<Field dataType="String">
+					<FieldName>业务类别</FieldName>
+					<FieldId>businessType</FieldId>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>计划状态</FieldName>
+					<FieldId>planStatus</FieldId>
+					<CategoryName>PLAN_STATUS</CategoryName>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>说明附件</FieldName>
+					<FieldId>fileIds</FieldId>
+					<Precision>500</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>备注</FieldName>
+					<FieldId>note</FieldId>
+					<Precision>4000</Precision>
+				</Field>
+				<Field dataType="List" association="OneToMany">
+					<FieldName>材料</FieldName>
+					<FieldId>materials</FieldId>
+					<JoinColumn>BUSINESS_PLAN_ID</JoinColumn>
+					<Genericity>ProjectBusinessMaterial</Genericity>
+				</Field>
+			</Fields>
+		</MainModule>
+		<!-- <AuthorModule>
+			<BeanId>projectBusinessMaterial</BeanId>
+			<ModuleName>ProjectBusinessMaterial</ModuleName>
+			<TableName>BIZ_PROJECT_BUSINESS_MATERIAL</TableName>
+			<ModuleZHName>项目业务材料</ModuleZHName>
+			<Fields>
+				<Field dataType="String">
+					<FieldName>项目ID</FieldName>
+					<FieldId>projectId</FieldId>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="VProject" association="ManyToOne">
+					<FieldName>项目</FieldName>
+					<FieldId>project</FieldId>
+					<JoinColumn>PROJECT_ID</JoinColumn>
+				</Field>
+				<Field dataType="String">
+					<FieldName>提交状态</FieldName>
+					<FieldId>submitStatus</FieldId>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>项目名称</FieldName>
+					<FieldId>project.name</FieldId>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>项目ID</FieldName>
+					<FieldId>project.id</FieldId>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>负责人</FieldName>
+					<FieldId>project.chargerName</FieldId>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>负责人ID</FieldName>
+					<FieldId>project.chargerCode</FieldId>
+				</Field>
+				<Field dataType="String" onlyMeta="true">
+					<FieldName>所属单位</FieldName>
+					<FieldId>project.unitId</FieldId>
+				</Field>
+				<Field dataType="Date" onlyMeta="true">
+					<FieldName>立项日期</FieldName>
+					<FieldId>project.authorizeDate</FieldId>
+				</Field>
+				<Field dataType="Date" onlyMeta="true">
+					<FieldName>计划完成日期</FieldName>
+					<FieldId>project.planEndDate</FieldId>
+				</Field>
+			</Fields>
+		</AuthorModule> -->
+	</Module>
+	<Module ignore="true">
+		<MainModule>
+			<BeanId>projectApplyBookDirectlaborcost</BeanId>
+			<ModuleName>ProjectApplyBookDirectlaborcost</ModuleName>
+			<TableName>BIZ_PROJECT_APPLY_BOOK_DIRECTLABORCOST</TableName>
+			<ModuleZHName>直接人力成本</ModuleZHName>
+			<PackageName>com.eplugger.business.projectApply</PackageName>
+			<SuperClassMap>
+				<Clazz key="entity" value="CheckBusinessEntity" />
+			</SuperClassMap>
+			<Fields>
+				<Field dataType="String">
+					<FieldName>需求类型</FieldName>
+					<FieldId>demandType</FieldId>
+					<CategoryName>DEMAND_TYPE</CategoryName>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>月份</FieldName>
+					<FieldId>month</FieldId>
+					<CategoryName>MONTH</CategoryName>
+					<Precision>32</Precision>
+				</Field>
+				<Field dataType="Double">
+					<FieldName>工作量（人月）</FieldName>
+					<FieldId>workload</FieldId>
+				</Field>
+			</Fields>
+		</MainModule>
+	</Module>
+</Modules>

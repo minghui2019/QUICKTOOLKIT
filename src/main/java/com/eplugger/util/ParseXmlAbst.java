@@ -35,9 +35,9 @@ public abstract class ParseXmlAbst<T> implements IParseXml<T> {
     	for (Attribute attribute : attributes) { // 二级节点获取属性值
     		String attrName = attribute.getName();
     		if (isBooleanerField(e, attrName)) {
-    			ClassUtils.setProperty(e, OtherUtils.fristWorldUpperCase(attrName), Boolean.valueOf(attribute.getValue()), Boolean.class);
+    			ClassUtils.setProperty(e, StringUtils.firstCharUpperCase(attrName), Boolean.valueOf(attribute.getValue()), Boolean.class);
     		} else {
-    			ClassUtils.setProperty(e, OtherUtils.fristWorldUpperCase(attrName), attribute.getValue(), String.class);
+    			ClassUtils.setProperty(e, StringUtils.firstCharUpperCase(attrName), attribute.getValue(), String.class);
     		}
     	}
     	for (Iterator<Element> iterator = rootElement.elementIterator(); iterator.hasNext(); ) { //遍历子节点

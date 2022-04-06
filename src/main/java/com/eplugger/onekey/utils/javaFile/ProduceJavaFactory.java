@@ -436,7 +436,7 @@ public class ProduceJavaFactory {
 			sb.append(OtherUtils.TAB_EIGHT + "List<" + moduleName + "Author> authors = entity.getAuthors();" + OtherUtils.CRLF);
 			sb.append(OtherUtils.TAB_EIGHT + "for (" + moduleName + "Author author : authors) {" + OtherUtils.CRLF);
 			sb.append(OtherUtils.TAB_TWELVE + "author.set" + moduleName + "(entity);" + OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_TWELVE + "author.set" + OtherUtils.fristWorldUpperCase(joinColumn) + "(entity.getId());" + OtherUtils.CRLF);
+			sb.append(OtherUtils.TAB_TWELVE + "author.set" + StringUtils.firstCharUpperCase(joinColumn) + "(entity.getId());" + OtherUtils.CRLF);
 			sb.append(OtherUtils.TAB_EIGHT + "}" + OtherUtils.CRLF);
 			sb.append(OtherUtils.TAB_FOUR + "}" + OtherUtils.CRLF);
 			sb.append(OtherUtils.CRLF);
@@ -569,20 +569,17 @@ public class ProduceJavaFactory {
 	}
 
 	private static String productSuperClassJavaCode(String superClass) {
-		StringBuffer sb = new StringBuffer();
-		if ("BizEntity".equals(superClass)) {
-			sb.append(OtherUtils.TAB_FOUR).append("@Override").append(OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_FOUR).append("@Transient").append(OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_FOUR).append("public String getName() {").append(OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_EIGHT).append("return null;").append(OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_FOUR).append("}").append(OtherUtils.CRLF);
-		} else if ("CheckBusinessEntity".equals(superClass)) {
-			sb.append(OtherUtils.TAB_FOUR).append("@Override").append(OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_FOUR).append("@Transient").append(OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_FOUR).append("public String getBizOwner() {").append(OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_EIGHT).append("return null;").append(OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_FOUR).append("}").append(OtherUtils.CRLF);
+		if (!"BizEntity".equals(superClass) && !"CheckBusinessEntity".equals(superClass)) {
+			return "";
 		}
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(OtherUtils.TAB_FOUR).append("@Override").append(OtherUtils.CRLF);
+		sb.append(OtherUtils.TAB_FOUR).append("@Transient").append(OtherUtils.CRLF);
+		// "BizEntity": getName(); "CheckBusinessEntity": getBizOwner().
+		sb.append(OtherUtils.TAB_FOUR).append("public String get").append("BizEntity".equals(superClass) ? "Name" : "BizOwner").append("() {").append(OtherUtils.CRLF);
+		sb.append(OtherUtils.TAB_EIGHT).append("return null;").append(OtherUtils.CRLF);
+		sb.append(OtherUtils.TAB_FOUR).append("}").append(OtherUtils.CRLF);
 		return sb.toString();
 	}
 	
@@ -609,7 +606,6 @@ public class ProduceJavaFactory {
 					sgSb.append(OtherUtils.TAB_FOUR).append("@Transient").append(OtherUtils.CRLF);
 					AppendSearch appendSearch = field.getAppendSearch();
 					if (appendSearch != null) {
-//						sgSb.append(OtherUtils.TAB_FOUR).append("@AppendSearch(value=\"").append(field.getAppendSearch()).append("\", relativeField=\"").append(field.getJoinColumn()).append("\", mergeMultiVals=true, symbol=\";\")").append(OtherUtils.CRLF);
 						sgSb.append(OtherUtils.TAB_FOUR)
 						.append("@AppendSearch(value=\"").append(appendSearch.getValue())
 						.append("\", relativeField=\"").append(appendSearch.getRelativeField())
@@ -659,7 +655,7 @@ public class ProduceJavaFactory {
 	}
 
 	private static void setterBuilder(StringBuffer sgSb, Field field) {
-		sgSb.append(OtherUtils.TAB_FOUR).append("public void set").append(OtherUtils.fristWorldUpperCase(field.getFieldId())).append("(").append(field.getDataType());
+		sgSb.append(OtherUtils.TAB_FOUR).append("public void set").append(StringUtils.firstCharUpperCase(field.getFieldId())).append("(").append(field.getDataType());
 		if (StringUtils.isNotBlank(field.getGenericity())) {
 			sgSb.append("<").append(field.getGenericity()).append("> ");
 		} else {
@@ -678,7 +674,7 @@ public class ProduceJavaFactory {
 		} else {
 			sgSb.append(" get");
 		}
-		sgSb.append(OtherUtils.fristWorldUpperCase(field.getFieldId())).append("() {").append(OtherUtils.CRLF);
+		sgSb.append(StringUtils.firstCharUpperCase(field.getFieldId())).append("() {").append(OtherUtils.CRLF);
 		sgSb.append(OtherUtils.TAB_EIGHT).append("return ").append(field.getFieldId()).append(";").append(OtherUtils.CRLF);
 		sgSb.append(OtherUtils.TAB_FOUR).append("}").append(OtherUtils.CRLF);
 		sgSb.append(OtherUtils.CRLF);

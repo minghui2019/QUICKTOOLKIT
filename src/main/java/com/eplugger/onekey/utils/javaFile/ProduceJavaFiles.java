@@ -486,7 +486,7 @@ public class ProduceJavaFiles {
 			sb.append(OtherUtils.TAB_EIGHT + "List<" + moduleName + "Author> authors = entity.getAuthors();" + OtherUtils.CRLF);
 			sb.append(OtherUtils.TAB_EIGHT + "for (" + moduleName + "Author author : authors) {" + OtherUtils.CRLF);
 			sb.append(OtherUtils.TAB_TWELVE + "author.set" + moduleName + "(entity);" + OtherUtils.CRLF);
-			sb.append(OtherUtils.TAB_TWELVE + "author.set" + OtherUtils.fristWorldUpperCase(joinColumn) + "(entity.getId());" + OtherUtils.CRLF);
+			sb.append(OtherUtils.TAB_TWELVE + "author.set" + StringUtils.firstCharUpperCase(joinColumn) + "(entity.getId());" + OtherUtils.CRLF);
 			sb.append(OtherUtils.TAB_EIGHT + "}" + OtherUtils.CRLF);
 			sb.append(OtherUtils.TAB_FOUR + "}" + OtherUtils.CRLF);
 			sb.append(OtherUtils.CRLF);
@@ -785,11 +785,11 @@ public class ProduceJavaFiles {
 				
 				sgSb.append(OtherUtils.TAB_FOUR + Constants.getAssociationMap(field.getAssociation()) + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "@JoinColumn(name = \"" + field.getJoinColumn() + "\")" + OtherUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + " get" + OtherUtils.fristWorldUpperCase(field.getFieldId()) + "() {" + OtherUtils.CRLF);
+				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + " get" + StringUtils.firstCharUpperCase(field.getFieldId()) + "() {" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_EIGHT + "return " + field.getFieldId() + ";" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "}" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + OtherUtils.fristWorldUpperCase(field.getFieldId()) + "(" + field.getDataType() + " " + field.getFieldId() + ") {" + OtherUtils.CRLF);
+				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + StringUtils.firstCharUpperCase(field.getFieldId()) + "(" + field.getDataType() + " " + field.getFieldId() + ") {" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_EIGHT + "this." + field.getFieldId() + " = " + field.getFieldId() + ";" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "}" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.CRLF);
@@ -805,11 +805,11 @@ public class ProduceJavaFiles {
 				if (field.getFetch() != null) {
 					sgSb.append(OtherUtils.TAB_FOUR + "@Fetch(value=" + field.getFetch() + ")" + OtherUtils.CRLF);
 				}
-				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + "<" + field.getGenericity() + "> get" + OtherUtils.fristWorldUpperCase(field.getFieldId()) + "() {" + OtherUtils.CRLF);
+				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + "<" + field.getGenericity() + "> get" + StringUtils.firstCharUpperCase(field.getFieldId()) + "() {" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_EIGHT + "return " + field.getFieldId() + ";" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "}" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + OtherUtils.fristWorldUpperCase(field.getFieldId()) + "(" + field.getDataType() + "<" + field.getGenericity() + "> " + field.getFieldId() + ") {" + OtherUtils.CRLF);
+				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + StringUtils.firstCharUpperCase(field.getFieldId()) + "(" + field.getDataType() + "<" + field.getGenericity() + "> " + field.getFieldId() + ") {" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_EIGHT + "this." + field.getFieldId() + " = " + field.getFieldId() + ";" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "}" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.CRLF);
@@ -836,11 +836,11 @@ public class ProduceJavaFiles {
 					}
 					sgSb.append(")" + OtherUtils.CRLF);
 				}
-				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + " get" + OtherUtils.fristWorldUpperCase(field.getFieldId()) + "() {" + OtherUtils.CRLF);
+				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + " get" + StringUtils.firstCharUpperCase(field.getFieldId()) + "() {" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_EIGHT + "return " + field.getFieldId() + ";" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "}" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + OtherUtils.fristWorldUpperCase(field.getFieldId()) + "(" + field.getDataType() + " " + field.getFieldId() + ") {" + OtherUtils.CRLF);
+				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + StringUtils.firstCharUpperCase(field.getFieldId()) + "(" + field.getDataType() + " " + field.getFieldId() + ") {" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_EIGHT + "this." + field.getFieldId() + " = " + field.getFieldId() + ";" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "}" + OtherUtils.CRLF);
 				sgSb.append(OtherUtils.CRLF);

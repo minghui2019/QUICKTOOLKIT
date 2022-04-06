@@ -17,6 +17,7 @@ import com.eplugger.util.DBUtil;
 import com.eplugger.util.ExcelUtil;
 import com.eplugger.util.FileUtil;
 import com.eplugger.util.OtherUtils;
+import com.eplugger.util.StringUtils;
 
 public class AutoViewFile {
 	private static final String[] productList = { "PAPER", "BOOK", "RESEARCH_REPORT", "APPRAISAL_PRODUCT",
@@ -96,7 +97,7 @@ public class AutoViewFile {
 					count++;
 					continue;
 				}
-				if (OtherUtils.isBlank(row.getCell(0).toString())) { // 如果当前行没有数据，跳出循环
+				if (StringUtils.isBlank(row.getCell(0).toString())) { // 如果当前行没有数据，跳出循环
 					return;
 				}
 				String lieMing = row.getCell(0).toString();// 列名
@@ -208,7 +209,7 @@ public class AutoViewFile {
 				}
 				String categroy = null;
 				String joinTable = null;
-				if (OtherUtils.isNotBlank(cfgList.get(i)[2])) {
+				if (StringUtils.isNotBlank(cfgList.get(i)[2])) {
 					if ("unitId".equals(cfgList.get(i)[0])) {
 						joinTable = "BIZ_UNIT,ID";
 					} else {
@@ -278,7 +279,7 @@ public class AutoViewFile {
 					}
 				} else {
 					sb.append("(SELECT NAME FROM " + str[0] + " WHERE " + str[0] + "." + str[1] + "=" + TABEL_NAME + "." + key);
-					if (OtherUtils.stringCompare(key, "PROJECT_SOURCE_ID")) {
+					if (StringUtils.equalsIgnoreCase(key, "PROJECT_SOURCE_ID")) {
 						sb.append(" AND DM_PROJECT_STAT_SOURCE.CLASS_ID=" + TABEL_NAME + ".SUBJECT_CLASS_ID");
 					}
 				}

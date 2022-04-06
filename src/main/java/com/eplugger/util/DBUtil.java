@@ -64,6 +64,7 @@ public class DBUtil {
 		}
 		return conn;
 	}
+	
 	public static Map<String, String> getMeaningBySql(String sql){
 		Map<String, String> map = new HashMap<String, String>();
 		Connection conn = getConnection();
@@ -82,6 +83,7 @@ public class DBUtil {
 		}
 		return map;
 	}
+	
 	public static Map<String, String> getEntryNameBySql(String sql){
 		Map<String, String> map = new HashMap<String, String>();
 		Connection conn = getConnection();

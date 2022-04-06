@@ -16,13 +16,13 @@ public class StringUtils {
      * @return <code>true</code> 如果字符串为null、空串或空格
      * @since 2.0
      */
-    public static boolean isBlank(String str) {
+    public static boolean isBlank(final CharSequence cs) {
         int strLen;
-        if (str == null || (strLen = str.length()) == 0) {
+        if (cs == null || (strLen = cs.length()) == 0) {
             return true;
         }
         for (int i = 0; i < strLen; i++) {
-            if ((Character.isWhitespace(str.charAt(i)) == false)) {
+            if ((Character.isWhitespace(cs.charAt(i)) == false)) {
                 return false;
             }
         }
@@ -45,8 +45,8 @@ public class StringUtils {
      *  not empty and not null and not whitespace
      * @since 2.0
      */
-    public static boolean isNotBlank(String str) {
-        return !StringUtils.isBlank(str);
+    public static boolean isNotBlank(final CharSequence cs) {
+        return !StringUtils.isBlank(cs);
     }
     
     /**
@@ -67,8 +67,8 @@ public class StringUtils {
      * @param str  the String to check, may be null
      * @return <code>true</code> if the String is empty or null
      */
-    public static boolean isEmpty(String str) {
-        return str == null || str.length() == 0;
+    public static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
     }
 
     /**
@@ -85,8 +85,8 @@ public class StringUtils {
      * @param str  the String to check, may be null
      * @return <code>true</code> if the String is not empty and not null
      */
-    public static boolean isNotEmpty(String str) {
-        return !StringUtils.isEmpty(str);
+    public static boolean isNotEmpty(final CharSequence cs) {
+        return !StringUtils.isEmpty(cs);
     }
     
     /**
@@ -112,7 +112,7 @@ public class StringUtils {
      * @return true if the String contains the search String irrespective of
      * case or false if not or <code>null</code> string input
      */
-    public static boolean containsIgnoreCase(String str, String searchStr) {
+    public static boolean containsIgnoreCase(final String str, final String searchStr) {
         if (str == null || searchStr == null) {
             return false;
         }
@@ -124,5 +124,56 @@ public class StringUtils {
             }
         }
         return false;
+    }
+
+	/**
+	 * 单词首字母大写
+	 * @param str
+	 * @return
+	 */
+	public static String firstCharUpperCase(final String str) {
+		return str.toUpperCase().charAt(0) + str.substring(1);
+	}
+	
+	/**
+	 * 将首字符小写
+	 * @param str
+	 * @return
+	 */
+	public static String firstCharLowerCase(final String str) {
+		return str.toLowerCase().charAt(0) + str.substring(1);
+	}
+	
+	/**
+     * <p>Compares two CharSequences, returning {@code true} if they represent
+     * equal sequences of characters, ignoring case.</p>
+     *
+     * <p>{@code null}s are handled without exceptions. Two {@code null}
+     * references are considered equal. Comparison is case insensitive.</p>
+     *
+     * <pre>
+     * StringUtils.equalsIgnoreCase(null, null)   = true
+     * StringUtils.equalsIgnoreCase(null, "abc")  = false
+     * StringUtils.equalsIgnoreCase("abc", null)  = false
+     * StringUtils.equalsIgnoreCase("abc", "abc") = true
+     * StringUtils.equalsIgnoreCase("abc", "ABC") = true
+     * </pre>
+     *
+     * @param str1  the first CharSequence, may be null
+     * @param str2  the second CharSequence, may be null
+     * @return {@code true} if the CharSequence are equal, case insensitive, or
+     *  both {@code null}
+     * @since 3.0 Changed signature from equalsIgnoreCase(String, String) to equalsIgnoreCase(CharSequence, CharSequence)
+     */
+    public static boolean equalsIgnoreCase(final String str1, final String str2) {
+        if (str1 == null || str2 == null) {
+            return str1 == str2;
+        } else if (str1 == str2) {
+            return true;
+        } else if (str1.length() != str2.length()) {
+            return false;
+        } else {
+            return str1.regionMatches(true, 0, str2, 0, str1.length());
+        }
     }
 }

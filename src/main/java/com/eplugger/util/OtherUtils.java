@@ -82,42 +82,10 @@ public class OtherUtils {
 	 * @return
 	 */
 	public static String deleteTextDecoration(String str){
-		if (isNotBlank(str)) {
-			str = str.replace("_", "");
+		if (StringUtils.isBlank(str)) {
+			return str;
 		}
-		return str;
-	}
-	
-	/**
-	 * 两字符串比较（不区分大小写）
-	 * @param str1
-	 * @param str2
-	 * @return
-	 */
-	public static boolean stringCompare(String str1, String str2) {
-		return str1.toUpperCase().equals(str2.toUpperCase());
-	}
-	
-	/**
-	 * 判非空("" or null return false)
-	 * @param str
-	 * @return
-	 */
-	public static boolean isNotBlank(String str) {
-		if (str == null || "".equals(str)) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	/**
-	 * 判空 ("" or null return false)
-	 * @param str
-	 * @return
-	 */
-	public static boolean isBlank(String str) {
-		return !isNotBlank(str);
+		return str.replace("_", "");
 	}
 	
 	/**
@@ -146,14 +114,5 @@ public class OtherUtils {
 			}
 		}
 		return pybf.toString().replaceAll("\\W", "").trim().toUpperCase();
-	}
-	
-	/**
-	 * 单词首字母大写
-	 * @param str
-	 * @return
-	 */
-	public static String fristWorldUpperCase(String str) {
-		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 }

@@ -20,7 +20,7 @@ public class ClassUtils {
 		Class<?> clz = newInstance.getClass();
 		Method method = null;
 		try {
-			method = clz.getMethod("set" + OtherUtils.fristWorldUpperCase(fieldName), parameterTypes);
+			method = clz.getMethod("set" + StringUtils.firstCharUpperCase(fieldName), parameterTypes);
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}

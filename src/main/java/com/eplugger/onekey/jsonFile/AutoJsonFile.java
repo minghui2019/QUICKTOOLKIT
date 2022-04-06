@@ -16,6 +16,7 @@ import com.eplugger.util.DBUtil;
 import com.eplugger.util.ExcelUtil;
 import com.eplugger.util.FileUtil;
 import com.eplugger.util.OtherUtils;
+import com.eplugger.util.StringUtils;
 
 @SuppressWarnings("all")
 public class AutoJsonFile {
@@ -75,7 +76,7 @@ public class AutoJsonFile {
 					count++;
 					continue;
 				}
-				if (OtherUtils.isBlank(row.getCell(0).toString())) { // 如果当前行没有数据，跳出循环
+				if (StringUtils.isBlank(row.getCell(0).toString())) { // 如果当前行没有数据，跳出循环
 					return;
 				}
 				String label = row.getCell(0).toString();

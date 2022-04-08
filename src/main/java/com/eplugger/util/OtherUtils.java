@@ -24,6 +24,14 @@ public class OtherUtils {
 	public static final String TPYE_LIST = "List";
 	public static final String TPYE_ARRAYLIST = "ArrayList";
 	
+	public static String[] getUuid(int count) {
+		String[] uuids = new String[count];
+		for (int i = 0; i < count; i++) {
+			uuids[i] = UUID.randomUUID().toString().replace("-", "");
+		}
+		return uuids;
+	}
+	
 	public static String getUuid() {
 		return UUID.randomUUID().toString().replace("-", "");
 	}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Users SYSTEM "./web.dtd">
+
+<Users>
+	<date>2020/04/07</date>
+	<state>12350</state>
+    <User id="1">
+        <name>剪刀</name>
+        <age>18</age>
+        <sex>男</sex>
+    </User>
+    <User id="2">
+        <name>布</name>
+        <age>19</age>
+        <sex>女</sex>
+    </User>
+    <User id="3">
+        <name>石头</name>
+        <age>20</age>
+        <sex>女</sex>
+    </User>
+</Users>

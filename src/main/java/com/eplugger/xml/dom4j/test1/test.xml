@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<SCHOOL>
+	<Head>
+		<number>0001</number>
+		<name>xxx实验小学</name>
+		<province>北京市</province>
+		<address>西城区</address>
+	</Head>
+	<Body>
+		<students>
+			<student>
+				<stuclass>高三二班</stuclass>
+				<stuname>李四</stuname>
+				<stuscore>100</stuscore>
+			</student>
+			<student>
+				<stuclass>高三三班</stuclass>
+				<stuname>张三</stuname>
+				<stuscore>95</stuscore>
+			</student>
+			<student>
+				<stuclass>高三四班</stuclass>
+				<stuname>王五</stuname>
+				<stuscore>0</stuscore>
+			</student>
+		</students>
+	</Body>
+</SCHOOL>

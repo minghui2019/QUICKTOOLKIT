@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<books>
+	<book id="2">
+		<name>红楼梦</name>
+		<date>18/05/02</date>
+		<auther>曹雪芹</auther>
+		<price>23</price>
+	</book>
+	<movie>
+		<name>杨瑞琪</name>
+		<auther>余飞</auther>
+	</movie>
+</books>

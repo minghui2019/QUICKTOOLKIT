@@ -2,187 +2,202 @@
 <!DOCTYPE ModuleTables SYSTEM '../dtd/ModuleTable.dtd'>
 <ModuleTables>
 	<ModuleTable ignore="false">
+		<ModuleName>unit</ModuleName>
+		<TableName>BIZ_UNIT</TableName>
+		<Described>单位</Described>
+	</ModuleTable>
+	<ModuleTable>
 		<ModuleName>unitAptitude</ModuleName>
 		<TableName>BIZ_UNIT_APTITUDE</TableName>
 		<Described>供方单位</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
+		<ModuleName>patentPayment</ModuleName>
+		<TableName>BIZ_PATENT_PAYMENT</TableName>
+		<Described>专利缴费</Described>
+	</ModuleTable>
+	<ModuleTable>
 		<ModuleName>projectApplyBookAchievements</ModuleName>
 		<TableName>BIZ_PROJECT_APPLY_BOOK_ACHIEVEMENTS</TableName>
 		<Described>主要教学改革和科学研究成果</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>projectApplyBookResume</ModuleName>
 		<TableName>BIZ_PROJECT_APPLY_BOOK_RESUME</TableName>
 		<Described>主要教学工作简历</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>cWIncome</ModuleName>
 		<TableName>BIZ_CW_INCOME</TableName>
 		<Described>财务来款</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>kFProject</ModuleName>
 		<TableName>BIZ_KF_PROJECT</TableName>
 		<Described>开放项目</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>xJProject</ModuleName>
 		<TableName>BIZ_XJ_PROJECT</TableName>
 		<Described>院内项目</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>yfContract</ModuleName>
 		<TableName>BIZ_YF_CONTRACT</TableName>
 		<Described>乙方合同</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>kFProjectMiddleCheck</ModuleName>
 		<TableName>BIZ_PROJECT_MIDDLE_CHECK</TableName>
 		<Described>项目中检</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>xJProjectMiddleCheck</ModuleName>
 		<TableName>BIZ_PROJECT_MIDDLE_CHECK</TableName>
 		<Described>项目中检</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>zXProjectMiddleCheck</ModuleName>
 		<TableName>BIZ_PROJECT_MIDDLE_CHECK</TableName>
 		<Described>项目中检</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>yfContractMiddleCheck</ModuleName>
 		<TableName>BIZ_PROJECT_MIDDLE_CHECK</TableName>
 		<Described>项目中检</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>yfContractComplete</ModuleName>
 		<TableName>BIZ_PROJECT_COMPLETE</TableName>
 		<Described>项目结题</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>kFProjectComplete</ModuleName>
 		<TableName>BIZ_PROJECT_COMPLETE</TableName>
 		<Described>项目结题</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>xJProjectComplete</ModuleName>
 		<TableName>BIZ_PROJECT_COMPLETE</TableName>
 		<Described>项目结题</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>zXProjectComplete</ModuleName>
 		<TableName>BIZ_PROJECT_COMPLETE</TableName>
 		<Described>项目结题</Described>
 	</ModuleTable>
 	
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>zXProjectApplyBook</ModuleName>
 		<TableName>BIZ_PROJECT_APPLY_BOOK</TableName>
 		<Described>纵向项目预申报材料</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
+		<ModuleName>patent</ModuleName>
+		<TableName>BIZ_PATENT</TableName>
+		<Described>专利</Described>
+	</ModuleTable>
+	<ModuleTable>
 		<ModuleName>patentProposal</ModuleName>
 		<TableName>BIZ_PATENT_PROPOSAL</TableName>
 		<Described>专利提案</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>expertReview</ModuleName>
 		<TableName>BIZ_EXPERT_REVIEW</TableName>
 		<Described>专家评审</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>entityDistributeScore</ModuleName>
 		<TableName>KH_ENTITY_DISTRIBUTE</TableName>
 		<Described>考核分配</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>projectApplyInfo</ModuleName>
 		<TableName>BIZ_PROJECT_APPLY_INFO</TableName>
 		<Described>项目申报批次</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>bdrsfApplyBook</ModuleName>
 		<TableName>BIZ_PROJECT_APPLY_BOOK</TableName>
 		<Described>申报材料</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>bdrsfApplyBookMember</ModuleName>
 		<TableName>BIZ_PROJECT_APPLY_BOOK_MEMBER</TableName>
 		<Described>项目申报材料成员</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>projectApplyBook</ModuleName>
 		<TableName>BIZ_PROJECT_APPLY_BOOK</TableName>
 		<Described>项目申报材料</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>paper</ModuleName>
 		<TableName>BIZ_PAPER</TableName>
 		<Described>论文</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>paperSubmission</ModuleName>
 		<TableName>BIZ_PAPER_SUBMISSION</TableName>
 		<Described>论文审查</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>animalEthicApply</ModuleName>
 		<TableName>BIZ_ETHIC_APPLY</TableName>
 		<Described>动物伦理申报</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>hispitalApply</ModuleName>
 		<TableName>BIZ_HISPITAL_APPLY</TableName>
 		<Described>自发申报</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>ethic</ModuleName>
 		<TableName>BIZ_ETHIC</TableName>
 		<Described>伦理项目</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>zXProjectTaskBook</ModuleName>
 		<TableName>BIZ_PROJECT_TASK_BOOK</TableName>
 		<Described>纵向任务书</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>yfContractMember</ModuleName>
 		<TableName>BIZ_YF_CONTRACT_MEMBER</TableName>
 		<Described>横向项目成员</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>xJProjectMember</ModuleName>
 		<TableName>BIZ_XJ_PROJECT_MEMBER</TableName>
 		<Described>校级项目成员</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>paperAuthor</ModuleName>
 		<TableName>BIZ_PAPER_AUTHOR</TableName>
 		<Described>论文作者</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>bookAuthor</ModuleName>
 		<TableName>BIZ_BOOK_AUTHOR</TableName>
 		<Described>著作作者</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>researchReportAuthor</ModuleName>
 		<TableName>BIZ_RESEARCH_REPORT_AUTHOR</TableName>
 		<Described>研究报告作者</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>honorAuthor</ModuleName>
 		<TableName>BIZ_HONOR_AUTHOR</TableName>
 		<Described>获奖成果作者</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>zXProject</ModuleName>
 		<TableName>BIZ_ZX_PROJECT</TableName>
 		<Described>纵向项目</Described>
 	</ModuleTable>
-	<ModuleTable ignore="true">
+	<ModuleTable>
 		<ModuleName>productTrans</ModuleName>
 		<TableName>BIZ_PRODUCT_TRANS</TableName>
 		<Described>成果转化</Described>

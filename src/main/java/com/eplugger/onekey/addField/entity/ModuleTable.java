@@ -4,16 +4,20 @@ import java.lang.reflect.Field;
 
 import com.eplugger.annotation.Booleaner;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ModuleTable {
 	private String moduleName;
 	private String tableName;
 	@Booleaner
-	private Boolean ignore;
+	private Boolean ignore = true;
 	private String described;
 	@Override
 	public String toString() {

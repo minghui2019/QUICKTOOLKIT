@@ -3,70 +3,69 @@
 <Modules>
 	<Module ignore="false">
 		<MainModule>
-			<BeanId>projectBusinessMaterial</BeanId>
-			<ModuleName>ProjectBusinessMaterial</ModuleName>
-			<TableName>BIZ_PROJECT_BUSINESS_MATERIAL</TableName>
-			<ModuleZHName>项目业务材料</ModuleZHName>
-			<PackageName>com.eplugger.business.projectBusiness</PackageName>
+			<BeanId>yfContractCooperationUnit</BeanId>
+			<ModuleName>YFContractCooperationUnit</ModuleName>
+			<TableName>BIZ_YF_CONTRACT_COOPERATION_UNIT</TableName>
+			<ModuleZHName>横向合作单位</ModuleZHName>
+			<PackageName>com.eplugger.business.contract</PackageName>
 			<SuperClassMap>
-				<Clazz key="entity" value="BusinessEntity" />
-				<Clazz key="bo" value="BusinessBO" />
-				<Clazz key="action" value="BusinessAction" />
+				<Clazz key="entity" value="EntityImpl" />
+				<!-- <Clazz key="bo" value="PublicBusiness" />
+				<Clazz key="action" value="PublicAction" /> -->
 			</SuperClassMap>
 			<Fields>
-				<Field dataType="String">
-					<FieldName>项目ID</FieldName>
-					<FieldId>projectId</FieldId>
+				<Field dataType="Integer">
+					<FieldName>排序号</FieldName>
+					<FieldId>orderId</FieldId>
 					<Precision>32</Precision>
 				</Field>
 				<Field dataType="String">
-					<FieldName>业务计划ID</FieldName>
-					<FieldId>businessPlanId</FieldId>
+					<FieldName>合作方名称</FieldName>
+					<FieldId>unitName</FieldId>
+					<Precision>500</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>合作方类型</FieldName>
+					<FieldId>unitType</FieldId>
+					<CategoryName>UNIT_TYPE_YF</CategoryName>
+					<Precision>50</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>合作方联系人</FieldName>
+					<FieldId>unitContacter</FieldId>
+					<Precision>50</Precision>
+				</Field>
+				<Field dataType="String">
+					<FieldName>合作方联系电话</FieldName>
+					<FieldId>unitContactNum</FieldId>
 					<Precision>32</Precision>
 				</Field>
 				<Field dataType="String">
-					<FieldName>提交状态</FieldName>
-					<FieldId>submitStatus</FieldId>
-					<CategoryName>BUSINESS_STATUS</CategoryName>
+					<FieldName>合作方所属省份</FieldName>
+					<FieldId>unitContactArea</FieldId>
+					<CategoryName>JF_LOCATION</CategoryName>
 					<Precision>32</Precision>
 				</Field>
-				<Field dataType="VProject" association="ManyToOne" ignoreImport="true" updateInsert="false">
-					<FieldName>项目</FieldName>
-					<FieldId>project</FieldId>
-					<JoinColumn>PROJECT_ID</JoinColumn>
+				<Field dataType="String">
+					<FieldName>合作方所属地市</FieldName>
+					<FieldId>unitContactCity</FieldId>
+					<CategoryName>JF_CITY</CategoryName>
+					<Precision>32</Precision>
 				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>项目名称</FieldName>
-					<FieldId>project.name</FieldId>
+				<Field dataType="String">
+					<FieldName>合同编号</FieldName>
+					<FieldId>contractId</FieldId>
+					<Precision>32</Precision>
 				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>项目ID</FieldName>
-					<FieldId>project.id</FieldId>
-				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>负责人</FieldName>
-					<FieldId>project.chargerName</FieldId>
-				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>负责人ID</FieldName>
-					<FieldId>project.chargerCode</FieldId>
-				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>所属单位</FieldName>
-					<FieldId>project.unitId</FieldId>
-				</Field>
-				<Field dataType="Date" onlyMeta="true">
-					<FieldName>立项日期</FieldName>
-					<FieldId>project.authorizeDate</FieldId>
-				</Field>
-				<Field dataType="Date" onlyMeta="true">
-					<FieldName>计划完成日期</FieldName>
-					<FieldId>project.planEndDate</FieldId>
+				<Field dataType="YFContract" association="ManyToOne" ignoreImport="true" updateInsert="false">
+					<FieldName>横向项目</FieldName>
+					<FieldId>yfContract</FieldId>
+					<JoinColumn>CONTRACT_ID</JoinColumn>
 				</Field>
 			</Fields>
 		</MainModule>
 	</Module>
-	<Module ignore="false">
+	<Module ignore="true">
 		<MainModule>
 			<BeanId>projectBusinessPlan</BeanId>
 			<ModuleName>ProjectBusinessPlan</ModuleName>

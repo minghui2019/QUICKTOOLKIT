@@ -517,7 +517,7 @@ public class ProduceJavaFactory {
 			sb.append("import ").append(Constants.getFullClassNameMap(genericity)).append(";").append(OtherUtils.CRLF);
 		}
 		
-		Set<AppendSearch> collectAppendSearch = fieldList.stream().map(a -> a.getAppendSearch()).filter(a -> StringUtils.isNotBlank(a.getValue())).distinct().collect(Collectors.toSet());
+		Set<AppendSearch> collectAppendSearch = fieldList.stream().filter(a -> a.getAppendSearch() != null).map(a -> a.getAppendSearch()).distinct().collect(Collectors.toSet());
 		if (collectAppendSearch.size() != 0) {
 			sb.append("import com.eplugger.service.dao.query.AppendSearch;").append(OtherUtils.CRLF);
 		}

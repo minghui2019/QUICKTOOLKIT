@@ -2,6 +2,80 @@
 <!DOCTYPE Fields SYSTEM '../dtd/Field.dtd'>
 <Fields>
 	<Field>
+		<FieldId>centerDirector</FieldId>
+		<FieldName>中心主任</FieldName>
+		<DataType>String</DataType>
+		<Precision>50</Precision>
+	</Field>
+	<Field>
+		<FieldId>centerDirectorId</FieldId>
+		<FieldName>中心主任ID</FieldName>
+		<DataType>String</DataType>
+		<Precision>32</Precision>
+	</Field>
+	<Field>
+		<FieldId>centerDeputyDirector</FieldId>
+		<FieldName>中心副主任</FieldName>
+		<DataType>String</DataType>
+		<Precision>50</Precision>
+	</Field>
+	<Field>
+		<FieldId>centerDeputyDirectorId</FieldId>
+		<FieldName>中心副主任ID</FieldName>
+		<DataType>String</DataType>
+		<Precision>32</Precision>
+	</Field>
+	<Field>
+		<FieldId>instituteLeaders</FieldId>
+		<FieldName>分管副院长</FieldName>
+		<DataType>String</DataType>
+		<Precision>50</Precision>
+	</Field>
+	<Field>
+		<FieldId>instituteLeadersId</FieldId>
+		<FieldName>分管副院长ID</FieldName>
+		<DataType>String</DataType>
+		<Precision>32</Precision>
+	</Field>
+	<!-- <Field>
+		<FieldId>relyOnPatentsPatentee</FieldId>
+		<FieldName>AIRS是否为第一专利权人</FieldName>
+		<DataType>String</DataType>
+		<Precision>500</Precision>
+	</Field>
+	<Field>
+		<FieldId>patentSource</FieldId>
+		<FieldName>专利来源</FieldName>
+		<DataType>String</DataType>
+		<CategoryName>PATENT_SOURCE</CategoryName>
+		<Precision>32</Precision>
+	</Field>
+	<Field>
+		<FieldId>transferor</FieldId>
+		<FieldName>转让单位</FieldName>
+		<DataType>String</DataType>
+		<Precision>500</Precision>
+	</Field>
+	<Field>
+		<FieldId>country</FieldId>
+		<FieldName>国别</FieldName>
+		<DataType>String</DataType>
+		<Precision>200</Precision>
+	</Field>
+	<Field>
+		<FieldId>agencyContactPerson</FieldId>
+		<FieldName>代理机构联系人</FieldName>
+		<DataType>String</DataType>
+		<Precision>100</Precision>
+	</Field>
+	<Field>
+		<FieldId>agencyContactNumber</FieldId>
+		<FieldName>代理机构联系人电话</FieldName>
+		<DataType>String</DataType>
+		<Precision>32</Precision>
+	</Field> -->
+	<!-- 
+	<Field>
 		<FieldId>contractQuantity</FieldId>
 		<FieldName>合同数量</FieldName>
 		<DataType>Integer</DataType>
@@ -10,7 +84,6 @@
 			<Value>SELECT BUYER_NAME, COUNT(BUYER_NAME) val FROM BIZ_YF_CONTRACT WHERE BUYER_NAME IN (^{name}) GROUP BY BUYER_NAME</Value>
 		</AppendSearch>
 	</Field>
-	<!-- 
 	<Field>
 		<FieldId>fundingType</FieldId>
 		<FieldName>资助类型</FieldName>

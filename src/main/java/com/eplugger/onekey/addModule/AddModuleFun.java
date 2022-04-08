@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.dom4j.DocumentException;
 
-import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addModule.entity.Module;
 import com.eplugger.onekey.addModule.util.ModuleParse;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFiles;
@@ -157,23 +156,23 @@ public class AddModuleFun {
 	 * 生成一个列表字段的所有东西
 	 */
 	public static void AddListModuleFun() {
-		Module module = ModuleParse.getInstance().getValidModule("src/resource/module/Module.xml");
-		module.getMainModule().setPackageName("com.eplugger.business.projectApply");
-		Map<String, String> superClassMap = new HashMap<String, String>();
-		superClassMap.put("entity", "BizEntity");
-		module.getMainModule().setSuperClassMap(superClassMap);
+		Module module = ModuleParse.getInstance().getValidModule("src/main/resource/module/Module.xml");
+//		module.getMainModule().setPackageName("com.eplugger.business.projectApply");
+//		Map<String, String> superClassMap = new HashMap<String, String>();
+//		superClassMap.put("entity", "BizEntity");
+//		module.getMainModule().setSuperClassMap(superClassMap);
 		
-		String version = "V8.5.2";//eadp版本
+//		String version = "V8.5.2";//eadp版本
 		
 		//多对一的字段
-		Field field = new Field("projectApplyBook", null, "ProjectApplyBook", null, "APPLY_BOOK_ID", null);
-		field.setAssociation(Constants.MANY_TO_ONE);
-		field.setIgnoreImport(true);
-		module.getMainModule().getFields().add(field);
+//		Field field = new Field("projectApplyBook", null, "ProjectApplyBook", null, "APPLY_BOOK_ID", null);
+//		field.setAssociation(Constants.MANY_TO_ONE);
+//		field.setIgnoreImport(true);
+//		module.getMainModule().getFields().add(field);
 		
 		ProduceJavaFiles.produceJavaFiles(module);
 		
-		ProduceSqlFiles.produceCreateTableSqlFiles(module, version);
+		ProduceSqlFiles.produceCreateTableSqlFiles(module);
 	}
 	
 	/**

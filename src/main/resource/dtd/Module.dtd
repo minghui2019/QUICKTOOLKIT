@@ -14,7 +14,7 @@
 <!ELEMENT Fields (Field+)>
 <!ELEMENT Field (FieldName, FieldId, CategoryName?, Precision?, JoinColumn?, Genericity?, OrderBy?, Fetch?)>
 <!ATTLIST Field 
-		dataType (String|Integer|Date|List|Double|VProject) #IMPLIED 
+		dataType (String|Integer|Date|List|Double|VProject|Patent|YFContract) #IMPLIED 
 		association (OneToMany|ManyToOne) #IMPLIED 
 		onlyMeta (true|false) "false" 
 		ignoreImport (true|false) "false"

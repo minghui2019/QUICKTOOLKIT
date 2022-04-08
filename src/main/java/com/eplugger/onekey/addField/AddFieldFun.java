@@ -15,6 +15,7 @@ import com.eplugger.onekey.addField.util.ModuleTableParse;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceMetaDataFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
+import com.eplugger.util.DateUtils;
 import com.eplugger.util.FileUtil;
 import com.eplugger.util.OtherUtils;
 
@@ -56,13 +57,14 @@ public class AddFieldFun {
 		}
 		String javaCode = ProduceJavaFiles.produceEntityJavaCode(fieldList);
 		Date today = new Date(System.currentTimeMillis());
-		FileUtil.outFile(javaCode, FILE_OUT_PATH, today + ".java");
+		String dateFm = DateUtils.formatDateNoSeparator(today);
+		FileUtil.outFile(javaCode, FILE_OUT_PATH + File.separator + dateFm, today + ".java");
 		
 		scsb.append(OtherUtils.CRLF);
-		FileUtil.outFile(scsb.toString() + mdsb.toString(), FILE_OUT_PATH, today + ".sql");
+		FileUtil.outFile(scsb.toString() + mdsb.toString(), FILE_OUT_PATH + File.separator + dateFm, today + ".sql");
 		
 		try {
-			Desktop.getDesktop().open(new File(FILE_OUT_PATH));
+			Desktop.getDesktop().open(new File(FILE_OUT_PATH + File.separator + dateFm));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

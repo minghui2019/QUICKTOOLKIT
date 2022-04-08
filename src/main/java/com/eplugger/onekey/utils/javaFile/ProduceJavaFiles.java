@@ -865,7 +865,7 @@ public class ProduceJavaFiles {
 		
 		if (StringUtils.isNotBlank(mainModule.getSuperClassMap().get("bo"))) {
 			// bo File
-			Set<AppendSearch> collectAppendSearch = mainModule.getFields().stream().map(a -> a.getAppendSearch()).filter(a -> StringUtils.isNotBlank(a.getValue())).distinct().collect(Collectors.toSet());
+			Set<AppendSearch> collectAppendSearch = mainModule.getFields().stream().filter(a -> a.getAppendSearch() != null).map(a -> a.getAppendSearch()).distinct().collect(Collectors.toSet());
 			List<String> joinColumn = mainModule.getFields().stream().map(a -> a.getJoinColumn()).filter(a -> a != null).distinct().collect(Collectors.toList());
 			String boJavaCode = ProduceJavaFactory.produceBOJavaFile(mainModule.getPackageName(), mainModule, authorSwitch, joinColumn.get(0), collectAppendSearch.size() != 0);
 			FileUtil.outFile(boJavaCode, "C:/Users/Admin/Desktop/AddListModule/java/" + mainModule.getBeanId() + "/" + "bo", mainModule.getModuleName() + "BO.java");

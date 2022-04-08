@@ -14,7 +14,7 @@ public class AddModuleMain {
 	public static void main(String[] args) {
 //		AddModuleFun.AddSingleModuleFun();
 //		AddModuleFun.AddMultipleModuleFun();
-		List<Module> module = ModuleParse.getInstance().getValidList("src/resource/module/Module.xml");
+		List<Module> module = ModuleParse.getInstance().getValidList("src/main/resource/module/Module.xml");
 //		Module module = ModuleParse.getInstance().getValidModule("src/resource/module/Module.xml");
 		System.out.println(module);
 		

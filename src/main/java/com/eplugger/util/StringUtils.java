@@ -132,7 +132,13 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String firstCharUpperCase(final String str) {
-		return str.toUpperCase().charAt(0) + str.substring(1);
+		// 进行字母的ascii编码前移，效率要高于截取字符串进行转换的操作
+		char[] cs = str.toCharArray();
+		if (cs[0] < 97 || cs[0] > 122) {
+			return str;
+		}
+		cs[0] -= 32;
+		return String.valueOf(cs);
 	}
 	
 	/**
@@ -141,7 +147,13 @@ public class StringUtils {
 	 * @return
 	 */
 	public static String firstCharLowerCase(final String str) {
-		return str.toLowerCase().charAt(0) + str.substring(1);
+		// 进行字母的ascii编码前移，效率要高于截取字符串进行转换的操作
+		char[] cs = str.toCharArray();
+		if (cs[0] < 65 || cs[0] > 90) {
+			return str;
+		}
+		cs[0] += 32;
+		return String.valueOf(cs);
 	}
 	
 	/**

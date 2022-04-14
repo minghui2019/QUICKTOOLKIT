@@ -23,17 +23,17 @@ import com.eplugger.xml.dom4j.util.XmlFileUtils;
 public class Dom4jTest {
 	@Test
 	public void testWriteXmlDocument() throws Exception {
-		Dom4jTest d = new Dom4jTest();
-		User user1 = new User(1, "姓名1", 18, "男");
-		User user2 = new User(2, "姓名2", 19, "女");
-		User user3 = new User(3, "石头", 20, "女");
-
-		List<User> users = new ArrayList<User>();
-		users.add(user1);
-		users.add(user2);
-		users.add(user3);
-
-		d.writeXmlDocument(User.class, users, "UTF-8", "src/main/java/com/eplugger/xml/dom4j/test/web.xml");
+//		Dom4jTest d = new Dom4jTest();
+//		User user1 = new User(1, "姓名1", 18, "男");
+//		User user2 = new User(2, "姓名2", 19, "女");
+//		User user3 = new User(3, "石头", 20, "女");
+//
+//		List<User> users = new ArrayList<User>();
+//		users.add(user1);
+//		users.add(user2);
+//		users.add(user3);
+//
+//		d.writeXmlDocument(User.class, users, "UTF-8", "src/main/java/com/eplugger/xml/dom4j/test/web.xml");
 	}
 	
 	@Test

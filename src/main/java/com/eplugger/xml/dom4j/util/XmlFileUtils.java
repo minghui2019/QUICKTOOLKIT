@@ -16,7 +16,11 @@ public class XmlFileUtils {
 	}
 	
 	public static Document readDocument() throws DocumentException {
-        return XmlFileUtils.readDocument("src/main/java/com/eplugger/xml/dom4j/test/test.xml", "UTF-8");
+        return XmlFileUtils.readDocument("src/main/java/com/eplugger/xml/dom4j/test/test.xml");
+	}
+	
+	public static Document readDocument(String filePath) throws DocumentException {
+		return XmlFileUtils.readDocument(new File(filePath), "UTF-8");
 	}
 	
 	/**

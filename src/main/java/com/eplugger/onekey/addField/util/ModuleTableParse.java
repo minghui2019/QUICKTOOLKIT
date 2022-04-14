@@ -80,7 +80,7 @@ public class ModuleTableParse extends ParseXmlAbst<ModuleTable> {
 		ModuleTable moduleTable = new ModuleTable();
         return parseXml4Element2Entity(moduleTable, rootElement);
 	}
-
+  
 	@Override
 	protected void parseXml4Field2Entity(Element stuChild, ModuleTable e) {
 		ClassUtils.setProperty(e, stuChild.getName(), stuChild.getStringValue(), String.class);

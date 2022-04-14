@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 	@Dom4jAsAttribute
-	private int id;
+	private String id;
 	private String name;
-	private int age;
+	private String age;
 	private String sex;
 }

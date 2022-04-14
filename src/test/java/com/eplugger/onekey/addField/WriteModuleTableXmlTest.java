@@ -20,6 +20,8 @@ import org.junit.Test;
 import com.eplugger.onekey.addField.entity.ModuleTable;
 import com.eplugger.onekey.addField.entity.ModuleTables;
 import com.eplugger.util.FileUtil;
+import com.eplugger.xml.dom4j.test.User;
+import com.eplugger.xml.dom4j.test.Users;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -48,6 +50,12 @@ public class WriteModuleTableXmlTest {
 	@Test
 	public void testReadXml() throws Exception {
 		ModuleTables xml2List = xml2List();
+		System.out.println(xml2List);
+	}
+	
+	@Test
+	public void testReadXml1() throws Exception {
+		Object xml2List = xml2List1();
 		System.out.println(xml2List);
 	}
 	
@@ -97,6 +105,19 @@ public class WriteModuleTableXmlTest {
 		FileInputStream fis = new FileInputStream(new File("d:/moduleTables.xml"));
 		Object fromXML = xstream1.fromXML(fis);
 		return (ModuleTables) fromXML;
+	}
+	
+	private Object xml2List1() throws FileNotFoundException {
+		XStream xstream1 = new XStream();
+		xstream1.allowTypes(new Class[]{Users.class, User.class});
+		xstream1.alias(Users.class.getSimpleName(), Users.class);
+		xstream1.alias(User.class.getSimpleName(), User.class);
+		xstream1.addImplicitCollection(Users.class, "users");//省略集合根节点
+//		xstream1.alias(ModuleTable.class.getSimpleName(), ModuleTable.class);
+		xstream1.useAttributeFor(User.class, "id");
+		FileInputStream fis = new FileInputStream(new File("src/main/java/com/eplugger/xml/dom4j/test/web.xml"));
+		Object fromXML = xstream1.fromXML(fis);
+		return fromXML;
 	}
 
 	private static Document readXmlByFile() {
@@ -180,8 +201,10 @@ public class WriteModuleTableXmlTest {
 			};
 		}
 		
+		@Override
 		public HierarchicalStreamReader createReader(Reader in) {
 			return new XppReader(in, new MXParser()) {
+				@Override
 				protected String pullElementName() {
 					String name = super.pullElementName();
 //					System.out.println(name);

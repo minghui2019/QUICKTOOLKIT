@@ -58,8 +58,9 @@ public class XmlUtil {
 				Field field = null;
 				try {
 					// 反射获取属性
-					field = obj.getClass().getDeclaredField(e.getName());
+					field = obj.getClass().getDeclaredField(StringUtils.firstCharLowerCase(e.getName()));
 				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 				// 获取当前属性是否为list
 				if (field != null && List.class.getName().equals(field.getType().getName())) {
@@ -104,6 +105,55 @@ public class XmlUtil {
 			if (StringUtils.isNotBlank(nodeName)) {
 				ClassUtils.setProperty(obj, nodeName, nodeValue, String.class);
 			}
+		}
+	}
+	public void xml2Bean1(Element element, Object obj) {
+		// 获取当前元素的所有子节点（在此我传入根元素）
+		List<Element> elements = element.elements();
+		System.out.println(element.getName() + ": " + element.getStringValue());
+		// 判断是否有子节点
+		if (elements != null && elements.size() > 0) {// 进入if说明有子节点
+			for (Element e : elements) { // 遍历
+				System.out.println(e.getName() + ": " + e.getStringValue());
+				// 声明Field
+				Field field = null;
+				try {
+					// 反射获取属性
+					field = obj.getClass().getDeclaredField(e.getName());
+				} catch (Exception e1) {
+				}
+				// 获取当前属性是否为list
+				if (field != null && List.class.getName().equals(field.getType().getName())) {
+					// 获取List的泛型参数类型
+					Type gType = field.getGenericType();
+					// 判断当前类型是否为参数化泛型
+					if (gType instanceof ParameterizedType) {
+						// 转换成ParameterizedType对象
+						ParameterizedType pType = (ParameterizedType) gType;
+						// 获得泛型类型的泛型参数（实际类型参数)
+						Type[] tArgs = pType.getActualTypeArguments();
+						if (tArgs != null && tArgs.length > 0) {
+							// 获取当前元素的所有子元素
+							List<Element> elementSubList = e.elements();
+							// 遍历
+							for (Element e1 : elementSubList) {
+								try {
+									// 反射创建对象
+									Object tempObj = Class.forName(tArgs[0].getTypeName()).newInstance();
+									// 递归调用自身
+									this.xml2Bean1(e1, tempObj);
+								} catch (Exception e2) {
+									log.error("【{}】对象构造失败", tArgs[0].getTypeName(), e2);
+								}
+							}
+						}
+					}
+				} else { // 说明不是list标签，继续递归调用自身即可
+					this.xml2Bean1(e, obj);
+				}
+				// 此时还在for循环遍历根元素的所有子元素
+			}
+		} else { // 说明无子节点
 		}
 	}
 	

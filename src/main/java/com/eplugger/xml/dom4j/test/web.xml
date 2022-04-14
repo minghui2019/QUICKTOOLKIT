@@ -5,18 +5,18 @@
 	<date>2020/04/07</date>
 	<state>12350</state>
     <User id="1">
-        <name>剪刀</name>
+        <name>red</name>
         <age>18</age>
-        <sex>男</sex>
+        <sex>man</sex>
     </User>
     <User id="2">
-        <name>布</name>
+        <name>blue</name>
         <age>19</age>
-        <sex>女</sex>
+        <sex>woman</sex>
     </User>
     <User id="3">
-        <name>石头</name>
+        <name>storm</name>
         <age>20</age>
-        <sex>女</sex>
+        <sex>woman</sex>
     </User>
 </Users>

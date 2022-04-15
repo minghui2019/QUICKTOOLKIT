@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Documented
 public @interface Dom4jAsAttribute {
+	String alias() default "";
 }

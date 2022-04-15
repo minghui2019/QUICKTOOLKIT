@@ -30,8 +30,15 @@ public class Field {
 	private String tableFieldId;
 	/** 字典名 */
 	private String categoryName;
+	/** 精度 */
+	private Integer precision;
 	/**  */
 	private String joinColumn;
+	/** 虚拟字段 */
+	@Booleaner
+	private Boolean tranSient = false;
+	/**  */
+	private AppendSearch appendSearch;
 	/** List的泛型 */
 	private String genericity;
 	/**  */
@@ -40,13 +47,6 @@ public class Field {
 	private String association;
 	/** 查询关联集合注解 */
 	private String fetch;
-	/** 虚拟字段 */
-	@Booleaner
-	private Boolean tranSient = false;
-	/**  */
-	private AppendSearch appendSearch;
-	/** 精度 */
-	private Integer precision;
 	/** updatable = false, insertable = false */
 	@Booleaner
 	private Boolean updateInsert = true;
@@ -66,68 +66,15 @@ public class Field {
 		this(fieldId, fieldName, OtherUtils.TPYE_STRING);
 	}
 	public Field(String fieldId, String fieldName, String dataType) {
-		this.fieldId = fieldId;
-		this.fieldName = fieldName;
-		this.dataType = dataType;
-		this.tableFieldId = SqlUtils.lowerCamelCase2UnderScoreCase(fieldId);
-	}
-	public Field(String fieldId, String fieldName, String dataType, String categoryName) {
-		this(fieldId, fieldName, dataType);
-		this.categoryName = categoryName;
+		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), null, null, null, null, null, null, null);
 	}
 	public Field(String fieldId, String fieldName, String dataType, Integer precision) {
-		this(fieldId, fieldName, dataType);
-		this.precision = precision;
+		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), precision);
 	}
 	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, Integer precision) {
-		this.fieldId = fieldId;
-		this.fieldName = fieldName;
-		this.dataType = dataType;
-		this.tableFieldId = tableFieldId;
-		this.precision = precision;
+		this(fieldId, fieldName, dataType, tableFieldId, null, precision, null, null, null, null, null);
 	}
 	
-	public Field(String fieldId, String fieldName, String dataType, Integer precision, Boolean tranSient) {
-		this(fieldId, fieldName, dataType);
-		this.tranSient = tranSient;
-		this.precision = precision;
-	}
-	/**
-	 * 
-	 * @param fieldId
-	 * @param fieldName
-	 * @param dataType
-	 * @param precision
-	 * @param categoryName
-	 */
-	public Field(String fieldId, String fieldName, String dataType, Integer precision, String categoryName) {
-		this(fieldId, fieldName, dataType);
-		this.precision = precision;
-		this.categoryName = categoryName;
-	}
-	public Field(String fieldId, String fieldName, String dataType, String joinColumn, Boolean tranSient, AppendSearch appendSearch) {
-		this.fieldId = fieldId;
-		this.fieldName = fieldName;
-		this.dataType = dataType;
-		this.joinColumn = joinColumn;
-		this.tranSient = tranSient;
-		this.appendSearch = appendSearch;
-	}
-	/**
-	 * 未使用
-	 * @param fieldId
-	 * @param fieldName
-	 * @param dataType
-	 * @param joinColumn
-	 * @param genericity
-	 */
-	public Field(String fieldId, String fieldName, String dataType, String joinColumn, String genericity) {
-		this.fieldId = fieldId;
-		this.fieldName = fieldName;
-		this.dataType = dataType;
-		this.joinColumn = joinColumn;
-		this.genericity = genericity;
-	}
 	/**
 	 * @param fieldId 字段名
 	 * @param fieldName 字段中文名
@@ -137,15 +84,33 @@ public class Field {
 	 * @param genericity List的泛型，非List不需要
 	 */
 	public Field(String fieldId, String fieldName, String dataType, String categoryName, String joinColumn, String genericity) {
-		this(fieldId, fieldName, dataType);
-		this.categoryName = categoryName;
-		this.joinColumn = joinColumn;
-		this.genericity = genericity;
+		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, null, joinColumn, null, null, genericity, null);
 	}
-	public Field(String fieldId, String fieldName, String dataType, String categoryName, String joinColumn, String genericity, String association) {
-		this(fieldId, fieldName, dataType);
+	
+	/**
+	 * @param fieldId 字段名
+	 * @param fieldName 字段中文名
+	 * @param dataType 数据类型
+	 * @param tableFieldId
+	 * @param categoryName 字典名
+	 * @param precision varchar的精度
+	 * @param joinColumn 连接字段名称，数据库字段
+	 * @param tranSient 是否虚拟字段
+	 * @param appendSearch 虚拟字段的查询条件
+	 * @param genericity List的泛型，非List不需要
+	 * @param association 关联关系：多对一，一对多
+	 */
+	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, Integer precision, String joinColumn, Boolean tranSient, AppendSearch appendSearch, String genericity, String association) {
+		super();
+		this.fieldId = fieldId;
+		this.fieldName = fieldName;
+		this.dataType = dataType;
+		this.tableFieldId = tableFieldId;
 		this.categoryName = categoryName;
+		this.precision = precision;
 		this.joinColumn = joinColumn;
+		this.tranSient = tranSient;
+		this.appendSearch = appendSearch;
 		this.genericity = genericity;
 		this.association = association;
 	}

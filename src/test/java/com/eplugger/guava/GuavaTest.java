@@ -106,7 +106,10 @@ public class GuavaTest {
     }
 
     /**
-     * Guava 字符串工具类Strings 输出： true true false helloTTT
+     * <pre>
+     * Guava 字符串工具类Strings
+     * 输出： true true false helloTTT
+     * </pre>
      */
     @Test
     public void testStrings() {

@@ -7,6 +7,7 @@ import org.dom4j.Attribute;
 import org.dom4j.Element;
 
 import com.eplugger.annotation.Booleaner;
+import com.eplugger.commons.lang3.StringUtils;
 import com.util.ArrayList;
 
 public abstract class ParseXmlAbst<T> implements IParseXml<T> {

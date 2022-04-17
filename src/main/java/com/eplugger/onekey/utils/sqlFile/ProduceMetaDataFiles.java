@@ -2,10 +2,10 @@ package com.eplugger.onekey.utils.sqlFile;
 
 import java.util.List;
 
+import com.eplugger.commons.lang3.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.util.DBUtil;
 import com.eplugger.util.OtherUtils;
-import com.eplugger.util.StringUtils;
 
 public class ProduceMetaDataFiles {
 	/**

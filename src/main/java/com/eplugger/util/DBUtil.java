@@ -19,6 +19,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.eplugger.commons.lang3.StringUtils;
+
 public class DBUtil {
 	// 利用线程保存conn连接，不用每次关闭
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();

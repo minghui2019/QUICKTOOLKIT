@@ -1,9 +1,9 @@
 package com.eplugger.onekey.utils.jspFile;
 
+import com.eplugger.commons.lang3.StringUtils;
 import com.eplugger.onekey.addModule.entity.ModuleInfo;
 import com.eplugger.util.FileUtil;
 import com.eplugger.util.OtherUtils;
-import com.eplugger.util.StringUtils;
 
 public class ProduceJspFiles {
 

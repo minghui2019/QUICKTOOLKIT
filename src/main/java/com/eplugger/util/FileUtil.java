@@ -9,6 +9,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
+import com.eplugger.commons.lang3.StringUtils;
+
 public class FileUtil {
 	/**
 	 * <p>判断目录是否存在（不存在则创建）</p>

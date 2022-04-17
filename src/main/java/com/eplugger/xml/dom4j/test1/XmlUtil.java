@@ -12,8 +12,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.eplugger.commons.lang3.StringUtils;
 import com.eplugger.util.ClassUtils;
-import com.eplugger.util.StringUtils;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;

@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.eplugger.commons.lang3.StringUtils;
 import com.eplugger.onekey.addField.entity.AppendSearch;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addModule.Constants;
 import com.eplugger.onekey.addModule.entity.ModuleInfo;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.util.OtherUtils;
-import com.eplugger.util.StringUtils;
 
 public class ProduceJavaFactory {
 	

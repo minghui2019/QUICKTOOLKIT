@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ModuleTables>
+	<ModuleTable ignore="false">
+		<moduleName>unit</moduleName>
+		<tableName>BIZ_UNIT</tableName>
+		<described>单位</described>
+	</ModuleTable>
+	<ModuleTable>
+		<moduleName>unitAptitude</moduleName>
+		<tableName>BIZ_UNIT_APTITUDE</tableName>
+		<described>供方单位</described>
+	</ModuleTable>
+	<ModuleTable>
+		<moduleName>patentPayment</moduleName>
+		<tableName>BIZ_PATENT_PAYmENT</tableName>
+		<described>专利缴费</described>
+	</ModuleTable>
+</ModuleTables>

@@ -6,9 +6,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.eplugger.annotation.Booleaner;
+import com.eplugger.commons.lang3.StringUtils;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.util.OtherUtils;
-import com.eplugger.util.StringUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

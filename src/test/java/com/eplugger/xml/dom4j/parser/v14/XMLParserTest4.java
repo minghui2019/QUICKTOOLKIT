@@ -19,7 +19,7 @@ public class XMLParserTest4 {
 
     @Before
     public void before() {
-        String xmlPath = XMLParserTest4.class.getResource("/Field.xml").getFile();
+        String xmlPath = XMLParserTest4.class.getResource("/field/Field.xml").getFile();
 //        String xmlPath = XMLParserTest4.class.getResource("/ModuleTable.xml").getFile();
         assertNotNull(xmlPath);
 

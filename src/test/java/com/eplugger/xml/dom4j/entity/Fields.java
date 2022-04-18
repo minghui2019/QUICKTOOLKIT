@@ -25,6 +25,4 @@ public class Fields {
 	public String toString() {
 		return "Fields [" + fields.toString() + "]";
 	}
-	
-	
 }

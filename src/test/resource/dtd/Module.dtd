@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Modules (Module+)>
+<!ELEMENT Module (MainModule, AuthorModule?)>
+<!ELEMENT MainModule (BeanId, ModuleName?, TableName, ModuleZHName, PackageName, SuperClassMap+, Fields)>
+<!ELEMENT AuthorModule (BeanId, ModuleName?, TableName, ModuleZHName, PackageName, SuperClassMap+, Fields)>
+<!ATTLIST Module
+		ignore (true|false) "false">
+<!ELEMENT BeanId (#PCDATA)>
+<!ELEMENT ModuleName (#PCDATA)>
+<!ELEMENT TableName (#PCDATA)>
+<!ELEMENT ModuleZHName (#PCDATA)>
+<!ELEMENT PackageName (#PCDATA)>
+<!ELEMENT SuperClassMap (Clazz+)>
+<!ELEMENT Fields (Field+)>
+<!ELEMENT Field (FieldName, FieldId, CategoryName?, Precision?, JoinColumn?, Genericity?, OrderBy?, Fetch?)>
+<!ATTLIST Field 
+		dataType (String|Integer|Date|List|Double|VProject|Patent|YFContract) #IMPLIED 
+		association (OneToMany|ManyToOne) #IMPLIED 
+		onlyMeta (true|false) "false" 
+		ignoreImport (true|false) "false"
+		updateInsert (true|false) "true">
+<!ELEMENT FieldName (#PCDATA)>
+<!ELEMENT FieldId (#PCDATA)>
+<!ELEMENT CategoryName (#PCDATA)>
+<!ELEMENT Precision (#PCDATA)>
+<!ELEMENT JoinColumn (#PCDATA)>
+<!ELEMENT Genericity (#PCDATA)>
+<!ELEMENT OrderBy (#PCDATA)>
+<!ELEMENT Fetch (#PCDATA)>
+<!ELEMENT Clazz EMPTY>
+<!ATTLIST Clazz 
+		key (entity|bo|action) #REQUIRED 
+		value CDATA #REQUIRED>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Fields SYSTEM '../dtd/Field.dtd'>
 <Fields>
 	<Field>
 		<fieldId>centerDirector</fieldId>
@@ -41,7 +42,7 @@
 		<fieldName>合同数量</fieldName>
 		<dataType>Integer</dataType>
 		<tranSient>true</tranSient>
-		<AppendSearch relativefield="BUYER_NAME" relativeThisProperty="name">
+		<AppendSearch relativeField="BUYER_NAME" relativeThisProperty="name">
 			<value>SELECT BUYER_NAME, COUNT(BUYER_NAME) val FROM BIZ_YF_CONTRACT WHERE BUYER_NAME IN (^{name}) GROUP BY BUYER_NAME</value>
 		</AppendSearch>
 	</Field>

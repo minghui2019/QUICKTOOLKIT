@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.dom4j.DocumentType;
 
 import com.eplugger.annotation.Comment;
 import com.eplugger.commons.lang3.StringUtils;
@@ -54,6 +55,8 @@ public class XMLObject implements Serializable {
     private XMLObject parent;
     @Comment("标签名")
     private String tagName;
+    @Comment("DocumentType")
+    private XMLDocumentType docType;
 
     /**
      * 构建XML对象
@@ -95,12 +98,12 @@ public class XMLObject implements Serializable {
      * @return XMLObject实体, 目标对象为null时总是返回null
      */
     public static <T> XMLObject of(T data) {
-        if (null == data)
+        if (data == null)
             return null;
 
         Class<?> type = data.getClass();
         Dom4JTag xmlTag = type.getAnnotation(Dom4JTag.class);
-        if (null == xmlTag) {
+        if (xmlTag == null) {
             log.error("实体类[" + type.toString() + "]没有被标记为 @Dom4JTag");
             throw new UnsupportedOperationException("实体类[" + type.toString() + "]没有被标记为 @Dom4JTag");
         }
@@ -119,7 +122,7 @@ public class XMLObject implements Serializable {
             // 获取字段相关数据
             // @Dom4JField注解
             Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
-            if (null == xmlField) {
+            if (xmlField == null) {
                 log.error("字段[" + field.getName() + "]没有被标记为 @Dom4JField");
                 continue;
             }
@@ -204,7 +207,7 @@ public class XMLObject implements Serializable {
 
         // 列表&数组
         FieldUtils.CollectionType collectionType = FieldUtils.isCollection(fieldType);
-        if (null == collectionType || (FieldUtils.CollectionType.LIST != collectionType
+        if (collectionType == null || (FieldUtils.CollectionType.LIST != collectionType
                 && FieldUtils.CollectionType.SET != collectionType))
             return false;
 
@@ -226,7 +229,7 @@ public class XMLObject implements Serializable {
             List<XMLObject> children = xmlObject.childTags.computeIfAbsent(childTagName, k -> new ArrayList<>());
             List<Object> list = com.eplugger.commons.collections.CollectionUtils.cast((List<?>) fieldValue);
             for (Object obj : list) {
-                if (null == obj)
+                if (obj == null)
                     continue;
                 XMLObject childTag = XMLObject.of(obj);
                 children.add(childTag);
@@ -245,8 +248,7 @@ public class XMLObject implements Serializable {
      * @param target    目标标签
      * @return 成功处理返回true, 否则返回false(需要其他方式处理)
      */
-    private static boolean trySimpleValueByTag(XMLObject xmlObject, Class<?> fieldType, String fieldName,
-            Object fieldValue) {
+    private static boolean trySimpleValueByTag(XMLObject xmlObject, Class<?> fieldType, String fieldName, Object fieldValue) {
         // 只处理简单对象
         if (!FieldUtils.isSimpleType(fieldType))
             return false;
@@ -316,9 +318,8 @@ public class XMLObject implements Serializable {
     public boolean appendAfter(XMLObject markerNode, boolean sameLevel) {
         // 追加前验证
         boolean valid = validationOuterEdit(markerNode);
-        if (!valid) {
+        if (!valid)
             return false;
-        }
 
         // 同级元素验证
         if (sameLevel && !StringUtils.equals(tagName, markerNode.tagName)) {
@@ -358,9 +359,8 @@ public class XMLObject implements Serializable {
      */
     public boolean appendBefore(XMLObject markerNode, boolean sameLevel) {
         boolean valid = validationOuterEdit(markerNode);
-        if (!valid) {
+        if (!valid)
             return false;
-        }
 
         // 当前节点和标记节点必须是同名节点
         if (sameLevel && !StringUtils.equals(tagName, markerNode.tagName)) {
@@ -435,9 +435,9 @@ public class XMLObject implements Serializable {
      * @return Map&lt;String,String&gt; 标签属性集合, Key:属性名, Value:属性值
      */
     public Map<String, String> getAttrs() {
-        if (null == this.attrs) {
-            this.attrs = new HashMap<>();
-        }
+        if (this.attrs == null)
+            this.attrs = Maps.newHashMap();
+
         return this.attrs;
     }
 
@@ -450,9 +450,9 @@ public class XMLObject implements Serializable {
      */
     public XMLObject getChildTag(String tagName, int index) {
         List<XMLObject> subTags = getChildTags(tagName);
-        if (index >= subTags.size() || index < 0) {
+        if (index >= subTags.size() || index < 0)
             return null;
-        }
+
         return subTags.get(index);
     }
 
@@ -463,9 +463,9 @@ public class XMLObject implements Serializable {
      *         Value:当前标签下所有与标签名关联的一级子标签
      */
     public Map<String, List<XMLObject>> getChildTags() {
-        if (null == this.childTags) {
+        if (this.childTags == null)
             this.childTags = Maps.newHashMap();
-        }
+
         return this.childTags;
     }
 
@@ -496,13 +496,12 @@ public class XMLObject implements Serializable {
      * @return boolean true-包含, false-不包含
      */
     public boolean hasChildTag(XMLObject subTag) {
-        if (null == childTags || subTag == null) {
+        if (childTags == null || subTag == null)
             return false;
-        }
 
         String subTagName = subTag.getTagName();
         List<XMLObject> list = getChildTags().get(subTagName);
-        return null != list && list.contains(subTag);
+        return list != null && list.contains(subTag);
     }
 
     /**
@@ -548,9 +547,8 @@ public class XMLObject implements Serializable {
      */
     public boolean insertBefore(XMLObject parentNode) {
         boolean valid = validationInnerEdit(parentNode);
-        if (!valid) {
+        if (!valid)
             return false;
-        }
 
         // 获取目标父节点的子节点集合,
         // 子节点集合与当前节点名相关
@@ -626,7 +624,7 @@ public class XMLObject implements Serializable {
      */
     private boolean isFloating() {
         // 不是根节点, 并且没有相应的父节点时
-        return !this.isRootElement() && null == this.getParent();
+        return !this.isRootElement() && this.getParent() == null;
     }
 
     /**
@@ -637,9 +635,8 @@ public class XMLObject implements Serializable {
      * @param result       用于保存节点列表
      */
     private void appendTag(XMLObject xmlObject, String childTagName, List<XMLObject> result) {
-        if (StringUtils.equalsIgnoreCase(xmlObject.getTagName(), childTagName)) {
+        if (StringUtils.equalsIgnoreCase(xmlObject.getTagName(), childTagName))
             result.add(xmlObject);
-        }
     }
 
     /**
@@ -654,15 +651,14 @@ public class XMLObject implements Serializable {
 
         // 验证是否还有后代元素
         Map<String, List<XMLObject>> children = xmlObject.getChildTags();
-        if (0 >= children.size()) {
+        if (children.size() <= 0)
             return;
-        }
 
         // 遍历所有后代标签
         for (Entry<String, List<XMLObject>> child : children.entrySet()) {
             List<XMLObject> descendants = child.getValue();
 
-            if (0 >= descendants.size()) {
+            if (descendants.size() <= 0) {
                 appendTag(xmlObject, childTagName, result);
                 continue;
             }
@@ -681,9 +677,9 @@ public class XMLObject implements Serializable {
             return;
 
         XMLObject currParent = getParent();
-        if (null == currParent) {
+        if (currParent == null)
             return;
-        }
+
         Map<String, List<XMLObject>> parentChildren = currParent.getChildTags();
 
         // 从父节点的子节点集合中删除当前节点
@@ -768,7 +764,7 @@ public class XMLObject implements Serializable {
     private void setValue(Object bean, Field field) {
         // 不处理没有添加字段注解的属性
         Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
-        if (null == xmlField)
+        if (xmlField == null)
             return;
 
         String name = getTargetTagName(xmlField, field.getName());
@@ -778,7 +774,7 @@ public class XMLObject implements Serializable {
             // 属性直接映射
             case ATTRIBUTE:
                 XMLObject target = parseFieldPath(xmlField);
-                if (null != target) {
+                if (target != null) {
                     String value = target.getAttr(name);
                     setFieldValue(bean, field, value);
                 }
@@ -790,7 +786,7 @@ public class XMLObject implements Serializable {
             // 文本值
             case ELEMENT:
                 XMLObject childTag = this.getChildTag(name, 0);
-                if (null != childTag) {
+                if (childTag != null) {
                     setFieldValue(bean, field, childTag.getContent());
                 }
                 break;
@@ -810,13 +806,13 @@ public class XMLObject implements Serializable {
     private void setValueByTag(Object bean, Field field, Dom4JField xmlField) throws Exception {
         // 支持 path + hierarchy 寻路
         XMLObject target = parseFieldPath(xmlField);
-        if (null != target) {
-            boolean isFired = trySimpleValueByTag(bean, field, target);
-            isFired = isFired || tryCollectionOrArray(bean, field);
-            isFired = isFired || tryCustomType(bean, field);
-
-            log.debug("path&hierarchy处理结果: " + isFired);
-        }
+        if (target == null)
+            return;
+        
+        boolean isFired = trySimpleValueByTag(bean, field, target);
+        isFired = isFired || tryCollectionOrArray(bean, field);
+        isFired = isFired || tryCustomType(bean, field);
+        log.debug("path&hierarchy处理结果: " + isFired);
     }
 
     /**
@@ -837,13 +833,12 @@ public class XMLObject implements Serializable {
         // 如果标签出现多个证明实体类属性类型定义错误
         String childTagName = getTargetTagName(xmlField, fieldType.getSimpleName());
         List<XMLObject> children = getChildTags(childTagName);
-        if (1 < children.size())
+        if (children.size() > 1)
             throw new RuntimeException("期望唯一子标签[" + childTagName + "]实际找到[" + children.size() + "]条");
+        if (children.size() == 0)
+            return false;
 
-        XMLObject firstChildTag = children.get(0);
-        Object val = firstChildTag.toBean(fieldType);
-        FieldUtils.setFieldValue(bean, field, val);
-        
+        FieldUtils.setFieldValue(bean, field, children.get(0).toBean(fieldType));
         return true;
     }
 
@@ -863,7 +858,6 @@ public class XMLObject implements Serializable {
 
         // List & Set
         if (FieldUtils.CollectionType.LIST == collectionType || FieldUtils.CollectionType.SET == collectionType) {
-
             // 获取泛型类型
             // 如果没有泛型不设置当前值
             Type genericType = field.getGenericType();
@@ -909,7 +903,6 @@ public class XMLObject implements Serializable {
     private static String getTargetTagName(Dom4JField dom4jField, String defaultName) {
         return StringUtils.defaultIfBlank(dom4jField.name(), defaultName);
     }
-
     private static String getTargetTagName(Dom4JTag dom4jTag, String defaultName) {
         return StringUtils.defaultIfBlank(dom4jTag.value(), defaultName);
     }
@@ -934,11 +927,12 @@ public class XMLObject implements Serializable {
         String childTagName = getTargetTagName(xmlField, fieldType.getSimpleName());
         List<XMLObject> children = target.getChildTags(childTagName);
 
-        if (1 < children.size())
+        if (children.size() > 1)
             throw new RuntimeException("期望唯一子标签[" + childTagName + "]实际找到[" + children.size() + "]条");
+        if (children.size() == 0)
+            return false;
 
-        XMLObject firstChildTag = children.get(0);
-        setFieldValue(bean, field, firstChildTag.content);
+        setFieldValue(bean, field, children.get(0).content);
         return true;
     }
 
@@ -986,14 +980,12 @@ public class XMLObject implements Serializable {
      */
     private <T> void validExpectTagName(Class<T> cls) {
         Dom4JTag xmlTag = cls.getAnnotation(Dom4JTag.class);
-        if (null == xmlTag) {
+        if (xmlTag == null)
             return;
-        }
-        String expectName = xmlTag.value();
-        expectName = StringUtils.trimToEmpty(expectName);
-        if (StringUtils.isNotBlank(expectName) && !expectName.equals(tagName)) {
+
+        String expectName = StringUtils.trimToEmpty(xmlTag.value());
+        if (StringUtils.isNotBlank(expectName) && !expectName.equals(tagName))
             throw new RuntimeException("期望标签名[" + expectName + "]与实际标签名[" + tagName + "]不一致");
-        }
     }
 
     /**
@@ -1018,7 +1010,7 @@ public class XMLObject implements Serializable {
      */
     public boolean hasEffectiveChildren() {
         Map<String, List<XMLObject>> childTags = getChildTags();
-        if (null == childTags || 0 == childTags.size())
+        if (childTags == null || childTags.size() == 0)
             return false;
 
         for (Entry<String, List<XMLObject>> me : childTags.entrySet())
@@ -1030,7 +1022,26 @@ public class XMLObject implements Serializable {
 
     @Override
     public String toString() {
-        return "XMLObject [attrs=" + attrs + ", childTags=" + childTags + ", content=" + content + ", tagName="
-                + tagName + "]";
+        return "XMLObject [attrs=" + attrs + ", childTags=" + childTags + ", content=" + content + ", tagName=" + tagName + "]";
+    }
+    
+    public XMLObject setParent(XMLObject parent) {
+        this.parent = parent;
+        return this;
+    }
+    
+    public XMLObject setRootElement(boolean rootElement) {
+        this.rootElement = rootElement;
+        return this;
+    }
+    
+    public XMLObject setDocumentType(DocumentType documentType) {
+        this.docType = new XMLDocumentType(documentType.getName(), documentType.getPublicID(), documentType.getSystemID());
+        return this;
+    }
+    
+    public XMLObject setDocumentType(String name, String publicID, String systemID) {
+        this.docType = new XMLDocumentType(name, publicID, systemID);
+        return this;
     }
 }

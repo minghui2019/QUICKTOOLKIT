@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.apache.commons.collections4.MapUtils;
 
 import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.xml.dom4j.XMLDocumentType;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.format.XMLObjectFormatter;
 
@@ -58,11 +59,42 @@ public class DefaultXMLObjectFormatter implements XMLObjectFormatter {
 		StringBuilder content = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		content.append(systemLineSeparator);
 		String currentNewLine = getSystemLineSeparator();
+		writeDocumentType(xmlObject.getDocType(), content, currentNewLine);
 		format(xmlObject, content, currentNewLine);
 		return content;
 	}
 
-	/**
+	private void writeDocumentType(XMLDocumentType docType, StringBuilder content, String currentNewLine) {
+	    content.append("<!DOCTYPE ");
+        content.append(docType.getElementName());
+
+        boolean hasPublicID = false;
+        String publicID = docType.getPublicID();
+
+        if ((publicID != null) && (publicID.length() > 0)) {
+            content.append(" PUBLIC \"");
+            content.append(publicID);
+            content.append("\"");
+            hasPublicID = true;
+        }
+
+        String systemID = docType.getSystemID();
+
+        if ((systemID != null) && (systemID.length() > 0)) {
+            if (!hasPublicID) {
+                content.append(" SYSTEM");
+            }
+
+            content.append(" \"");
+            content.append(systemID);
+            content.append("\"");
+        }
+
+        content.append(">");
+        content.append(currentNewLine);
+    }
+
+    /**
 	 * 格式化指定节点
 	 *
 	 * @param xmlObject         节点对象

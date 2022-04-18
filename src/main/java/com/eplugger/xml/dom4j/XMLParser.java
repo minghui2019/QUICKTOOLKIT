@@ -112,9 +112,7 @@ public class XMLParser {
 		String tagName = rootElement.getName();
 
 		// 构建 XMLObject 对象
-		XMLObject xmlObject = new XMLObject(tagName);
-		xmlObject.setParent(null);
-		xmlObject.setRootElement(Boolean.TRUE);
+		XMLObject xmlObject = new XMLObject(tagName).setParent(null).setRootElement(Boolean.TRUE).setDocumentType(document.getDocType());
 
 		// 解析XML
 		parseNode(xmlObject, rootElement);
@@ -130,9 +128,8 @@ public class XMLParser {
 	private void parseNode(XMLObject xmlObject, Element node) {
 		for (int i = 0, size = node.nodeCount(); i < size; i++) {
 			Node subNode = node.node(i);
-			if (subNode instanceof Comment) {
+			if (subNode instanceof Comment)
 				continue;
-			}
 
 			XMLObject subXmlObject;
 			if (subNode instanceof Element) {

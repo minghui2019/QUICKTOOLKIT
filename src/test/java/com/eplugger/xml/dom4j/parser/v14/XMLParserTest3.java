@@ -147,7 +147,7 @@ public class XMLParserTest3 {
     	
     	// Bean 转化为 XMLObject
     	XMLObject root = XMLObject.of(moduleTables2);
-    	root.setRootElement(true);
+        root.setRootElement(true).setDocumentType("Modules", null, "../dtd/Module.dtd");
     	Map<String, List<XMLObject>> childTags = root.getChildTags();
     	assertEquals(1, childTags.size());
     	

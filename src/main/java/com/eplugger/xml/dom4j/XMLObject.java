@@ -91,7 +91,7 @@ public class XMLObject implements Serializable {
     }
 
     /**
-     * 指定对象转换为XMLObject数据, 目标对象必须使用{@link Dom4JTag @XmlTag}注解
+     * 指定对象转换为XMLObject数据, 目标对象必须使用{@link Dom4JTag @Dom4JTag}注解
      *
      * @param data 目标对象
      * @param      <T> 对象类型

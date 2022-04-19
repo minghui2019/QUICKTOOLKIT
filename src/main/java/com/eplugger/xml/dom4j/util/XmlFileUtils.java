@@ -15,10 +15,6 @@ public class XmlFileUtils {
 	private XmlFileUtils() {
 	}
 	
-	public static Document readDocument() throws DocumentException {
-        return XmlFileUtils.readDocument("src/main/java/com/eplugger/xml/dom4j/test/test.xml");
-	}
-	
 	public static Document readDocument(String filePath) throws DocumentException {
 		return XmlFileUtils.readDocument(new File(filePath), "UTF-8");
 	}
@@ -39,14 +35,6 @@ public class XmlFileUtils {
 		reader.setEncoding(encoding);
 		//2.加载xml
 		return reader.read(file);
-	}
-	
-	public static void writeDocument(Document document) throws IOException {
-		XmlFileUtils.writeDocument(document, "src/main/java/com/eplugger/xml/dom4j/test/web.xml");
-	}
-	
-	public static void writeDocument(Document document, String uri) throws IOException {
-		XmlFileUtils.writeDocument(document, "src/main/java/com/eplugger/xml/dom4j/test/web.xml", "UTF-8");
 	}
 	
 	public static void writeDocument(Document document, String uri, String encoding) throws IOException {

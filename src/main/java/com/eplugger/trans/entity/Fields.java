@@ -1,4 +1,4 @@
-package com.eplugger.xml.dom4j.entity;
+package com.eplugger.trans.entity;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Dom4JTag
 public class Fields {
-	@Dom4JField(type = Dom4JFieldType.TAG)
+	@Dom4JField(type = Dom4JFieldType.TAG, comment = "fieldList")
 	private List<SimpleField> fieldList = Lists.newArrayList();
 
 	@Override

@@ -1,4 +1,4 @@
-package com.eplugger.trans;
+package com.eplugger.trans.service;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +25,7 @@ public class AuthService {
 	/** 获取token地址 */
 	private static final String AUTH_HOST = "https://aip.baidubce.com/oauth/2.0/token";
 	private static final String PROPERTIES_FILE = "src/main/resource/baiduAuth.properties";
+	private AuthService() {}
 	
 	public static void main(String[] args) throws IOException {
 		getAuth();

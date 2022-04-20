@@ -1,75 +1,61 @@
 package com.eplugger.trans;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
 import com.eplugger.commons.lang3.StringUtils;
-import com.eplugger.util.HttpRequestUtils;
-
-import net.sf.json.JSONObject;
+import com.eplugger.trans.entity.Fields;
+import com.eplugger.trans.entity.SimpleField;
+import com.eplugger.trans.service.TransService;
+import com.eplugger.util.OtherUtils;
+import com.eplugger.xml.dom4j.XMLObject;
+import com.eplugger.xml.dom4j.XMLParser;
 
 public class TextTrans {
-	/** 获取token地址 */
-	private static final String TRANS_HOST = "https://aip.baidubce.com/rpc/2.0/mt/texttrans/v1?access_token=%s";
 	
-	public static void main(String[] args) {
-		String result = transText2En("主项目、项目类型、项目介绍、分管副院长");
-		//Patent source, transferor, country, contact person of agency, contact number of agency
-//		String result = "Patent source, transferor, country, contact person of agency, contact number of agency";
-		String[] split = result.split(",");
-		String[] transText2En = transText2En(split);
-		System.out.println(Arrays.toString(transText2En));
+	public static void main(String[] args) throws IOException {
+		String src = "主项目、项目类型、项目介绍、分管副院长";
+		String dst = TransService.transText2En(src);
+//		Patent source, transferor, country, contact person of agency, contact number of agency
+//		String dst = "Patent source, transferor, country, contact person of agency";
+		String[] dsts = dst.split(",");
+		String[] result = transText2En(dsts);
+		System.out.println(Arrays.toString(result));
+		String[] srcs = src.split("、");
+		Fields fields = TextTrans.bulidFields(srcs, result);
+		
+		XMLObject root = XMLObject.of(fields).setRootElement(Boolean.TRUE).setDocumentType("Fields", null, "../dtd/Field.dtd");
+		
+		String path = TextTrans.class.getResource("/").getPath() + "/Field_out.xml";
+		File file = new File(path);
+		XMLParser.transfer(root, file, false);
+		System.out.println(file.getCanonicalPath());
 	}
 	
-	private static Pattern patternOf = Pattern.compile("([\\w ]+) [o|O]f ([\\w ]+)");
-	public static String[] transText2En(String[] resurces) {
-		String[] dests = new String[resurces.length];
-		for (int i = 0; i < resurces.length; i++) {
-			String resurce = resurces[i].trim();
-			if (resurce.indexOf("of") != -1) {
-				Matcher matcher = patternOf.matcher(resurce);
-				if (matcher.matches()) {
-					resurce = matcher.group(2) + " " + matcher.group(1);
-					System.out.println(matcher.group(2) + " " + matcher.group(1));
-				}
-			}
-			
-			String[] resurceArr = resurce.split(" ");
-			String dest = StringUtils.firstCharLowerCase(resurceArr[0]);
-			for (int j = 1; j < resurceArr.length; j++) {
-				dest += StringUtils.firstCharUpperCase(resurceArr[j]);
+	public static Fields bulidFields(String[] srcs, String[] result) {
+		Fields fields = new Fields();
+		List<SimpleField> fieldList = fields.getFieldList();
+		for (int i = 0; i < srcs.length; i++) {
+			fieldList.add(new SimpleField(result[i], srcs[i], OtherUtils.TPYE_STRING, 500));
+		}
+		fieldList.add(new SimpleField(result[0] + "Id", srcs[0] + "ID", OtherUtils.TPYE_STRING, 32));
+		fieldList.add(new SimpleField(result[srcs.length - 1] + "Id", srcs[srcs.length - 1] + "ID", OtherUtils.TPYE_STRING, 32));
+		return fields;
+	}
+	
+	public static String[] transText2En(String[] dsts) {
+		String[] dests = new String[dsts.length];
+		for (int i = 0; i < dsts.length; i++) {
+			String result = CharMatcherHandlerFactory.getFactory().matcherChar(dsts[i].trim());
+			String[] destArr = result.split(" ");
+			String dest = StringUtils.firstCharLowerCase(destArr[0]);
+			for (int j = 1; j < destArr.length; j++) {
+				dest += StringUtils.firstCharUpperCase(destArr[j]);
 			}
 			dests[i] = dest;
 		}
 		return dests;
-	}
-	
-	/*
-		{
-		    "result":
-		    {
-		        "from": "zh",
-		        "trans_result":
-		        [
-		            {
-		                "dst": "Patent source, transferor, country, contact person of agency, contact number of agency",
-		                "src": "专利来源、转让单位、国别、代理机构联系人、代理机构联系人电话"
-		            }
-		        ],
-		        "to": "en"
-		    },
-		    "log_id": 1511883485018842480
-		}
-	 */
-	public static String transText2En(String query) {
-		JSONObject body = new JSONObject();
-		body.put("q", query);
-		body.put("from", "zh");
-		body.put("to", "en");
-		body.put("termIds", "");
-		JSONObject result = HttpRequestUtils.postHttp(String.format(TRANS_HOST, AuthService.getAuth()), body.toString());
-		System.out.println(result.toString());
-		return ((JSONObject) result.getJSONObject("result").getJSONArray("trans_result").get(0)).getString("dst");
 	}
 }

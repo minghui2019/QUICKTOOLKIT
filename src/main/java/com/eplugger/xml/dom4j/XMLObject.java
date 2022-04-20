@@ -510,7 +510,7 @@ public class XMLObject implements Serializable {
      * @return
      */
     public boolean hasMixedContent() {
-        return StringUtils.isEmpty(this.content, true) && this.childTags.isEmpty();
+        return StringUtils.isNotEmpty(this.content, true) && this.childTags.isEmpty();
     }
 
     /**

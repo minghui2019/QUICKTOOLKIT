@@ -37,4 +37,6 @@ public @interface Dom4JField {
      * </pre>
      */
     String[] path() default {};
+    
+    String comment() default "";
 }

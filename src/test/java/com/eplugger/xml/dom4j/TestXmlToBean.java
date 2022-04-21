@@ -14,7 +14,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.commons.lang3.reflect.FieldUtils;
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
 import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;

@@ -3,7 +3,7 @@ package com.eplugger.xml.dom4j.parse;
 import java.lang.reflect.Type;
 
 import com.alibaba.fastjson.JSON;
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 
 /**
  * 字段值解析器接口, 实现字段值和字符串之间转换工作. 接口实现需要在调用XML映射

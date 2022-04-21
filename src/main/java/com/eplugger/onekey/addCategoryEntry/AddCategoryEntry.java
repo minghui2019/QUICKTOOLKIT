@@ -1,9 +1,10 @@
 package com.eplugger.onekey.addCategoryEntry;
 
+import java.io.File;
 import java.io.IOException;
 
+import com.eplugger.common.io.FileUtils;
 import com.eplugger.onekey.addCategoryEntry.utils.ProduceCategorySqlCode;
-import com.eplugger.util.FileUtil;
 
 /**
  * 新增字典
@@ -23,7 +24,7 @@ public class AddCategoryEntry {
 //		String[] valueArray = {"技术开发", "技术服务", };//字典值
 		String content = ProduceCategorySqlCode.createCategoryStr(keyArray, valueArray, categoryName, bizName, bizType, version);
 		String fileName = bizName + "字典配置SQL.sql";
-		FileUtil.outFile(content, "C:\\Users\\Admin\\Desktop", fileName, false);
+		FileUtils.write("C:\\Users\\Admin\\Desktop" + File.separator + fileName, content);
 		try {
 			Runtime.getRuntime().exec("notepad.exe  C:\\Users\\Admin\\Desktop\\" + fileName);
 		} catch (IOException e) {

@@ -16,8 +16,7 @@ import org.dom4j.dom.DOMDocumentType;
 import org.junit.Test;
 
 import com.eplugger.annotation.dom4j.Dom4jAsAttribute;
-import com.eplugger.util.ClassUtils;
-import com.eplugger.xml.dom4j.test1.XmlUtil;
+import com.eplugger.utils.ClassUtils;
 import com.eplugger.xml.dom4j.util.XmlFileUtils;
 
 public class Dom4jTest {
@@ -47,15 +46,13 @@ public class Dom4jTest {
 		Dom4jTest d = new Dom4jTest();
 //		Users readXML = d.readXML1("src/main/java/com/eplugger/xml/dom4j/test/web.xml", Users.class);
 //		System.out.println(readXML);
-		XmlUtil util = new XmlUtil();
 		Document doc = XmlFileUtils.readDocument("src/main/java/com/eplugger/xml/dom4j/test/web.xml", "utf-8");
 		Element createElement = DocumentHelper.createElement("UserList");
 		Document document = DocumentHelper.createDocument(createElement);
 		document.getRootElement().add((Element) doc.getRootElement().clone());
 //		document.add((Element) doc.getRootElement().clone());
 		Users users = new Users();
-//		d.parseXml(document.getRootElement(), users);
-		util.xml2Bean(document.getRootElement(), users);
+		d.parseXml(document.getRootElement(), users);
 		System.out.println(users);
 	}
 

@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
 import com.eplugger.xml.dom4j.entity.ModuleTable;

@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.trans.entity.Fields;
 import com.eplugger.trans.entity.SimpleField;
 import com.eplugger.trans.service.TransService;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.utils.OtherUtils;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
 

@@ -3,21 +3,20 @@ package com.eplugger.onekey.addField;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.eplugger.common.io.FileUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addField.util.FieldParse;
 import com.eplugger.onekey.addField.util.ModuleTableParse;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceMetaDataFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
-import com.eplugger.util.DateUtils;
-import com.eplugger.util.FileUtil;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.utils.DateUtils;
 
 /**
  * 加字段自动生成java代码，sql命令（数据库类型支持sqlServer），元数据
@@ -56,12 +55,12 @@ public class AddFieldFun {
 			set.add(tableName);
 		}
 		String javaCode = ProduceJavaFiles.produceEntityJavaCode(fieldList);
-		Date today = new Date(System.currentTimeMillis());
-		String dateFm = DateUtils.formatDateNoSeparator(today);
-		FileUtil.outFile(javaCode, FILE_OUT_PATH + File.separator + dateFm, today + ".java");
+		String today = DateUtils.formatDate();
+		String dateFm = DateUtils.formatDateNoSeparator();
+		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH + File.separator + dateFm + File.separator + today + ".java", javaCode);
 		
-		scsb.append(OtherUtils.CRLF);
-		FileUtil.outFile(scsb.toString() + mdsb.toString(), FILE_OUT_PATH + File.separator + dateFm, today + ".sql");
+		scsb.append(StringUtils.CRLF);
+		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH + File.separator + dateFm + File.separator + today + ".sql", scsb.toString() + mdsb.toString());
 		
 		try {
 			Desktop.getDesktop().open(new File(FILE_OUT_PATH + File.separator + dateFm));

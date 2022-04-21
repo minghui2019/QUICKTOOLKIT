@@ -4,11 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addModule.entity.ModuleInfo;
 import com.eplugger.onekey.utils.SqlUtils;
-import com.eplugger.util.DBUtil;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.utils.DBUtils;
+import com.eplugger.utils.OtherUtils;
 
 public class ProduceSqlFactory {
 	/**
@@ -24,31 +25,31 @@ public class ProduceSqlFactory {
 		StringBuffer sb = new StringBuffer(), endsb = new StringBuffer();
 		String tableName = module.getTableName();
 		List<Field> fieldList = module.getFields();
-		if (DBUtil.isSqlServer()) {
-			sb.append("CREATE TABLE [dbo].[").append(tableName).append("] (").append(OtherUtils.CRLF);
-			sb.append("[ID] varchar(32) NOT NULL ,").append(OtherUtils.CRLF);
+		if (DBUtils.isSqlServer()) {
+			sb.append("CREATE TABLE [dbo].[").append(tableName).append("] (").append(StringUtils.CRLF);
+			sb.append("[ID] varchar(32) NOT NULL ,").append(StringUtils.CRLF);
 			
 			endsb.append("PRIMARY KEY ([ID])");
 			if (authorSwitch) {
-				endsb.append(",").append(OtherUtils.CRLF);
-				endsb.append("CONSTRAINT [FK_").append(module.getTableName()).append("__").append(mainTableName).append("] FOREIGN KEY ([").append(SqlUtils.lowerCamelCase2UnderScoreCase(joinColumn)).append("]) REFERENCES [dbo].[").append(mainTableName).append("] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION").append(OtherUtils.CRLF);
+				endsb.append(",").append(StringUtils.CRLF);
+				endsb.append("CONSTRAINT [FK_").append(module.getTableName()).append("__").append(mainTableName).append("] FOREIGN KEY ([").append(SqlUtils.lowerCamelCase2UnderScoreCase(joinColumn)).append("]) REFERENCES [dbo].[").append(mainTableName).append("] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION").append(StringUtils.CRLF);
 			} else {
-				endsb.append(OtherUtils.CRLF);
+				endsb.append(StringUtils.CRLF);
 			}
-			endsb.append(")").append(OtherUtils.CRLF);
-			endsb.append("GO").append(OtherUtils.CRLF);
-		} else if (DBUtil.isOracle()) {
-			sb.append("CREATE TABLE \"").append(DBUtil.getDatabaseName()).append("\".").append(tableName).append(" (").append(OtherUtils.CRLF);
-			sb.append("\"ID\" VARCHAR2(32) NOT NULL ,").append(OtherUtils.CRLF);
+			endsb.append(")").append(StringUtils.CRLF);
+			endsb.append("GO").append(StringUtils.CRLF);
+		} else if (DBUtils.isOracle()) {
+			sb.append("CREATE TABLE \"").append(DBUtils.getDatabaseName()).append("\".").append(tableName).append(" (").append(StringUtils.CRLF);
+			sb.append("\"ID\" VARCHAR2(32) NOT NULL ,").append(StringUtils.CRLF);
 			
 			endsb.append("PRIMARY KEY (\"ID\")");
 			if (authorSwitch) {
-				endsb.append(",").append(OtherUtils.CRLF);
-				endsb.append("CONSTRAINT \"FK_").append(module.getTableName()).append("__").append(mainTableName).append("\" FOREIGN KEY (\"").append(joinColumn).append("\") REFERENCES \"").append(mainTableName).append("\" (\"ID\") ").append(OtherUtils.CRLF);
+				endsb.append(",").append(StringUtils.CRLF);
+				endsb.append("CONSTRAINT \"FK_").append(module.getTableName()).append("__").append(mainTableName).append("\" FOREIGN KEY (\"").append(joinColumn).append("\") REFERENCES \"").append(mainTableName).append("\" (\"ID\") ").append(StringUtils.CRLF);
 			} else {
-				endsb.append(OtherUtils.CRLF);
+				endsb.append(StringUtils.CRLF);
 			}
-			endsb.append(");").append(OtherUtils.CRLF);
+			endsb.append(");").append(StringUtils.CRLF);
 		} else {
 			
 		}
@@ -75,10 +76,10 @@ public class ProduceSqlFactory {
 			if (set.contains(tableFieldId)) {
 				continue;
 			}
-			if (DBUtil.isSqlServer()) {
-				sb.append("[").append(tableFieldId).append("] ").append(SqlUtils.getDatabaseDataType(dataType, precision)).append(" NULL ,").append(OtherUtils.CRLF);
-			} else if (DBUtil.isOracle()) {
-				sb.append("\"").append(tableFieldId).append("\" ").append(SqlUtils.getDatabaseDataType(dataType, precision)).append(" NULL ,").append(OtherUtils.CRLF);
+			if (DBUtils.isSqlServer()) {
+				sb.append("[").append(tableFieldId).append("] ").append(SqlUtils.getDatabaseDataType(dataType, precision)).append(" NULL ,").append(StringUtils.CRLF);
+			} else if (DBUtils.isOracle()) {
+				sb.append("\"").append(tableFieldId).append("\" ").append(SqlUtils.getDatabaseDataType(dataType, precision)).append(" NULL ,").append(StringUtils.CRLF);
 			}
 			set.add(tableFieldId);
 		}

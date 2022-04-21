@@ -6,11 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.eplugger.onekey.addField.entity.Field;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.utils.OtherUtils;
+import com.google.common.collect.Maps;
 
 public class Constants {
 	private static List<Field> fieldList = new ArrayList<Field>();
 	private static List<Field> authorfieldList = new ArrayList<Field>();
+	
+	private Constants() {
+		System.out.println("Constants.Constants()");
+	}
 	
 	public static List<Field> getFieldList() {
 		return fieldList;
@@ -124,7 +129,6 @@ public class Constants {
 	private static final Map<String, String> ASSOCIATION_MAP = new HashMap<String, String>();
 	public static final String MANY_TO_ONE = "ManyToOne";
 	public static final String ONE_TO_MANY = "OneToMany";
-	private static final Map<String, List<Field>> SUPER_CLASS_FIELD_MAP = new HashMap<String, List<Field>>();
 	
 	public static String getFullClassNameMap(String key) {
 		return fullClassNameMap.get(key);
@@ -138,8 +142,77 @@ public class Constants {
 		return ASSOCIATION_MAP.get(key);
 	}
 	
+	private static final Map<String, List<Field>> SUPER_CLASS_FIELD_MAP = Maps.newHashMap();
 	public static List<Field> getSuperClassFieldMap(String key) {
+		if (SUPER_CLASS_FIELD_MAP.isEmpty()) {
+			Constants.initSuperClassFieldMap();
+		}
 		return SUPER_CLASS_FIELD_MAP.get(key);
+	}
+
+	private static void initSuperClassFieldMap() {
+		initProductSuperClassFieldMap();
+		initProductAuthorSuperClassFieldMap();
+		initCheckBusinessEntitySuperClassFieldMap();
+		initBizEntitySuperClassFieldMap();
+	}
+
+	private static void initBizEntitySuperClassFieldMap() {
+		List<Field> bizEntityClassFields = new ArrayList<Field>();
+		bizEntityClassFields.add(new Field("createUserID", "创建用户编号", OtherUtils.TPYE_STRING, "CREATEUSERID", 100));
+		bizEntityClassFields.add(new Field("createUserName", "创建用户名", OtherUtils.TPYE_STRING, "CREATEUSERNAME", 100));
+		bizEntityClassFields.add(new Field("createDate", "创建时间", OtherUtils.TPYE_TIMESTAMP, "CREATEDATE", 0));
+		bizEntityClassFields.add(new Field("lastEditUserID", "最后编辑用户编号", OtherUtils.TPYE_STRING, "LASTEDITUSERID", 100));
+		bizEntityClassFields.add(new Field("lastEditUserName", "最后编辑用户名", OtherUtils.TPYE_STRING, "LASTEDITUSERNAME", 100));
+		bizEntityClassFields.add(new Field("lastEditDate", "最后编辑日期", OtherUtils.TPYE_TIMESTAMP, "LASTEDITDATE", 0));
+		SUPER_CLASS_FIELD_MAP.put("BizEntity", bizEntityClassFields);
+	}
+
+	private static void initCheckBusinessEntitySuperClassFieldMap() {
+		List<Field> checkBusinessEntityClassFields = new ArrayList<Field>();
+		checkBusinessEntityClassFields.add(new Field("checkStatus", "审核状态", OtherUtils.TPYE_STRING, "CHECKSTATUS", 64));
+		checkBusinessEntityClassFields.add(new Field("checkDate", "审核时间", OtherUtils.TPYE_STRING, "CHECKDATE", 64));
+		checkBusinessEntityClassFields.add(new Field("checker", "审核人", OtherUtils.TPYE_STRING, "CHECKER", 80));
+		SUPER_CLASS_FIELD_MAP.put("CheckBusinessEntity", checkBusinessEntityClassFields);
+	}
+
+	private static void initProductAuthorSuperClassFieldMap() {
+		List<Field> productAuthorClassFields = new ArrayList<Field>();
+		productAuthorClassFields.add(new Field("authorType", "作者类型", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("personId", "人员Id", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("authorAccount", "职工号", OtherUtils.TPYE_STRING, 64));
+		productAuthorClassFields.add(new Field("authorName", "作者姓名", OtherUtils.TPYE_STRING, 64));
+		productAuthorClassFields.add(new Field("sexId", "性别", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("eduLevelId", "学历", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("titleId", "职称", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("subjectId", "学科", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("authorUnit", "工作单位", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("authorUnitId", "工作单位id", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("eduDegreeId", "学位", OtherUtils.TPYE_STRING, 32));
+		productAuthorClassFields.add(new Field("workRatio", "贡献率", OtherUtils.TPYE_DOUBLE));
+		productAuthorClassFields.add(new Field("orderId", "署名顺序", OtherUtils.TPYE_INTEGER));
+		SUPER_CLASS_FIELD_MAP.put("ProductAuthor", productAuthorClassFields);
+	}
+
+	private static void initProductSuperClassFieldMap() {
+		List<Field> productClassFields = new ArrayList<Field>();
+		productClassFields.add(new Field("name", "名称", OtherUtils.TPYE_STRING, 512));
+		productClassFields.add(new Field("unitId", "所属单位", OtherUtils.TPYE_STRING, 32));
+		productClassFields.add(new Field("divisionId", "所属教研室", OtherUtils.TPYE_STRING, 32));
+		productClassFields.add(new Field("authorNumber", "作者数", OtherUtils.TPYE_INTEGER));
+		productClassFields.add(new Field("note", "备注", OtherUtils.TPYE_STRING, 2000));
+		productClassFields.add(new Field("firstAuthorId", "第一作者id", OtherUtils.TPYE_STRING, 32));
+		productClassFields.add(new Field("firstAuthorName", "第一作者姓名", OtherUtils.TPYE_STRING, 64));
+		productClassFields.add(new Field("firstAuthorAccount", "第一作者职工号", OtherUtils.TPYE_STRING, 64));
+		productClassFields.add(new Field("firstAuthorTitleId", "第一作者职称", OtherUtils.TPYE_STRING, 32));
+		productClassFields.add(new Field("firstAuthorSexId", "第一作者性别", OtherUtils.TPYE_STRING, 32));
+		productClassFields.add(new Field("firstAuthorEduLevelId", "第一作者学历", OtherUtils.TPYE_STRING, 32));
+		productClassFields.add(new Field("firstAuthorEduDeGreeId", "第一作者学位", OtherUtils.TPYE_STRING, 32));
+		productClassFields.add(new Field("fileIds", "附件", OtherUtils.TPYE_STRING, 500));
+		productClassFields.add(new Field("authorPIds", "成员personId合集", OtherUtils.TPYE_STRING, "AUTHORPIDS", 2000));
+		productClassFields.add(new Field("authorUnitIds", "成员unitId合集", OtherUtils.TPYE_STRING, "AUTHORUNITIDS", 2000));
+		productClassFields.add(new Field("completeDataStatus", "数据完善状态", OtherUtils.TPYE_STRING, "COMPLETEDATASTATUS", 40));
+		SUPER_CLASS_FIELD_MAP.put("Product", productClassFields);
 	}
 
 	static {
@@ -167,56 +240,5 @@ public class Constants {
 		
 		ASSOCIATION_MAP.put(ONE_TO_MANY, "@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)");
 		ASSOCIATION_MAP.put(MANY_TO_ONE, "@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)");
-		
-		List<Field> productClassFields = new com.util.ArrayList<Field>();
-		productClassFields.add(new Field("name", "名称", OtherUtils.TPYE_STRING, 512));
-		productClassFields.add(new Field("unitId", "所属单位", OtherUtils.TPYE_STRING, 32));
-		productClassFields.add(new Field("divisionId", "所属教研室", OtherUtils.TPYE_STRING, 32));
-		productClassFields.add(new Field("authorNumber", "作者数", OtherUtils.TPYE_INTEGER));
-		productClassFields.add(new Field("note", "备注", OtherUtils.TPYE_STRING, 2000));
-		productClassFields.add(new Field("firstAuthorId", "第一作者id", OtherUtils.TPYE_STRING, 32));
-		productClassFields.add(new Field("firstAuthorName", "第一作者姓名", OtherUtils.TPYE_STRING, 64));
-		productClassFields.add(new Field("firstAuthorAccount", "第一作者职工号", OtherUtils.TPYE_STRING, 64));
-		productClassFields.add(new Field("firstAuthorTitleId", "第一作者职称", OtherUtils.TPYE_STRING, 32));
-		productClassFields.add(new Field("firstAuthorSexId", "第一作者性别", OtherUtils.TPYE_STRING, 32));
-		productClassFields.add(new Field("firstAuthorEduLevelId", "第一作者学历", OtherUtils.TPYE_STRING, 32));
-		productClassFields.add(new Field("firstAuthorEduDeGreeId", "第一作者学位", OtherUtils.TPYE_STRING, 32));
-		productClassFields.add(new Field("fileIds", "附件", OtherUtils.TPYE_STRING, 500));
-		productClassFields.add(new Field("authorPIds", "成员personId合集", OtherUtils.TPYE_STRING, "AUTHORPIDS", 2000));
-		productClassFields.add(new Field("authorUnitIds", "成员unitId合集", OtherUtils.TPYE_STRING, "AUTHORUNITIDS", 2000));
-		productClassFields.add(new Field("completeDataStatus", "数据完善状态", OtherUtils.TPYE_STRING, "COMPLETEDATASTATUS", 40));
-		SUPER_CLASS_FIELD_MAP.put("Product", productClassFields);
-		
-		List<Field> productAuthorClassFields = new com.util.ArrayList<Field>();
-		productAuthorClassFields.add(new Field("authorType", "作者类型", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("personId", "人员Id", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("authorAccount", "职工号", OtherUtils.TPYE_STRING, 64));
-		productAuthorClassFields.add(new Field("authorName", "作者姓名", OtherUtils.TPYE_STRING, 64));
-		productAuthorClassFields.add(new Field("sexId", "性别", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("eduLevelId", "学历", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("titleId", "职称", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("subjectId", "学科", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("authorUnit", "工作单位", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("authorUnitId", "工作单位id", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("eduDegreeId", "学位", OtherUtils.TPYE_STRING, 32));
-		productAuthorClassFields.add(new Field("workRatio", "贡献率", OtherUtils.TPYE_DOUBLE));
-		productAuthorClassFields.add(new Field("orderId", "署名顺序", OtherUtils.TPYE_INTEGER));
-		SUPER_CLASS_FIELD_MAP.put("ProductAuthor", productAuthorClassFields);
-		
-		List<Field> checkBusinessEntityClassFields = new com.util.ArrayList<Field>();
-		checkBusinessEntityClassFields.add(new Field("checkStatus", "审核状态", OtherUtils.TPYE_STRING, "CHECKSTATUS", 64));
-		checkBusinessEntityClassFields.add(new Field("checkDate", "审核时间", OtherUtils.TPYE_STRING, "CHECKDATE", 64));
-		checkBusinessEntityClassFields.add(new Field("checker", "审核人", OtherUtils.TPYE_STRING, "CHECKER", 80));
-		SUPER_CLASS_FIELD_MAP.put("CheckBusinessEntity", checkBusinessEntityClassFields);
-		
-		List<Field> bizEntityClassFields = new com.util.ArrayList<Field>();
-		bizEntityClassFields.add(new Field("createUserID", "创建用户编号", OtherUtils.TPYE_STRING, "CREATEUSERID", 100));
-		bizEntityClassFields.add(new Field("createUserName", "创建用户名", OtherUtils.TPYE_STRING, "CREATEUSERNAME", 100));
-		bizEntityClassFields.add(new Field("createDate", "创建时间", OtherUtils.TPYE_TIMESTAMP, "CREATEDATE", 0));
-		bizEntityClassFields.add(new Field("lastEditUserID", "最后编辑用户编号", OtherUtils.TPYE_STRING, "LASTEDITUSERID", 100));
-		bizEntityClassFields.add(new Field("lastEditUserName", "最后编辑用户名", OtherUtils.TPYE_STRING, "LASTEDITUSERNAME", 100));
-		bizEntityClassFields.add(new Field("lastEditDate", "最后编辑日期", OtherUtils.TPYE_TIMESTAMP, "LASTEDITDATE", 0));
-		
-		SUPER_CLASS_FIELD_MAP.put("BizEntity", bizEntityClassFields);
 	}
 }

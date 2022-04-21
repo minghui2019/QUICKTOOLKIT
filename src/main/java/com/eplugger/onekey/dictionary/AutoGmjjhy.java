@@ -21,11 +21,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
-import com.eplugger.commons.lang3.StringUtils;
-import com.eplugger.util.DBUtil;
-import com.eplugger.util.ExcelUtil;
-import com.eplugger.util.FileUtil;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.common.io.FileUtils;
+import com.eplugger.common.lang.StringUtils;
+import com.eplugger.utils.DBUtils;
+import com.eplugger.utils.ExcelUtils;
 
 public class AutoGmjjhy {
     public static void main(String[] args) {
@@ -36,7 +35,7 @@ public class AutoGmjjhy {
     private static void importExcel() {
         String sql = "SELECT * FROM DM_GMJJHY";
         List<Gmjjhy> list = getListBySql(sql);
-        Workbook workbook = ExcelUtil.getWorkbook("C:/Users/Admin/Desktop" + File.separator, "国民经济行业(1).xls");
+        Workbook workbook = ExcelUtils.getWorkbook("C:/Users/Admin/Desktop" + File.separator, "国民经济行业(1).xls");
         List<String> level1 = new ArrayList<String>();
         List<String> level2 = new ArrayList<String>();
         List<String> level3 = new ArrayList<String>();
@@ -77,7 +76,7 @@ public class AutoGmjjhy {
                 .collect(Collectors.toList());
         List<String> list2 = list1.stream().map(Gmjjhy::getId).collect(Collectors.toList());
         List<Gmjjhy> list3 = list.stream().filter(a -> !list2.contains(a.getId())).collect(Collectors.toList());
-        StringBuffer sb = new StringBuffer("DELETE FROM DM_GMJJHY;" + OtherUtils.CRLF);
+        StringBuffer sb = new StringBuffer("DELETE FROM DM_GMJJHY;" + StringUtils.CRLF);
         //([ID], [NAME], [LEVEL_ID], [UP_ID], [CODE], [NAME_LOCAL])
         for (Gmjjhy gmjjhy : list3) {
             String nameLocal = gmjjhy.getNameLocal();
@@ -90,9 +89,9 @@ public class AutoGmjjhy {
             } else {
                 sb.append("INSERT INTO DM_GMJJHY VALUES ('" + gmjjhy.getId() + "', '" + gmjjhy.getName() + "', '" + gmjjhy.getLevelId() + "', '" + gmjjhy.getUpId() + "', '" + gmjjhy.getCode() + "', '" + nameLocal + "');");
             }
-            sb.append(OtherUtils.CRLF);
+            sb.append(StringUtils.CRLF);
         }
-        FileUtil.outFile(sb.toString(), "C:/Users/Admin/Desktop" + File.separator, "国民经济行业.sql");
+        FileUtils.write("C:/Users/Admin/Desktop/国民经济行业.sql", sb.toString());
 //        Map<String, List<Gmjjhy>> groupingByLevelId = list1.stream().collect(Collectors.groupingBy(Gmjjhy::getLevelId));
 //        List<Gmjjhy> listA = groupingByLevelId.get("A");
 //        System.out.println(collect.size());
@@ -118,7 +117,7 @@ public class AutoGmjjhy {
         sheet.setColumnWidth(3, 8000);
         CellStyle style = wb.createCellStyle();
         style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-        ExcelUtil.setCellValues(sheet, 0, 4, new String[] { "一级", "二级", "三级", "四级" });
+        ExcelUtils.setCellValues(sheet, 0, 4, new String[] { "一级", "二级", "三级", "四级" });
         int rowNum = 0;
         Map<String, List<Gmjjhy>> groupingByLevelId = list.stream().collect(Collectors.groupingBy(Gmjjhy::getLevelId));
         List<Gmjjhy> listTemp = list.stream().filter(s -> s.getUpId() != null)
@@ -138,7 +137,7 @@ public class AutoGmjjhy {
                     int lastRow2 = rowNum + 1;
                     List<Gmjjhy> list4 = groupingByUpId.get(gmjjhy3.getId());
                     for (Gmjjhy gmjjhy4 : list4) {
-                        ExcelUtil.setCellValues(sheet, ++rowNum, 4, new String[] { "", "", "", gmjjhy4.getName() });
+                        ExcelUtils.setCellValues(sheet, ++rowNum, 4, new String[] { "", "", "", gmjjhy4.getName() });
                         lastRow = rowNum;
                         lastRow1 = rowNum;
                         lastRow2 = rowNum;
@@ -167,12 +166,12 @@ public class AutoGmjjhy {
                 cell.setCellStyle(style);
             }
         }
-        ExcelUtil.outExcel(wb, "C:/Users/Admin/Desktop" + File.separator, "国民经济行业.xls");
+        ExcelUtils.outExcel(wb, "C:/Users/Admin/Desktop" + File.separator, "国民经济行业.xls");
     }
 
     public static List<Gmjjhy> getListBySql(String sql) {
         List<Gmjjhy> list = new ArrayList<>();
-        Connection conn = DBUtil.getConnection();
+        Connection conn = DBUtils.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -186,7 +185,7 @@ public class AutoGmjjhy {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DBUtil.closeAll(conn, ps, rs);
+            DBUtils.closeAll(conn, ps, rs);
         }
         return list;
     }

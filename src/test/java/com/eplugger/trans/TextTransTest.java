@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.eplugger.util.OtherUtils;
+import com.eplugger.utils.OtherUtils;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
 import com.eplugger.xml.dom4j.entity.Fields;

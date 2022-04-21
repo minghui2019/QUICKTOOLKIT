@@ -1,4 +1,4 @@
-package com.eplugger.commons.lang3;
+package com.eplugger.common.lang;
 
 import java.io.File;
 import java.net.URL;
@@ -8,21 +8,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Strings;
+
 import lombok.extern.slf4j.Slf4j;
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 /**
  * 字符串工具类
  */
 @Slf4j
 public final class StringUtils extends org.apache.commons.lang3.StringUtils {
-    public static final String WINDOWS_PREFIX = "windows";
+	/** Windows 换行符 */
+    public static final String CRLF = CR + LF;
+	public static final String WINDOWS_PREFIX = "windows";
     public static final String SEPARATOR_OF_UNIX_FILE = "/";
     public static final String SEPARATOR_OF_WINDOWS_FILE = "\\";
-
-    /**
-     * Windows 换行符
-     */
-    public static final String CRLF = "\r\n";
 
     /**
      * <pre>
@@ -345,33 +349,27 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 将数组转换为字符串
-     *
-     * @param targetArray 目标数组
-     * @return String 数组为null时返回"null", 否则返回 Arrays.toString()
-     */
-    public static String toArrayString(Object[] targetArray) {
-        return (null == targetArray ? "null" : Arrays.toString(targetArray));
-    }
-
-    /**
      * 将字符串的首字母大写
      *
      * @param str 目标字符串
      * @return 首字母大写的字符串
      */
     public static String firstCharUpperCase(final String str) {
-        if (isBlank(str)) {
+        if (Strings.isNullOrEmpty(str)) {
             return str;
         }
         // 进行字母的ascii编码前移，效率要高于截取字符串进行转换的操作
         char[] cs = str.toCharArray();
-        if (cs[0] < 97 || cs[0] > 122) {
+        if (cs[0] < 'a' || cs[0] > 'z') {
             return str;
         }
         cs[0] -= 32;
         return String.valueOf(cs);
     }
+    
+    public static void main(String[] args) {
+		System.out.println(firstCharUpperCase("sdddf"));
+	}
 
     /**
      * 将字符串的首字母小写
@@ -380,12 +378,12 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @return 首字母小写的字符串
      */
     public static String firstCharLowerCase(final String str) {
-        if (isBlank(str)) {
+        if (Strings.isNullOrEmpty(str)) {
             return str;
         }
         // 进行字母的ascii编码前移，效率要高于截取字符串进行转换的操作
         char[] cs = str.toCharArray();
-        if (cs[0] < 65 || cs[0] > 90) {
+        if (cs[0] < 'A' || cs[0] > 'Z') {
             return str;
         }
         cs[0] += 32;
@@ -403,7 +401,6 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (null == sb || 0 == sb.length()) {
             return (emptyToNull ? null : "");
         }
-
         return sb.toString();
     }
 
@@ -472,26 +469,6 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     /**
-     * 转换为字符串
-     *
-     * @param valOjb 目标对象, null时返回{@link #EMPTY}
-     * @param isTrim 是否去掉前后空格
-     * @return String 转换后字符串
-     */
-    public static String toStringEmpty(Object valOjb, boolean isTrim) {
-        String val = EMPTY;
-        if (null != valOjb) {
-            val = String.valueOf(valOjb);
-        }
-
-        if (isTrim) {
-            val = val.trim();
-        }
-
-        return val;
-    }
-
-    /**
      * 字符串转码
      *
      * @param s           源字符串
@@ -506,4 +483,35 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
             throw new RuntimeException(e);
         }
     }
+
+	/**
+	 * 汉字转拼音，每个字取首字母并大写
+	 * @param chinese
+	 * @return
+	 */
+	public static String getFirstSpell(String chinese) {
+		if (Strings.isNullOrEmpty(chinese)) {
+			return null;
+		}
+		StringBuffer pybf = new StringBuffer();
+		char[] arr = chinese.toCharArray();
+		HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
+		defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
+		defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+		for (char c : arr) {
+			if (c > 128) {
+				try {
+					String[] temp = PinyinHelper.toHanyuPinyinStringArray(c, defaultFormat);
+					if (temp != null) {
+						pybf.append(temp[0].charAt(0));
+					}
+				} catch (BadHanyuPinyinOutputFormatCombination e) {
+					log.error(e.getMessage() + ": 汉字转换错误[" + c + "]");
+				}
+			} else {
+				pybf.append(c);
+			}
+		}
+		return pybf.toString().replaceAll("\\W", "").trim(); //替换掉非单词字符(^A-Za-z0-9_)
+	}
 }

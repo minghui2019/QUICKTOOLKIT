@@ -7,16 +7,17 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.eplugger.onekey.addModule.entity.Module;
-import com.eplugger.onekey.addModule.util.ModuleParse;
+import com.eplugger.onekey.addField.entity.Field;
 
 public class AddModuleMain {
 	public static void main(String[] args) {
 //		AddModuleFun.AddSingleModuleFun();
 //		AddModuleFun.AddMultipleModuleFun();
-		List<Module> module = ModuleParse.getInstance().getValidList("src/main/resource/module/Module.xml");
+//		List<Module> module = ModuleParse.getInstance().getValidList("src/main/resource/module/Module.xml");
 //		Module module = ModuleParse.getInstance().getValidModule("src/resource/module/Module.xml");
-		System.out.println(module);
+//		System.out.println(module);
+		List<Field> fieldList = Constants.getFieldList();
+		System.out.println(fieldList);
 		
 	}
 	

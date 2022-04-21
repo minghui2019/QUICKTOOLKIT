@@ -1,22 +1,23 @@
 package com.eplugger.onekey.utils.sqlFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.eplugger.common.io.FileUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addModule.Constants;
 import com.eplugger.onekey.addModule.entity.Module;
 import com.eplugger.onekey.addModule.entity.ModuleInfo;
 import com.eplugger.onekey.utils.SqlUtils;
-import com.eplugger.util.DBUtil;
-import com.eplugger.util.FileUtil;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.utils.DBUtils;
 
 public class ProduceSqlFiles {
 
 	public static void produceCreateTableSqlFilesSingle(ModuleInfo moduleInfo) {
 		String sqlCode = produceCreateTableSql(moduleInfo);
-		FileUtil.outFile(sqlCode, "C:/Users/Admin/Desktop/AddModule/sql", moduleInfo.getModuleName() + ".SQL");
+		FileUtils.write("C:/Users/Admin/Desktop/AddModule/sql" + File.separator + moduleInfo.getModuleName() + ".SQL", sqlCode);
 	}
 	
 	/**
@@ -31,10 +32,10 @@ public class ProduceSqlFiles {
 	public static void produceCreateTableSqlFiles(ModuleInfo mainModule, ModuleInfo authorModule, String databaseType,
 			String database, boolean authorSwitch, String joinColumn) {
 		String sqlCode = produceCreateTableSql(mainModule, databaseType, database, false, null, null);
-		FileUtil.outFile(sqlCode, "C:/Users/Admin/Desktop/AddModule/sql", mainModule.getModuleName() + ".SQL");
+		FileUtils.write("C:/Users/Admin/Desktop/AddModule/sql" + File.separator + mainModule.getModuleName() + ".SQL", sqlCode);
 		if (authorSwitch) {
 			String authorsqlCode = produceCreateTableSql(authorModule, databaseType, database, authorSwitch, joinColumn, mainModule.getTableName());
-			FileUtil.outFile(authorsqlCode, "C:/Users/Admin/Desktop/AddModule/sql", authorModule.getModuleName() + ".SQL");
+			FileUtils.write("C:/Users/Admin/Desktop/AddModule/sql" + File.separator + authorModule.getModuleName() + ".SQL", authorsqlCode);
 		}
 	}
 
@@ -55,31 +56,31 @@ public class ProduceSqlFiles {
 		String tableName = module.getTableName();
 		List<Field> fieldList = module.getFields();
 		String superClass = module.getSuperClassMap().get("entity");
-		if (DBUtil.isSqlServer()) {
-			sb.append("CREATE TABLE [dbo].[" + tableName + "] (" + OtherUtils.CRLF);
-			sb.append("[ID] varchar(32) NOT NULL ," + OtherUtils.CRLF);
+		if (DBUtils.isSqlServer()) {
+			sb.append("CREATE TABLE [dbo].[" + tableName + "] (" + StringUtils.CRLF);
+			sb.append("[ID] varchar(32) NOT NULL ," + StringUtils.CRLF);
 			
 			endsb.append("PRIMARY KEY ([ID])");
 			if (authorSwitch) {
-				endsb.append("," + OtherUtils.CRLF);
-				endsb.append("CONSTRAINT [FK_" + module.getTableName() + "__" + mainTableName + "] FOREIGN KEY ([" + SqlUtils.lowerCamelCase2UnderScoreCase(joinColumn) + "]) REFERENCES [dbo].[" + mainTableName + "] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION" + OtherUtils.CRLF);
+				endsb.append("," + StringUtils.CRLF);
+				endsb.append("CONSTRAINT [FK_" + module.getTableName() + "__" + mainTableName + "] FOREIGN KEY ([" + SqlUtils.lowerCamelCase2UnderScoreCase(joinColumn) + "]) REFERENCES [dbo].[" + mainTableName + "] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION" + StringUtils.CRLF);
 			} else {
-				endsb.append(OtherUtils.CRLF);
+				endsb.append(StringUtils.CRLF);
 			}
-			endsb.append(")" + OtherUtils.CRLF);
-			endsb.append("GO" + OtherUtils.CRLF);
-		} else if (DBUtil.isOracle()) {
-			sb.append("CREATE TABLE \"" + database + "\"." + tableName + " (" + OtherUtils.CRLF);
-			sb.append("\"ID\" VARCHAR2(32) NOT NULL ," + OtherUtils.CRLF);
+			endsb.append(")" + StringUtils.CRLF);
+			endsb.append("GO" + StringUtils.CRLF);
+		} else if (DBUtils.isOracle()) {
+			sb.append("CREATE TABLE \"" + database + "\"." + tableName + " (" + StringUtils.CRLF);
+			sb.append("\"ID\" VARCHAR2(32) NOT NULL ," + StringUtils.CRLF);
 			
 			endsb.append("PRIMARY KEY (\"ID\")");
 			if (authorSwitch) {
-				endsb.append("," + OtherUtils.CRLF);
-				endsb.append("CONSTRAINT \"FK_" + module.getTableName() + "__" + mainTableName + "\" FOREIGN KEY (\"" + joinColumn + "\") REFERENCES \"" + mainTableName + "\" (\"ID\") " + OtherUtils.CRLF);
+				endsb.append("," + StringUtils.CRLF);
+				endsb.append("CONSTRAINT \"FK_" + module.getTableName() + "__" + mainTableName + "\" FOREIGN KEY (\"" + joinColumn + "\") REFERENCES \"" + mainTableName + "\" (\"ID\") " + StringUtils.CRLF);
 			} else {
-				endsb.append(OtherUtils.CRLF);
+				endsb.append(StringUtils.CRLF);
 			}
-			endsb.append(");" + OtherUtils.CRLF);
+			endsb.append(");" + StringUtils.CRLF);
 		} else {
 			
 		}
@@ -88,10 +89,10 @@ public class ProduceSqlFiles {
 			if (field.getTranSient() || "List".equals(field.getDataType()) || field.getJoinColumn() != null) {
 				continue;
 			}
-			if (DBUtil.isSqlServer()) {
-				sb.append("[" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL ," + OtherUtils.CRLF);
-			} else if (DBUtil.isOracle()) {
-				sb.append("[" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL ," + OtherUtils.CRLF);
+			if (DBUtils.isSqlServer()) {
+				sb.append("[" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL ," + StringUtils.CRLF);
+			} else if (DBUtils.isOracle()) {
+				sb.append("[" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL ," + StringUtils.CRLF);
 			}
 		}
 		sb.append(getSuperClassField(superClass, databaseType));
@@ -109,21 +110,21 @@ public class ProduceSqlFiles {
 		String tableName = module.getTableName();
 		List<Field> fieldList = module.getFields();
 		String superClass = module.getSuperClassMap().get("entity");
-		if (DBUtil.isSqlServer()) {
-			sb.append("CREATE TABLE [dbo].[" + tableName + "] (" + OtherUtils.CRLF);
-			sb.append("[ID] varchar(32) NOT NULL ," + OtherUtils.CRLF);
+		if (DBUtils.isSqlServer()) {
+			sb.append("CREATE TABLE [dbo].[" + tableName + "] (" + StringUtils.CRLF);
+			sb.append("[ID] varchar(32) NOT NULL ," + StringUtils.CRLF);
 			
 			endsb.append("PRIMARY KEY ([ID])");
-			endsb.append(OtherUtils.CRLF);
-			endsb.append(")" + OtherUtils.CRLF);
-			endsb.append("GO" + OtherUtils.CRLF);
-		} else if (DBUtil.isOracle()) {
-			sb.append("CREATE TABLE \"" + DBUtil.getDatabaseName() + "\"." + tableName + " (" + OtherUtils.CRLF);
-			sb.append("\"ID\" VARCHAR2(32) NOT NULL ," + OtherUtils.CRLF);
+			endsb.append(StringUtils.CRLF);
+			endsb.append(")" + StringUtils.CRLF);
+			endsb.append("GO" + StringUtils.CRLF);
+		} else if (DBUtils.isOracle()) {
+			sb.append("CREATE TABLE \"" + DBUtils.getDatabaseName() + "\"." + tableName + " (" + StringUtils.CRLF);
+			sb.append("\"ID\" VARCHAR2(32) NOT NULL ," + StringUtils.CRLF);
 			
 			endsb.append("PRIMARY KEY (\"ID\")");
-			endsb.append(OtherUtils.CRLF);
-			endsb.append(");" + OtherUtils.CRLF);
+			endsb.append(StringUtils.CRLF);
+			endsb.append(");" + StringUtils.CRLF);
 		} else {
 			
 		}
@@ -132,10 +133,10 @@ public class ProduceSqlFiles {
 			if (field.getTranSient() || "List".equals(field.getDataType()) || field.getJoinColumn() != null) {
 				continue;
 			}
-			if (DBUtil.isSqlServer()) {
-				sb.append("[" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL ," + OtherUtils.CRLF);
-			} else if (DBUtil.isOracle()) {
-				sb.append("[" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL ," + OtherUtils.CRLF);
+			if (DBUtils.isSqlServer()) {
+				sb.append("[" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL ," + StringUtils.CRLF);
+			} else if (DBUtils.isOracle()) {
+				sb.append("[" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL ," + StringUtils.CRLF);
 			}
 		}
 		sb.append(getSuperClassField(superClass));
@@ -151,28 +152,28 @@ public class ProduceSqlFiles {
 	 */
 	public static String produceSqlCode(String tableName, List<Field> fieldList) {
 		StringBuffer sb = new StringBuffer();
-		if (DBUtil.isSqlServer()) {
+		if (DBUtils.isSqlServer()) {
 			for (Field field : fieldList) {
 				if (field.getTranSient()) {
 					continue;
 				}
-				sb.append("ALTER TABLE [dbo].[" + tableName + "] ADD [" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL" + OtherUtils.CRLF);
-				sb.append("GO" + OtherUtils.CRLF + OtherUtils.CRLF);
+				sb.append("ALTER TABLE [dbo].[" + tableName + "] ADD [" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL" + StringUtils.CRLF);
+				sb.append("GO" + StringUtils.CRLF + StringUtils.CRLF);
 			}
-		} else if (DBUtil.isOracle()) {
+		} else if (DBUtils.isOracle()) {
 			for (int i = 0, size = fieldList.size(); i < size; i++) {
 				if (fieldList.get(i).getTranSient()) {
 					continue;
 				}
 				sb.append("ADD ( \"" + fieldList.get(i).getTableFieldId() + "\" " + SqlUtils.getDatabaseDataType(fieldList.get(i).getDataType(), fieldList.get(i).getPrecision()) + " NULL  ) ");
 				if (i < size - 1) {
-					sb.append(OtherUtils.CRLF);
+					sb.append(StringUtils.CRLF);
 				} else {
-					sb.append(";" + OtherUtils.CRLF);
+					sb.append(";" + StringUtils.CRLF);
 				}
 			}
 			if (sb.length() > 0) {
-				sb.insert(0, "ALTER TABLE \"" + DBUtil.getDatabaseName() + "\".\"" + tableName + "\"" + OtherUtils.CRLF);
+				sb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
 			}
 		}
 		return sb.toString();
@@ -192,55 +193,55 @@ public class ProduceSqlFiles {
 		if ("sqlserver".equals(databaseType)) {
 			switch (superClass) {
 			case "Product":
-				sb.append("[NAME] varchar(512) NULL ," + OtherUtils.CRLF);
-				sb.append("[UNIT_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[DIVISION_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[AUTHOR_NUMBER] int NULL ," + OtherUtils.CRLF);
-				sb.append("[NOTE] text NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_NAME] varchar(64) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_ACCOUNT] varchar(64) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_TITLE_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_EDU_LEVEL_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_EDU_DEGREE_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_SEXID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FILE_IDS] varchar(500) NULL ," + OtherUtils.CRLF);
-				sb.append("[AUTHORPIDS] varchar(2000) NULL ," + OtherUtils.CRLF);
-				sb.append("[AUTHORUNITIDS] varchar(2000) NULL ," + OtherUtils.CRLF);
-				sb.append("[COMPLETEDATASTATUS] varchar(40) NULL ," + OtherUtils.CRLF);
+				sb.append("[NAME] varchar(512) NULL ," + StringUtils.CRLF);
+				sb.append("[UNIT_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[DIVISION_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[AUTHOR_NUMBER] int NULL ," + StringUtils.CRLF);
+				sb.append("[NOTE] text NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_NAME] varchar(64) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_ACCOUNT] varchar(64) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_TITLE_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_EDU_LEVEL_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_EDU_DEGREE_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_SEXID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FILE_IDS] varchar(500) NULL ," + StringUtils.CRLF);
+				sb.append("[AUTHORPIDS] varchar(2000) NULL ," + StringUtils.CRLF);
+				sb.append("[AUTHORUNITIDS] varchar(2000) NULL ," + StringUtils.CRLF);
+				sb.append("[COMPLETEDATASTATUS] varchar(40) NULL ," + StringUtils.CRLF);
 				productflag = false;
 			case "ProductAuthor":
 				if (productflag) {
-					sb.append("[ORDER_ID] int NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_TYPE] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[PERSON_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_ACCOUNT] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_NAME] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[SEX_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[EDU_LEVEL_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[TITLE_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_UNIT] varchar(256) NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_UNIT_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[SUBJECT_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[EDU_DEGREE_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[WORK_RATIO] decimal(18,6) NULL ," + OtherUtils.CRLF);
+					sb.append("[ORDER_ID] int NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_TYPE] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[PERSON_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_ACCOUNT] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_NAME] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[SEX_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[EDU_LEVEL_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[TITLE_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_UNIT] varchar(256) NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_UNIT_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[SUBJECT_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[EDU_DEGREE_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[WORK_RATIO] decimal(18,6) NULL ," + StringUtils.CRLF);
 					productauthorflag = false;
 				}
 			case "CheckBusinessEntity":
 				if (productauthorflag) {
-					sb.append("[CHECKSTATUS] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[CHECKDATE] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[CHECKER] varchar(80) NULL ," + OtherUtils.CRLF);
+					sb.append("[CHECKSTATUS] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[CHECKDATE] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[CHECKER] varchar(80) NULL ," + StringUtils.CRLF);
 				}
 			case "BusinessEntity":
 			case "BizEntity":
 				if (productauthorflag) {
-					sb.append("[CREATEUSERID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[CREATEUSERNAME] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[CREATEDATE] datetime NULL ," + OtherUtils.CRLF);
-					sb.append("[LASTEDITUSERID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[LASTEDITUSERNAME] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[LASTEDITDATE] datetime NULL ," + OtherUtils.CRLF);
+					sb.append("[CREATEUSERID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[CREATEUSERNAME] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[CREATEDATE] datetime NULL ," + StringUtils.CRLF);
+					sb.append("[LASTEDITUSERID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[LASTEDITUSERNAME] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[LASTEDITDATE] datetime NULL ," + StringUtils.CRLF);
 				}
 				break;
 			default:
@@ -249,55 +250,55 @@ public class ProduceSqlFiles {
 		} else if ("oracle".equals(databaseType)) {
 			switch (superClass) {
 			case "Product":
-				sb.append("\"NAME\" VARCHAR2(512), " + OtherUtils.CRLF);
-				sb.append("\"UNIT_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"DIVISION_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"AUTHOR_NUMBER\" NUMBER, " + OtherUtils.CRLF);
-				sb.append("\"NOTE\" CLOB, " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_NAME\" VARCHAR2(64), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_ACCOUNT\" VARCHAR2(64), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_TITLE_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_EDU_LEVEL_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_EDU_DEGREE_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_SEXID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FILE_IDS\" VARCHAR2(1000), " + OtherUtils.CRLF);
-				sb.append("\"AUTHORPIDS\" VARCHAR2(1000), " + OtherUtils.CRLF);
-				sb.append("\"AUTHORUNITIDS\" VARCHAR2(1000), " + OtherUtils.CRLF);
-				sb.append("\"COMPLETEDATASTATUS\" VARCHAR2(40), " + OtherUtils.CRLF); 
+				sb.append("\"NAME\" VARCHAR2(512), " + StringUtils.CRLF);
+				sb.append("\"UNIT_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"DIVISION_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"AUTHOR_NUMBER\" NUMBER, " + StringUtils.CRLF);
+				sb.append("\"NOTE\" CLOB, " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_NAME\" VARCHAR2(64), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_ACCOUNT\" VARCHAR2(64), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_TITLE_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_EDU_LEVEL_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_EDU_DEGREE_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_SEXID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FILE_IDS\" VARCHAR2(1000), " + StringUtils.CRLF);
+				sb.append("\"AUTHORPIDS\" VARCHAR2(1000), " + StringUtils.CRLF);
+				sb.append("\"AUTHORUNITIDS\" VARCHAR2(1000), " + StringUtils.CRLF);
+				sb.append("\"COMPLETEDATASTATUS\" VARCHAR2(40), " + StringUtils.CRLF); 
 				productflag = false;
 			case "ProductAuthor":
 				if (productflag) {
-					sb.append("\"ORDER_ID\" NUMBER, " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_TYPE\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"PERSON_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_ACCOUNT\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_NAME\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"SEX_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"EDU_LEVEL_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"TITLE_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_UNIT\" VARCHAR2(256), " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_UNIT_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"SUBJECT_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"EDU_DEGREE_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"WORK_RATIO\" NUMBER(18,6), " + OtherUtils.CRLF);
+					sb.append("\"ORDER_ID\" NUMBER, " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_TYPE\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"PERSON_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_ACCOUNT\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_NAME\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"SEX_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"EDU_LEVEL_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"TITLE_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_UNIT\" VARCHAR2(256), " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_UNIT_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"SUBJECT_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"EDU_DEGREE_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"WORK_RATIO\" NUMBER(18,6), " + StringUtils.CRLF);
 					productauthorflag = false;
 				}
 			case "CheckBusinessEntity":
 				if (productauthorflag) {
-					sb.append("\"CHECKSTATUS\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"CHECKDATE\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"CHECKER\" VARCHAR2(80)," + OtherUtils.CRLF);
+					sb.append("\"CHECKSTATUS\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"CHECKDATE\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"CHECKER\" VARCHAR2(80)," + StringUtils.CRLF);
 				}
 			case "BusinessEntity":
 			case "BizEntity":
 				if (productauthorflag) {
-					sb.append("\"CREATEUSERID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"CREATEUSERNAME\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"CREATEDATE\" DATE," + OtherUtils.CRLF);
-					sb.append("\"LASTEDITUSERID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"LASTEDITUSERNAME\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"LASTEDITDATE\" DATE, " + OtherUtils.CRLF);
+					sb.append("\"CREATEUSERID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"CREATEUSERNAME\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"CREATEDATE\" DATE," + StringUtils.CRLF);
+					sb.append("\"LASTEDITUSERID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"LASTEDITUSERNAME\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"LASTEDITDATE\" DATE, " + StringUtils.CRLF);
 				}
 				break;
 			default:
@@ -316,115 +317,115 @@ public class ProduceSqlFiles {
 		StringBuffer sb = new StringBuffer();
 		boolean productflag = true;
 		boolean productauthorflag = true;
-		if (DBUtil.isSqlServer()) {
+		if (DBUtils.isSqlServer()) {
 			switch (superClass) {
 			case "Product":
-				sb.append("[NAME] varchar(512) NULL ," + OtherUtils.CRLF);
-				sb.append("[UNIT_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[DIVISION_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[AUTHOR_NUMBER] int NULL ," + OtherUtils.CRLF);
-				sb.append("[NOTE] text NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_NAME] varchar(64) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_ACCOUNT] varchar(64) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_TITLE_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_EDU_LEVEL_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_EDU_DEGREE_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_SEXID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FIRST_AUTHOR_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-				sb.append("[FILE_IDS] varchar(500) NULL ," + OtherUtils.CRLF);
-				sb.append("[AUTHORPIDS] varchar(2000) NULL ," + OtherUtils.CRLF);
-				sb.append("[AUTHORUNITIDS] varchar(2000) NULL ," + OtherUtils.CRLF);
-				sb.append("[COMPLETEDATASTATUS] varchar(40) NULL ," + OtherUtils.CRLF);
+				sb.append("[NAME] varchar(512) NULL ," + StringUtils.CRLF);
+				sb.append("[UNIT_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[DIVISION_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[AUTHOR_NUMBER] int NULL ," + StringUtils.CRLF);
+				sb.append("[NOTE] text NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_NAME] varchar(64) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_ACCOUNT] varchar(64) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_TITLE_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_EDU_LEVEL_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_EDU_DEGREE_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_SEXID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FIRST_AUTHOR_ID] varchar(32) NULL ," + StringUtils.CRLF);
+				sb.append("[FILE_IDS] varchar(500) NULL ," + StringUtils.CRLF);
+				sb.append("[AUTHORPIDS] varchar(2000) NULL ," + StringUtils.CRLF);
+				sb.append("[AUTHORUNITIDS] varchar(2000) NULL ," + StringUtils.CRLF);
+				sb.append("[COMPLETEDATASTATUS] varchar(40) NULL ," + StringUtils.CRLF);
 				productflag = false;
 			case "ProductAuthor":
 				if (productflag) {
-					sb.append("[ORDER_ID] int NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_TYPE] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[PERSON_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_ACCOUNT] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_NAME] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[SEX_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[EDU_LEVEL_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[TITLE_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_UNIT] varchar(256) NULL ," + OtherUtils.CRLF);
-					sb.append("[AUTHOR_UNIT_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[SUBJECT_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[EDU_DEGREE_ID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[WORK_RATIO] decimal(18,6) NULL ," + OtherUtils.CRLF);
+					sb.append("[ORDER_ID] int NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_TYPE] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[PERSON_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_ACCOUNT] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_NAME] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[SEX_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[EDU_LEVEL_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[TITLE_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_UNIT] varchar(256) NULL ," + StringUtils.CRLF);
+					sb.append("[AUTHOR_UNIT_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[SUBJECT_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[EDU_DEGREE_ID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[WORK_RATIO] decimal(18,6) NULL ," + StringUtils.CRLF);
 					productauthorflag = false;
 				}
 			case "CheckBusinessEntity":
 				if (productauthorflag) {
-					sb.append("[CHECKSTATUS] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[CHECKDATE] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[CHECKER] varchar(80) NULL ," + OtherUtils.CRLF);
+					sb.append("[CHECKSTATUS] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[CHECKDATE] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[CHECKER] varchar(80) NULL ," + StringUtils.CRLF);
 				}
 			case "BusinessEntity":
 			case "BizEntity":
 				if (productauthorflag) {
-					sb.append("[CREATEUSERID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[CREATEUSERNAME] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[CREATEDATE] datetime NULL ," + OtherUtils.CRLF);
-					sb.append("[LASTEDITUSERID] varchar(32) NULL ," + OtherUtils.CRLF);
-					sb.append("[LASTEDITUSERNAME] varchar(64) NULL ," + OtherUtils.CRLF);
-					sb.append("[LASTEDITDATE] datetime NULL ," + OtherUtils.CRLF);
+					sb.append("[CREATEUSERID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[CREATEUSERNAME] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[CREATEDATE] datetime NULL ," + StringUtils.CRLF);
+					sb.append("[LASTEDITUSERID] varchar(32) NULL ," + StringUtils.CRLF);
+					sb.append("[LASTEDITUSERNAME] varchar(64) NULL ," + StringUtils.CRLF);
+					sb.append("[LASTEDITDATE] datetime NULL ," + StringUtils.CRLF);
 				}
 				break;
 			default:
 				break;
 			}
-		} else if (DBUtil.isOracle()) {
+		} else if (DBUtils.isOracle()) {
 			switch (superClass) {
 			case "Product":
-				sb.append("\"NAME\" VARCHAR2(512), " + OtherUtils.CRLF);
-				sb.append("\"UNIT_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"DIVISION_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"AUTHOR_NUMBER\" NUMBER, " + OtherUtils.CRLF);
-				sb.append("\"NOTE\" CLOB, " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_NAME\" VARCHAR2(64), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_ACCOUNT\" VARCHAR2(64), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_TITLE_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_EDU_LEVEL_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_EDU_DEGREE_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_SEXID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FIRST_AUTHOR_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-				sb.append("\"FILE_IDS\" VARCHAR2(1000), " + OtherUtils.CRLF);
-				sb.append("\"AUTHORPIDS\" VARCHAR2(1000), " + OtherUtils.CRLF);
-				sb.append("\"AUTHORUNITIDS\" VARCHAR2(1000), " + OtherUtils.CRLF);
-				sb.append("\"COMPLETEDATASTATUS\" VARCHAR2(40), " + OtherUtils.CRLF); 
+				sb.append("\"NAME\" VARCHAR2(512), " + StringUtils.CRLF);
+				sb.append("\"UNIT_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"DIVISION_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"AUTHOR_NUMBER\" NUMBER, " + StringUtils.CRLF);
+				sb.append("\"NOTE\" CLOB, " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_NAME\" VARCHAR2(64), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_ACCOUNT\" VARCHAR2(64), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_TITLE_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_EDU_LEVEL_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_EDU_DEGREE_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_SEXID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FIRST_AUTHOR_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+				sb.append("\"FILE_IDS\" VARCHAR2(1000), " + StringUtils.CRLF);
+				sb.append("\"AUTHORPIDS\" VARCHAR2(1000), " + StringUtils.CRLF);
+				sb.append("\"AUTHORUNITIDS\" VARCHAR2(1000), " + StringUtils.CRLF);
+				sb.append("\"COMPLETEDATASTATUS\" VARCHAR2(40), " + StringUtils.CRLF); 
 				productflag = false;
 			case "ProductAuthor":
 				if (productflag) {
-					sb.append("\"ORDER_ID\" NUMBER, " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_TYPE\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"PERSON_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_ACCOUNT\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_NAME\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"SEX_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"EDU_LEVEL_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"TITLE_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_UNIT\" VARCHAR2(256), " + OtherUtils.CRLF);
-					sb.append("\"AUTHOR_UNIT_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"SUBJECT_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"EDU_DEGREE_ID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"WORK_RATIO\" NUMBER(18,6), " + OtherUtils.CRLF);
+					sb.append("\"ORDER_ID\" NUMBER, " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_TYPE\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"PERSON_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_ACCOUNT\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_NAME\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"SEX_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"EDU_LEVEL_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"TITLE_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_UNIT\" VARCHAR2(256), " + StringUtils.CRLF);
+					sb.append("\"AUTHOR_UNIT_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"SUBJECT_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"EDU_DEGREE_ID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"WORK_RATIO\" NUMBER(18,6), " + StringUtils.CRLF);
 					productauthorflag = false;
 				}
 			case "CheckBusinessEntity":
 				if (productauthorflag) {
-					sb.append("\"CHECKSTATUS\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"CHECKDATE\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"CHECKER\" VARCHAR2(80)," + OtherUtils.CRLF);
+					sb.append("\"CHECKSTATUS\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"CHECKDATE\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"CHECKER\" VARCHAR2(80)," + StringUtils.CRLF);
 				}
 			case "BusinessEntity":
 			case "BizEntity":
 				if (productauthorflag) {
-					sb.append("\"CREATEUSERID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"CREATEUSERNAME\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"CREATEDATE\" DATE," + OtherUtils.CRLF);
-					sb.append("\"LASTEDITUSERID\" VARCHAR2(32), " + OtherUtils.CRLF);
-					sb.append("\"LASTEDITUSERNAME\" VARCHAR2(64), " + OtherUtils.CRLF);
-					sb.append("\"LASTEDITDATE\" DATE, " + OtherUtils.CRLF);
+					sb.append("\"CREATEUSERID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"CREATEUSERNAME\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"CREATEDATE\" DATE," + StringUtils.CRLF);
+					sb.append("\"LASTEDITUSERID\" VARCHAR2(32), " + StringUtils.CRLF);
+					sb.append("\"LASTEDITUSERNAME\" VARCHAR2(64), " + StringUtils.CRLF);
+					sb.append("\"LASTEDITDATE\" DATE, " + StringUtils.CRLF);
 				}
 				break;
 			default:
@@ -453,7 +454,7 @@ public class ProduceSqlFiles {
 		
 		String metadata = ProduceMetaDataFiles.produceMetadata(module.getMainModule().getBeanId(), fields);
 		
-		FileUtil.outFile(sqlCode + metadata, "C:/Users/Admin/Desktop/AddListModule/sql", module.getMainModule().getModuleName() + ".SQL");
+		FileUtils.write("C:/Users/Admin/Desktop/AddListModule/sql" + File.separator + module.getMainModule().getModuleName() + ".SQL", sqlCode + metadata);
 	}
 	
 	public static void produceCreateTableSqlFiles(Module module) {
@@ -467,7 +468,7 @@ public class ProduceSqlFiles {
 		
 		String metadata = ProduceMetaDataFiles.produceMetadata(module.getMainModule().getBeanId(), fields);
 		
-		FileUtil.outFile(sqlCode + metadata, "C:/Users/Admin/Desktop/AddListModule/sql", module.getMainModule().getModuleName() + ".SQL");
+		FileUtils.write("C:/Users/Admin/Desktop/AddListModule/sql" + File.separator + module.getMainModule().getModuleName() + ".SQL", sqlCode + metadata);
 	}
 	
 	/**

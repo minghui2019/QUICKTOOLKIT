@@ -1,15 +1,15 @@
 package com.eplugger.onekey.addModule.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dom4j.Element;
 
 import com.eplugger.onekey.addModule.entity.Module;
 import com.eplugger.onekey.addModule.entity.ModuleInfo;
-import com.eplugger.util.ClassUtils;
 import com.eplugger.util.ParseXmlAbst;
 import com.eplugger.util.XmlParseUtils;
-import com.util.ArrayList;
+import com.eplugger.utils.ClassUtils;
 
 public class ModuleParse extends ParseXmlAbst<Module> {
 	private static class ModuleParseSingleton {

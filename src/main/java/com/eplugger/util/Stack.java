@@ -3,32 +3,46 @@ package com.eplugger.util;
 import java.util.LinkedList;
  
 /**
- * LinkedList具有能够实现栈的所有功能的方法，因此可以直接将LinkedList作为栈使用
- * @author xiayunan
- * @date   2018年7月8日
+ * LinkedList实现栈
  * @param <T>
- *
  */
 public class Stack<T> {
 	private LinkedList<T> storage = new LinkedList<T>();
+	
+	/**
+	 * 入栈
+	 * @param v
+	 */
 	public void push(T v) {
 		storage.addFirst(v);
 	}
 	
+	/**
+	 * 检查栈首元素
+	 * @return
+	 */
 	public T peek() {
 		return storage.getFirst();
 	}
 	
+	/**
+	 * 出栈
+	 * @return
+	 */
 	public T pop() {
 		return storage.removeFirst();
 	}
 	
+	/**
+	 * 检查栈是否已空
+	 * @return
+	 */
 	public boolean empty() {
 		return storage.isEmpty();
 	}
 	
-	public String  toString() {
+	@Override
+	public String toString() {
 		return storage.toString();
 	}
-	
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.eplugger.util.DBUtil;
+import com.eplugger.utils.DBUtils;
 
 public class SqlUtils {
 	
@@ -50,26 +50,26 @@ public class SqlUtils {
 		String result = "";
 		switch (dataType) {
 		case "String":
-			result = DBUtil.isSqlServer() ? "varchar" : "VARCHAR2";
+			result = DBUtils.isSqlServer() ? "varchar" : "VARCHAR2";
 			if (precision == null) {
 				result += "(255)";
 			} else if (precision >= 2000) {
-				result = DBUtil.isSqlServer() ? "text" : "clob";
+				result = DBUtils.isSqlServer() ? "text" : "clob";
 			} else {
 				result += "(" + precision + ")";
 			}
 			break;
 		case "Timestamp":
-			result = DBUtil.isSqlServer() ? "datetime" : "DATE";
+			result = DBUtils.isSqlServer() ? "datetime" : "DATE";
 			break;
 		case "Date":
-			result = DBUtil.isSqlServer() ? "datetime" : "DATE";
+			result = DBUtils.isSqlServer() ? "datetime" : "DATE";
 			break;
 		case "Double":
-			result = DBUtil.isSqlServer() ? "decimal(18,6)" : "NUMBER(18,6)";
+			result = DBUtils.isSqlServer() ? "decimal(18,6)" : "NUMBER(18,6)";
 			break;
 		case "Integer":
-			result = DBUtil.isSqlServer() ? "int" : "NUMBER(18,6)";
+			result = DBUtils.isSqlServer() ? "int" : "NUMBER(18,6)";
 			break;
 		default:
 			break;

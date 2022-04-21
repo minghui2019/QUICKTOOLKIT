@@ -13,11 +13,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
-import com.eplugger.commons.lang3.StringUtils;
-import com.eplugger.util.DBUtil;
-import com.eplugger.util.ExcelUtil;
-import com.eplugger.util.FileUtil;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.common.io.FileUtils;
+import com.eplugger.common.lang.StringUtils;
+import com.eplugger.utils.DBUtils;
+import com.eplugger.utils.ExcelUtils;
+import com.eplugger.utils.OtherUtils;
 
 public class AutoViewFile {
 	private static final String[] productList = { "PAPER", "BOOK", "RESEARCH_REPORT", "APPRAISAL_PRODUCT",
@@ -84,7 +84,7 @@ public class AutoViewFile {
 	public static LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();// key:表字段名,value:别名,没有别名存空值
 
 	public static void generationViewSql() {
-		Workbook workbook = ExcelUtil.getWorkbook(filePath + File.separator + "xls" + File.separator, xlsName);
+		Workbook workbook = ExcelUtils.getWorkbook(filePath + File.separator + "xls" + File.separator, xlsName);
 		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
 			Sheet sheet = workbook.getSheetAt(i);// 遍历拿每一个sheet
 			TABEL_NAME = sheet.getSheetName();
@@ -143,44 +143,44 @@ public class AutoViewFile {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		for (Map.Entry<String, String> entry : tableList.entrySet()) {
 			String beanid = OtherUtils.produceBeanid(entry.getKey());
-			Map<String, String> nameMap = DBUtil.getEntryNameBySql("select * from " + entry.getKey());
+			Map<String, String> nameMap = DBUtils.getEntryNameBySql("select * from " + entry.getKey());
 			String sqlToCfg = null;
 			List<String[]> cfgList = null;
 			// 专利特殊处理(jsp=/business/patent/noDocking/patentAdd.jsp)823项目需要打开
 			if (beanid.equals("PATENT")) {
 				sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_FORM where sceneid=(select ID from SYS_CFG_SCENE,SYS_CFG_SCENE_FORM where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION)='" + beanid + "ACTION!TO_ADD' and JSP = '/BUSINESS/" + beanid + "/NODOCKING/" + beanid + "ADD.JSP' and ROLE = '4')";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 			}
 			else if (beanid.equals("PATENTAUTHOR")) {
 				sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_EDIT_TABLE where sceneid=(select ID from SYS_CFG_SCENE,SYS_CFG_SCENE_EDITTABLE where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION) like '%TO_ADD%' and JSP = '/BUSINESS/PATENT/NODOCKING/PATENTADD.JSP' and ROLE = '4')";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 			}
 			else if (beanid.equals("PROJECTINCOME")) {
 				sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_FORM where sceneid=(select ID from SYS_CFG_SCENE where UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION)='" + beanid + "ACTION!TO_ADD' and JSP = '/BUSINESS/outlay/" + beanid + "/" + beanid + "ADD.JSP' and ROLE = '4')";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 			}
 			else if (beanid.contains("MEMBER")) {
 				sqlToCfg = "SELECT NAME,DATA_TYPE,CATEGORYNAME FROM SYS_CFG_TABLE where sceneid=(select ID from SYS_CFG_SCENE,SYS_CFG_SCENE_TABLE where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(JSP) like '%" + beanid + "MANAGE.JSP%' and ROLE = '4')";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 			}
 			else if (beanid.contains("AUTHOR")) {
 				sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_EDIT_TABLE where sceneid=(select BINDSCENEID from SYS_CFG_SCENE,SYS_CFG_SCENE_EDITTABLE where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION) like '%TO_ADD%' and ROLE = '4' AND BINDSCENEID IS NOT NULL)";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 				if (cfgList.size() == 0) {
 					sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_EDIT_TABLE where sceneid=(select ID from SYS_CFG_SCENE,SYS_CFG_SCENE_EDITTABLE where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION) like '%TO_ADD%' and ROLE = '4')";
-					cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+					cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 				}
 			}
 			else {
 				sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_FORM where sceneid=(select ID from SYS_CFG_SCENE,SYS_CFG_SCENE_FORM where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION)='" + beanid + "ACTION!TO_ADD' and JSP = '/BUSINESS/" + beanid + "/" + beanid + "ADD.JSP' and ROLE = '4')";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 				if (cfgList.size() == 0) {
 					sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_FORM where sceneid=(select BINDSCENEID from SYS_CFG_SCENE,SYS_CFG_SCENE_FORM where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION)='" + beanid + "ACTION!TO_ADD' and JSP = '/BUSINESS/" + beanid + "/" + beanid + "ADD.JSP' and ROLE = '4')";
-					cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+					cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 				}
 			}
 			String sqlToMeaning = "select NAME,MEANING from SYS_ENTITY_META where UPPER(BEANID)='" + beanid + "'";
-			Map<String, String> meaningMap = DBUtil.getMeaningBySql(sqlToMeaning); // 存放表中注释
+			Map<String, String> meaningMap = DBUtils.getMeaningBySql(sqlToMeaning); // 存放表中注释
 			
 			// 建立新的sheet对象（excel的表单）
 			HSSFSheet sheet = wb.createSheet(entry.getKey());
@@ -188,20 +188,20 @@ public class AutoViewFile {
 			sheet.setColumnWidth(3, 6000); sheet.setColumnWidth(4, 10000); sheet.setColumnWidth(5, 5000);
 			// 在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
 			// 添加表头
-			ExcelUtil.setCellValues(sheet, 0, 6, new String[]{"列名", "别名", "是否全为空值", "自定义字典", "关联表名及查询值", "注释"});
-			ExcelUtil.setCellValues(sheet, 1, 6, new String[]{"ID", "ID", null, null, null, "主键"});
+			ExcelUtils.setCellValues(sheet, 0, 6, new String[]{"列名", "别名", "是否全为空值", "自定义字典", "关联表名及查询值", "注释"});
+			ExcelUtils.setCellValues(sheet, 1, 6, new String[]{"ID", "ID", null, null, null, "主键"});
 			int rowNum = 1;
 			if (entry.getKey().contains("MEMBER")) {
-				ExcelUtil.setCellValues(sheet, ++rowNum, 6, new String[]{"PERSON_CODE", "ZGH", null, null, null, "职工号"});
+				ExcelUtils.setCellValues(sheet, ++rowNum, 6, new String[]{"PERSON_CODE", "ZGH", null, null, null, "职工号"});
 				if (entry.getKey().contains("YF_CONTRACT")) {
-					ExcelUtil.setCellValues(sheet, ++rowNum, 6, new String[]{"CONTRACT_ID", "HTID", null, null, null, "合同id"});
+					ExcelUtils.setCellValues(sheet, ++rowNum, 6, new String[]{"CONTRACT_ID", "HTID", null, null, null, "合同id"});
 				} else {
-					ExcelUtil.setCellValues(sheet, ++rowNum, 6, new String[]{"PROJECT_ID", "XMID", null, null, null, "项目id"});
+					ExcelUtils.setCellValues(sheet, ++rowNum, 6, new String[]{"PROJECT_ID", "XMID", null, null, null, "项目id"});
 				}
 				
 			} else if (entry.getKey().contains("AUTHOR")) {
-				ExcelUtil.setCellValues(sheet, ++rowNum, 6, new String[]{"AUTHOR_ACCOUNT", "ZGH", null, null, null, "职工号"});
-				ExcelUtil.setCellValues(sheet, ++rowNum, 6, new String[]{OtherUtils.getMainBeanId(entry.getKey()) + "_ID", "CGID", null, null, null, "成果id"});
+				ExcelUtils.setCellValues(sheet, ++rowNum, 6, new String[]{"AUTHOR_ACCOUNT", "ZGH", null, null, null, "职工号"});
+				ExcelUtils.setCellValues(sheet, ++rowNum, 6, new String[]{OtherUtils.getMainBeanId(entry.getKey()) + "_ID", "CGID", null, null, null, "成果id"});
 			}
 			for (int i = 0; i < cfgList.size(); i++) {
 				if ("hidden".equals(cfgList.get(i)[1]) || "file".equals(cfgList.get(i)[1])) {
@@ -214,7 +214,7 @@ public class AutoViewFile {
 						joinTable = "BIZ_UNIT,ID";
 					} else {
 						String sql = "SELECT TABLENAME,CODECOLUMN FROM CFG_CATEGORY_MAPPING WHERE CATEGORYID IN (SELECT ID FROM CFG_CATEGORY WHERE CATEGORYNAME = '" + cfgList.get(i)[2] + "')";
-						String[] strs = DBUtil.getStrsBySql(sql);
+						String[] strs = DBUtils.getStrsBySql(sql);
 						categroy = (strs[0] == null) ? cfgList.get(i)[2] : null;
 						joinTable = (strs[0] == null) ? null : strs[0] + "," + strs[1];
 					}
@@ -232,13 +232,13 @@ public class AutoViewFile {
 				} else if ("bearUnitOrder".equals(nameTemp) && !"XJ_PROJECT".equals(beanid)) {
 					nameTemp = "undertakingUnitRanking";
 				}
-				ExcelUtil.setCellValues(sheet, ++rowNum, 6, new String[]{
+				ExcelUtils.setCellValues(sheet, ++rowNum, 6, new String[]{
 						nameMap.get(nameTemp.toUpperCase()) == null ? ("*" + nameTemp) : nameMap.get(nameTemp.toUpperCase()),
-						OtherUtils.getFirstSpell(meaningMap.get(cfgList.get(i)[0])), null, categroy, joinTable,
+						StringUtils.getFirstSpell(meaningMap.get(cfgList.get(i)[0])), null, categroy, joinTable,
 						meaningMap.get(cfgList.get(i)[0])});
 			}
 		}
-		ExcelUtil.outExcel(wb, filePath + File.separator + "xls" + File.separator, xlsName);
+		ExcelUtils.outExcel(wb, filePath + File.separator + "xls" + File.separator, xlsName);
 	}
 	
 	/**
@@ -247,8 +247,8 @@ public class AutoViewFile {
 	public static void generationViewSql(String viewName) {
 		int size = map.size();
 		StringBuilder sb = new StringBuilder();
-		sb.append("create view " + viewName + OtherUtils.CRLF).append("as" + OtherUtils.CRLF).append("(SELECT" + OtherUtils.CRLF);
-		String version = DBUtil.getUrl();
+		sb.append("create view " + viewName + StringUtils.CRLF).append("as" + StringUtils.CRLF).append("(SELECT" + StringUtils.CRLF);
+		String version = DBUtils.getUrl();
 		version = version.split(";")[1];
 		version = version.substring(22, 25);
 		int i = 0;
@@ -272,9 +272,9 @@ public class AutoViewFile {
 			} else if (tableMap.containsKey(key)) {
 				String[] str = tableMap.get(key).split(",");
 				if ("PAPER_LEVEL_ID".equals(key) || "EMBODY_TYPE_ID".equals(key)) {
-					if (DBUtil.isOracle()) {
+					if (DBUtils.isOracle()) {
 						sb.append("(SELECT listagg(NAME, ',') WITHIN GROUP(ORDER BY ID) FROM " + str[0] + " where INSTR(" + TABEL_NAME + "." + key + ", " + str[0] + "." + str[1] + ")>0");
-					} else if (DBUtil.isSqlServer()) {
+					} else if (DBUtils.isSqlServer()) {
 						sb.append("stuff((SELECT ',' + NAME FROM " + str[0] + " WHERE CHARINDEX(" + str[0] + "." + str[1] + ", " + TABEL_NAME + "." + key + ")>0 for xml path('')),1,1,''");
 					}
 				} else {
@@ -298,9 +298,9 @@ public class AutoViewFile {
 			if (size != i) {
 				sb.append(",");
 			}
-			sb.append(" --" + noteMap.get(key) + OtherUtils.CRLF);
+			sb.append(" --" + noteMap.get(key) + StringUtils.CRLF);
 		}
-		sb.append("FROM " + TABEL_NAME + ");" + OtherUtils.CRLF + "GO" + OtherUtils.CRLF);
-		FileUtil.outFile(sb.toString(), filePath + File.separator + "sql" + File.separator, viewName + ".sql");
+		sb.append("FROM " + TABEL_NAME + ");" + StringUtils.CRLF + "GO" + StringUtils.CRLF);
+		FileUtils.write(filePath + File.separator + "sql" + File.separator + viewName + ".sql", sb);
 	}
 }

@@ -8,9 +8,9 @@ import java.util.Map;
 import org.dom4j.Element;
 
 import com.eplugger.onekey.addField.entity.ModuleTable;
-import com.eplugger.util.ClassUtils;
 import com.eplugger.util.ParseXmlAbst;
 import com.eplugger.util.XmlParseUtils;
+import com.eplugger.utils.ClassUtils;
 
 public class ModuleTableParse extends ParseXmlAbst<ModuleTable> {
 	private static class ModuleTableParseSingleton {

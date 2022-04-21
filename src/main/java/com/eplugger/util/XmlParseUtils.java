@@ -5,6 +5,8 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 
+import com.eplugger.xml.dom4j.util.XmlFileUtils;
+
 /**
  * xml解析模版工具
  * @author Admin
@@ -29,7 +31,7 @@ public class XmlParseUtils<T> {
 	public List<T> parseXml(String filePath) {
 		Document document = null;
 		try {
-			document = FileUtil.readXmlFile(filePath);
+			document = XmlFileUtils.readDocument(filePath);
 		} catch (DocumentException e) {
 			throw new RuntimeException(e + "文件打不开");
 		}

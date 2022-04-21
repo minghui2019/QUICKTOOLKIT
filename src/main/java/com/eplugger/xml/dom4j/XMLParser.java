@@ -14,7 +14,7 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
-import com.eplugger.commons.io.FileUtils;
+import com.eplugger.common.io.FileUtils;
 import com.eplugger.xml.dom4j.format.XMLObjectFormatter;
 import com.eplugger.xml.dom4j.format.XMLObjectFormatterFactory;
 

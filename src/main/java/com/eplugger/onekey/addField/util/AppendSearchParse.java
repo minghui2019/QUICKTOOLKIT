@@ -3,8 +3,8 @@ package com.eplugger.onekey.addField.util;
 import org.dom4j.Element;
 
 import com.eplugger.onekey.addField.entity.AppendSearch;
-import com.eplugger.util.ClassUtils;
 import com.eplugger.util.ParseXmlAbst;
+import com.eplugger.utils.ClassUtils;
 
 public class AppendSearchParse extends ParseXmlAbst<AppendSearch> {
 	private static class AppendSearchParseSingleton {

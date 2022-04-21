@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.dom4j.Element;
 
 import com.eplugger.onekey.addField.entity.ModuleTable;
-import com.eplugger.util.ClassUtils;
+import com.eplugger.utils.ClassUtils;
 
 public class ModuleTableParser extends AbstractParser<ModuleTable> {
 	@Override

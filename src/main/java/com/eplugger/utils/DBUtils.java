@@ -1,4 +1,4 @@
-package com.eplugger.util;
+package com.eplugger.utils;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -19,9 +19,9 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 
-public class DBUtil {
+public class DBUtils {
 	// 利用线程保存conn连接，不用每次关闭
 	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
 	private static String driver;
@@ -226,7 +226,7 @@ public class DBUtil {
 	 * @return
 	 */
 	public static String getEadpDataType() {
-		String databaseName = DBUtil.getDatabaseName();
+		String databaseName = DBUtils.getDatabaseName();
 		Pattern pattern = Pattern.compile("[\\d]+[A-Z]?$");
 		Matcher matcher = pattern.matcher(databaseName);
 		String group = null;

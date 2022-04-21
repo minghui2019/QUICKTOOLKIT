@@ -1,13 +1,13 @@
 package com.eplugger.onekey.addModule.entity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
-import com.util.ArrayList;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

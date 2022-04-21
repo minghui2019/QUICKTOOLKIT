@@ -18,7 +18,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.dom4j.DocumentType;
 
 import com.eplugger.annotation.Comment;
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.commons.lang3.reflect.FieldUtils;
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
 import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;

@@ -6,9 +6,9 @@ import org.dom4j.Element;
 
 import com.eplugger.onekey.addField.entity.AppendSearch;
 import com.eplugger.onekey.addField.entity.Field;
-import com.eplugger.util.ClassUtils;
 import com.eplugger.util.ParseXmlAbst;
 import com.eplugger.util.XmlParseUtils;
+import com.eplugger.utils.ClassUtils;
 
 public class FieldParse extends ParseXmlAbst<Field> {
 	private static class FieldParseSingleton {

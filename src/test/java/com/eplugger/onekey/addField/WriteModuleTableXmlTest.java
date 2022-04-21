@@ -19,9 +19,9 @@ import org.junit.Test;
 
 import com.eplugger.onekey.addField.entity.ModuleTable;
 import com.eplugger.onekey.addField.entity.ModuleTables;
-import com.eplugger.util.FileUtil;
 import com.eplugger.xml.dom4j.test.User;
 import com.eplugger.xml.dom4j.test.Users;
+import com.eplugger.xml.dom4j.util.XmlFileUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -123,7 +123,7 @@ public class WriteModuleTableXmlTest {
 	private static Document readXmlByFile() {
 		Document document = null;
 		try {
-			document = FileUtil.readXmlFile("src/main/resource/field/ModuleTable.xml");
+			document = XmlFileUtils.readDocument("src/main/resource/field/ModuleTable.xml");
 		} catch (DocumentException e) {
 			e.printStackTrace();
 		}

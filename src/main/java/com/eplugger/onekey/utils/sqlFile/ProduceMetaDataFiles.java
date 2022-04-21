@@ -2,10 +2,11 @@ package com.eplugger.onekey.utils.sqlFile;
 
 import java.util.List;
 
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
-import com.eplugger.util.DBUtil;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.utils.DBUtils;
+import com.eplugger.utils.OtherUtils;
+import com.eplugger.uuid.UUIDUtils;
 
 public class ProduceMetaDataFiles {
 	/**
@@ -43,19 +44,19 @@ public class ProduceMetaDataFiles {
 		String[] uuids = new String[size];
 		StringBuffer uuidSb = new StringBuffer();
 		StringBuffer sb = new StringBuffer();
-		String eadpDataType = DBUtil.getEadpDataType();
+		String eadpDataType = DBUtils.getEadpDataType();
 		for (int i = 0; i < size; i++) {
 			if (StringUtils.isNotBlank(fieldList.get(i).getAssociation())) {
 				continue;
 			}
-			uuids[i] = OtherUtils.getUuid();
+			uuids[i] = UUIDUtils.getUuid();
 			uuidSb.append("'").append(uuids[i]).append("'");
 			if (i < size - 1) {
 				uuidSb.append(",");
 			}
 		}
-		sb.append("delete from SYS_ENTITY_META WHERE id in (").append(uuidSb.toString()).append(");").append(OtherUtils.CRLF).append(OtherUtils.CRLF);
-		sb.append("-- 表[SYS_ENTITY_META]的数据如下:").append(OtherUtils.CRLF);
+		sb.append("delete from SYS_ENTITY_META WHERE id in (").append(uuidSb.toString()).append(");").append(StringUtils.CRLF).append(StringUtils.CRLF);
+		sb.append("-- 表[SYS_ENTITY_META]的数据如下:").append(StringUtils.CRLF);
 		for (int i = 0; i < size; i++) {
 			Field field = fieldList.get(i);
 			if (StringUtils.isNotBlank(field.getAssociation())) {
@@ -68,19 +69,19 @@ public class ProduceMetaDataFiles {
 					.append(",").append((++orders)).append(",'").append(field.getFieldName()).append("','")
 					.append(field.getFieldId()).append("','")
 					.append(getMetadataDataType(field.getDataType())).append("',").append("'")
-					.append(eadpDataType).append("','no','use');").append(OtherUtils.CRLF);
+					.append(eadpDataType).append("','no','use');").append(StringUtils.CRLF);
 		}
-		sb.append(OtherUtils.CRLF);
+		sb.append(StringUtils.CRLF);
 		return sb.toString();
 	}
 
 	public static int getMaxOrdersByBeanId(String beanId) {
 		String sql = "";
-		if (DBUtil.isSqlServer()) {
+		if (DBUtils.isSqlServer()) {
 			sql = "SELECT top 1 ORDERS FROM SYS_ENTITY_META WHERE BEANID='" + beanId + "' ORDER BY ORDERS DESC;";
-		} else if (DBUtil.isOracle()) {
+		} else if (DBUtils.isOracle()) {
 			sql = "SELECT ORDERS FROM(SELECT ORDERS FROM SYS_ENTITY_META WHERE BEANID='" + beanId + "' ORDER BY ORDERS DESC) WHERE ROWNUM=1";
 		}
-		return DBUtil.getOrdersFromEntityMeta(sql);
+		return DBUtils.getOrdersFromEntityMeta(sql);
 	}
 }

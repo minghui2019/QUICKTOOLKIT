@@ -1,15 +1,14 @@
-package com.eplugger.util;
+package com.eplugger.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 
-import cn.hutool.log.Log;
-import cn.hutool.log.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ClassUtils {
-	private static Log log = LogFactory.get();
 	
 	/**
 	 * 利用setter方法设置对象属性值
@@ -31,7 +30,7 @@ public class ClassUtils {
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			log.error("参数类型不匹配({}), 属性: {} 参数: {} 类型: {}", e.getMessage(), fieldName, fieldValue, parameterTypes);
+			log.error("参数类型不匹配({}), 属性: {} 参数: {} 类型: {}", new Object[] { e.getMessage(), fieldName, fieldValue, parameterTypes });
 		}
 	}
 	
@@ -53,7 +52,7 @@ public class ClassUtils {
 			try {
 				return clazz.getDeclaredMethod(methodName, parameterTypes);
 			} catch (NoSuchMethodException e) {
-				log.error("{}类找不到{}方法, 参数{}", clazz.getSimpleName(), methodName, parameterTypes);
+				log.error("{}类找不到{}方法, 参数{}", new Object[] { clazz.getSimpleName(), methodName, parameterTypes });
 			}
 		}
 		return null;

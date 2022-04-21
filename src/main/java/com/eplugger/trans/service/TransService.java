@@ -1,6 +1,6 @@
 package com.eplugger.trans.service;
 
-import com.eplugger.util.HttpRequestUtils;
+import com.eplugger.utils.HttpRequestUtils;
 
 import net.sf.json.JSONObject;
 

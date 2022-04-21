@@ -7,8 +7,8 @@ import org.dom4j.Element;
 
 import com.eplugger.onekey.addField.util.FieldParse;
 import com.eplugger.onekey.addModule.entity.ModuleInfo;
-import com.eplugger.util.ClassUtils;
 import com.eplugger.util.ParseXmlAbst;
+import com.eplugger.utils.ClassUtils;
 
 public class ModuleInfoParse extends ParseXmlAbst<ModuleInfo> {
 	private static class ModuleInfoParseSingleton {

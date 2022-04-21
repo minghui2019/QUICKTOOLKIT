@@ -10,8 +10,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 
 import com.eplugger.annotation.Booleaner;
-import com.eplugger.commons.lang3.StringUtils;
-import com.eplugger.util.ClassUtils;
+import com.eplugger.common.lang.StringUtils;
+import com.eplugger.utils.ClassUtils;
 import com.eplugger.xml.dom4j.util.XmlFileUtils;
 import com.eplugger.xml.dom4j.utils.Parser;
 

@@ -1,9 +1,9 @@
-package com.eplugger.util;
+package com.eplugger.utils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.Method;

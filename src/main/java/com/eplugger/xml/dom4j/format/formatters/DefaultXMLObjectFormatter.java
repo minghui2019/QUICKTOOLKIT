@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.collections4.MapUtils;
 
-import com.eplugger.commons.lang3.StringUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.xml.dom4j.XMLDocumentType;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.format.XMLObjectFormatter;

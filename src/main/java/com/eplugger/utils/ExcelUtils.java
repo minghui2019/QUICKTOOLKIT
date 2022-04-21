@@ -1,4 +1,4 @@
-package com.eplugger.util;
+package com.eplugger.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,7 +13,9 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelUtil {
+import com.eplugger.common.io.FileUtils;
+
+public class ExcelUtils {
 	private static final String EXCEL_XLS = "xls";
 	private static final String EXCEL_XLSX = "xlsx";
 	
@@ -37,12 +39,11 @@ public class ExcelUtil {
 	 * 判断Excel的版本,获取Workbook
 	 */
 	public static Workbook getWorkbook(String filePath, String xlsName) {
-		FileUtil.isDir(filePath);
 		File excelFile = new File(filePath + File.separator + xlsName); // 创建文件对象
 		Workbook wb = null;
 		try {
 			FileInputStream in = new FileInputStream(excelFile);// 文件流
-			ExcelUtil.checkExcelVaild(excelFile);
+			ExcelUtils.checkExcelVaild(excelFile);
 			if (excelFile.getName().endsWith(EXCEL_XLS)) { // Excel 2003
 				wb = new HSSFWorkbook(in);
 			} else if (excelFile.getName().endsWith(EXCEL_XLSX)) { // Excel 2007/2010
@@ -82,9 +83,10 @@ public class ExcelUtil {
      * 写出EXCEL文件
      */
     public static void outExcel(Workbook wb, String filePath, String fileName) {
-    	FileUtil.isDir(filePath);
+    	File file = new File(filePath + fileName);
+    	FileUtils.createFileParentDir(file);
     	try {
-			FileOutputStream output = new FileOutputStream(filePath + fileName);
+			FileOutputStream output = new FileOutputStream(file);
 			wb.write(output); // 写入磁盘
 			output.flush();
 			output.close();

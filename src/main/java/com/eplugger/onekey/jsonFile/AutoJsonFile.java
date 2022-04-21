@@ -12,11 +12,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import com.eplugger.commons.lang3.StringUtils;
-import com.eplugger.util.DBUtil;
-import com.eplugger.util.ExcelUtil;
-import com.eplugger.util.FileUtil;
-import com.eplugger.util.OtherUtils;
+import com.eplugger.common.io.FileUtils;
+import com.eplugger.common.lang.StringUtils;
+import com.eplugger.utils.DBUtils;
+import com.eplugger.utils.ExcelUtils;
+import com.eplugger.utils.OtherUtils;
 
 @SuppressWarnings("all")
 public class AutoJsonFile {
@@ -63,7 +63,7 @@ public class AutoJsonFile {
 	public static Map<String, String> dictionaryMap = new HashMap();
 
 	private static void generationViewSql() {
-		Workbook workbook = ExcelUtil.getWorkbook(filePath + File.separator + "xls" + File.separator, xlsName);
+		Workbook workbook = ExcelUtils.getWorkbook(filePath + File.separator + "xls" + File.separator, xlsName);
 		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
 			Sheet sheet = workbook.getSheetAt(i);// 遍历拿每一个sheet
 			TABEL_NAME = sheet.getSheetName();
@@ -106,29 +106,29 @@ public class AutoJsonFile {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		for (Map.Entry<String, String> entry : tableList.entrySet()) {
 			String beanid = OtherUtils.produceBeanid(entry.getKey());
-			Map<String, String> nameMap = DBUtil.getEntryNameBySql("select * from " + entry.getKey());
+			Map<String, String> nameMap = DBUtils.getEntryNameBySql("select * from " + entry.getKey());
 			String sqlToCfg = null;
 			List<String[]> cfgList = null;
 			if (beanid.contains("MEMBER")) {
 				sqlToCfg = "SELECT NAME,DATA_TYPE,CATEGORYNAME FROM SYS_CFG_TABLE where sceneid=(select ID from SYS_CFG_SCENE,SYS_CFG_SCENE_TABLE where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(JSP) like '%" + beanid + "MANAGE.JSP%' and ROLE = '4')";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 			} else if (beanid.contains("AUTHOR")) {
 				sqlToCfg = "SELECT NAME,DATA_TYPE,CATEGORYNAME FROM SYS_CFG_EDIT_TABLE where sceneid=(select BINDSCENEID from SYS_CFG_SCENE,SYS_CFG_SCENE_EDITTABLE where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION) like '%TO_ADD%' and ROLE = '4')";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 				if (cfgList.size() == 0) {
 					sqlToCfg = "SELECT NAME,DATA_TYPE,CATEGORYNAME FROM SYS_CFG_EDIT_TABLE where sceneid=(select ID from SYS_CFG_SCENE,SYS_CFG_SCENE_EDITTABLE where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION) like '%TO_ADD%' and ROLE = '4')";
-					cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+					cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 				}
 			} else {
 				sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_FORM where sceneid=(select ID from SYS_CFG_SCENE,SYS_CFG_SCENE_FORM where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION)='" + beanid + "ACTION!TO_ADD' and JSP = '/BUSINESS/" + beanid + "/" + beanid + "ADD.JSP' and ROLE = '4')";
-				cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+				cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 				if (cfgList.size() == 0) {
 					sqlToCfg = "SELECT NAME,FORMITEMTYPE,CATEGORYNAME FROM SYS_CFG_FORM where sceneid=(select BINDSCENEID from SYS_CFG_SCENE,SYS_CFG_SCENE_FORM where ID=SCENEID and UPPER(BEANID)='" + beanid + "' and UPPER(REQACTION)='" + beanid + "ACTION!TO_ADD' and JSP = '/BUSINESS/" + beanid + "/" + beanid + "ADD.JSP' and ROLE = '4')";
-					cfgList = DBUtil.getCFGFromBySql(sqlToCfg);// 存放表中所有列
+					cfgList = DBUtils.getCFGFromBySql(sqlToCfg);// 存放表中所有列
 				}
 			}
 			String sqlToMeaning = "select NAME,MEANING from SYS_ENTITY_META where UPPER(BEANID)='" + beanid + "'";
-			Map<String, String> meaningMap = DBUtil.getMeaningBySql(sqlToMeaning); // 存放表中注释
+			Map<String, String> meaningMap = DBUtils.getMeaningBySql(sqlToMeaning); // 存放表中注释
 			
 			// 建立新的sheet对象（excel的表单）
 			HSSFSheet sheet = wb.createSheet(entry.getKey());
@@ -136,7 +136,7 @@ public class AutoJsonFile {
 			sheet.setColumnWidth(2, 2000); sheet.setColumnWidth(3, 6000);
 			// 在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
 			// 添加表头
-			ExcelUtil.setCellValues(sheet, 0, 4, new String[]{"label", "name", "type", "dictionary"});
+			ExcelUtils.setCellValues(sheet, 0, 4, new String[]{"label", "name", "type", "dictionary"});
 			int rowNum = 0;
 			for (int i = 0; i < cfgList.size(); i++) {
 				if ("hidden".equals(cfgList.get(i)[1]) || "ID".equals(cfgList.get(i)[0])){
@@ -158,11 +158,11 @@ public class AutoJsonFile {
 				String temp = cfgList.get(i)[0];
 				String name = nameMap.get(temp.toUpperCase());
 				name = (name == null) ? "*" + temp : name;
-				ExcelUtil.setCellValues(sheet, ++rowNum, 4, new String[]{meaningMap.get(cfgList.get(i)[0]),
+				ExcelUtils.setCellValues(sheet, ++rowNum, 4, new String[]{meaningMap.get(cfgList.get(i)[0]),
 						name, type, cfgList.get(i)[2]});
 			}
 		}
-		ExcelUtil.outExcel(wb, filePath + File.separator + "xls" + File.separator, xlsName);
+		ExcelUtils.outExcel(wb, filePath + File.separator + "xls" + File.separator, xlsName);
 	}
 	
 	/**
@@ -171,8 +171,8 @@ public class AutoJsonFile {
 	public static void generationViewSql(String viewName) {
 		int size = nameMap.size();
 		StringBuilder sb = new StringBuilder();
-		sb.append("    {" + OtherUtils.CRLF + "      \"category\":\"\"," + OtherUtils.CRLF + "      \"hasCheck\":true," + OtherUtils.CRLF + "      \"label\":\"\"," + OtherUtils.CRLF);
-		sb.append("      \"name\":\"" + TABEL_NAME + "\"," + OtherUtils.CRLF + "      \"pkName\":\"ID\"," + OtherUtils.CRLF + "      \"properties\":[" + OtherUtils.CRLF);
+		sb.append("    {" + StringUtils.CRLF + "      \"category\":\"\"," + StringUtils.CRLF + "      \"hasCheck\":true," + StringUtils.CRLF + "      \"label\":\"\"," + StringUtils.CRLF);
+		sb.append("      \"name\":\"" + TABEL_NAME + "\"," + StringUtils.CRLF + "      \"pkName\":\"ID\"," + StringUtils.CRLF + "      \"properties\":[" + StringUtils.CRLF);
 		int i = 0;
 		for (Map.Entry<String, String> entry : nameMap.entrySet()) {
 			i++;
@@ -182,17 +182,18 @@ public class AutoJsonFile {
 			if (dictionaryMap.get(key) != null) {// 有字典的属性
 				dictionary = dictionaryMap.get(key);
 			}
-			sb.append("        {" + OtherUtils.CRLF + "          \"label\":\"" + labelMap.get(key) + "\"," + OtherUtils.CRLF + ""
-					+ "          \"name\":\"" + key + "\"," + OtherUtils.CRLF + "          \"type\":\"" + typeMap.get(key) + "\"");
+			sb.append("        {" + StringUtils.CRLF + "          \"label\":\"" + labelMap.get(key) + "\"," + StringUtils.CRLF + ""
+					+ "          \"name\":\"" + key + "\"," + StringUtils.CRLF + "          \"type\":\"" + typeMap.get(key) + "\"");
 			if (dictionary != null) {
-				sb.append("," + OtherUtils.CRLF + "          \"dictionary\":\"" + dictionary + "\"");
+				sb.append("," + StringUtils.CRLF + "          \"dictionary\":\"" + dictionary + "\"");
 			}
-			sb.append(OtherUtils.CRLF + "        }");
+			sb.append(StringUtils.CRLF + "        }");
 			if (size != i) {
-				sb.append("," + OtherUtils.CRLF);
+				sb.append("," + StringUtils.CRLF);
 			}
 		}
-		sb.append(OtherUtils.CRLF + "      ]," + OtherUtils.CRLF + "      \"rootTable\":true" + OtherUtils.CRLF + "    }," + OtherUtils.CRLF);
-		FileUtil.outFile(sb.toString(), filePath + File.separator + "json" + File.separator, viewName + ".json");
+		sb.append(StringUtils.CRLF + "      ]," + StringUtils.CRLF + "      \"rootTable\":true" + StringUtils.CRLF + "    }," + StringUtils.CRLF);
+		
+		FileUtils.write(filePath + File.separator + "json" + File.separator + viewName + ".json", sb.toString());
 	}
 }

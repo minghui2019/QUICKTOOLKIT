@@ -1,5 +1,6 @@
 package com.eplugger.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -7,8 +8,8 @@ import org.dom4j.Attribute;
 import org.dom4j.Element;
 
 import com.eplugger.annotation.Booleaner;
-import com.eplugger.commons.lang3.StringUtils;
-import com.util.ArrayList;
+import com.eplugger.common.lang.StringUtils;
+import com.eplugger.utils.ClassUtils;
 
 public abstract class ParseXmlAbst<T> implements IParseXml<T> {
 

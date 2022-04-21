@@ -1,18 +1,10 @@
-package com.eplugger.util;
+package com.eplugger.utils;
 
 import java.util.Map;
-import java.util.UUID;
 
-import com.eplugger.commons.lang3.StringUtils;
-
-import net.sourceforge.pinyin4j.PinyinHelper;
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import com.eplugger.common.lang.StringUtils;
 
 public class OtherUtils {
-	public static final String CRLF = "\r\n";
 	public static final String SPOT = ".";
 	public static final String TAB_FOUR = "    ";
 	public static final String TAB_EIGHT = "        ";
@@ -25,18 +17,6 @@ public class OtherUtils {
 	public static final String TPYE_TIMESTAMP = "Timestamp";
 	public static final String TPYE_LIST = "List";
 	public static final String TPYE_ARRAYLIST = "ArrayList";
-	
-	public static String[] getUuid(int count) {
-		String[] uuids = new String[count];
-		for (int i = 0; i < count; i++) {
-			uuids[i] = UUID.randomUUID().toString().replace("-", "");
-		}
-		return uuids;
-	}
-	
-	public static String getUuid() {
-		return UUID.randomUUID().toString().replace("-", "");
-	}
 	
 	/**
 	 * 生成实体类的beanid
@@ -98,31 +78,8 @@ public class OtherUtils {
 		return str.replace("_", "");
 	}
 	
-	/**
-	 * 汉字转拼音，取首字母并大写
-	 * @param chinese
-	 * @return
-	 */
-	public static String getFirstSpell(String chinese) {
-		StringBuffer pybf = new StringBuffer();
-		char[] arr = chinese.toCharArray();
-		HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
-		defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
-		defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-		for (int i = 0; i < arr.length; i++) {
-			if (arr[i] > 128) {
-				try {
-					String[] temp = PinyinHelper.toHanyuPinyinStringArray(arr[i], defaultFormat);
-					if (temp != null) {
-						pybf.append(temp[0].charAt(0));
-					}
-				} catch (BadHanyuPinyinOutputFormatCombination e) {
-					e.printStackTrace();
-				}
-			} else {
-				pybf.append(arr[i]);
-			}
-		}
-		return pybf.toString().replaceAll("\\W", "").trim().toUpperCase();
+	public static void main(String[] args) {
+		String chiness = "中文";
+		System.out.println(StringUtils.getFirstSpell(chiness));
 	}
 }

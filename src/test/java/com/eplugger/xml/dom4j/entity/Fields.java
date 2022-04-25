@@ -19,7 +19,7 @@ import lombok.Setter;
 @Dom4JTag
 public class Fields {
 	@Dom4JField(type = Dom4JFieldType.TAG)
-	private List<SimpleField> fieldList = Lists.newArrayList();
+	private List<Field> fieldList = Lists.newArrayList();
 
 	@Override
 	public String toString() {

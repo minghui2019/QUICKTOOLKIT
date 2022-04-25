@@ -25,6 +25,7 @@ import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
 import com.eplugger.xml.dom4j.annotation.Dom4JTag;
 import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
 import com.eplugger.xml.dom4j.parse.SimpleValueParser;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -147,6 +148,10 @@ public class XMLObject implements Serializable {
 
             if (Dom4JFieldType.ELEMENT == dom4jFieldType) {
                 getValueByElement(xmlObject, fieldType, fieldName, fieldValue);
+            }
+            
+            if (Dom4JFieldType.NONE == dom4jFieldType) {
+            	xmlObject.content = fieldValue.toString();
             }
         }
 
@@ -790,9 +795,12 @@ public class XMLObject implements Serializable {
                     setFieldValue(bean, field, childTag.getContent());
                 }
                 break;
+			case NONE:
+				setFieldValue(bean, field, this.getContent());
+				break;
             }
         } catch (Exception e) {
-            throw new RuntimeException(e + field.getName());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -996,6 +1004,9 @@ public class XMLObject implements Serializable {
      * @param value 字段值
      */
     private void setFieldValue(Object bean, Field field, String value) {
+    	if (Strings.isNullOrEmpty(value)) {
+    		return;
+    	}
         Class<?> type = field.getType();
         SimpleValueParser<?> parser = FieldValueParserFactory.getFactory(type);
         FieldUtils.setFieldValue(bean, field, parser.fromXml(type, value));
@@ -1036,7 +1047,9 @@ public class XMLObject implements Serializable {
     }
     
     public XMLObject setDocumentType(DocumentType documentType) {
-        this.docType = new XMLDocumentType(documentType.getName(), documentType.getPublicID(), documentType.getSystemID());
+    	if (documentType != null) {
+    		this.docType = new XMLDocumentType(documentType.getName(), documentType.getPublicID(), documentType.getSystemID());
+    	}
         return this;
     }
     

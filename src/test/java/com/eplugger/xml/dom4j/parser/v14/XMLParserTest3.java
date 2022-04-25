@@ -11,11 +11,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
 import com.eplugger.common.lang.StringUtils;
+import com.eplugger.utils.DateUtils;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
 import com.eplugger.xml.dom4j.entity.ModuleTable;
@@ -29,7 +33,6 @@ import com.eplugger.xml.dom4j.entity.TourStatus;
 import com.eplugger.xml.dom4j.entity.TourTask;
 import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
 import com.eplugger.xml.dom4j.parse.SimpleValueParser;
-import com.eplugger.xml.dom4j.parse.parsers.DefaultSimpleValueParser;
 
 public class XMLParserTest3 {
 
@@ -159,14 +162,48 @@ public class XMLParserTest3 {
 
     @Test
     public void testOther() {
-
-        SimpleValueParser<?> parser = new DefaultSimpleValueParser();
-        Object o = parser.fromXml(Date.class, new Date().getTime() + "");
+    	FieldValueParserFactory.reg(new SimpleValueParser<Date>() {
+    		@Override
+    		public Class<Date> getPreciseType() {
+    			return Date.class;
+    		}
+    		
+    		@Override
+    		public Date fromXml(Class<?> type, String value) {
+    			return DateUtils.parseDate(value);
+    		}
+    		
+    		@Override
+    		public <D> String fromBean(D value) {
+    			if (value instanceof Date) {
+    				return DateUtils.formatDate((Date) value);
+    			}
+    			return value.toString();
+    		}
+		});
+    	SimpleValueParser<?> parser = FieldValueParserFactory.getFactory(Date.class);
+        Object o = parser.fromXml(Date.class, "2022-05-20");
+        String o1 = parser.fromBean(new Date());
         System.out.println(o);
+        System.out.println(o1);
 
         Class<?> cls = int.class;
         int i = JSON.parseObject("1", (Type) cls);
         System.out.println(i);
+        
     }
-
+    
+    @Test
+	public void testName() throws Exception {
+    	System.out.println(getString("1"));
+    	System.out.println(getString(null));
+	}
+    
+    @CheckForNull
+    private String getString(@Nonnull String str) {
+    	if ("1".equals(str)) {
+    		return "success";
+    	}
+		return null;
+    }
 }

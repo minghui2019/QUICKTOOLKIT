@@ -6,7 +6,7 @@ import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.utils.DBUtils;
 import com.eplugger.utils.OtherUtils;
-import com.eplugger.uuid.UUIDUtils;
+import com.eplugger.uuid.utils.UUIDUtils;
 
 public class ProduceMetaDataFiles {
 	/**

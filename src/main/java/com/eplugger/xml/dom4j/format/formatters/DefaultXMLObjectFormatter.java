@@ -65,6 +65,9 @@ public class DefaultXMLObjectFormatter implements XMLObjectFormatter {
 	}
 
 	private void writeDocumentType(XMLDocumentType docType, StringBuilder content, String currentNewLine) {
+		if (docType == null)
+			return;
+		
 	    content.append("<!DOCTYPE ");
         content.append(docType.getElementName());
 
@@ -209,7 +212,7 @@ public class DefaultXMLObjectFormatter implements XMLObjectFormatter {
 				String attrName = StringUtils.trimToEmpty(me.getKey());
 				if (StringUtils.isNotEmpty(attrName, true)) {
 					String attrVal = StringUtils.trimToEmpty(me.getValue());
-					attrContent.append(" ").append(attrName).append("=").append("\"").append(attrVal).append("\"");
+					attrContent.append(" ").append(attrName).append("=").append('"').append(attrVal).append('"');
 				}
 			}
 		}

@@ -12,6 +12,7 @@ import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.Text;
 import org.dom4j.io.SAXReader;
 
 import com.eplugger.common.io.FileUtils;
@@ -128,7 +129,7 @@ public class XMLParser {
 	private void parseNode(XMLObject xmlObject, Element node) {
 		for (int i = 0, size = node.nodeCount(); i < size; i++) {
 			Node subNode = node.node(i);
-			if (subNode instanceof Comment)
+			if (subNode instanceof Comment || subNode instanceof Text)
 				continue;
 
 			XMLObject subXmlObject;
@@ -136,8 +137,10 @@ public class XMLParser {
 				if (!((Element) subNode).hasMixedContent()) {
 					String subTagName = subNode.getName();
 					subXmlObject = new XMLObject(subTagName);
-					subXmlObject.setContent(((Element) subNode).getTextTrim());
+//					subXmlObject.setContent(((Element) subNode).getTextTrim());
 					List<XMLObject> childTags = xmlObject.getChildTags(subTagName);
+					setAttributes(subXmlObject, (Element) subNode);
+					setContent(subXmlObject, (Element) subNode);
 					childTags.add(subXmlObject);
 				} else {
 					subXmlObject = appendSubTag(xmlObject, subNode);

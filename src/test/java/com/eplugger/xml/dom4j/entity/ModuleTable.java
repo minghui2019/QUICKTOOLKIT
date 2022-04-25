@@ -18,7 +18,7 @@ public class ModuleTable {
 	@Dom4JField
 	private String tableName;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE)
-	private Boolean ignore = true;
+	private boolean ignore = true;
 	@Dom4JField
 	private String described;
 	@Override

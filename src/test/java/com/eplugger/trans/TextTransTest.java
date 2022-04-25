@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.eplugger.trans.entity.Fields;
+import com.eplugger.trans.entity.SimpleField;
 import com.eplugger.utils.OtherUtils;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
-import com.eplugger.xml.dom4j.entity.Fields;
-import com.eplugger.xml.dom4j.entity.SimpleField;
 
 public class TextTransTest {
 	@Test

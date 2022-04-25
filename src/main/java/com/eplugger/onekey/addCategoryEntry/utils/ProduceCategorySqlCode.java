@@ -1,7 +1,7 @@
 package com.eplugger.onekey.addCategoryEntry.utils;
 
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.uuid.UUIDUtils;
+import com.eplugger.uuid.utils.UUIDUtils;
 
 public class ProduceCategorySqlCode {
 	private ProduceCategorySqlCode() {

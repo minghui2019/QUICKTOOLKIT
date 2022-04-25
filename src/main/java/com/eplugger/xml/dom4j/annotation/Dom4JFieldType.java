@@ -22,5 +22,6 @@ public enum Dom4JFieldType {
     /**
      * 字段为文本内容
      */
-    ELEMENT
+    ELEMENT,
+    NONE
 }

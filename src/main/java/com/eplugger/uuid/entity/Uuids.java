@@ -1,5 +1,8 @@
 package com.eplugger.uuid.entity;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.Collection;
 import java.util.List;
 
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
@@ -14,4 +17,19 @@ import lombok.Data;
 public class Uuids {
 	@Dom4JField(type = Dom4JFieldType.TAG)
 	private List<Uuid> uuidList = Lists.newArrayList();
+	
+	public int size() {
+		checkNotNull(this.uuidList, "com.eplugger.uuid.entity.Uuids.uuidList is null!");
+		return this.uuidList.size();
+	}
+	
+	public boolean addAll(Collection<? extends Uuid> c) {
+		checkNotNull(this.uuidList, "com.eplugger.uuid.entity.Uuids.uuidList is null!");
+		return this.uuidList.addAll(c);
+	}
+
+	public boolean isEmpty() {
+		checkNotNull(this.uuidList, "com.eplugger.uuid.entity.Uuids.uuidList is null!");
+		return this.uuidList.isEmpty();
+	}
 }

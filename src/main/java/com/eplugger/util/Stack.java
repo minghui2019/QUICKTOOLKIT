@@ -1,24 +1,26 @@
 package com.eplugger.util;
 
 import java.util.LinkedList;
+
+import com.google.common.collect.Lists;
  
 /**
  * LinkedList实现栈
  * @param <T>
  */
 public class Stack<T> {
-	private LinkedList<T> storage = new LinkedList<T>();
+	private LinkedList<T> storage = Lists.newLinkedList();
 	
 	/**
-	 * 入栈
+	 * 添加一个新元素到栈顶位置
 	 * @param v
 	 */
-	public void push(T v) {
-		storage.addFirst(v);
+	public void push(T t) {
+		storage.addFirst(t);
 	}
 	
 	/**
-	 * 检查栈首元素
+	 * 返回栈顶的元素，不对栈做任何修改
 	 * @return
 	 */
 	public T peek() {
@@ -26,7 +28,7 @@ public class Stack<T> {
 	}
 	
 	/**
-	 * 出栈
+	 * 移除栈顶的元素，同时返回被移除的元素
 	 * @return
 	 */
 	public T pop() {
@@ -34,11 +36,26 @@ public class Stack<T> {
 	}
 	
 	/**
-	 * 检查栈是否已空
+	 * 如果栈里没有任何元素就返回true，否则返回false。
 	 * @return
 	 */
-	public boolean empty() {
+	public boolean isEmpty() {
 		return storage.isEmpty();
+	}
+	
+	/**
+	 * 返回栈里的元素个数
+	 * @return
+	 */
+	public int size() {
+		return storage.size();
+	}
+	
+	/**
+	 * 移除栈里的所有元素
+	 */
+	public void clear() {
+		storage.clear();
 	}
 	
 	@Override

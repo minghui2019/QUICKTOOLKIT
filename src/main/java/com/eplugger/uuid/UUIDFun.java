@@ -1,7 +1,5 @@
 package com.eplugger.uuid;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -20,13 +18,10 @@ import com.google.common.collect.Lists;
 public class UUIDFun {
 	private Uuids uuids;
 	
-	public void setUuids(Uuids uuids) {
-		this.uuids = uuids;
-	}
-	public Uuids getUuids() {
-		return uuids;
-	}
 	public Stack<Uuid> getUuids(int count) {
+		if (this.uuids == null || this.uuids.size() < count) {
+			this.uuids.addAll(buildUuids(1000));
+		}
 		Stack<Uuid> uuidStack = new Stack<Uuid>();
 		List<Uuid> uuidList = this.uuids.getUuidList();
 		int i = 0;
@@ -38,38 +33,66 @@ public class UUIDFun {
 		return uuidStack;
 	}
 	
+	public Uuid getUuid() {
+		if (this.uuids.isEmpty()) {
+			this.uuids.addAll(buildUuids(1000));
+		}
+		for (Iterator<Uuid> iterator = this.uuids.getUuidList().iterator(); iterator.hasNext(); ) {
+			Uuid uuid = iterator.next();
+			iterator.remove();
+			return uuid;
+		}
+		return null;
+	}
+	
 
 	public static void main(String[] args) throws Exception {
 		UUIDFun uuidFun = new UUIDFun();
 		uuidFun.buildUuids();
 //		Uuids uuids = buildUuids(100000);
 		
+		uuidFun.consumeUuid();
+		
 		// Bean 转化为 XMLObject
-    	XMLObject root = XMLObject.of(uuidFun.getUuids()).setRootElement(true).setDocumentType("uuids", null, "../dtd/UUID.dtd");
+    	XMLObject root = XMLObject.of(uuidFun.uuids).setRootElement(true).setDocumentType("uuids", null, "../dtd/UUID.dtd");
 
 		String path = UUIDFun.class.getResource("/").getPath() + "../../src/main/resource/uuid/UUID.xml";
     	File retractFile = new File(path);
     	System.out.println(retractFile);
-    	XMLParser.transfer(root, retractFile, true);
+    	XMLParser.transfer(root, retractFile, false);
 	}
 	
 	
-	public static Uuids buildUuids(int count) {
-		Uuids uuids = new Uuids();
-		List<Uuid> uuidList = uuids.getUuidList();
+	private void consumeUuid() {
+		Stack<Uuid> uuids2 = getUuids(5);
+		for (int i = 0; i < 3; i++) {
+			Uuid pop = uuids2.pop();
+			System.out.println(pop.getText());
+		}
+		
+		afterConsumeUuid(uuids2);
+	}
+	
+	private void afterConsumeUuid(Stack<Uuid> uuids2) {
+		while (!uuids2.isEmpty()) {
+			List<Uuid> uuidList = this.uuids.getUuidList();
+			uuidList.add(uuids2.pop());
+		}
+	}
+	
+	public List<Uuid> buildUuids(int count) {
+		List<Uuid> uuidList = Lists.newArrayList();
 		for (String uuid : UUIDUtils.getUuids(count)) {
 			uuidList.add(new Uuid(false, uuid));
 		}
-		return uuids;
+		return uuidList;
 	}
 	
 	public void buildUuids() throws Exception {
 		beforeBuildUuids();
 		String xmlPath = UUIDFun.class.getResource("/").getPath() + "../../src/main/resource/uuid/UUID_Bak.xml";
-
         XMLParser xmlParser = new XMLParser(xmlPath);
         XMLObject root = xmlParser.parse();
-    	assertNotNull(root);
     	FieldValueParserFactory.reg(new SimpleValueParser<Boolean>() {
         	@Override
         	public Class<Boolean> getPreciseType() {
@@ -77,7 +100,6 @@ public class UUIDFun {
         	}
         	@Override
         	public Boolean fromXml(Class<?> type, String value) {
-        		value = Strings.emptyToNull(value);
         		if (Strings.isNullOrEmpty(value)) {
         			return false;
         		}

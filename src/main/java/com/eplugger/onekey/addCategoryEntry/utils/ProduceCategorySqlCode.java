@@ -1,18 +1,21 @@
 package com.eplugger.onekey.addCategoryEntry.utils;
 
+import java.io.IOException;
+
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.uuid.utils.UUIDUtils;
+import com.eplugger.uuid.UUIDFun;
 
 public class ProduceCategorySqlCode {
 	private ProduceCategorySqlCode() {
 	}
 	public static String createCategoryStr(String[] keyArray, String[] valueArray, String categoryName, String bizName, String bizType, String version) {
+		UUIDFun uuidFun = UUIDFun.getInstance();
 		StringBuffer sb = new StringBuffer();
 		sb.append(String.format(DELETE_FROM_CFG_CATEGORY_ENTRY, categoryName));
 		sb.append(String.format(DELETE_FROM_CFG_CATEGORY, categoryName));
 		sb.append(StringUtils.CRLF).append(StringUtils.CRLF);
 		sb.append("-- 表[CFG_CATEGORY]的数据如下:").append(StringUtils.CRLF);
-		String cfgCategoryId = UUIDUtils.getUuid();
+		String cfgCategoryId = uuidFun.getUuid();
 		sb.append(String.format(INSERT_INTO_CFG_CATEGORY, cfgCategoryId, bizName, categoryName, bizType, version));
 		sb.append(StringUtils.CRLF).append(StringUtils.CRLF);
 		sb.append("-- 表[CFG_CATEGORY_ENTRY]的数据如下:").append(StringUtils.CRLF);
@@ -20,11 +23,16 @@ public class ProduceCategorySqlCode {
 			if (valueArray[i] == null) {
 				break;
 			}
-			sb.append(String.format(INSERT_INTO_CFG_CATEGORY_ENTRY, UUIDUtils.getUuid(),
-					(keyArray == null ? UUIDUtils.getUuid() : keyArray[i].trim()), cfgCategoryId, version,
+			sb.append(String.format(INSERT_INTO_CFG_CATEGORY_ENTRY, uuidFun.getUuid(),
+					(keyArray == null ? uuidFun.getUuid() : keyArray[i].trim()), cfgCategoryId, version,
 					String.valueOf(i + 1), valueArray[i].trim()));
 		}
 		sb.append(StringUtils.CRLF).append(StringUtils.CRLF);
+		try {
+			uuidFun.destroyUuids();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return sb.toString();
 	}
 	

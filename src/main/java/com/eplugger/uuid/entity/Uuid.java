@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @Dom4JTag("uuid")
 public class Uuid {
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE)
-	private boolean outDate = false;
+	private int id;
 	@Dom4JField(type = Dom4JFieldType.NONE)
 	private String text;
 	@Override
 	public String toString() {
-		return "\nUuid [outDate=" + outDate + ", text=" + text + "]";
+		return "\nUuid [id=" + id + ", text=" + text + "]";
 	}
 }

@@ -13,13 +13,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eplugger.uuid.entity.Uuid;
+import com.eplugger.uuid.UUIDFun;
 import com.eplugger.uuid.entity.Uuids;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
-import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
-import com.eplugger.xml.dom4j.parse.SimpleValueParser;
-import com.google.common.base.Strings;
 
 public class UuidTest {
 	private XMLParser xmlParser;
@@ -39,20 +36,6 @@ public class UuidTest {
     public void testParse() throws Exception {
     	XMLObject root = xmlParser.parse();
     	assertNotNull(root);
-    	FieldValueParserFactory.reg(new SimpleValueParser<Boolean>() {
-        	@Override
-        	public Class<Boolean> getPreciseType() {
-        		return boolean.class;
-        	}
-        	@Override
-        	public Boolean fromXml(Class<?> type, String value) {
-        		value = Strings.emptyToNull(value);
-        		if (Strings.isNullOrEmpty(value)) {
-        			return false;
-        		}
-        		return Boolean.valueOf(value);
-        	}
-		});
     	Uuids uuids = root.toBean(Uuids.class);
     	assertNotNull(uuids);
     	System.out.println(uuids);
@@ -61,11 +44,7 @@ public class UuidTest {
 	@Test
     public void testTransfer() throws IOException {
 		Uuids uuids = new Uuids();
-		List<Uuid> uuidList = uuids.getUuidList();
-		uuidList.add(new Uuid(true, "1234"));
-		uuidList.add(new Uuid(false, "2345"));
-		uuidList.add(new Uuid(true, "3456"));
-		uuidList.add(new Uuid(false, "4567"));
+		uuids.setUuidList(UUIDFun.getInstance().buildUuids(30));
     	
     	// Bean 转化为 XMLObject
     	XMLObject root = XMLObject.of(uuids);

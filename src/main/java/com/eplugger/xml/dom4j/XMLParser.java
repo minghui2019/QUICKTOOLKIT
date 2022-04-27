@@ -10,6 +10,7 @@ import java.util.Map;
 import org.dom4j.Attribute;
 import org.dom4j.Comment;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.Text;
@@ -226,8 +227,9 @@ public class XMLParser {
 	 * 获取XML文件根节点
 	 *
 	 * @return Document 根节点
+	 * @throws DocumentException 
 	 */
-	private Document getDocument() throws Exception {
+	private Document getDocument() throws DocumentException {
 		SAXReader saxReader = new SAXReader();
 		saxReader.setEncoding(fileEncoding);
 		File file = getXMLFile();

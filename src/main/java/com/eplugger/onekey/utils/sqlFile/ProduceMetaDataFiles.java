@@ -6,7 +6,7 @@ import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.utils.DBUtils;
 import com.eplugger.utils.OtherUtils;
-import com.eplugger.uuid.utils.UUIDUtils;
+import com.eplugger.uuid.UUIDFun;
 
 public class ProduceMetaDataFiles {
 	/**
@@ -41,7 +41,7 @@ public class ProduceMetaDataFiles {
 	public static String produceMetadata(String beanId, List<Field> fieldList) {
 		int orders = ProduceMetaDataFiles.getMaxOrdersByBeanId(beanId);//元数据排序号，默认1
 		int size = fieldList.size();
-		String[] uuids = new String[size];
+		String[] uuids = UUIDFun.getInstance().getUuidsArray(size);
 		StringBuffer uuidSb = new StringBuffer();
 		StringBuffer sb = new StringBuffer();
 		String eadpDataType = DBUtils.getEadpDataType();
@@ -49,7 +49,6 @@ public class ProduceMetaDataFiles {
 			if (StringUtils.isNotBlank(fieldList.get(i).getAssociation())) {
 				continue;
 			}
-			uuids[i] = UUIDUtils.getUuid();
 			uuidSb.append("'").append(uuids[i]).append("'");
 			if (i < size - 1) {
 				uuidSb.append(",");

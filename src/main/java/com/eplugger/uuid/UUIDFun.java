@@ -1,125 +1,183 @@
 package com.eplugger.uuid;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import com.eplugger.util.Stack;
 import com.eplugger.uuid.entity.Uuid;
 import com.eplugger.uuid.entity.Uuids;
-import com.eplugger.uuid.utils.UUIDUtils;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
-import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
-import com.eplugger.xml.dom4j.parse.SimpleValueParser;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 public class UUIDFun {
+	private static class UUIDFunSingleton {
+		private static UUIDFun instance = new UUIDFun();
+	}
+	private UUIDFun() {
+		initUuids();
+	}
+	/**
+	 * 单例模式对外提供访问唯一实例的入口
+	 * @return
+	 */
+	public static UUIDFun getInstance() {
+		return UUIDFunSingleton.instance;
+	}
+	
+	private static final String URL_XML_UUIDS = UUIDFun.class.getResource("/").getPath() + "../../src/main/resource/uuid/UUID.xml";
+	private static final Integer INIT_NUM_UUIDS = 1000;
 	private Uuids uuids;
 	
-	public Stack<Uuid> getUuids(int count) {
-		if (this.uuids == null || this.uuids.size() < count) {
-			this.uuids.addAll(buildUuids(1000));
+	/**
+	 * 对外提供获取count数量的UUID的堆栈
+	 * @param count
+	 * @return
+	 */
+	public Stack<String> getUuids(int count) {
+		if (this.uuids == null) {
+			initUuids();
 		}
-		Stack<Uuid> uuidStack = new Stack<Uuid>();
-		List<Uuid> uuidList = this.uuids.getUuidList();
+		if (this.uuids.size() < count) {
+			this.uuids.addAll(buildUuids(INIT_NUM_UUIDS));
+		}
+		Stack<String> uuidStack = new Stack<>();
 		int i = 0;
-		for (Iterator<Uuid> iterator = uuidList.iterator(); iterator.hasNext() && i < count; i++) {
-			Uuid uuid = iterator.next();
-			uuidStack.push(uuid);
+		for (Iterator<Uuid> iterator = this.uuids.getUuidList().iterator(); iterator.hasNext() && i < count; i++) {
+			uuidStack.push(iterator.next().getText());
 			iterator.remove();
 		}
 		return uuidStack;
 	}
 	
-	public Uuid getUuid() {
+	/**
+	 * 对外提供获取count数量的UUID的数组
+	 * @param count
+	 * @return
+	 */
+	public String[] getUuidsArray(int count) {
+		if (this.uuids == null) {
+			initUuids();
+		}
+		if (this.uuids.size() < count) {
+			this.uuids.addAll(buildUuids(INIT_NUM_UUIDS));
+		}
+		String[] uuidArray = new String[count];
+		int i = 0;
+		for (Iterator<Uuid> iterator = this.uuids.getUuidList().iterator(); iterator.hasNext() && i < count; i++) {
+			uuidArray[i] = iterator.next().getText();
+			iterator.remove();
+		}
+		return uuidArray;
+	}
+	
+	/**
+	 * 对外提供获取1个UUID
+	 * @return
+	 */
+	public String getUuid() {
+		if (this.uuids == null) {
+			initUuids();
+		}
 		if (this.uuids.isEmpty()) {
-			this.uuids.addAll(buildUuids(1000));
+			this.uuids.addAll(buildUuids(INIT_NUM_UUIDS));
 		}
 		for (Iterator<Uuid> iterator = this.uuids.getUuidList().iterator(); iterator.hasNext(); ) {
 			Uuid uuid = iterator.next();
 			iterator.remove();
-			return uuid;
+			return uuid.getText();
 		}
 		return null;
 	}
 	
 
 	public static void main(String[] args) throws Exception {
-		UUIDFun uuidFun = new UUIDFun();
-		uuidFun.buildUuids();
-//		Uuids uuids = buildUuids(100000);
-		
-		uuidFun.consumeUuid();
-		
-		// Bean 转化为 XMLObject
-    	XMLObject root = XMLObject.of(uuidFun.uuids).setRootElement(true).setDocumentType("uuids", null, "../dtd/UUID.dtd");
-
-		String path = UUIDFun.class.getResource("/").getPath() + "../../src/main/resource/uuid/UUID.xml";
-    	File retractFile = new File(path);
-    	System.out.println(retractFile);
-    	XMLParser.transfer(root, retractFile, false);
+		UUIDFun uuidFun = UUIDFun.getInstance();
+		uuidFun.initUuids();
+		uuidFun.consumeUuids();
 	}
 	
-	
-	private void consumeUuid() {
-		Stack<Uuid> uuids2 = getUuids(5);
-		for (int i = 0; i < 3; i++) {
-			Uuid pop = uuids2.pop();
-			System.out.println(pop.getText());
+	private void consumeUuids() throws IOException {
+		Stack<String> uuids2 = getUuids(5);
+		for (int i = 0; i < 5; i++) {
+			System.out.println(uuids2.pop());
 		}
 		
-		afterConsumeUuid(uuids2);
+		destroyUuids(uuids2);
 	}
 	
-	private void afterConsumeUuid(Stack<Uuid> uuids2) {
-		while (!uuids2.isEmpty()) {
+	/**
+	 * 把堆栈中剩余uuid放回变量uuids中，接着备份并销毁uuids变量
+	 * @param stack
+	 * @throws IOException
+	 */
+	public void destroyUuids(Stack<String> stack) throws IOException {
+		while (!stack.isEmpty()) {
 			List<Uuid> uuidList = this.uuids.getUuidList();
-			uuidList.add(uuids2.pop());
+			uuidList.add(new Uuid(0, stack.pop()));
 		}
+		
+		this.destroyUuids();
 	}
 	
+	/**
+	 * 把剩余的uuids写出到xml文件后销毁uuids变量
+	 * @throws IOException
+	 */
+	public void destroyUuids() throws IOException {
+		int i = 0;
+		for (Uuid uuid : this.uuids.getUuidList()) {
+			uuid.setId(++i);
+		}
+		// Bean 转化为 XMLObject
+    	XMLObject root = XMLObject.of(this.uuids).setRootElement(true).setDocumentType("uuids", null, "../dtd/UUID.dtd");
+
+    	XMLParser.transfer(root, new File(URL_XML_UUIDS), false);
+    	this.uuids = null;
+	}
+	
+	/**
+	 * 构建count数量的UUID
+	 * @param count
+	 * @return
+	 */
 	public List<Uuid> buildUuids(int count) {
 		List<Uuid> uuidList = Lists.newArrayList();
-		for (String uuid : UUIDUtils.getUuids(count)) {
-			uuidList.add(new Uuid(false, uuid));
+		int i = 0;
+		for (String uuid : this.randomUUID(count)) {
+			uuidList.add(new Uuid(++i, uuid));
 		}
 		return uuidList;
 	}
 	
-	public void buildUuids() throws Exception {
-		beforeBuildUuids();
-		String xmlPath = UUIDFun.class.getResource("/").getPath() + "../../src/main/resource/uuid/UUID_Bak.xml";
-        XMLParser xmlParser = new XMLParser(xmlPath);
-        XMLObject root = xmlParser.parse();
-    	FieldValueParserFactory.reg(new SimpleValueParser<Boolean>() {
-        	@Override
-        	public Class<Boolean> getPreciseType() {
-        		return boolean.class;
-        	}
-        	@Override
-        	public Boolean fromXml(Class<?> type, String value) {
-        		if (Strings.isNullOrEmpty(value)) {
-        			return false;
-        		}
-        		return Boolean.valueOf(value);
-        	}
-		});
-    	this.uuids = root.toBean(Uuids.class);
-    	afterBuildUuids();
-	}
-	private void afterBuildUuids() {
-		List<Uuid> uuidList = this.uuids.getUuidList();
-		List<Uuid> uuidList_ = Lists.newArrayList();
-		for (int i = 0; i < 20; i++) {
-			uuidList_.add(uuidList.get(i));
+	/**
+	 * 初始化内部的Uuids
+	 */
+	private void initUuids() {
+        XMLParser xmlParser = new XMLParser(URL_XML_UUIDS);
+		try {
+			XMLObject root = xmlParser.parse();
+			this.uuids = root.toBean(Uuids.class);
+			afterInitUuids();
+		} catch (Exception e) {
+			this.uuids = new Uuids();
 		}
-		this.uuids.setUuidList(uuidList_);
 	}
-	private void beforeBuildUuids() {
-		if (this.uuids != null) {
-			this.uuids = null;
+	
+	/**
+	 * 测试阶段使用
+	 */
+	private void afterInitUuids() {
+	}
+	
+	public String[] randomUUID(int count) {
+		String[] uuids = new String[count];
+		for (int i = 0; i < count; i++) {
+			uuids[i] = UUID.randomUUID().toString().replace("-", "");
 		}
+		return uuids;
 	}
 }

@@ -284,7 +284,7 @@ public class XMLParser {
 		StringBuilder content = formatter.format(root);
 
 		// 将格式化内容写入文件
-		FileUtils.write(outputFile, content, Charset.forName("UTF-8"), false);
+		FileUtils.write(outputFile, content, StandardCharsets.UTF_8, false);
 		return true;
 	}
 

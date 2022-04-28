@@ -11,6 +11,11 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
+import com.eplugger.common.io.FileUtils;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class XmlFileUtils {
 	private XmlFileUtils() {
 	}
@@ -26,7 +31,7 @@ public class XmlFileUtils {
 	 * @throws DocumentException
 	 */
 	public static Document readDocument(String filePath, String encoding) throws DocumentException {
-        return XmlFileUtils.readDocument(new File(filePath), encoding);
+        return XmlFileUtils.readDocument(FileUtils.getFile(filePath), encoding);
 	}
 	
 	public static Document readDocument(File file, String encoding) throws DocumentException {
@@ -60,5 +65,6 @@ public class XmlFileUtils {
 		writer.write(document);
 		writer.flush();
 		writer.close();
+		log.error("文件写出" + (file.exists() ? "成功" : "失败") + "; 文件路径[path=" + file.getCanonicalPath() + "]");
 	}
 }

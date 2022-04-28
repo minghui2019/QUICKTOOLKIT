@@ -7,7 +7,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import com.eplugger.xml.dom4j.parse.SimpleValueParser;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -138,12 +138,10 @@ public class XMLObject implements Serializable {
             Dom4JFieldType dom4jFieldType = xmlField.type();
             if (Dom4JFieldType.ATTRIBUTE == dom4jFieldType) {
                 getValueByAttribute(xmlObject, fieldType, fieldName, fieldValue);
-                continue;
             }
 
             if (Dom4JFieldType.TAG == dom4jFieldType) {
                 getValueByTag(xmlObject, field, fieldName, fieldValue);
-                continue;
             }
 
             if (Dom4JFieldType.ELEMENT == dom4jFieldType) {
@@ -221,7 +219,7 @@ public class XMLObject implements Serializable {
         // 如果没有泛型不设置当前值
         Type genericType = field.getGenericType();
         if (genericType instanceof ParameterizedType) {
-            // 泛型类型必须被 XmlTag 注解, 否则不予解析
+            // 泛型类型必须被 Dom4JTag 注解, 否则不予解析
             ParameterizedType pt = (ParameterizedType) genericType;
             Class<?> childType = (Class<?>) pt.getActualTypeArguments()[0];
             if (!childType.isAnnotationPresent(Dom4JTag.class)) {
@@ -277,8 +275,8 @@ public class XMLObject implements Serializable {
         if (fieldValue == null)
             return false;
 
-        Dom4JTag fieldTypeXmlTag = fieldType.getAnnotation(Dom4JTag.class);
-        String childTagName = getTargetTagName(fieldTypeXmlTag, fieldType.getSimpleName());
+        Dom4JTag dom4jTag = fieldType.getAnnotation(Dom4JTag.class);
+        String childTagName = getTargetTagName(dom4jTag, fieldType.getSimpleName());
         List<XMLObject> children = xmlObject.childTags.computeIfAbsent(childTagName, k -> new ArrayList<>());
 
         XMLObject childTag = XMLObject.of(fieldValue);
@@ -843,8 +841,9 @@ public class XMLObject implements Serializable {
         List<XMLObject> children = getChildTags(childTagName);
         if (children.size() > 1)
             throw new RuntimeException("期望唯一子标签[" + childTagName + "]实际找到[" + children.size() + "]条");
-        if (children.size() == 0)
-            return false;
+		//xml没找到则跳过
+		if (children.size() == 0)
+			return false;
 
         FieldUtils.setFieldValue(bean, field, children.get(0).toBean(fieldType));
         return true;
@@ -883,7 +882,7 @@ public class XMLObject implements Serializable {
 
                 // 如果目标集合是Set集合, 从List集合转
                 if (FieldUtils.CollectionType.SET == collectionType)
-                    FieldUtils.setFieldValue(bean, field, new LinkedHashSet<>(val));
+                    FieldUtils.setFieldValue(bean, field, Sets.newLinkedHashSet(val));
                 else
                     FieldUtils.setFieldValue(bean, field, val);
             }
@@ -937,9 +936,10 @@ public class XMLObject implements Serializable {
 
         if (children.size() > 1)
             throw new RuntimeException("期望唯一子标签[" + childTagName + "]实际找到[" + children.size() + "]条");
-        if (children.size() == 0)
-            return false;
-
+		//xml没找到则跳过
+		if (children.size() == 0)
+			return false;
+      		
         setFieldValue(bean, field, children.get(0).content);
         return true;
     }

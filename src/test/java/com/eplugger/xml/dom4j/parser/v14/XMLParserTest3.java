@@ -141,7 +141,7 @@ public class XMLParserTest3 {
     @Test
     public void testTransfer1() throws IOException {
     	ModuleTables moduleTables2 = new ModuleTables();
-		List<ModuleTable> moduleTables = moduleTables2.getModuleTables();
+		List<ModuleTable> moduleTables = moduleTables2.getModuleTableList();
 		ModuleTable moduleTable = new ModuleTable("xJProjectMember", "BIZ_XJ_PROJECT_MEMBER", true, "校级项目成员");
 		moduleTables.add(moduleTable);
 		moduleTables.add(new ModuleTable("xJProjectMember", "BIZ_XJ_PROJECT_MEMBER", true, "校级项目成员"));

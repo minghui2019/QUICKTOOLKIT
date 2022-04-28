@@ -1,33 +1,31 @@
-package com.eplugger.xml.dom4j;
+package com.eplugger.xml.dom4j.simple;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.commons.lang3.reflect.FieldUtils;
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
 import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
 import com.eplugger.xml.dom4j.annotation.Dom4JTag;
-import com.eplugger.xml.dom4j.entity.ModuleTables;
 import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
-import com.eplugger.xml.dom4j.parser.v14.XMLParserTest4;
+import com.eplugger.xml.dom4j.util.XmlFileUtils;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TestXmlToBean {
+public class XmlToBean {
 	/**
 	 * XML 文件路径
 	 */
@@ -36,60 +34,74 @@ public class TestXmlToBean {
 	/**
 	 * 文件编码, 默认使用 UTF-8
 	 */
-	private final String fileEncoding;
+	private final String encoding;
 
 	/**
 	 * 构建XML解析器
 	 *
 	 * @param path 文件路径
 	 */
-	public TestXmlToBean(String path) {
-		this(path, StandardCharsets.UTF_8);
+	public XmlToBean(String path) {
+		this(path, "UTF-8");
 	}
 
 	/**
 	 * 构建XML解析器
 	 *
 	 * @param path         文件路径
-	 * @param fileEncoding 文件编码
+	 * @param encoding 文件编码
 	 */
-	public TestXmlToBean(String path, String fileEncoding) {
+	public XmlToBean(String path, Charset encoding) {
+		this(path, encoding.name());
+	}
+
+	/**
+	 * 构建XML解析器
+	 *
+	 * @param path         文件路径
+	 * @param encoding 文件编码
+	 */
+	public XmlToBean(String path, String encoding) {
 		this.path = path;
-		this.fileEncoding = fileEncoding;
+		this.encoding = encoding;
 	}
-
-	/**
-	 * 构建XML解析器
-	 *
-	 * @param path         文件路径
-	 * @param fileEncoding 文件编码
-	 */
-	public TestXmlToBean(String path, Charset fileEncoding) {
-		this(path, fileEncoding.name());
-	}
-
+	
 	/**
 	 * 获取XML文件根节点
 	 *
 	 * @return Document 根节点
+	 * @throws DocumentException 
 	 */
-	private Document getDocument() throws Exception {
-		SAXReader saxReader = new SAXReader();
-		saxReader.setEncoding(fileEncoding);
-		File file = getXMLFile();
-		return saxReader.read(file);
+	private Document getDocument() {
+		try {
+			return XmlFileUtils.readDocument(path, encoding);
+		} catch (DocumentException e) {
+			log.error("xml文件读取失败, 请检查路径[path=" + path + "]" + e.getMessage());
+		}
+		return null;
 	}
 
 	/**
-	 * 获取XML文件对象
-	 *
-	 * @return File XML文件对象
+	 * 映射为实体类
+	 * @param cls
+	 * @return
 	 */
-	private File getXMLFile() {
-		if (path == null || 0 >= path.length()) {
-			throw new RuntimeException("Path invalid[path=" + path + "]");
-		}
-		return new File(path);
+	public <T> T toBean(Class<T> cls) {
+		Dom4JTag xmlTag = cls.getAnnotation(Dom4JTag.class);
+        if (xmlTag == null)
+        	throw new RuntimeException("类型[" + cls.getSimpleName() + "]未使用 @Dom4JTag 注解");
+        
+        Document document = getDocument();
+        if (document == null)
+        	return null;
+        Element root = document.getRootElement();
+        
+        String expectName = StringUtils.trimToEmpty(xmlTag.value());
+        String tagName = root.getName();
+        if (StringUtils.isNotBlank(expectName) && !expectName.equals(tagName))
+            throw new RuntimeException("期望标签名[" + expectName + "]与实际标签名[" + tagName + "]不一致");
+        
+        return toBean(cls, root);
 	}
 
 	/**
@@ -106,7 +118,7 @@ public class TestXmlToBean {
 		try {
 			bean = cls.newInstance();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("类型[" + cls.getSimpleName() + "]创建实例失败，请检查是否缺少无参数的构造函数");
 		}
 
 		// 获取字段列表
@@ -117,6 +129,26 @@ public class TestXmlToBean {
 
 		return bean;
 	}
+	
+	/**
+	 * 指定控件解析为列表
+	 *
+	 * @param childTagName 子标签名
+	 * @param cls          实体类字节码
+	 * @param root         当前解析的根元素
+	 * @return
+	 * @see #toBean(Class, Element)
+	 */
+	public <T> List<T> toBeans(String childTagName, Class<T> cls, Element root) {
+		List<T> beans = Lists.newArrayList();
+
+		List<Element> elements = root.elements();
+		for (Element element : elements) {
+			T bean = toBean(cls, element);
+			beans.add(bean);
+		}
+		return beans;
+	}
 
 	/**
 	 * 设置值
@@ -126,7 +158,6 @@ public class TestXmlToBean {
 	 * @param element
 	 */
 	private void setValue(Object bean, Field field, Element element) {
-
 		// 不处理没有添加字段注解的属性
 		Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
 		if (null == xmlField)
@@ -136,33 +167,27 @@ public class TestXmlToBean {
 		Dom4JFieldType type = xmlField.type();
 		try {
 			switch (type) {
-
 			// 属性直接映射
 			case ATTRIBUTE:
 				String value = element.attributeValue(name);
 				setFieldValue(bean, field, value);
 				break;
-
 			// 子标签
 			case TAG:
 				setValueByTag(bean, field, xmlField, element);
 				break;
-
+			// 文本值
 			case ELEMENT:
 				String text = element.elementText(name);
 				setFieldValue(bean, field, text);
+				break;
+			case NONE:
+				setFieldValue(bean, field, element.getTextTrim());
 				break;
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e + field.getName());
 		}
-	}
-
-	private void setFieldValue(Object bean, Field field, String value) throws IllegalAccessException {
-		Class<?> type = field.getType();
-		Object obj = ConvertUtils.convert(value, type);
-		field.setAccessible(true);
-		field.set(bean, obj);
 	}
 
 	/**
@@ -174,11 +199,10 @@ public class TestXmlToBean {
 	 * @param element
 	 */
 	private void setValueByTag(Object bean, Field field, Dom4JField xmlField, Element element) throws Exception {
-		field.setAccessible(true);
-
 		boolean isFired = trySimpleValueByTag(bean, field, element);
 		isFired = isFired || tryCollectionOrArray(bean, field, element);
 		isFired = isFired || tryCustomType(bean, field, element);
+		log.debug("path&hierarchy处理结果: " + isFired);
 	}
 
 	/**
@@ -190,7 +214,6 @@ public class TestXmlToBean {
 	 * @return 成功处理返回true, 否则返回false(需要其他方式处理)
 	 */
 	private boolean tryCustomType(Object bean, Field field, Element element) throws IllegalAccessException {
-
 		Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
 		Class<?> fieldType = field.getType();
 		// 自定义类型
@@ -200,17 +223,14 @@ public class TestXmlToBean {
 		// 复合属性只能解析唯一的子标签
 		// 如果标签出现多个证明实体类属性类型定义错误
 		String childTagName = getTargetTagName(xmlField, fieldType.getSimpleName());
-
 		List<Element> children = element.elements(childTagName);
-		if (1 < children.size())
-			throw new RuntimeException("期望唯一子标签[" + childTagName + "]实际找到[" + children.size() + "]条");
-
-		if (1 == children.size()) {
-			Element firstChildTag = children.get(0);
-			Object val = toBean(fieldType, firstChildTag);
-			field.set(bean, val);
-		}
-
+		if (children.size() > 1)
+            throw new RuntimeException("期望唯一子标签[" + childTagName + "]实际找到[" + children.size() + "]条");
+		//xml没找到则跳过
+		if (children.size() == 0)
+			return false;
+        
+		FieldUtils.setFieldValue(bean, field, toBean(fieldType, children.get(0)));
 		return true;
 	}
 
@@ -234,38 +254,42 @@ public class TestXmlToBean {
 		String childTagName = getTargetTagName(xmlField, fieldType.getSimpleName());
 		List<Element> children = element.elements(childTagName);
 
-		if (1 < children.size())
-			throw new RuntimeException("期望唯一子标签[" + childTagName + "]实际找到[" + children.size() + "]条");
+		if (children.size() > 1)
+            throw new RuntimeException("期望唯一子标签[" + childTagName + "]实际找到[" + children.size() + "]条");
+		//xml没找到则跳过
+		if (children.size() == 0)
+			return false;
 
-		if (1 == children.size()) {
-			Element firstChildTag = children.get(0);
-			setFieldValue(bean, field, firstChildTag.getTextTrim());
-		}
+		setFieldValue(bean, field, children.get(0).getTextTrim());
 		return true;
 	}
 
+	/**
+     * 尝试设置列表或者数组
+     *
+     * @param bean  数据对象
+     * @param field 字段对象
+     * @param element
+     * @return 成功处理返回true, 否则返回false(需要其他方式处理)
+     */
 	private boolean tryCollectionOrArray(Object bean, Field field, Element element) throws IllegalAccessException {
 		Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
 		Class<?> fieldType = field.getType();
 
 		// 列表&数组
 		FieldUtils.CollectionType collectionType = FieldUtils.isCollection(fieldType);
-		if (null == collectionType)
-			return false;
 
 		// List & Set
 		if (FieldUtils.CollectionType.LIST == collectionType || FieldUtils.CollectionType.SET == collectionType) {
-
 			// 获取泛型类型
 			// 如果没有泛型不设置当前值
 			Type genericType = field.getGenericType();
 			if (genericType instanceof ParameterizedType) {
-
-				// 泛型类型必须被 XmlTag 注解, 否则不予解析
+				// 泛型类型必须被 Dom4JTag 注解, 否则不予解析
 				ParameterizedType pt = (ParameterizedType) genericType;
 				Class<?> type = (Class<?>) pt.getActualTypeArguments()[0];
 				if (!type.isAnnotationPresent(Dom4JTag.class)) {
-					log.warn("请检查泛型类型[" + type.getName() + "]是否添加 @XmlTag 注解");
+					log.warn("请检查泛型类型[" + type.getName() + "]是否添加 @Dom4JTag 注解");
 					return true;
 				}
 
@@ -274,39 +298,51 @@ public class TestXmlToBean {
 
 				// 如果目标集合是Set集合, 从List集合转
 				if (FieldUtils.CollectionType.SET == collectionType)
-					field.set(bean, new LinkedHashSet<>(val));
+					FieldUtils.setFieldValue(bean, field, Sets.newLinkedHashSet(val));
 				else
-					field.set(bean, val);
+					FieldUtils.setFieldValue(bean, field, val);
 			}
 			return true;
 		}
+		
+		// Array
+        if (FieldUtils.CollectionType.ARRAY == collectionType) {
+            Class<?> type = fieldType.getComponentType();
+            String childTagName = getTargetTagName(xmlField, type.getSimpleName());
+            List<?> val = toBeans(childTagName, type, element);
+            FieldUtils.setFieldValue(bean, field, val.toArray());
+            return true;
+        }
 
-		return true;
+		return false;
+	}
+	
+	/**
+	 *  TODO 
+	 *  待换
+	 * @see ConvertUtils#convert(String, Class)
+	 * @param bean
+	 * @param field
+	 * @param value
+	 * @throws IllegalAccessException
+	 */
+	private void setFieldValue(Object bean, Field field, String value) throws IllegalAccessException {
+		if (Strings.isNullOrEmpty(value)) {
+    		return;
+    	}
+		Class<?> type = field.getType();
+		Object obj = ConvertUtils.convert(value, type);
+		FieldUtils.setFieldValue(bean, field, obj);
 	}
 
-	public <T> List<T> toBeans(String childTagName, Class<T> cls, Element element) {
-		List<T> beans = Lists.newArrayList();
-
-		List<Element> elements = element.elements();
-		for (Element element1 : elements) {
-			T bean = toBean(cls, element1);
-			beans.add(bean);
-		}
-		return beans;
-	}
-
-	private static String getTargetTagName(Dom4JField xmlField, String defaultName) {
-		return StringUtils.defaultIfBlank(xmlField.name(), defaultName);
-	}
-
-	public static void main(String[] args) throws Exception {
-//		String xmlPath = XMLParserTest4.class.getResource("/Field.xml").getFile();
-        String xmlPath = XMLParserTest4.class.getResource("/ModuleTable.xml").getFile();
-		TestXmlToBean testXml = new TestXmlToBean(xmlPath);
-		Document document = testXml.getDocument();
-		Element rootElement2 = document.getRootElement();
-//		Fields bean = testXml.toBean(Fields.class, rootElement2);
-        ModuleTables bean = testXml.toBean(ModuleTables.class, rootElement2);
-		System.out.println(bean);
+	/**
+     * 获取属性映射的目标标签或属性名称
+     *
+     * @param dom4jField  映射注解
+     * @param defaultName 默认名称
+     * @return 映射名称
+     */
+	private static String getTargetTagName(Dom4JField dom4jField, String defaultName) {
+		return StringUtils.defaultIfBlank(dom4jField.name(), defaultName);
 	}
 }

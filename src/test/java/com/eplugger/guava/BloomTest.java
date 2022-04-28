@@ -1,6 +1,6 @@
 package com.eplugger.guava;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnel;
@@ -31,7 +31,7 @@ public class BloomTest {
         @Override
         public void funnel(String from, PrimitiveSink into) {
             // 自定义过滤条件 此处不做任何过滤
-            into.putString((CharSequence) from, Charset.forName("UTF-8"));
+            into.putString(from, StandardCharsets.UTF_8);
         }
     }, size);
 

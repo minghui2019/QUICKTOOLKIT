@@ -1,25 +1,25 @@
 package com.eplugger.xml.dom4j.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
 import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
 import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 
 
-// @XmlTag 建立TourAction和XMLObject映射关系
+// @Dom4JTag 建立TourAction和XMLObject映射关系
 @Dom4JTag
 @NoArgsConstructor
 @AllArgsConstructor
 public class TourAction {
 
     @Dom4JField
-    // @XmlField(name = "mountDvsType", type = FieldType.ATTRIBUTE)
+    // @Dom4JField(name = "mountDvsType", type = FieldType.ATTRIBUTE)
     // 以上两种注解方式完全一致
     private int mountDvsType;
 
@@ -43,7 +43,7 @@ public class TourAction {
      * <SnapshotPosition arm1="0" arm2="90" arm3="0" arm4="0" arm5="0" arm6="0" zoom="1" thermal="1">
      *     <SnapshotSample image="仪表_20200902_145725.jpg" analysis="" time="1599058645"/>
      * </SnapshotPosition>
-     * 指明 snapshotPosition 数据来源是直接子标签, 具体映射方案由 SnapshotPosition 类的 @XmlTag & @XmlField 决定
+     * 指明 snapshotPosition 数据来源是直接子标签, 具体映射方案由 SnapshotPosition 类的 @Dom4JTag & @Dom4JField 决定
      */
     @Dom4JField(type = Dom4JFieldType.TAG)
     private SnapshotPosition snapshotPosition;

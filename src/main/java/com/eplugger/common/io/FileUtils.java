@@ -195,7 +195,7 @@ public class FileUtils {
 	 */
 	public static void writeAndBackupSrcFile(String pathname, CharSequence data) {
 		try {
-			write(new File(pathname), data, Charset.forName("UTF-8"), false, true);
+			write(new File(pathname), data, StandardCharsets.UTF_8, false, true);
 			log.debug("文件 (" + pathname + ") 创建成功！");
 		} catch (IOException e) {
 			log.error(e.getMessage() + "文件无法输出: {}", new Object[] {pathname} );
@@ -214,7 +214,7 @@ public class FileUtils {
 	 */
 	public static void write(String pathname, CharSequence data) {
 		try {
-			write(new File(pathname), data, Charset.forName("UTF-8"), false, false);
+			write(new File(pathname), data, StandardCharsets.UTF_8, false, false);
 			log.debug("文件 (" + pathname + ") 创建成功！");
 		} catch (IOException e) {
 			log.error(e.getMessage() + "文件无法输出: {}", new Object[] {pathname} );
@@ -234,7 +234,7 @@ public class FileUtils {
 	 * @throws IOException
 	 */
 	public static void write(String pathname, CharSequence data, boolean append) throws IOException {
-		write(new File(pathname), data, Charset.forName("UTF-8"), append, false);
+		write(new File(pathname), data, StandardCharsets.UTF_8, append, false);
 	}
 	
 	/**
@@ -283,5 +283,18 @@ public class FileUtils {
 		} else {
 			Files.asCharSink(file, charset).write(data);
 		}
+	}
+	
+	/**
+	 * 获取File文件对象
+	 * 检查path是否为空
+	 *
+	 * @return File File文件对象
+	 */
+	public static File getFile(String path) {
+		if (Strings.isNullOrEmpty(path)) {
+			throw new RuntimeException("路径无效[path=" + path + "]");
+		}
+		return new File(path);
 	}
 }

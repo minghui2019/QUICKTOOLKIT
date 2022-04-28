@@ -15,18 +15,18 @@ import lombok.Data;
 @Dom4JTag
 public class ModuleTables {
 	@Dom4JField(type = Dom4JFieldType.TAG)
-	List<ModuleTable> moduleTables = new ArrayList<ModuleTable>();
+	List<ModuleTable> moduleTableList = new ArrayList<ModuleTable>();
 
 	@Override
 	public String toString() {
-		return "ModuleTables [\n" + moduleTables.toString() + "\n]";
+		return "ModuleTables [\n" + moduleTableList.toString() + "\n]";
 	}
 	
 	public List<ModuleTable> getValidList() {
-		if (this == null || this.moduleTables.isEmpty()) {
+		if (this == null || this.moduleTableList.isEmpty()) {
 			return Lists.newArrayList();
 		}
-		return this.moduleTables.stream()
+		return this.moduleTableList.stream()
 				.filter(module -> !module.isIgnore())
 				.collect(Collectors.toList());
 	}

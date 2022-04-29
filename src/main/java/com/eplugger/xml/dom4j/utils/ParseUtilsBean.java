@@ -1,10 +1,13 @@
 package com.eplugger.xml.dom4j.utils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.eplugger.onekey.addField.entity.ModuleTable;
+import org.dom4j.Document;
+
+import com.eplugger.onekey.addField.entity.Fields;
+import com.eplugger.onekey.addField.entity.ModuleTables;
+import com.eplugger.xml.dom4j.utils.parsers.FieldParser;
 import com.eplugger.xml.dom4j.utils.parsers.ModuleTableParser;
 
 public class ParseUtilsBean {
@@ -18,20 +21,21 @@ public class ParseUtilsBean {
 		deregister();
 	}
 	
-	public <T> List<T> parse(String path, Class<T> clazz) throws Exception {
+	public <T> T toBean(String path, Class<T> clazz) throws Exception {
 		Parser<T> parser = lookup(clazz);
 		if (parser == null) {
 			throw new Exception("尚未注册该解析器" + clazz.getSimpleName());
 		}
-		return parser.parse(path);
+		return parser.toBean(clazz, path);
 	}
 	
-	public <T> List<T> parseValidList(String path, Class<T> clazz) throws Exception {
+	public <T> Document fromBean(String path, T data) throws Exception {
+		Class<? extends Object> clazz = data.getClass();
 		Parser<T> parser = lookup(clazz);
 		if (parser == null) {
 			throw new Exception("尚未注册该解析器" + clazz.getSimpleName());
 		}
-		return parser.parseValidList(parser.parse(path));
+		return parser.fromBean(data, path);
 	}
 
 	public void deregister() {
@@ -40,7 +44,8 @@ public class ParseUtilsBean {
 	}
 	
 	private void registerPrimitives() {
-		register(ModuleTable.class, new ModuleTableParser());
+		register(ModuleTables.class, new ModuleTableParser());
+		register(Fields.class, new FieldParser());
 	}
 	
 	private void register(Class<?> clazz, Parser<?> parser) {

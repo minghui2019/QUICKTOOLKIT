@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT Fields (Field+)>
-<!ELEMENT Field (FieldId, FieldName, DataType, CategoryName?, Precision?, JoinColumn?, TranSient?, AppendSearch?)>
-<!ELEMENT FieldId (#PCDATA)>
-<!ELEMENT FieldName (#PCDATA)>
-<!ELEMENT DataType (#PCDATA)>
-<!ELEMENT CategoryName (#PCDATA)>
-<!ELEMENT Precision (#PCDATA)>
-<!ELEMENT JoinColumn (#PCDATA)>
-<!ELEMENT TranSient (#PCDATA)>
-<!ELEMENT AppendSearch (Value)>
+<!ELEMENT Field (fieldId, fieldName, dataType, categoryName?, precision?, joinColumn?, tranSient?, AppendSearch?)>
+<!ELEMENT fieldId (#PCDATA)>
+<!ELEMENT fieldName (#PCDATA)>
+<!ELEMENT dataType (#PCDATA)>
+<!ELEMENT categoryName (#PCDATA)>
+<!ELEMENT precision (#PCDATA)>
+<!ELEMENT joinColumn (#PCDATA)>
+<!ELEMENT tranSient (#PCDATA)>
+<!ELEMENT AppendSearch (value)>
+<!ELEMENT value (#PCDATA)>
 <!ATTLIST AppendSearch 
 		relativeField CDATA #REQUIRED 
 		relativeThisProperty CDATA "id" 
 		searchValLabel (val) #IMPLIED 
 		mergeMultiVals (true|false) "false" 
 		symbol CDATA ",">
-<!ELEMENT Value (#PCDATA)>

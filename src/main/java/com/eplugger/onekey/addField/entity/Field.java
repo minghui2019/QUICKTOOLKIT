@@ -5,10 +5,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import com.eplugger.annotation.Booleaner;
-import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.OtherUtils;
+import com.eplugger.xml.dom4j.annotation.Dom4JField;
+import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
+import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+import com.google.common.base.Strings;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,47 +21,43 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Dom4JTag
 public class Field {
-	/** javaBean属性名 */
+	@Dom4JField(comment = "javaBean属性名")
 	private String fieldId;
-	/** javaBean中文名 */
+	@Dom4JField(comment = "javaBean中文名")
 	private String fieldName;
-	/** javaBean数据类型 */
+	@Dom4JField(comment = "javaBean数据类型")
 	private String dataType;
-	/** 数据表名 */
+	@Dom4JField(comment = "数据表名")
 	private String tableFieldId;
-	/** 字典名 */
+	@Dom4JField(comment = "字典名")
 	private String categoryName;
-	/** 精度 */
-	private Integer precision;
-	/**  */
+	@Dom4JField(comment = "精度")
+	private int precision;
+	@Dom4JField(comment = "")
 	private String joinColumn;
-	/** 虚拟字段 */
-	@Booleaner
-	private Boolean tranSient = false;
-	/**  */
+	@Dom4JField(comment = "虚拟字段")
+	private boolean tranSient = false;
+	@Dom4JField(type = Dom4JFieldType.TAG, comment = "虚拟字段的查询条件")
 	private AppendSearch appendSearch;
-	/** List的泛型 */
+	@Dom4JField(comment = "List的泛型")
 	private String genericity;
-	/**  */
+	@Dom4JField(comment = "排序字段")
 	private String orderBy;
-	/** 关联关系：多对一，一对多 */
+	@Dom4JField(comment = "关联关系：多对一，一对多")
 	private String association;
-	/** 查询关联集合注解 */
+	@Dom4JField(comment = "查询关联集合注解")
 	private String fetch;
-	/** updatable = false, insertable = false */
-	@Booleaner
-	private Boolean updateInsert = true;
-	/** 忽略导入包，默认导入 */
-	@Booleaner
-	private Boolean ignoreImport = false;
-	/** 生成java方法，默认不生成 */
-	@Booleaner
-	private Boolean onlyMeta = false;
+	@Dom4JField(comment = "updatable = false, insertable = false")
+	private boolean updateInsert = true;
+	@Dom4JField(comment = "忽略导入包，默认导入")
+	private boolean ignoreImport = false;
+	@Dom4JField(comment = "生成java方法，默认不生成")
+	private boolean onlyMeta = false;
 	
-	public void setFieldId(String fieldId) {
-		this.fieldId = fieldId;
-		this.tableFieldId = SqlUtils.lowerCamelCase2UnderScoreCase(fieldId);
+	public String getTableFieldId() {
+		return Strings.isNullOrEmpty(tableFieldId) ? SqlUtils.lowerCamelCase2UnderScoreCase(fieldId) : tableFieldId;
 	}
 	
 	public Field(String fieldId, String fieldName) {
@@ -122,45 +120,57 @@ public class Field {
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("Field [");
-		if (StringUtils.isNotBlank(fieldId)) {
+		StringBuilder sb = new StringBuilder("\nField [");
+		if (!Strings.isNullOrEmpty(fieldId)) {
 			sb.append("fieldId=").append(fieldId).append(", ");
 		}
-		if (StringUtils.isNotBlank(fieldName)) {
+		if (!Strings.isNullOrEmpty(fieldName)) {
 			sb.append("fieldName=").append(fieldName).append(", ");
 		}
-		if (StringUtils.isNotBlank(dataType)) {
+		if (!Strings.isNullOrEmpty(dataType)) {
 			sb.append("dataType=").append(dataType).append(", ");
 		}
-		if (StringUtils.isNotBlank(tableFieldId)) {
+		if (!Strings.isNullOrEmpty(tableFieldId)) {
 			sb.append("tableFieldId=").append(tableFieldId).append(", ");
 		}
-		if (StringUtils.isNotBlank(categoryName)) {
+		if (!Strings.isNullOrEmpty(categoryName)) {
 			sb.append("categoryName=").append(categoryName).append(", ");
 		}
-		if (StringUtils.isNotBlank(joinColumn)) {
+		if (!Strings.isNullOrEmpty(joinColumn)) {
 			sb.append("joinColumn=").append(joinColumn).append(", ");
 		}
-		if (StringUtils.isNotBlank(genericity)) {
+		if (!Strings.isNullOrEmpty(genericity)) {
 			sb.append("genericity=").append(genericity).append(", ");
 		}
-		if (StringUtils.isNotBlank(orderBy)) {
+		if (!Strings.isNullOrEmpty(orderBy)) {
 			sb.append("orderBy=").append(orderBy).append(", ");
 		}
-		if (StringUtils.isNotBlank(association)) {
+		if (!Strings.isNullOrEmpty(association)) {
 			sb.append("association=").append(association).append(", ");
 		}
-		if (StringUtils.isNotBlank(fetch)) {
+		if (!Strings.isNullOrEmpty(fetch)) {
 			sb.append("fetch=").append(fetch).append(", ");
 		}
-		sb.append("tranSient=").append(tranSient).append(", ");
+		if (tranSient) {
+			sb.append("tranSient=").append(tranSient).append(", ");
+		}
 		if (appendSearch != null) {
-			sb.append("appendSearch=").append(appendSearch).append(", ");
+			sb.append(appendSearch).append(", ");
 		}
 		sb.append("precision=").append(precision).append(", ");
-		sb.append("updateInsert=").append(updateInsert).append(", ");
-		sb.append("ignoreImport=").append(ignoreImport).append(", ");
-		sb.append("onlyMeta=").append(onlyMeta).append("]");
+		if (!updateInsert) {
+			sb.append("updateInsert=").append(updateInsert).append(", ");
+		}
+		if (ignoreImport) {
+			sb.append("ignoreImport=").append(ignoreImport).append(", ");
+		}
+		if (onlyMeta) {
+			sb.append("onlyMeta=").append(onlyMeta).append("]");
+		}
+		if (sb.lastIndexOf("]") == -1) {
+			sb.replace(sb.length() - 2, sb.length(), "");
+			sb.append("]");
+		}
 		return sb.toString();
 	}
 }

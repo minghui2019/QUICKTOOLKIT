@@ -533,7 +533,7 @@ public class ProduceJavaFiles {
 		for (Field field : newfieldList) {
 			if ("List".equals(field.getDataType())) {
 				sb.append("import " + Constants.getFullClassNameMap(OtherUtils.TPYE_ARRAYLIST) + ";" + StringUtils.CRLF);
-			} else if (!field.getIgnoreImport()) {
+			} else if (!field.isIgnoreImport()) {
 				sb.append("import " + Constants.getFullClassNameMap(field.getDataType()) + ";" + StringUtils.CRLF);
 			}
 		}
@@ -819,7 +819,7 @@ public class ProduceJavaFiles {
 				fieldSb.append(OtherUtils.TAB_FOUR + "@Meaning(\"" + field.getFieldName() + "\")" + StringUtils.CRLF);
 				fieldSb.append(OtherUtils.TAB_FOUR + "private " + field.getDataType() + " " + field.getFieldId() + ";" + StringUtils.CRLF);
 			
-				if (field.getTranSient()) {
+				if (field.isTranSient()) {
 					sgSb.append(OtherUtils.TAB_FOUR + "@Transient" + StringUtils.CRLF);
 					AppendSearch appendSearch = field.getAppendSearch();
 					if (appendSearch != null) {
@@ -827,13 +827,13 @@ public class ProduceJavaFiles {
 						.append("@AppendSearch(value=\"").append(appendSearch.getValue())
 						.append("\", relativeField=\"").append(appendSearch.getRelativeField())
 						.append("\", relativeThisProperty=\"").append(appendSearch.getRelativeThisProperty())
-						.append("\", mergeMultiVals=").append(appendSearch.getMergeMultiVals())
+						.append("\", mergeMultiVals=").append(appendSearch.isMergeMultiVals())
 						.append(", symbol=\"").append(appendSearch.getSymbol())
 						.append("\")").append(StringUtils.CRLF);
 					}
 				} else {
 					sgSb.append(OtherUtils.TAB_FOUR + "@Column(name = \"" + field.getTableFieldId() + "\"");
-					if (!field.getUpdateInsert()) {
+					if (!field.isUpdateInsert()) {
 						sgSb.append(", updatable = false, insertable = false");
 					}
 					sgSb.append(")" + StringUtils.CRLF);

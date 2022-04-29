@@ -1,12 +1,14 @@
 package com.eplugger.onekey.utils.sqlFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.utils.DBUtils;
 import com.eplugger.utils.OtherUtils;
 import com.eplugger.uuid.UUIDFun;
+import com.google.common.base.Strings;
 
 public class ProduceMetaDataFiles {
 	/**
@@ -40,35 +42,25 @@ public class ProduceMetaDataFiles {
 	
 	public static String produceMetadata(String beanId, List<Field> fieldList) {
 		int orders = ProduceMetaDataFiles.getMaxOrdersByBeanId(beanId);//元数据排序号，默认1
-		int size = fieldList.size();
-		String[] uuids = UUIDFun.getInstance().getUuidsArray(size);
-		StringBuffer uuidSb = new StringBuffer();
+		List<Field> fields = fieldList.stream().filter(f -> Strings.isNullOrEmpty(f.getAssociation())).collect(Collectors.toList());
+		List<String> uuidList = UUIDFun.getInstance().getUuidsList(fields.size());
+		String uuidStr = uuidList.stream().map(u -> "'" + u + "'").collect(Collectors.joining(", "));
+		
 		StringBuffer sb = new StringBuffer();
 		String eadpDataType = DBUtils.getEadpDataType();
-		for (int i = 0; i < size; i++) {
-			if (StringUtils.isNotBlank(fieldList.get(i).getAssociation())) {
-				continue;
-			}
-			uuidSb.append("'").append(uuids[i]).append("'");
-			if (i < size - 1) {
-				uuidSb.append(",");
-			}
-		}
-		sb.append("delete from SYS_ENTITY_META WHERE id in (").append(uuidSb.toString()).append(");").append(StringUtils.CRLF).append(StringUtils.CRLF);
+		
+		sb.append("delete from SYS_ENTITY_META WHERE id in (").append(uuidStr).append(");").append(StringUtils.CRLF).append(StringUtils.CRLF);
 		sb.append("-- 表[SYS_ENTITY_META]的数据如下:").append(StringUtils.CRLF);
-		for (int i = 0; i < size; i++) {
-			Field field = fieldList.get(i);
-			if (StringUtils.isNotBlank(field.getAssociation())) {
-				continue;
-			}
+		int i = 0;
+		for (Field field : fields) {
 			sb.append("insert into \"SYS_ENTITY_META\"(\"ID\",\"BEANID\",\"CATEGORYNAME\",\"ORDERS\",\"MEANING\",\"NAME\",\"DATA_TYPE\",")
-					.append("\"EADPDATATYPE\",\"BUSINESSFILTERTYPE\",\"USESTATE\") ").append("values('")
-					.append(uuids[i]).append("','").append(beanId).append("',")
-					.append(field.getCategoryName() == null ? "NULL" : "'" + field.getCategoryName() + "'")
-					.append(",").append((++orders)).append(",'").append(field.getFieldName()).append("','")
-					.append(field.getFieldId()).append("','")
-					.append(getMetadataDataType(field.getDataType())).append("',").append("'")
-					.append(eadpDataType).append("','no','use');").append(StringUtils.CRLF);
+			.append("\"EADPDATATYPE\",\"BUSINESSFILTERTYPE\",\"USESTATE\") values('")
+			.append(uuidList.get(i++)).append("','").append(beanId).append("',")
+			.append(field.getCategoryName() == null ? "NULL" : "'" + field.getCategoryName() + "'")
+			.append(",").append(++orders).append(",'").append(field.getFieldName()).append("','")
+			.append(field.getFieldId()).append("','")
+			.append(getMetadataDataType(field.getDataType())).append("',").append("'")
+			.append(eadpDataType).append("','no','use');").append(StringUtils.CRLF);
 		}
 		sb.append(StringUtils.CRLF);
 		return sb.toString();

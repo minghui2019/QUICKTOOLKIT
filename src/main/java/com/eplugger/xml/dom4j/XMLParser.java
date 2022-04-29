@@ -14,11 +14,11 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.Text;
-import org.dom4j.io.SAXReader;
 
 import com.eplugger.common.io.FileUtils;
 import com.eplugger.xml.dom4j.format.XMLObjectFormatter;
 import com.eplugger.xml.dom4j.format.XMLObjectFormatterFactory;
+import com.eplugger.xml.dom4j.util.XmlFileUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -138,7 +138,6 @@ public class XMLParser {
 				if (!((Element) subNode).hasMixedContent()) {
 					String subTagName = subNode.getName();
 					subXmlObject = new XMLObject(subTagName);
-//					subXmlObject.setContent(((Element) subNode).getTextTrim());
 					List<XMLObject> childTags = xmlObject.getChildTags(subTagName);
 					setAttributes(subXmlObject, (Element) subNode);
 					setContent(subXmlObject, (Element) subNode);
@@ -230,22 +229,12 @@ public class XMLParser {
 	 * @throws DocumentException 
 	 */
 	private Document getDocument() throws DocumentException {
-		SAXReader saxReader = new SAXReader();
-		saxReader.setEncoding(fileEncoding);
-		File file = getXMLFile();
-		return saxReader.read(file);
-	}
-
-	/**
-	 * 获取XML文件对象
-	 *
-	 * @return File XML文件对象
-	 */
-	private File getXMLFile() {
-		if (path == null || 0 >= path.length()) {
-			throw new RuntimeException("Path invalid[path=" + path + "]");
+		try {
+			return XmlFileUtils.readDocument(path, fileEncoding);
+		} catch (DocumentException e) {
+			log.error("xml文件读取失败, 请检查路径[path=" + path + "]" + e.getMessage());
 		}
-		return new File(path);
+		return null;
 	}
 
 	/**

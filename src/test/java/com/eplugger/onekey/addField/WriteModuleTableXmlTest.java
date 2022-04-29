@@ -19,8 +19,6 @@ import org.junit.Test;
 
 import com.eplugger.onekey.addField.entity.ModuleTable;
 import com.eplugger.onekey.addField.entity.ModuleTables;
-import com.eplugger.xml.dom4j.test.User;
-import com.eplugger.xml.dom4j.test.Users;
 import com.eplugger.xml.dom4j.util.XmlFileUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
@@ -38,7 +36,7 @@ public class WriteModuleTableXmlTest {
 	public void testWriteXml() throws Exception {
 //		WriteModuleTableXmlTest.writeXmlByDom4J();
 		ModuleTables moduleTables2 = new ModuleTables();
-		List<ModuleTable> moduleTables = moduleTables2.getModuleTables();
+		List<ModuleTable> moduleTables = moduleTables2.getModuleTableList();
 		ModuleTable moduleTable = new ModuleTable("xJProjectMember", "BIZ_XJ_PROJECT_MEMBER", true, "校级项目成员");
 		moduleTables.add(moduleTable);
 		moduleTables.add(new ModuleTable("xJProjectMember", "BIZ_XJ_PROJECT_MEMBER", true, "校级项目成员"));
@@ -50,12 +48,6 @@ public class WriteModuleTableXmlTest {
 	@Test
 	public void testReadXml() throws Exception {
 		ModuleTables xml2List = xml2List();
-		System.out.println(xml2List);
-	}
-	
-	@Test
-	public void testReadXml1() throws Exception {
-		Object xml2List = xml2List1();
 		System.out.println(xml2List);
 	}
 	
@@ -107,19 +99,6 @@ public class WriteModuleTableXmlTest {
 		return (ModuleTables) fromXML;
 	}
 	
-	private Object xml2List1() throws FileNotFoundException {
-		XStream xstream1 = new XStream();
-		xstream1.allowTypes(new Class[]{Users.class, User.class});
-		xstream1.alias(Users.class.getSimpleName(), Users.class);
-		xstream1.alias(User.class.getSimpleName(), User.class);
-		xstream1.addImplicitCollection(Users.class, "users");//省略集合根节点
-//		xstream1.alias(ModuleTable.class.getSimpleName(), ModuleTable.class);
-		xstream1.useAttributeFor(User.class, "id");
-		FileInputStream fis = new FileInputStream(new File("src/main/java/com/eplugger/xml/dom4j/test/web.xml"));
-		Object fromXML = xstream1.fromXML(fis);
-		return fromXML;
-	}
-
 	private static Document readXmlByFile() {
 		Document document = null;
 		try {

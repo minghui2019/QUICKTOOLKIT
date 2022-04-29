@@ -593,7 +593,7 @@ public class ProduceJavaFactory {
 		StringBuffer sgSb = new StringBuffer();
 		
 		for (Field field : fieldList) {
-			if (field.getOnlyMeta() == true) {
+			if (field.isOnlyMeta() == true) {
 				continue;
 			}
 			if (OtherUtils.TPYE_STRING.equals(field.getDataType()) || OtherUtils.TPYE_INTEGER.equals(field.getDataType())
@@ -602,7 +602,7 @@ public class ProduceJavaFactory {
 				fieldSb.append(OtherUtils.TAB_FOUR).append("@Meaning(\"").append(field.getFieldName()).append("\")").append(StringUtils.CRLF);
 				fieldSb.append(OtherUtils.TAB_FOUR).append("private ").append(field.getDataType()).append(" ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
 			
-				if (field.getTranSient()) {
+				if (field.isTranSient()) {
 					sgSb.append(OtherUtils.TAB_FOUR).append("@Transient").append(StringUtils.CRLF);
 					AppendSearch appendSearch = field.getAppendSearch();
 					if (appendSearch != null) {
@@ -610,13 +610,13 @@ public class ProduceJavaFactory {
 						.append("@AppendSearch(value=\"").append(appendSearch.getValue())
 						.append("\", relativeField=\"").append(appendSearch.getRelativeField())
 						.append("\", relativeThisProperty=\"").append(appendSearch.getRelativeThisProperty())
-						.append("\", mergeMultiVals=").append(appendSearch.getMergeMultiVals())
+						.append("\", mergeMultiVals=").append(appendSearch.isMergeMultiVals())
 						.append(", symbol=\"").append(appendSearch.getSymbol())
 						.append("\")").append(StringUtils.CRLF);
 					}
 				} else {
 					sgSb.append(OtherUtils.TAB_FOUR).append("@Column(name = \"").append(field.getTableFieldId()).append("\"");
-					if (!field.getUpdateInsert()) {
+					if (!field.isUpdateInsert()) {
 						sgSb.append(", updatable = false, insertable = false");
 					}
 					sgSb.append(")").append(StringUtils.CRLF);
@@ -642,7 +642,7 @@ public class ProduceJavaFactory {
 				
 				sgSb.append(OtherUtils.TAB_FOUR).append(Constants.getAssociationMap(field.getAssociation())).append(StringUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR).append("@JoinColumn(name = \"").append(field.getJoinColumn()).append("\"");
-				if (!field.getUpdateInsert()) {
+				if (!field.isUpdateInsert()) {
 					sgSb.append(", updatable = false, insertable = false");
 				}
 				sgSb.append(")").append(StringUtils.CRLF);

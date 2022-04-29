@@ -86,7 +86,7 @@ public class ProduceSqlFiles {
 		}
 		
 		for (Field field : fieldList) {
-			if (field.getTranSient() || "List".equals(field.getDataType()) || field.getJoinColumn() != null) {
+			if (field.isTranSient() || "List".equals(field.getDataType()) || field.getJoinColumn() != null) {
 				continue;
 			}
 			if (DBUtils.isSqlServer()) {
@@ -130,7 +130,7 @@ public class ProduceSqlFiles {
 		}
 		
 		for (Field field : fieldList) {
-			if (field.getTranSient() || "List".equals(field.getDataType()) || field.getJoinColumn() != null) {
+			if (field.isTranSient() || "List".equals(field.getDataType()) || field.getJoinColumn() != null) {
 				continue;
 			}
 			if (DBUtils.isSqlServer()) {
@@ -145,6 +145,7 @@ public class ProduceSqlFiles {
 
 	/**
 	 * 生产sql代码
+	 * 20220429 修改
 	 * @param tableName
 	 * @param fieldList
 	 * @param database
@@ -152,29 +153,22 @@ public class ProduceSqlFiles {
 	 */
 	public static String produceSqlCode(String tableName, List<Field> fieldList) {
 		StringBuffer sb = new StringBuffer();
-		if (DBUtils.isSqlServer()) {
-			for (Field field : fieldList) {
-				if (field.getTranSient()) {
-					continue;
-				}
-				sb.append("ALTER TABLE [dbo].[" + tableName + "] ADD [" + field.getTableFieldId() + "] " + SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision()) + " NULL" + StringUtils.CRLF);
-				sb.append("GO" + StringUtils.CRLF + StringUtils.CRLF);
+		for (Field field : fieldList) {
+			if (field.isTranSient()) {
+				continue;
 			}
-		} else if (DBUtils.isOracle()) {
-			for (int i = 0, size = fieldList.size(); i < size; i++) {
-				if (fieldList.get(i).getTranSient()) {
-					continue;
-				}
-				sb.append("ADD ( \"" + fieldList.get(i).getTableFieldId() + "\" " + SqlUtils.getDatabaseDataType(fieldList.get(i).getDataType(), fieldList.get(i).getPrecision()) + " NULL  ) ");
-				if (i < size - 1) {
-					sb.append(StringUtils.CRLF);
-				} else {
-					sb.append(";" + StringUtils.CRLF);
-				}
+			if (DBUtils.isSqlServer()) {
+				sb.append("ALTER TABLE [dbo].[").append(tableName).append("] ADD [").append(field.getTableFieldId()).append("] ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(" NULL").append(StringUtils.CRLF);
+				sb.append("GO").append(StringUtils.CRLF).append(StringUtils.CRLF);
 			}
-			if (sb.length() > 0) {
-				sb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
+			if (DBUtils.isOracle()) {
+				sb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(" NULL  ) ");
+				sb.append(StringUtils.CRLF);
 			}
+		}
+		if (DBUtils.isOracle() && sb.length() > 0) {
+			sb.append(";").append(StringUtils.CRLF);
+			sb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
 		}
 		return sb.toString();
 	}

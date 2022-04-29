@@ -1,6 +1,6 @@
 package com.eplugger.xml.dom4j.utils;
 
-import java.util.List;
+import org.dom4j.Document;
 
 public final class ParserFacade<T> implements Parser<T> {
 	private final Parser<T> parser;
@@ -13,13 +13,13 @@ public final class ParserFacade<T> implements Parser<T> {
 	}
 
 	@Override
-	public List<T> parse(String path) {
-		return parser.parse(path);
+	public T toBean(Class<T> cls, String path) {
+		return parser.toBean(cls, path);
 	}
 	
 	@Override
-	public List<T> parseValidList(List<T> list) {
-		return parser.parseValidList(list);
+	public Document fromBean(T data, String path) {
+		return parser.fromBean(data, path);
 	}
 	
 	@Override

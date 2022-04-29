@@ -7,10 +7,10 @@ import java.util.List;
 import org.dom4j.Document;
 import org.junit.Test;
 
+import com.eplugger.onekey.addField.entity.ModuleTable;
+import com.eplugger.onekey.addField.entity.ModuleTables;
 import com.eplugger.uuid.UUIDFun;
 import com.eplugger.uuid.entity.Uuids;
-import com.eplugger.xml.dom4j.entity.ModuleTable;
-import com.eplugger.xml.dom4j.entity.ModuleTables;
 
 public class TestXmlFromBean {
 	@Test
@@ -22,7 +22,7 @@ public class TestXmlFromBean {
 		moduleTableList.add(new ModuleTable("xJProjectMember", "BIZ_XJ_PROJECT_MEMBER", true, "校级项目成员"));
 		moduleTableList.add(new ModuleTable("xJProjectMember", "BIZ_XJ_PROJECT_MEMBER", true, "校级项目成员"));
 		String xmlPath = TestXmlFromBean.class.getResource("/").getPath() + "/test_ModuleTable.xml";
-		XmlFromBean testXml = new XmlFromBean(xmlPath);
+		Dom4JParser testXml = new Dom4JParser(xmlPath);
 		Document document = testXml.fromBean(moduleTables, true);
 		assertNotNull(document);
 	}
@@ -32,7 +32,7 @@ public class TestXmlFromBean {
 		Uuids uuids = new Uuids();
 		uuids.setUuidList(UUIDFun.getInstance().buildUuids(30));
 		String xmlPath = TestXmlFromBean.class.getResource("/").getPath() + "/test_uuid.xml";
-		XmlFromBean testXml = new XmlFromBean(xmlPath);
+		Dom4JParser testXml = new Dom4JParser(xmlPath);
 		Document document = testXml.fromBean(uuids, true);
 		assertNotNull(document);
 	}

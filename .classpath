@@ -14,7 +14,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="target/test-classes" path="src/test/resource">
+	<classpathentry excluding="dtd/" kind="src" output="target/test-classes" path="src/test/resource">
 		<attributes>
 			<attribute name="test" value="true"/>
 		</attributes>

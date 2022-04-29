@@ -1,22 +1,20 @@
 package com.eplugger.xml.dom4j.utils;
 
-import java.util.List;
-
+import org.dom4j.Document;
 import org.junit.Test;
 
-import com.eplugger.onekey.addField.entity.ModuleTable;
-import com.eplugger.xml.dom4j.utils.ParseUtils;
+import com.eplugger.onekey.addField.entity.ModuleTables;
 
 public class TestParseUtils {
 	@Test
-	public void testParseAllList() throws Exception {
-		List<ModuleTable> list = ParseUtils.parseAllList("src/main/resource/field/ModuleTable.xml", ModuleTable.class);
-		System.out.println(list);
+	public void testToBean() throws Exception {
+		ModuleTables moduleTables = ParseUtils.toBean("src/main/resource/field/ModuleTable.xml", ModuleTables.class);
+		System.out.println(moduleTables);
 	}
 	
 	@Test
-	public void testParseValidList() throws Exception {
-		List<ModuleTable> list = ParseUtils.parseValidList("src/main/resource/field/ModuleTable.xml", ModuleTable.class);
-		System.out.println(list);
+	public void testFromBean() throws Exception {
+		Document document = ParseUtils.fromBean("src/main/resource/field/ModuleTable.xml", ModuleTables.class);
+		System.out.println(document.asXML());
 	}
 }

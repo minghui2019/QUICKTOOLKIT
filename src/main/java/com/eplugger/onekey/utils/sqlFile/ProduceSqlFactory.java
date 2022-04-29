@@ -65,7 +65,7 @@ public class ProduceSqlFactory {
 			String dataType = field.getDataType();
 			String tableFieldId = field.getTableFieldId();
 			Integer precision = field.getPrecision();
-			if (field.getTranSient() == true || field.getOnlyMeta() == true || OtherUtils.TPYE_LIST.equals(dataType)) {
+			if (field.isTranSient() == true || field.isOnlyMeta() == true || OtherUtils.TPYE_LIST.equals(dataType)) {
 				continue;
 			}
 			if (field.getJoinColumn() != null) {

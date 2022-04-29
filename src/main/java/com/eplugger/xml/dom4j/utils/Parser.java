@@ -1,6 +1,8 @@
 package com.eplugger.xml.dom4j.utils;
 
-import java.util.List;
+import org.dom4j.Document;
+
+import com.eplugger.xml.dom4j.simple.Dom4JParser;
 
 /**
  * Dom4j解析器顶层接口
@@ -14,12 +16,20 @@ public interface Parser<T> {
 	 * @param list
 	 * @return
 	 */
-	List<T> parse(String path);
+	default T toBean(Class<T> cls, String path) {
+		Dom4JParser xmlToBean = new Dom4JParser(path);
+        T bean = xmlToBean.toBean(cls);
+        return bean;
+	}
 	
 	/**
 	 * 获取有效的xml内容
 	 * @param list
 	 * @return
 	 */
-	List<T> parseValidList(List<T> list);
+	default Document fromBean(T data, String path) {
+		Dom4JParser testXml = new Dom4JParser(path);
+		Document document = testXml.fromBean(data, true);
+		return document;
+	}
 }

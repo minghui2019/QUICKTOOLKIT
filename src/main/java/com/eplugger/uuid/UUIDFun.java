@@ -74,6 +74,10 @@ public class UUIDFun {
 		return uuidArray;
 	}
 	
+	public List<String> getUuidsList(int count) {
+		return Lists.newArrayList(getUuidsArray(count));
+	}
+	
 	/**
 	 * 对外提供获取1个UUID
 	 * @return

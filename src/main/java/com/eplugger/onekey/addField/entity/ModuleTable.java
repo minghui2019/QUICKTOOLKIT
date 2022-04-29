@@ -1,8 +1,8 @@
 package com.eplugger.onekey.addField.entity;
 
-import java.lang.reflect.Field;
-
-import com.eplugger.annotation.Booleaner;
+import com.eplugger.xml.dom4j.annotation.Dom4JField;
+import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
+import com.eplugger.xml.dom4j.annotation.Dom4JTag;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,25 +13,19 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Dom4JTag
 public class ModuleTable {
+	@Dom4JField
 	private String moduleName;
+	@Dom4JField
 	private String tableName;
-	@Booleaner
-	private Boolean ignore = true;
+	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE)
+	private boolean ignore = true;
+	@Dom4JField
 	private String described;
 	@Override
 	public String toString() {
-		return "ModuleTable [moduleName=" + moduleName + ", tableName=" + tableName + ", ignore=" + ignore
+		return "\nModuleTable [moduleName=" + moduleName + ", tableName=" + tableName + ", ignore=" + ignore
 				+ ", described=" + described + "]";
-	}
-	
-	public static void main(String[] args) {
-		ModuleTable moduleTable = new ModuleTable();
-		Class<? extends ModuleTable> class1 = moduleTable.getClass();
-		Field[] declaredFields = class1.getDeclaredFields();
-		for (Field field : declaredFields) {
-			System.out.println(field.getName() + ": " + field.isAnnotationPresent(Booleaner.class));
-		}
-		System.out.println(declaredFields);
 	}
 }

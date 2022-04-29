@@ -2,323 +2,323 @@
 <!DOCTYPE Fields SYSTEM '../dtd/Field.dtd'>
 <Fields>
 	<Field>
-		<FieldId>centerDirector</FieldId>
-		<FieldName>中心主任</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>centerDirector</fieldId>
+		<fieldName>中心主任</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>centerDirectorId</FieldId>
-		<FieldName>中心主任ID</FieldName>
-		<DataType>String</DataType>
-		<Precision>32</Precision>
+		<fieldId>centerDirectorId</fieldId>
+		<fieldName>中心主任ID</fieldName>
+		<dataType>String</dataType>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>centerDeputyDirector</FieldId>
-		<FieldName>中心副主任</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>centerDeputyDirector</fieldId>
+		<fieldName>中心副主任</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>centerDeputyDirectorId</FieldId>
-		<FieldName>中心副主任ID</FieldName>
-		<DataType>String</DataType>
-		<Precision>32</Precision>
+		<fieldId>centerDeputyDirectorId</fieldId>
+		<fieldName>中心副主任ID</fieldName>
+		<dataType>String</dataType>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>instituteLeaders</FieldId>
-		<FieldName>分管副院长</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>instituteLeaders</fieldId>
+		<fieldName>分管副院长</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>instituteLeadersId</FieldId>
-		<FieldName>分管副院长ID</FieldName>
-		<DataType>String</DataType>
-		<Precision>32</Precision>
+		<fieldId>instituteLeadersId</fieldId>
+		<fieldName>分管副院长ID</fieldName>
+		<dataType>String</dataType>
+		<precision>32</precision>
 	</Field>
 	<!-- <Field>
-		<FieldId>relyOnPatentsPatentee</FieldId>
-		<FieldName>AIRS是否为第一专利权人</FieldName>
-		<DataType>String</DataType>
-		<Precision>500</Precision>
+		<fieldId>relyOnPatentsPatentee</fieldId>
+		<fieldName>AIRS是否为第一专利权人</fieldName>
+		<dataType>String</dataType>
+		<precision>500</precision>
 	</Field>
 	<Field>
-		<FieldId>patentSource</FieldId>
-		<FieldName>专利来源</FieldName>
-		<DataType>String</DataType>
-		<CategoryName>PATENT_SOURCE</CategoryName>
-		<Precision>32</Precision>
+		<fieldId>patentSource</fieldId>
+		<fieldName>专利来源</fieldName>
+		<dataType>String</dataType>
+		<categoryName>PATENT_SOURCE</categoryName>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>transferor</FieldId>
-		<FieldName>转让单位</FieldName>
-		<DataType>String</DataType>
-		<Precision>500</Precision>
+		<fieldId>transferor</fieldId>
+		<fieldName>转让单位</fieldName>
+		<dataType>String</dataType>
+		<precision>500</precision>
 	</Field>
 	<Field>
-		<FieldId>country</FieldId>
-		<FieldName>国别</FieldName>
-		<DataType>String</DataType>
-		<Precision>200</Precision>
+		<fieldId>country</fieldId>
+		<fieldName>国别</fieldName>
+		<dataType>String</dataType>
+		<precision>200</precision>
 	</Field>
 	<Field>
-		<FieldId>agencyContactPerson</FieldId>
-		<FieldName>代理机构联系人</FieldName>
-		<DataType>String</DataType>
-		<Precision>100</Precision>
+		<fieldId>agencyContactPerson</fieldId>
+		<fieldName>代理机构联系人</fieldName>
+		<dataType>String</dataType>
+		<precision>100</precision>
 	</Field>
 	<Field>
-		<FieldId>agencyContactNumber</FieldId>
-		<FieldName>代理机构联系人电话</FieldName>
-		<DataType>String</DataType>
-		<Precision>32</Precision>
+		<fieldId>agencyContactNumber</fieldId>
+		<fieldName>代理机构联系人电话</fieldName>
+		<dataType>String</dataType>
+		<precision>32</precision>
 	</Field> -->
 	<!-- 
 	<Field>
-		<FieldId>contractQuantity</FieldId>
-		<FieldName>合同数量</FieldName>
-		<DataType>Integer</DataType>
+		<fieldId>contractQuantity</fieldId>
+		<fieldName>合同数量</fieldName>
+		<dataType>Integer</dataType>
 		<TranSient>true</TranSient>
 		<AppendSearch relativeField="BUYER_NAME" relativeThisProperty="name">
-			<Value>SELECT BUYER_NAME, COUNT(BUYER_NAME) val FROM BIZ_YF_CONTRACT WHERE BUYER_NAME IN (^{name}) GROUP BY BUYER_NAME</Value>
+			<value>SELECT BUYER_NAME, COUNT(BUYER_NAME) val FROM BIZ_YF_CONTRACT WHERE BUYER_NAME IN (^{name}) GROUP BY BUYER_NAME</value>
 		</AppendSearch>
 	</Field>
 	<Field>
-		<FieldId>fundingType</FieldId>
-		<FieldName>资助类型</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>fundingType</fieldId>
+		<fieldName>资助类型</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>fundingCategory</FieldId>
-		<FieldName>资助类别</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>fundingCategory</fieldId>
+		<fieldName>资助类别</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>researchDirection</FieldId>
-		<FieldName>研究方向</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>researchDirection</fieldId>
+		<fieldName>研究方向</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>contactNumber</FieldId>
-		<FieldName>联系电话</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>contactNumber</fieldId>
+		<fieldName>联系电话</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>email</FieldId>
-		<FieldName>电子信箱</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>email</fieldId>
+		<fieldName>电子信箱</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	 -->
 	<!-- <Field>
-		<FieldId>birthDay</FieldId>
-		<FieldName>出生年月</FieldName>
-		<DataType>Date</DataType>
+		<fieldId>birthDay</fieldId>
+		<fieldName>出生年月</fieldName>
+		<dataType>Date</dataType>
 	</Field>
 	<Field>
-		<FieldId>executivePost</FieldId>
-		<FieldName>行政职务</FieldName>
-		<DataType>String</DataType>
-		<CategoryName>EXECUTIVE_POST</CategoryName>
-		<Precision>32</Precision>
+		<fieldId>executivePost</fieldId>
+		<fieldName>行政职务</fieldName>
+		<dataType>String</dataType>
+		<categoryName>EXECUTIVE_POST</categoryName>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>contactName</FieldId>
-		<FieldName>联系人姓名</FieldName>
-		<DataType>String</DataType>
-		<Precision>100</Precision>
+		<fieldId>contactName</fieldId>
+		<fieldName>联系人姓名</fieldName>
+		<dataType>String</dataType>
+		<precision>100</precision>
 	</Field>
 	<Field>
-		<FieldId>contactPhone</FieldId>
-		<FieldName>联系人手机</FieldName>
-		<DataType>String</DataType>
-		<Precision>32</Precision>
+		<fieldId>contactPhone</fieldId>
+		<fieldName>联系人手机</fieldName>
+		<dataType>String</dataType>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>contactEmail</FieldId>
-		<FieldName>联系人邮箱</FieldName>
-		<DataType>String</DataType>
-		<Precision>100</Precision>
+		<fieldId>contactEmail</fieldId>
+		<fieldName>联系人邮箱</fieldName>
+		<dataType>String</dataType>
+		<precision>100</precision>
 	</Field> -->
 	<!-- <Field>
-		<FieldId>reviewResult</FieldId>
-		<FieldName>评审结果</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>reviewResult</fieldId>
+		<fieldName>评审结果</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>reviewInfo</FieldId>
-		<FieldName>评审建议</FieldName>
-		<DataType>String</DataType>
-		<Precision>1024</Precision>
+		<fieldId>reviewInfo</fieldId>
+		<fieldName>评审建议</fieldName>
+		<dataType>String</dataType>
+		<precision>1024</precision>
 	</Field>
 	<Field>
-		<FieldId>reviewMark</FieldId>
-		<FieldName>评审分值</FieldName>
-		<DataType>Double</DataType>
+		<fieldId>reviewMark</fieldId>
+		<fieldName>评审分值</fieldName>
+		<dataType>Double</dataType>
 	</Field>
 	<Field>
-		<FieldId>expertReviewId</FieldId>
-		<FieldName>专家评审id</FieldName>
-		<DataType>String</DataType>
+		<fieldId>expertReviewId</fieldId>
+		<fieldName>专家评审id</fieldName>
+		<dataType>String</dataType>
 		<TranSient>true</TranSient>
 	</Field>
 	<Field>
-		<FieldId>expertJsonBySubjectId</FieldId>
-		<FieldName>系统学科对应的专家信息</FieldName>
-		<DataType>JSONArray</DataType>
+		<fieldId>expertJsonBySubjectId</fieldId>
+		<fieldName>系统学科对应的专家信息</fieldName>
+		<dataType>JSONArray</dataType>
 		<TranSient>true</TranSient>
 	</Field>
 	<Field>
-		<FieldId>subjectExpert</FieldId>
-		<FieldName>学科专家</FieldName>
-		<DataType>String</DataType>
+		<fieldId>subjectExpert</fieldId>
+		<fieldName>学科专家</fieldName>
+		<dataType>String</dataType>
 		<TranSient>true</TranSient>
 	</Field>
 	<Field>
-		<FieldId>schedule</FieldId>
-		<FieldName>评审进度</FieldName>
-		<DataType>Double</DataType>
+		<fieldId>schedule</fieldId>
+		<fieldName>评审进度</fieldName>
+		<dataType>Double</dataType>
 		<TranSient>true</TranSient>
 	</Field>
 	<Field>
-		<FieldId>scheduleMessage</FieldId>
-		<FieldName>评审进度显示信息</FieldName>
-		<DataType>String</DataType>
+		<fieldId>scheduleMessage</fieldId>
+		<fieldName>评审进度显示信息</fieldName>
+		<dataType>String</dataType>
 		<TranSient>true</TranSient>
 	</Field>
 	<Field>
-		<FieldId>reviewExpertJson</FieldId>
-		<FieldName>组装评审专家json</FieldName>
-		<DataType>JSONArray</DataType>
+		<fieldId>reviewExpertJson</fieldId>
+		<fieldName>组装评审专家json</fieldName>
+		<dataType>JSONArray</dataType>
 		<TranSient>true</TranSient>
 	</Field>
 	<Field>
-		<FieldId>reviewExpert</FieldId>
-		<FieldName>评审专家</FieldName>
-		<DataType>String</DataType>
+		<fieldId>reviewExpert</fieldId>
+		<fieldName>评审专家</fieldName>
+		<dataType>String</dataType>
 		<TranSient>true</TranSient>
 	</Field>
 	<Field>
-		<FieldId>memberPersonIds</FieldId>
-		<FieldName>成员personId</FieldName>
-		<DataType>String</DataType>
+		<fieldId>memberPersonIds</fieldId>
+		<fieldName>成员personId</fieldName>
+		<dataType>String</dataType>
 		<TranSient>true</TranSient>
 	</Field>
 	<Field>
-		<FieldId>memberNames</FieldId>
-		<FieldName>专利成员</FieldName>
-		<DataType>String</DataType>
+		<fieldId>memberNames</fieldId>
+		<fieldName>专利成员</fieldName>
+		<dataType>String</dataType>
 		<TranSient>true</TranSient>
 	</Field> -->
 	<!-- <Field>
-		<FieldId>projectId</FieldId>
-		<FieldName>所属项目ID</FieldName>
-		<DataType>String</DataType>
-		<Precision>32</Precision>
+		<fieldId>projectId</fieldId>
+		<fieldName>所属项目ID</fieldName>
+		<dataType>String</dataType>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>relyOnExistingPatents</FieldId>
-		<FieldName>是否依赖现有专利进行申请</FieldName>
-		<DataType>String</DataType>
-		<CategoryName>SF</CategoryName>
-		<Precision>32</Precision>
+		<fieldId>relyOnExistingPatents</fieldId>
+		<fieldName>是否依赖现有专利进行申请</fieldName>
+		<dataType>String</dataType>
+		<categoryName>SF</categoryName>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>relyOnPatentsPatentee</FieldId>
-		<FieldName>AIRS是否是依赖专利的专利权人</FieldName>
-		<DataType>String</DataType>
-		<CategoryName>SF</CategoryName>
-		<Precision>32</Precision>
+		<fieldId>relyOnPatentsPatentee</fieldId>
+		<fieldName>AIRS是否是依赖专利的专利权人</fieldName>
+		<dataType>String</dataType>
+		<categoryName>SF</categoryName>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalField</FieldId>
-		<FieldName>所属技术领域</FieldName>
-		<DataType>String</DataType>
-		<Precision>500</Precision>
+		<fieldId>technicalField</fieldId>
+		<fieldName>所属技术领域</fieldName>
+		<dataType>String</dataType>
+		<precision>500</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalDisclosureAuthor</FieldId>
-		<FieldName>技术交底书撰写人</FieldName>
-		<DataType>String</DataType>
-		<Precision>500</Precision>
+		<fieldId>technicalDisclosureAuthor</fieldId>
+		<fieldName>技术交底书撰写人</fieldName>
+		<dataType>String</dataType>
+		<precision>500</precision>
 	</Field>
 	<Field>
-		<FieldId>referenceDocumentAnnex</FieldId>
-		<FieldName>对比文件附件</FieldName>
-		<DataType>String</DataType>
-		<Precision>500</Precision>
+		<fieldId>referenceDocumentAnnex</fieldId>
+		<fieldName>对比文件附件</fieldName>
+		<dataType>String</dataType>
+		<precision>500</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalContactName</FieldId>
-		<FieldName>技术问题联系人姓名</FieldName>
-		<DataType>String</DataType>
-		<Precision>500</Precision>
+		<fieldId>technicalContactName</fieldId>
+		<fieldName>技术问题联系人姓名</fieldName>
+		<dataType>String</dataType>
+		<precision>500</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalContactPhone</FieldId>
-		<FieldName>技术问题联系人电话</FieldName>
-		<DataType>String</DataType>
-		<Precision>32</Precision>
+		<fieldId>technicalContactPhone</fieldId>
+		<fieldName>技术问题联系人电话</fieldName>
+		<dataType>String</dataType>
+		<precision>32</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalContactEmail</FieldId>
-		<FieldName>技术问题联系人邮件</FieldName>
-		<DataType>String</DataType>
-		<Precision>50</Precision>
+		<fieldId>technicalContactEmail</fieldId>
+		<fieldName>技术问题联系人邮件</fieldName>
+		<dataType>String</dataType>
+		<precision>50</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalBackground</FieldId>
-		<FieldName>技术背景</FieldName>
-		<DataType>String</DataType>
-		<Precision>2000</Precision>
+		<fieldId>technicalBackground</fieldId>
+		<fieldName>技术背景</fieldName>
+		<dataType>String</dataType>
+		<precision>2000</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalProblem</FieldId>
-		<FieldName>现有技术不足及存在问题</FieldName>
-		<DataType>String</DataType>
-		<Precision>2000</Precision>
+		<fieldId>technicalProblem</fieldId>
+		<fieldName>现有技术不足及存在问题</fieldName>
+		<dataType>String</dataType>
+		<precision>2000</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalSolutions</FieldId>
-		<FieldName>技术方案</FieldName>
-		<DataType>String</DataType>
-		<Precision>100</Precision>
+		<fieldId>technicalSolutions</fieldId>
+		<fieldName>技术方案</fieldName>
+		<dataType>String</dataType>
+		<precision>100</precision>
 	</Field>
 	<Field>
-		<FieldId>technicaleffect</FieldId>
-		<FieldName>技术效果</FieldName>
-		<DataType>String</DataType>
-		<Precision>100</Precision>
+		<fieldId>technicaleffect</fieldId>
+		<fieldName>技术效果</fieldName>
+		<dataType>String</dataType>
+		<precision>100</precision>
 	</Field>
 	<Field>
-		<FieldId>searchResultsAnalysis</FieldId>
-		<FieldName>检索结果及分析</FieldName>
-		<DataType>String</DataType>
-		<Precision>2000</Precision>
+		<fieldId>searchResultsAnalysis</fieldId>
+		<fieldName>检索结果及分析</fieldName>
+		<dataType>String</dataType>
+		<precision>2000</precision>
 	</Field>
 	<Field>
-		<FieldId>creativity</FieldId>
-		<FieldName>创造性</FieldName>
-		<DataType>String</DataType>
-		<Precision>2000</Precision>
+		<fieldId>creativity</fieldId>
+		<fieldName>创造性</fieldName>
+		<dataType>String</dataType>
+		<precision>2000</precision>
 	</Field>
 	<Field>
-		<FieldId>technicalBarriers</FieldId>
-		<FieldName>技术壁垒</FieldName>
-		<DataType>String</DataType>
-		<Precision>2000</Precision>
+		<fieldId>technicalBarriers</fieldId>
+		<fieldName>技术壁垒</fieldName>
+		<dataType>String</dataType>
+		<precision>2000</precision>
 	</Field>
 	<Field>
-		<FieldId>beingInfringed</FieldId>
-		<FieldName>被侵权的易发现性和易取证性</FieldName>
-		<DataType>String</DataType>
-		<Precision>2000</Precision>
+		<fieldId>beingInfringed</fieldId>
+		<fieldName>被侵权的易发现性和易取证性</fieldName>
+		<dataType>String</dataType>
+		<precision>2000</precision>
 	</Field> -->
 	
 </Fields>

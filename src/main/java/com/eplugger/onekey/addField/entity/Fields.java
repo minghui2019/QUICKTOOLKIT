@@ -1,4 +1,4 @@
-package com.eplugger.xml.dom4j.entity;
+package com.eplugger.onekey.addField.entity;
 
 import java.util.List;
 

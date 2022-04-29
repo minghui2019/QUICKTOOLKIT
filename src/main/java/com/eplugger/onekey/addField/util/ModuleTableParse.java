@@ -27,7 +27,7 @@ public class ModuleTableParse extends ParseXmlAbst<ModuleTable> {
 	public List<ModuleTable> parseValidList(List<ModuleTable> list) {
 		List<ModuleTable> moduleTables = new ArrayList<ModuleTable>();
 		for (ModuleTable moduleTable : list) {
-			if (moduleTable.getIgnore()) {
+			if (moduleTable.isIgnore()) {
 				continue;
 			}
 			moduleTables.add(moduleTable);

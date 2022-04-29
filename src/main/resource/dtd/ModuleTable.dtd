@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT ModuleTables (ModuleTable+)>
-<!ELEMENT ModuleTable (ModuleName, TableName, Described)>
+<!ELEMENT ModuleTable (moduleName, tableName, described)>
 <!ATTLIST ModuleTable ignore (true|false) "false">
-<!ELEMENT ModuleName (#PCDATA)>
-<!ELEMENT TableName (#PCDATA)>
-<!ELEMENT Described (#PCDATA)>
+<!ELEMENT moduleName (#PCDATA)>
+<!ELEMENT tableName (#PCDATA)>
+<!ELEMENT described (#PCDATA)>

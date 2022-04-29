@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.eplugger.onekey.addField.entity.Fields;
+import com.eplugger.onekey.addField.entity.ModuleTable;
+import com.eplugger.onekey.addField.entity.ModuleTables;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
-import com.eplugger.xml.dom4j.entity.Fields;
-import com.eplugger.xml.dom4j.entity.ModuleTable;
-import com.eplugger.xml.dom4j.entity.ModuleTables;
 import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
 import com.eplugger.xml.dom4j.parse.SimpleValueParser;
 import com.google.common.base.Strings;

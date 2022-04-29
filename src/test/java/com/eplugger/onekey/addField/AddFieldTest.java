@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addField.util.FieldParse;
 import com.eplugger.onekey.addField.util.ModuleTableParse;
+import com.eplugger.uuid.UUIDFun;
 
 public class AddFieldTest {
 	private String classPath;
@@ -36,5 +38,12 @@ public class AddFieldTest {
 		Map<String, String> map = ModuleTableParse.getInstance().getValidModuleTableMap(classPath + "field/ModuleTable.xml");
 		System.out.println(map1);
 		System.out.println(map);
+	}
+	
+	@Test
+	public void testJoinUUID() throws Exception {
+		List<String> uuidList = UUIDFun.getInstance().getUuidsList(10);
+		String collect = uuidList.stream().map(u -> "'" + u + "'").collect(Collectors.joining(", "));
+		System.out.println(collect);
 	}
 }

@@ -16,9 +16,9 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Dom4JTag
-public class Fields {
-	@Dom4JField(type = Dom4JFieldType.TAG, comment = "fieldList")
+@Dom4JTag("Fields")
+public class SimpleFields {
+	@Dom4JField(type = Dom4JFieldType.TAG, comment = "字段列表")
 	private List<SimpleField> fieldList = Lists.newArrayList();
 
 	@Override

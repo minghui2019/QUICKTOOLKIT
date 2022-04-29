@@ -1,5 +1,6 @@
 package com.eplugger.common.io;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -264,18 +265,10 @@ public class FileUtils {
 		
 		createFileParentDir(file);
 		
-		if (file.exists()) {
-			if (isBackupSrcFile) {
-				String canonicalPath = file.getCanonicalPath();
-				String prefix = getPrefix(canonicalPath);
-				String suffix = getSuffix(canonicalPath);
-				File newFile = new File(prefix + DateUtils.formatTimeNoSeparator() + "." + suffix);
-				Files.copy(file, newFile);
-				log.debug("文件 (" + canonicalPath + ") 已存在，执行备份！");
-			} else {
-				log.debug("文件 (" + file.getCanonicalPath() + ") 已存在，执行删除！");
-			}
-			file.delete();
+		if (isBackupSrcFile) {
+			backupSrcFile(file);
+		} else {
+			deleteSrcFile(file);
 		}
 		
 		if (append) {
@@ -283,6 +276,37 @@ public class FileUtils {
 		} else {
 			Files.asCharSink(file, charset).write(data);
 		}
+	}
+	
+	/**
+	 * 备份源文件
+	 * @param file
+	 * @throws IOException
+	 */
+	public static void backupSrcFile(File file) throws IOException {
+		if (!file.exists()) {
+			return;
+		}
+		String canonicalPath = file.getCanonicalPath();
+		String prefix = getPrefix(canonicalPath);
+		String suffix = getSuffix(canonicalPath);
+		File newFile = new File(prefix + DateUtils.formatTimeNoSeparator() + "." + suffix);
+		Files.copy(file, newFile);
+		file.delete();
+		log.debug("文件 (" + canonicalPath + ") 已存在，执行备份！");
+	}
+	
+	/**
+	 * 删除源文件
+	 * @param file
+	 * @throws IOException
+	 */
+	public static void deleteSrcFile(File file) throws IOException {
+		if (!file.exists()) {
+			return;
+		}
+		file.delete();
+		log.debug("文件 (" + file.getCanonicalPath() + ") 已存在，执行删除！");
 	}
 	
 	/**
@@ -296,5 +320,18 @@ public class FileUtils {
 			throw new RuntimeException("路径无效[path=" + path + "]");
 		}
 		return new File(path);
+	}
+	
+	/**
+	 * 打开文件资源管理器
+	 * Windows
+	 * @param file
+	 */
+	public static void openTaskBar(File file) {
+		try {
+			Desktop.getDesktop().open(file);
+		} catch (IOException e) {
+			log.error("路径不存在，打开失败！[path=" + file.getAbsolutePath() + "]");
+		}
 	}
 }

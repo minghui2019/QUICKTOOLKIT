@@ -162,7 +162,7 @@ public class ProduceSqlFiles {
 				sb.append("GO").append(StringUtils.CRLF).append(StringUtils.CRLF);
 			}
 			if (DBUtils.isOracle()) {
-				sb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(" NULL  ) ");
+				sb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(" NULL ) ");
 				sb.append(StringUtils.CRLF);
 			}
 		}

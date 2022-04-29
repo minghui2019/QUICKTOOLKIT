@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -40,6 +41,11 @@ public class Dom4JParser {
 	 * 文件编码, 默认使用 UTF-8
 	 */
 	private final String encoding;
+	
+	/**
+	 * 
+	 */
+	private DocType docType;
 
 	/**
 	 * 构建XML解析器
@@ -48,6 +54,10 @@ public class Dom4JParser {
 	 */
 	public Dom4JParser(String path) {
 		this(path, "UTF-8");
+	}
+	
+	public Dom4JParser(String path, DocType docType) {
+		this(path, "UTF-8", docType);
 	}
 
 	/**
@@ -71,6 +81,11 @@ public class Dom4JParser {
 		this.encoding = encoding;
 	}
 	
+	public Dom4JParser(String path, String encoding, DocType docType) {
+		this(path, encoding);
+		this.docType = docType;
+	}
+
 	/**
 	 * 获取XML文件根节点
 	 *
@@ -359,6 +374,9 @@ public class Dom4JParser {
 	public <T> Document fromBean(T data, boolean isAutoWrite2File) {
 		Element fromBean = fromBean1(data);
 		Document document = DocumentHelper.createDocument(fromBean);
+		if (this.docType != null)
+			document.setDocType(DocumentFactory.getInstance().createDocType(this.docType.elementName, this.docType.publicID, this.docType.systemID));
+		
 		if (isAutoWrite2File)
 			writeDocument(document);
 		return document;

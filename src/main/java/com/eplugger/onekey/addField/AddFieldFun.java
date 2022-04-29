@@ -1,8 +1,6 @@
 package com.eplugger.onekey.addField;
 
-import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,17 +25,22 @@ import com.google.common.collect.Sets;
  * Double -- decimal(18,6),
  * Integer -- decimal(18,6)
  * @author Admin
- *
  */
 public class AddFieldFun {
-	private static final String FILE_OUT_PATH = "C:/Users/Admin/Desktop/AddField";
+	private static final String FILE_OUT_PATH_PARENT = "C:/Users/Admin/Desktop/AddField";
+	public static final String FILE_OUT_PATH_FIELD = "src/main/resource/field/Field.xml";
+	public static final String FILE_OUT_PATH_MODULETABLE = "src/main/resource/field/ModuleTable.xml";
 	public static void main(String[] args) throws Exception {
-		ModuleTables moduleTables = ParseUtils.toBean("src/main/resource/field/ModuleTable.xml", ModuleTables.class);
+		createSqlAndJavaFile();
+	}
+	
+	public static void createSqlAndJavaFile() throws Exception {
+		ModuleTables moduleTables = ParseUtils.toBean(FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
 		Map<String, String> map = moduleTables.getValidModuleTableMap();
 		String[] moduleNames = map.keySet().toArray(new String[] {}); //模块名
 		String[] tableNames = map.values().toArray(new String[] {}); //数据库表名
 		String[] beanIds = moduleNames; //beanId默认等同模块名
-		Fields fields = ParseUtils.toBean("src/main/resource/field/Field.xml", Fields.class);
+		Fields fields = ParseUtils.toBean(FILE_OUT_PATH_FIELD, Fields.class);
 		List<Field> fieldList = fields.getFieldList();
 
 		StringBuilder scsb = new StringBuilder();
@@ -58,15 +61,12 @@ public class AddFieldFun {
 		String javaCode = ProduceJavaFiles.produceEntityJavaCode(fieldList);
 		String today = DateUtils.formatDate();
 		String dateFm = DateUtils.formatDateNoSeparator();
-		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH + File.separator + dateFm + File.separator + today + ".java", javaCode);
+		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH_PARENT + File.separator + dateFm + File.separator + today + ".java", javaCode);
 		
 		scsb.append(StringUtils.CRLF);
-		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH + File.separator + dateFm + File.separator + today + ".sql", scsb.toString() + mdsb.toString());
+		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH_PARENT + File.separator + dateFm + File.separator + today + ".sql", scsb.toString() + mdsb.toString());
 		
-		try {
-			Desktop.getDesktop().open(new File(FILE_OUT_PATH + File.separator + dateFm));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileUtils.openTaskBar(new File(FILE_OUT_PATH_PARENT + File.separator + dateFm));
 	}
+	
 }

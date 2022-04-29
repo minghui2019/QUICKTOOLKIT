@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.eplugger.trans.entity.Fields;
+import com.eplugger.trans.entity.SimpleFields;
 import com.eplugger.trans.entity.SimpleField;
 import com.eplugger.utils.OtherUtils;
 import com.eplugger.xml.dom4j.XMLObject;
@@ -23,7 +23,7 @@ public class TextTransTest {
 		String[] result = TextTrans.transText2En(dsts);
 		System.out.println(Arrays.toString(result));
 		String[] srcs = src.split("、");
-		Fields fields = new Fields();
+		SimpleFields fields = new SimpleFields();
 		List<SimpleField> fieldList = fields.getFieldList();
 		for (int i = 0; i < srcs.length; i++) {
 			fieldList.add(new SimpleField(result[i], srcs[i], OtherUtils.TPYE_STRING, 500));

@@ -3,6 +3,7 @@ package com.eplugger.onekey.addField.entity;
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
 import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
 import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+import com.google.common.base.Strings;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,8 +28,8 @@ public class AppendSearch {
 	private boolean mergeMultiVals = false;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE)
 	private String symbol = ",";
+	
 	public AppendSearch(String value, String relativeField) {
-		super();
 		this.value = value;
 		this.relativeField = relativeField;
 	}
@@ -36,10 +37,22 @@ public class AppendSearch {
 		this(value, relativeField);
 		this.relativeThisProperty = relativeThisProperty;
 	}
+	
 	@Override
 	public String toString() {
-		return "AppendSearch [value=" + value + ", relativeField=" + relativeField + ", relativeThisProperty="
-				+ relativeThisProperty + ", searchValLabel=" + searchValLabel + ", mergeMultiVals=" + mergeMultiVals
-				+ ", symbol=" + symbol + "]";
+		StringBuilder sb = new StringBuilder("@AppendSearch(");
+		sb.append("value=\"").append(value).append("\", ");
+		sb.append("relativeField=\"").append(relativeField).append("\", ");
+		if (!Strings.isNullOrEmpty(relativeThisProperty) && !"id".equals(relativeThisProperty)) {
+			sb.append("relativeThisProperty=\"").append(relativeThisProperty).append("\", ");
+		}
+		if (mergeMultiVals) {
+			sb.append("mergeMultiVals=").append(mergeMultiVals).append(", ");
+		}
+		if (!Strings.isNullOrEmpty(symbol) && !",".equals(symbol)) {
+			sb.append("symbol=\"").append(symbol).append("\", ");
+		}
+		sb.replace(sb.length() - 2, sb.length(), "").append(")");
+		return sb.toString();
 	}
 }

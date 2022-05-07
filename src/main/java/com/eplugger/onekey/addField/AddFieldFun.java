@@ -10,9 +10,10 @@ import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addField.entity.Fields;
 import com.eplugger.onekey.addField.entity.ModuleTables;
+import com.eplugger.onekey.utils.javaFile.ProduceJavaFactory;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFiles;
-import com.eplugger.onekey.utils.sqlFile.ProduceMetaDataFiles;
-import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
+import com.eplugger.onekey.utils.sqlFile.ProduceMetaDataFactory;
+import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
 import com.eplugger.utils.DateUtils;
 import com.eplugger.xml.dom4j.utils.ParseUtils;
 import com.google.common.collect.Sets;
@@ -49,15 +50,16 @@ public class AddFieldFun {
 		for (int i = 0; i < moduleNames.length; i++) {
 			String tableName = tableNames[i];
 			String beanId = beanIds[i];
-			String metadata = ProduceMetaDataFiles.produceMetadata(beanId, fieldList);
+			String metadata = ProduceMetaDataFactory.getInstance().produceMetadata(beanId, fieldList);
 			mdsb.append(metadata);
 			if (set.contains(tableName)) {
 				continue;
 			}
-			String sqlCode = ProduceSqlFiles.produceSqlCode(tableName, fieldList);
+			String sqlCode = ProduceSqlFactory.getInstance().produceSqlCode(tableName, fieldList);
 			scsb.append(sqlCode);
 			set.add(tableName);
 		}
+		String javaCode1 = ProduceJavaFactory.getInstance().produceEntityJavaCode(fieldList);
 		String javaCode = ProduceJavaFiles.produceEntityJavaCode(fieldList);
 		String today = DateUtils.formatDate();
 		String dateFm = DateUtils.formatDateNoSeparator();

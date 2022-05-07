@@ -15,6 +15,7 @@ import com.eplugger.onekey.addModule.entity.Module;
 import com.eplugger.onekey.addModule.entity.ModuleInfo;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.OtherUtils;
+import com.google.common.base.Strings;
 
 public class ProduceJavaFiles {
 	private static String modulePath = "C:/Users/Admin/Desktop/AddModule/java/";
@@ -782,22 +783,18 @@ public class ProduceJavaFiles {
 		StringBuffer sgSb = new StringBuffer();
 		
 		for (Field field : fieldList) {
+			if (field.isOnlyMeta() == true) {
+				continue;
+			}
 			if (field.getFieldName() == null) {
 				fieldSb.append(OtherUtils.TAB_FOUR + "private " + field.getDataType() + " " + field.getFieldId() + ";" + StringUtils.CRLF);
 				
 				sgSb.append(OtherUtils.TAB_FOUR + Constants.getAssociationMap(field.getAssociation()) + StringUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "@JoinColumn(name = \"" + field.getJoinColumn() + "\")" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + " get" + StringUtils.firstCharUpperCase(field.getFieldId()) + "() {" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_EIGHT + "return " + field.getFieldId() + ";" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "}" + StringUtils.CRLF);
-				sgSb.append(StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + StringUtils.firstCharUpperCase(field.getFieldId()) + "(" + field.getDataType() + " " + field.getFieldId() + ") {" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_EIGHT + "this." + field.getFieldId() + " = " + field.getFieldId() + ";" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "}" + StringUtils.CRLF);
-				sgSb.append(StringUtils.CRLF);
-			} else if ("List".equals(field.getDataType())) {
-				fieldSb.append(OtherUtils.TAB_FOUR + "@Meaning(\"" + field.getFieldName() + "\")" + StringUtils.CRLF);
-				fieldSb.append(OtherUtils.TAB_FOUR + "private " + field.getDataType() + "<" + field.getGenericity() + "> " + field.getFieldId() + " = new ArrayList<>();" + StringUtils.CRLF);
+				appendGetter(sgSb, field);
+				appendSetter(sgSb, field);
+			} else if (OtherUtils.TPYE_LIST.equals(field.getDataType())) {
+				appendProperty(fieldSb, field);
 				
 				sgSb.append(OtherUtils.TAB_FOUR + Constants.getAssociationMap(field.getAssociation()) + StringUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR + "@JoinColumn(name = \"" + field.getJoinColumn() + "\")" + StringUtils.CRLF);
@@ -807,29 +804,16 @@ public class ProduceJavaFiles {
 				if (field.getFetch() != null) {
 					sgSb.append(OtherUtils.TAB_FOUR + "@Fetch(value=" + field.getFetch() + ")" + StringUtils.CRLF);
 				}
-				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + "<" + field.getGenericity() + "> get" + StringUtils.firstCharUpperCase(field.getFieldId()) + "() {" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_EIGHT + "return " + field.getFieldId() + ";" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "}" + StringUtils.CRLF);
-				sgSb.append(StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + StringUtils.firstCharUpperCase(field.getFieldId()) + "(" + field.getDataType() + "<" + field.getGenericity() + "> " + field.getFieldId() + ") {" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_EIGHT + "this." + field.getFieldId() + " = " + field.getFieldId() + ";" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "}" + StringUtils.CRLF);
-				sgSb.append(StringUtils.CRLF);
+				appendGetter(sgSb, field);
+				appendSetter(sgSb, field);
 			} else {
-				fieldSb.append(OtherUtils.TAB_FOUR + "@Meaning(\"" + field.getFieldName() + "\")" + StringUtils.CRLF);
-				fieldSb.append(OtherUtils.TAB_FOUR + "private " + field.getDataType() + " " + field.getFieldId() + ";" + StringUtils.CRLF);
+				appendProperty(fieldSb, field);
 			
 				if (field.isTranSient()) {
 					sgSb.append(OtherUtils.TAB_FOUR + "@Transient" + StringUtils.CRLF);
 					AppendSearch appendSearch = field.getAppendSearch();
 					if (appendSearch != null) {
-						sgSb.append(OtherUtils.TAB_FOUR)
-						.append("@AppendSearch(value=\"").append(appendSearch.getValue())
-						.append("\", relativeField=\"").append(appendSearch.getRelativeField())
-						.append("\", relativeThisProperty=\"").append(appendSearch.getRelativeThisProperty())
-						.append("\", mergeMultiVals=").append(appendSearch.isMergeMultiVals())
-						.append(", symbol=\"").append(appendSearch.getSymbol())
-						.append("\")").append(StringUtils.CRLF);
+						sgSb.append(OtherUtils.TAB_FOUR).append(appendSearch.toString());
 					}
 				} else {
 					sgSb.append(OtherUtils.TAB_FOUR + "@Column(name = \"" + field.getTableFieldId() + "\"");
@@ -838,19 +822,48 @@ public class ProduceJavaFiles {
 					}
 					sgSb.append(")" + StringUtils.CRLF);
 				}
-				sgSb.append(OtherUtils.TAB_FOUR + "public " + field.getDataType() + " get" + StringUtils.firstCharUpperCase(field.getFieldId()) + "() {" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_EIGHT + "return " + field.getFieldId() + ";" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "}" + StringUtils.CRLF);
-				sgSb.append(StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "public void set" + StringUtils.firstCharUpperCase(field.getFieldId()) + "(" + field.getDataType() + " " + field.getFieldId() + ") {" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_EIGHT + "this." + field.getFieldId() + " = " + field.getFieldId() + ";" + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "}" + StringUtils.CRLF);
-				sgSb.append(StringUtils.CRLF);
+				appendGetter(sgSb, field);
+				appendSetter(sgSb, field);
 			}
-			
 		}
 		return fieldSb.toString() + StringUtils.CRLF + sgSb.toString();
 	}
+	
+	private static void appendGetter(StringBuffer sb, Field field) {
+		sb.append(OtherUtils.TAB_FOUR).append("public ").append(field.getDataType());
+		if (!Strings.isNullOrEmpty(field.getGenericity())) {
+			sb.append("<").append(field.getGenericity()).append(">");
+		}
+		sb.append(" get").append(StringUtils.firstCharUpperCase(field.getFieldId())).append("() {").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_EIGHT).append("return ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_FOUR).append("}").append(StringUtils.CRLF);
+		sb.append(StringUtils.CRLF);
+	}
+	
+	private static void appendSetter(StringBuffer sb, Field field) {
+		sb.append(OtherUtils.TAB_FOUR).append("public void set").append(StringUtils.firstCharUpperCase(field.getFieldId())).append("(").append(field.getDataType());
+		if (!Strings.isNullOrEmpty(field.getGenericity())) {
+			sb.append("<").append(field.getGenericity()).append(">");
+		}
+		sb.append(" ").append(field.getFieldId()).append(") {").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_EIGHT).append("this.").append(field.getFieldId()).append(" = ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_FOUR).append("}").append(StringUtils.CRLF);
+		sb.append(StringUtils.CRLF);
+	}
+	
+	private static void appendProperty(StringBuffer sb, Field field) {
+		sb.append(OtherUtils.TAB_FOUR).append("@Meaning(\"").append(field.getFieldName()).append("\")").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_FOUR).append("private ").append(field.getDataType());
+		if (!Strings.isNullOrEmpty(field.getGenericity())) {
+			sb.append("<").append(field.getGenericity()).append(">");
+		}
+		sb.append(" ").append(field.getFieldId());
+		if (!Strings.isNullOrEmpty(field.getGenericity())) {
+			sb.append(" = new ArrayList<>()");
+		}
+		sb.append(";").append(StringUtils.CRLF);
+	}
+	
 	private static String listModulePath = "C:/Users/Admin/Desktop/AddListModule/java/";
 	
 	public static void produceJavaFiles(Module module) {

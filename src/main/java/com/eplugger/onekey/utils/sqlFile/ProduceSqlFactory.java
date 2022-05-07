@@ -7,11 +7,22 @@ import java.util.Set;
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addModule.entity.ModuleInfo;
+import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.DBUtils;
 import com.eplugger.utils.OtherUtils;
 
-public class ProduceSqlFactory {
+public class ProduceSqlFactory extends AbstractProduceCodeFactory {
+	private static class ProduceSqlFactorySingleton {
+		private static final ProduceSqlFactory FACTORY = new ProduceSqlFactory(); 
+	}
+	
+	public static ProduceSqlFactory getInstance() {
+		return ProduceSqlFactorySingleton.FACTORY;
+	}
+	
+	private ProduceSqlFactory() { }
+	
 	/**
 	 * 生产数据库表格sql代码
 	 * @param module
@@ -82,6 +93,36 @@ public class ProduceSqlFactory {
 				sb.append("\"").append(tableFieldId).append("\" ").append(SqlUtils.getDatabaseDataType(dataType, precision)).append(" NULL ,").append(StringUtils.CRLF);
 			}
 			set.add(tableFieldId);
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * 生产sql代码
+	 * 20220429 修改
+	 * @param tableName
+	 * @param fieldList
+	 * @param database
+	 * @return
+	 */
+	public String produceSqlCode(String tableName, List<Field> fieldList) {
+		StringBuffer sb = new StringBuffer();
+		for (Field field : fieldList) {
+			if (field.isTranSient()) {
+				continue;
+			}
+			if (DBUtils.isSqlServer()) {
+				sb.append("ALTER TABLE [dbo].[").append(tableName).append("] ADD [").append(field.getTableFieldId()).append("] ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(" NULL").append(StringUtils.CRLF);
+				sb.append("GO").append(StringUtils.CRLF).append(StringUtils.CRLF);
+			}
+			if (DBUtils.isOracle()) {
+				sb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(" NULL ) ");
+				sb.append(StringUtils.CRLF);
+			}
+		}
+		if (DBUtils.isOracle() && sb.length() > 0) {
+			sb.append(";").append(StringUtils.CRLF);
+			sb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
 		}
 		return sb.toString();
 	}

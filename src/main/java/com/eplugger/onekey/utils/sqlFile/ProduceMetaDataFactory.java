@@ -5,43 +5,31 @@ import java.util.stream.Collectors;
 
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.entity.Field;
+import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
+import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.DBUtils;
 import com.eplugger.utils.OtherUtils;
 import com.eplugger.uuid.UUIDFun;
 import com.google.common.base.Strings;
 
-public class ProduceMetaDataFiles {
+public class ProduceMetaDataFactory extends AbstractProduceCodeFactory {
+	private static class ProduceMetaDataFactorySingleton {
+		private static final ProduceMetaDataFactory FACTORY = new ProduceMetaDataFactory(); 
+	}
+
+	public static ProduceMetaDataFactory getInstance() {
+		return ProduceMetaDataFactorySingleton.FACTORY;
+	}
+	private ProduceMetaDataFactory() { }
+
 	/**
-	 * 元数据数据类型
-	 * @param javaDataType java数据类型
+	 * 生成元数据
+	 * @param beanId
+	 * @param fieldList
 	 * @return
 	 */
-	public static String getMetadataDataType(String javaDataType) {
-		String result = "";
-		switch (javaDataType) {
-		case OtherUtils.TPYE_STRING:
-			result = "string";
-			break;
-		case OtherUtils.TPYE_DATE:
-			result = "date";
-			break;
-		case OtherUtils.TPYE_TIMESTAMP:
-			result = "date";
-			break;
-		case OtherUtils.TPYE_DOUBLE:
-			result = "float";
-			break;
-		case OtherUtils.TPYE_INTEGER:
-			result = "int";
-			break;
-		default:
-			break;
-		}
-		return result;
-	}
-	
-	public static String produceMetadata(String beanId, List<Field> fieldList) {
-		int orders = ProduceMetaDataFiles.getMaxOrdersByBeanId(beanId);//元数据排序号，默认1
+	public String produceMetadata(String beanId, List<Field> fieldList) {
+		int orders = SqlUtils.getMaxOrdersByBeanId(beanId);//元数据排序号，默认1
 		List<Field> fields = fieldList.stream().filter(f -> Strings.isNullOrEmpty(f.getAssociation())).collect(Collectors.toList());
 		List<String> uuidList = UUIDFun.getInstance().getUuidsList(fields.size());
 		String uuidStr = uuidList.stream().map(u -> "'" + u + "'").collect(Collectors.joining(", "));
@@ -59,20 +47,38 @@ public class ProduceMetaDataFiles {
 			.append(field.getCategoryName() == null ? "NULL" : "'" + field.getCategoryName() + "'")
 			.append(",").append(++orders).append(",'").append(field.getFieldName()).append("','")
 			.append(field.getFieldId()).append("','")
-			.append(getMetadataDataType(field.getDataType())).append("',").append("'")
+			.append(this.getMetadataDataType(field.getDataType())).append("',").append("'")
 			.append(eadpDataType).append("','no','use');").append(StringUtils.CRLF);
 		}
 		sb.append(StringUtils.CRLF);
 		return sb.toString();
 	}
-
-	public static int getMaxOrdersByBeanId(String beanId) {
-		String sql = "";
-		if (DBUtils.isSqlServer()) {
-			sql = "SELECT top 1 ORDERS FROM SYS_ENTITY_META WHERE BEANID='" + beanId + "' ORDER BY ORDERS DESC;";
-		} else if (DBUtils.isOracle()) {
-			sql = "SELECT ORDERS FROM(SELECT ORDERS FROM SYS_ENTITY_META WHERE BEANID='" + beanId + "' ORDER BY ORDERS DESC) WHERE ROWNUM=1";
+	
+	/**
+	 * 元数据数据类型
+	 * @param javaDataType java数据类型
+	 * @return
+	 */
+	public String getMetadataDataType(String javaDataType) {
+		String result = "";
+		switch (javaDataType) {
+		case OtherUtils.TPYE_STRING:
+			result = "string";
+			break;
+		case OtherUtils.TPYE_TIMESTAMP:
+		case OtherUtils.TPYE_DATE:
+			result = "date";
+			break;
+		case OtherUtils.TPYE_DOUBLE:
+			result = "float";
+			break;
+		case OtherUtils.TPYE_INTEGER:
+			result = "int";
+			break;
+		default:
+			break;
 		}
-		return DBUtils.getOrdersFromEntityMeta(sql);
+		return result;
 	}
+
 }

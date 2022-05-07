@@ -76,4 +76,19 @@ public class SqlUtils {
 		}
 		return result;
 	}
+
+	/**
+	 * 获取当前实体的元数据最后一个编号
+	 * @param beanId
+	 * @return
+	 */
+	public static int getMaxOrdersByBeanId(String beanId) {
+		String sql = "";
+		if (DBUtils.isSqlServer()) {
+			sql = "SELECT top 1 ORDERS FROM SYS_ENTITY_META WHERE BEANID='" + beanId + "' ORDER BY ORDERS DESC;";
+		} else if (DBUtils.isOracle()) {
+			sql = "SELECT ORDERS FROM(SELECT ORDERS FROM SYS_ENTITY_META WHERE BEANID='" + beanId + "' ORDER BY ORDERS DESC) WHERE ROWNUM=1";
+		}
+		return DBUtils.getOrdersFromEntityMeta(sql);
+	}
 }

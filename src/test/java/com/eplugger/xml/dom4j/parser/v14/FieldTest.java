@@ -7,7 +7,7 @@ import java.io.File;
 
 import org.junit.Test;
 
-import com.eplugger.onekey.addField.entity.Fields;
+import com.eplugger.onekey.entity.Fields;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
 

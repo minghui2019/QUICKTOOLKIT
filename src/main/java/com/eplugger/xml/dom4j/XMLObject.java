@@ -57,7 +57,7 @@ public class XMLObject implements Serializable {
     @Comment("标签名")
     private String tagName;
     @Comment("DocumentType")
-    private XMLDocumentType docType;
+    private DocType docType;
 
     /**
      * 构建XML对象
@@ -619,7 +619,7 @@ public class XMLObject implements Serializable {
 
         return beans;
     }
-
+    
     /**
      * 校验当前节点是否漂浮状态(只能代表当前节点, 而不能代表其上级节点是否也是漂浮状态)
      *
@@ -817,11 +817,49 @@ public class XMLObject implements Serializable {
         
         boolean isFired = trySimpleValueByTag(bean, field, target);
         isFired = isFired || tryCollectionOrArray(bean, field);
+        isFired = isFired || tryMap(bean, field);
         isFired = isFired || tryCustomType(bean, field);
         log.debug("path&hierarchy处理结果: " + isFired);
     }
 
     /**
+     * 尝试设置Map
+     *
+     * @param bean  数据对象
+     * @param field 字段对象
+     * @return 成功处理返回true, 否则返回false(需要其他方式处理)
+     */
+    private boolean tryMap(Object bean, Field field) {
+    	Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
+        Class<?> fieldType = field.getType();
+
+        if (!Map.class.isAssignableFrom(fieldType))
+			return false;
+
+        // 获取泛型类型
+        // 如果没有泛型不设置当前值
+        Type genericType = field.getGenericType();
+        if (genericType instanceof ParameterizedType) {
+        	// 泛型类型必须被 Dom4JTag 注解, 否则不予解析
+        	String childTagName = getTargetTagName(xmlField, fieldType.getSimpleName());
+        	
+        	Map<Object, Object> val = Maps.newHashMap();
+        	
+        	List<XMLObject> children = getAllChildTags(childTagName);
+        	for (XMLObject xmlObject : children) {
+    			List<XMLObject> params = xmlObject.getAllChildTags("param");
+    			for (XMLObject param : params) {
+    				Map<String, String> map = param.getAttrs();
+    				val.put(map.get("key"), map.get("value"));
+    			}
+    		}
+        	
+    		FieldUtils.setFieldValue(bean, field, val);
+        }
+        return true;
+	}
+
+	/**
      * 尝试自定义类型
      *
      * @param bean  数据对象
@@ -894,7 +932,9 @@ public class XMLObject implements Serializable {
             Class<?> type = fieldType.getComponentType();
             String childTagName = getTargetTagName(xmlField, type.getSimpleName());
             List<?> val = toBeans(childTagName, type);
-            field.set(bean, val.toArray());
+            if (!val.isEmpty()) {
+            	FieldUtils.setFieldValue(bean, field, val.toArray());
+            }
             return true;
         }
         return false;
@@ -1048,13 +1088,13 @@ public class XMLObject implements Serializable {
     
     public XMLObject setDocumentType(DocumentType documentType) {
     	if (documentType != null) {
-    		this.docType = new XMLDocumentType(documentType.getName(), documentType.getPublicID(), documentType.getSystemID());
+    		this.docType = new DocType(documentType.getName(), documentType.getPublicID(), documentType.getSystemID());
     	}
         return this;
     }
     
     public XMLObject setDocumentType(String name, String publicID, String systemID) {
-        this.docType = new XMLDocumentType(name, publicID, systemID);
+        this.docType = new DocType(name, publicID, systemID);
         return this;
     }
 }

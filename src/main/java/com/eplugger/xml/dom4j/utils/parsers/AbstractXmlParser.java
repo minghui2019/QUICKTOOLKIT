@@ -1,18 +1,19 @@
-package com.eplugger.xml.dom4j.simple;
+package com.eplugger.xml.dom4j.utils.parsers;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
+import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
@@ -24,66 +25,35 @@ import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
 import com.eplugger.xml.dom4j.annotation.Dom4JTag;
 import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
 import com.eplugger.xml.dom4j.util.XmlFileUtils;
+import com.eplugger.xml.dom4j.utils.ParserXml;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Dom4j解析器抽象实现类
+ * @author Admin
+ *
+ * @param <T>
+ */
 @Slf4j
-public class Dom4JParser {
-	/**
-	 * XML 文件路径
-	 */
-	private final String path;
-
-	/**
-	 * 文件编码, 默认使用 UTF-8
-	 */
-	private final String encoding;
-	
-	/**
-	 * 
-	 */
+@Setter
+@Getter
+public abstract class AbstractXmlParser<T> implements ParserXml<T> {
+	/** XML 文件路径 */
+	private String path;
+	/** 文件编码, 默认使用 UTF-8 */
+	private String encoding;
+	/** XML DOCTYPE声明 */
 	private DocType docType;
-
-	/**
-	 * 构建XML解析器
-	 *
-	 * @param path 文件路径
-	 */
-	public Dom4JParser(String path) {
-		this(path, "UTF-8");
-	}
 	
-	public Dom4JParser(String path, DocType docType) {
-		this(path, "UTF-8", docType);
-	}
-
-	/**
-	 * 构建XML解析器
-	 *
-	 * @param path         文件路径
-	 * @param encoding 文件编码
-	 */
-	public Dom4JParser(String path, Charset encoding) {
-		this(path, encoding.name());
-	}
-
-	/**
-	 * 构建XML解析器
-	 *
-	 * @param path         文件路径
-	 * @param encoding 文件编码
-	 */
-	public Dom4JParser(String path, String encoding) {
-		this.path = path;
-		this.encoding = encoding;
-	}
-	
-	public Dom4JParser(String path, String encoding, DocType docType) {
-		this(path, encoding);
-		this.docType = docType;
+	public void setDocType(String elementName, String publicID, String systemID) {
+		setDocType(new DocType(elementName, publicID, systemID));
 	}
 
 	/**
@@ -100,13 +70,28 @@ public class Dom4JParser {
 		}
 		return null;
 	}
+	
+	/**
+	 * toBean前的准备工作
+	 * @param path
+	 */
+	protected void beforeToBean(String path) {
+		this.setPath(path);
+		this.setEncoding("UTF-8");
+	}
+	
+	@Override
+	public T toBean(Class<T> cls, String path) {
+		this.beforeToBean(path);
+        return this.toBean(cls);
+	}
 
 	/**
 	 * 映射为实体类
 	 * @param cls
 	 * @return
 	 */
-	public <T> T toBean(Class<T> cls) {
+	public T toBean(Class<T> cls) {
 		Dom4JTag xmlTag = cls.getAnnotation(Dom4JTag.class);
         if (xmlTag == null)
         	throw new RuntimeException("类型[" + cls.getSimpleName() + "]未使用 @Dom4JTag 注解");
@@ -114,6 +99,10 @@ public class Dom4JParser {
         Document document = getDocument();
         if (document == null)
         	return null;
+        DocumentType documentType = document.getDocType();
+        if (documentType != null) {
+        	setDocType(documentType.getElementName(), documentType.getPublicID(), documentType.getSystemID());
+        }
         Element root = document.getRootElement();
         
         String expectName = StringUtils.trimToEmpty(xmlTag.value());
@@ -133,8 +122,8 @@ public class Dom4JParser {
 	 * @throws Exception
 	 * @see FieldValueParserFactory 字段实例解析器工厂
 	 */
-	public <T> T toBean(Class<T> cls, Element element) {
-		T bean;
+	public <D> D toBean(Class<D> cls, Element element) {
+		D bean;
 		try {
 			bean = cls.newInstance();
 		} catch (Exception e) {
@@ -159,12 +148,12 @@ public class Dom4JParser {
 	 * @return
 	 * @see #toBean(Class, Element)
 	 */
-	public <T> List<T> toBeans(String childTagName, Class<T> cls, Element root) {
-		List<T> beans = Lists.newArrayList();
+	public <D> List<D> toBeans(String childTagName, Class<D> cls, Element root) {
+		List<D> beans = Lists.newArrayList();
 
-		List<Element> elements = root.elements();
+		List<Element> elements = root.elements(childTagName);
 		for (Element element : elements) {
-			T bean = toBean(cls, element);
+			D bean = toBean(cls, element);
 			beans.add(bean);
 		}
 		return beans;
@@ -221,8 +210,48 @@ public class Dom4JParser {
 	private void setValueByTag(Object bean, Field field, Dom4JField xmlField, Element element) throws Exception {
 		boolean isFired = trySimpleValueByTag(bean, field, element);
 		isFired = isFired || tryCollectionOrArray(bean, field, element);
+		isFired = isFired || tryMap(bean, field, element);
 		isFired = isFired || tryCustomType(bean, field, element);
 		log.debug("path&hierarchy处理结果: " + isFired);
+	}
+	
+	/**
+     * 尝试设置Map
+     *
+     * @param bean  数据对象
+     * @param field 字段对象
+	 * @param element 
+     * @return 成功处理返回true, 否则返回false(需要其他方式处理)
+     */
+    private boolean tryMap(Object bean, Field field, Element root) {
+    	Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
+        Class<?> fieldType = field.getType();
+
+        if (!Map.class.isAssignableFrom(fieldType))
+			return false;
+
+        // 获取泛型类型
+        // 如果没有泛型不设置当前值
+        Type genericType = field.getGenericType();
+        if (genericType instanceof ParameterizedType) {
+        	// 泛型类型必须被 Dom4JTag 注解, 否则不予解析
+        	String childTagName = getTargetTagName(xmlField, fieldType.getSimpleName());
+        	
+        	Map<Object, Object> val = Maps.newHashMap();
+        	
+        	List<Element> elements = root.elements(childTagName);
+    		for (Element element : elements) {
+    			List<Element> elements2 = element.elements("param");
+    			for (Element element2 : elements2) {
+    				if (element2 != null) {
+    					val.put(element2.attributeValue("key"), element2.attributeValue("value"));
+    				}
+    			}
+    		}
+        	
+    		FieldUtils.setFieldValue(bean, field, val);
+        }
+        return true;
 	}
 
 	/**
@@ -331,7 +360,9 @@ public class Dom4JParser {
             Class<?> type = fieldType.getComponentType();
             String childTagName = getTargetTagName(xmlField, type.getSimpleName());
             List<?> val = toBeans(childTagName, type, element);
-            FieldUtils.setFieldValue(bean, field, val.toArray());
+            if (!val.isEmpty()) {
+            	FieldUtils.setFieldValue(bean, field, val.toArray());
+            }
             return true;
         }
 
@@ -352,17 +383,20 @@ public class Dom4JParser {
 	}
 	
 	/**
-     * 指定对象转换为Document对象, 目标对象必须使用{@link Dom4JTag @Dom4JTag}注解
-     * 默认不写出文件
-     *
-     * @param data 目标对象
-     * @param      <T> 对象类型
-     * @return Document实体, 目标对象为null时总是返回null
-     */
-	public <T> Document fromBean(T data) {
-		return fromBean(data, false);
+	 * fromBean前的准备工作
+	 * @param path
+	 */
+	protected void beforeFromBean(String path) {
+		this.setPath(path);
+		this.setEncoding("UTF-8");
 	}
 	
+	@Override
+	public Document fromBean(T data, String path, boolean isAutoWrite2File) {
+		beforeFromBean(path);
+		return fromBean(data, isAutoWrite2File);
+	}
+
 	/**
      * 指定对象转换为Document对象, 目标对象必须使用{@link Dom4JTag @Dom4JTag}注解
      *
@@ -371,7 +405,7 @@ public class Dom4JParser {
      * @param      <T> 对象类型
      * @return Document实体, 目标对象为null时总是返回null
      */
-	public <T> Document fromBean(T data, boolean isAutoWrite2File) {
+	public Document fromBean(T data, boolean isAutoWrite2File) {
 		Element fromBean = fromBean1(data);
 		Document document = DocumentHelper.createDocument(fromBean);
 		if (this.docType != null)
@@ -389,7 +423,7 @@ public class Dom4JParser {
      * @param      <T> 对象类型
      * @return Element实体, 目标对象为null时总是返回null
      */
-	private <T> Element fromBean1(T data) {
+	private <D> Element fromBean1(D data) {
 		if (data == null)
 			return null;
 
@@ -591,5 +625,24 @@ public class Dom4JParser {
 	}
     private static String getTargetTagName(Dom4JTag dom4jTag, String defaultName) {
         return StringUtils.defaultIfBlank(dom4jTag.value(), defaultName);
+    }
+}
+
+class DocType {
+    String elementName;
+    String publicID;
+    String systemID;
+
+    public DocType() { }
+
+    public DocType(String elementName, String systemID) {
+        this.elementName = elementName;
+        this.systemID = systemID;
+    }
+
+    public DocType(String elementName, String publicID, String systemID) {
+        this.elementName = elementName;
+        this.publicID = publicID;
+        this.systemID = systemID;
     }
 }

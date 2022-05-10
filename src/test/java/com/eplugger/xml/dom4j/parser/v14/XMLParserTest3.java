@@ -19,8 +19,8 @@ import org.junit.Test;
 
 import com.alibaba.fastjson.JSON;
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.onekey.addField.entity.ModuleTable;
-import com.eplugger.onekey.addField.entity.ModuleTables;
+import com.eplugger.onekey.entity.ModuleTable;
+import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.utils.DateUtils;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;

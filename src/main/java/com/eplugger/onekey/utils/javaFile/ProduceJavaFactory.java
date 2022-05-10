@@ -5,13 +5,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.onekey.addField.entity.AppendSearch;
-import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addModule.Constants;
-import com.eplugger.onekey.addModule.entity.ModuleInfo;
+import com.eplugger.onekey.entity.AppendSearch;
+import com.eplugger.onekey.entity.Field;
+import com.eplugger.onekey.entity.ModuleInfo;
 import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.OtherUtils;
+import com.google.common.base.Strings;
 
 public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 	private static class ProduceJavaFactorySingleton {
@@ -23,7 +24,6 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 	}
 	
 	private ProduceJavaFactory() { }
-	
 	
 	/**
 	 * <p>生产Action控制类file</p>
@@ -480,7 +480,7 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 	 * @param mainmoduleName
 	 * @return
 	 */
-	public static String produceEntityJavaFile(String packageName, ModuleInfo module, boolean authorSwitch, String mainbeanId, String mainmoduleName) {
+	public String produceEntityJavaFile(String packageName, ModuleInfo module, boolean authorSwitch, String mainbeanId, String mainmoduleName) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("package ").append(packageName).append(OtherUtils.SPOT).append("entity;").append(StringUtils.CRLF); //包名
 		sb.append(StringUtils.CRLF);
@@ -599,31 +599,21 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 	 * @param fieldList
 	 * @return
 	 */
-	public static String produceEntityJavaCode(List<Field> fieldList) {
+	public String produceEntityJavaCode(List<Field> fieldList) {
 		StringBuffer fieldSb = new StringBuffer();
 		StringBuffer sgSb = new StringBuffer();
 		
 		for (Field field : fieldList) {
-			if (field.isOnlyMeta() == true) {
+			if (field.isOnlyMeta()) {
 				continue;
 			}
-			if (OtherUtils.TPYE_STRING.equals(field.getDataType()) || OtherUtils.TPYE_INTEGER.equals(field.getDataType())
-					|| OtherUtils.TPYE_DOUBLE.equals(field.getDataType()) || OtherUtils.TPYE_DATE.equals(field.getDataType())
-					|| OtherUtils.TPYE_TIMESTAMP.equals(field.getDataType())) {
-				fieldSb.append(OtherUtils.TAB_FOUR).append("@Meaning(\"").append(field.getFieldName()).append("\")").append(StringUtils.CRLF);
-				fieldSb.append(OtherUtils.TAB_FOUR).append("private ").append(field.getDataType()).append(" ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
-			
+			ProduceJavaFactory.appendProperty(fieldSb, field);
+			if (OtherUtils.isSimpleType(field.getDataType())) {
 				if (field.isTranSient()) {
 					sgSb.append(OtherUtils.TAB_FOUR).append("@Transient").append(StringUtils.CRLF);
 					AppendSearch appendSearch = field.getAppendSearch();
 					if (appendSearch != null) {
-						sgSb.append(OtherUtils.TAB_FOUR)
-						.append("@AppendSearch(value=\"").append(appendSearch.getValue())
-						.append("\", relativeField=\"").append(appendSearch.getRelativeField())
-						.append("\", relativeThisProperty=\"").append(appendSearch.getRelativeThisProperty())
-						.append("\", mergeMultiVals=").append(appendSearch.isMergeMultiVals())
-						.append(", symbol=\"").append(appendSearch.getSymbol())
-						.append("\")").append(StringUtils.CRLF);
+						sgSb.append(OtherUtils.TAB_FOUR).append(appendSearch.toString()).append(StringUtils.CRLF);
 					}
 				} else {
 					sgSb.append(OtherUtils.TAB_FOUR).append("@Column(name = \"").append(field.getTableFieldId()).append("\"");
@@ -632,12 +622,7 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 					}
 					sgSb.append(")").append(StringUtils.CRLF);
 				}
-				appendGetter(sgSb, field);
-				appendSetter(sgSb, field);
 			} else if (OtherUtils.TPYE_LIST.equals(field.getDataType())) {
-				fieldSb.append(OtherUtils.TAB_FOUR).append("@Meaning(\"").append(field.getFieldName()).append("\")").append(StringUtils.CRLF);
-				fieldSb.append(OtherUtils.TAB_FOUR).append("private ").append(field.getDataType()).append("<").append(field.getGenericity()).append("> ").append(field.getFieldId()).append(" = new ArrayList<>();").append(StringUtils.CRLF);
-				
 				sgSb.append(OtherUtils.TAB_FOUR).append(Constants.getAssociationMap(field.getAssociation())).append(StringUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR).append("@JoinColumn(name = \"").append(field.getJoinColumn()).append("\")").append(StringUtils.CRLF);
 				if (field.getOrderBy() != null) {
@@ -646,48 +631,55 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 				if (field.getFetch() != null) {
 					sgSb.append(OtherUtils.TAB_FOUR).append("@Fetch(value=").append(field.getFetch()).append(")").append(StringUtils.CRLF);
 				}
-				appendGetter(sgSb, field);
-				appendSetter(sgSb, field);
 			} else {
-				fieldSb.append(OtherUtils.TAB_FOUR).append("private ").append(field.getDataType()).append(" ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
-				
 				sgSb.append(OtherUtils.TAB_FOUR).append(Constants.getAssociationMap(field.getAssociation())).append(StringUtils.CRLF);
 				sgSb.append(OtherUtils.TAB_FOUR).append("@JoinColumn(name = \"").append(field.getJoinColumn()).append("\"");
 				if (!field.isUpdateInsert()) {
 					sgSb.append(", updatable = false, insertable = false");
 				}
 				sgSb.append(")").append(StringUtils.CRLF);
-				appendGetter(sgSb, field);
-				appendSetter(sgSb, field);
 			}
+			appendGetter(sgSb, field);
+			appendSetter(sgSb, field);
 			
 		}
 		return fieldSb.toString() + StringUtils.CRLF + sgSb.toString();
 	}
 
-	private static void appendSetter(StringBuffer sgSb, Field field) {
-		sgSb.append(OtherUtils.TAB_FOUR).append("public void set").append(StringUtils.firstCharUpperCase(field.getFieldId())).append("(").append(field.getDataType());
-		if (StringUtils.isNotBlank(field.getGenericity())) {
-			sgSb.append("<").append(field.getGenericity()).append("> ");
-		} else {
-			sgSb.append(" ");
+	protected static void appendProperty(StringBuffer sb, Field field) {
+		if (!Strings.isNullOrEmpty(field.getFieldName())) {
+			sb.append(OtherUtils.TAB_FOUR).append("@Meaning(\"").append(field.getFieldName()).append("\")").append(StringUtils.CRLF);
 		}
-		sgSb.append(field.getFieldId()).append(") {").append(StringUtils.CRLF);
-		sgSb.append(OtherUtils.TAB_EIGHT).append("this.").append(field.getFieldId()).append(" = ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
-		sgSb.append(OtherUtils.TAB_FOUR).append("}").append(StringUtils.CRLF);
-		sgSb.append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_FOUR).append("private ").append(field.getDataType());
+		if (!Strings.isNullOrEmpty(field.getGenericity())) {
+			sb.append("<").append(field.getGenericity()).append(">");
+		}
+		sb.append(" ").append(field.getFieldId());
+		if (!Strings.isNullOrEmpty(field.getGenericity())) {
+			sb.append(" = new ArrayList<>()");
+		}
+		sb.append(";").append(StringUtils.CRLF);
 	}
 
-	private static void appendGetter(StringBuffer sgSb, Field field) {
-		sgSb.append(OtherUtils.TAB_FOUR).append("public ").append(field.getDataType());
-		if (StringUtils.isNotBlank(field.getGenericity())) {
-			sgSb.append("<").append(field.getGenericity()).append("> get");
-		} else {
-			sgSb.append(" get");
+	protected static void appendGetter(StringBuffer sb, Field field) {
+		sb.append(OtherUtils.TAB_FOUR).append("public ").append(field.getDataType());
+		if (!Strings.isNullOrEmpty(field.getGenericity())) {
+			sb.append("<").append(field.getGenericity()).append(">");
 		}
-		sgSb.append(StringUtils.firstCharUpperCase(field.getFieldId())).append("() {").append(StringUtils.CRLF);
-		sgSb.append(OtherUtils.TAB_EIGHT).append("return ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
-		sgSb.append(OtherUtils.TAB_FOUR).append("}").append(StringUtils.CRLF);
-		sgSb.append(StringUtils.CRLF);
+		sb.append(" get").append(StringUtils.firstCharUpperCase(field.getFieldId())).append("() {").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_EIGHT).append("return ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_FOUR).append("}").append(StringUtils.CRLF);
+		sb.append(StringUtils.CRLF);
+	}
+
+	protected static void appendSetter(StringBuffer sb, Field field) {
+		sb.append(OtherUtils.TAB_FOUR).append("public void set").append(StringUtils.firstCharUpperCase(field.getFieldId())).append("(").append(field.getDataType());
+		if (!Strings.isNullOrEmpty(field.getGenericity())) {
+			sb.append("<").append(field.getGenericity()).append(">");
+		}
+		sb.append(" ").append(field.getFieldId()).append(") {").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_EIGHT).append("this.").append(field.getFieldId()).append(" = ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
+		sb.append(OtherUtils.TAB_FOUR).append("}").append(StringUtils.CRLF);
+		sb.append(StringUtils.CRLF);
 	}
 }

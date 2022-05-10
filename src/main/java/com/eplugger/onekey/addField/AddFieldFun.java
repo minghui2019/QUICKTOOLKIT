@@ -7,15 +7,15 @@ import java.util.Set;
 
 import com.eplugger.common.io.FileUtils;
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.onekey.addField.entity.Field;
-import com.eplugger.onekey.addField.entity.Fields;
-import com.eplugger.onekey.addField.entity.ModuleTables;
+import com.eplugger.onekey.entity.Field;
+import com.eplugger.onekey.entity.Fields;
+import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFactory;
-import com.eplugger.onekey.utils.javaFile.ProduceJavaFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceMetaDataFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
 import com.eplugger.utils.DateUtils;
-import com.eplugger.xml.dom4j.utils.ParseUtils;
+import com.eplugger.uuid.UUIDFun;
+import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
 import com.google.common.collect.Sets;
 
 /**
@@ -36,12 +36,12 @@ public class AddFieldFun {
 	}
 	
 	public static void createSqlAndJavaFile() throws Exception {
-		ModuleTables moduleTables = ParseUtils.toBean(FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
+		ModuleTables moduleTables = ParseXmlUtils.toBean(FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
 		Map<String, String> map = moduleTables.getValidModuleTableMap();
-		String[] moduleNames = map.keySet().toArray(new String[] {}); //模块名
-		String[] tableNames = map.values().toArray(new String[] {}); //数据库表名
+		String[] moduleNames = map.keySet().toArray(new String[0]); //模块名
+		String[] tableNames = map.values().toArray(new String[0]); //数据库表名
 		String[] beanIds = moduleNames; //beanId默认等同模块名
-		Fields fields = ParseUtils.toBean(FILE_OUT_PATH_FIELD, Fields.class);
+		Fields fields = ParseXmlUtils.toBean(FILE_OUT_PATH_FIELD, Fields.class);
 		List<Field> fieldList = fields.getFieldList();
 
 		StringBuilder scsb = new StringBuilder();
@@ -59,8 +59,9 @@ public class AddFieldFun {
 			scsb.append(sqlCode);
 			set.add(tableName);
 		}
-		String javaCode1 = ProduceJavaFactory.getInstance().produceEntityJavaCode(fieldList);
-		String javaCode = ProduceJavaFiles.produceEntityJavaCode(fieldList);
+		String javaCode = ProduceJavaFactory.getInstance().produceEntityJavaCode(fieldList);
+		UUIDFun.getInstance().destroyUuids();
+		
 		String today = DateUtils.formatDate();
 		String dateFm = DateUtils.formatDateNoSeparator();
 		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH_PARENT + File.separator + dateFm + File.separator + today + ".java", javaCode);

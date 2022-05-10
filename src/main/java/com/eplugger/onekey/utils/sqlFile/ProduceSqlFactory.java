@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.onekey.addField.entity.Field;
-import com.eplugger.onekey.addModule.entity.ModuleInfo;
+import com.eplugger.onekey.entity.Field;
+import com.eplugger.onekey.entity.ModuleInfo;
 import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.DBUtils;

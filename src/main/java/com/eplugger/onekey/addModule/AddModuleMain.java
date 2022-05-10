@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.eplugger.onekey.addField.entity.Field;
+import com.eplugger.onekey.entity.Field;
 
 public class AddModuleMain {
 	public static void main(String[] args) {

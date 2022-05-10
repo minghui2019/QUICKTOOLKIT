@@ -13,7 +13,7 @@ import com.eplugger.trans.entity.SimpleField;
 import com.eplugger.trans.entity.SimpleFields;
 import com.eplugger.trans.service.TransService;
 import com.eplugger.utils.OtherUtils;
-import com.eplugger.xml.dom4j.utils.ParseUtils;
+import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +41,7 @@ public class TextTrans {
 		String[] srcs = src.split("、");
 		SimpleFields fields = TextTrans.bulidFields(srcs, result);
 		
-		Document document = ParseUtils.fromBean(AddFieldFun.FILE_OUT_PATH_FIELD, fields);
+		Document document = ParseXmlUtils.fromBean(AddFieldFun.FILE_OUT_PATH_FIELD, fields, true);
 		log.debug("\n" + document.asXML());
 		FileUtils.openTaskBar(new File(AddFieldFun.FILE_OUT_PATH_FIELD).getParentFile());
 	}

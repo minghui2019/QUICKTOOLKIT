@@ -4,29 +4,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dom4j.DocumentException;
-
-import com.eplugger.onekey.addModule.entity.Module;
-import com.eplugger.onekey.addModule.util.ModuleParse;
+import com.eplugger.onekey.entity.Module;
+import com.eplugger.onekey.entity.Modules;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFiles;
 import com.eplugger.onekey.utils.jspFile.ProduceJspFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
 import com.eplugger.onekey.utils.xmlFile.ProduceXmlFiles;
+import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
 
 public class AddModuleFun {
-	public static void main(String[] args) throws DocumentException {
-//		String retxml = "src/resource/module/Module.xml";// 需要解析的xml
-//		Document dom = FileUtil.readXmlFile(retxml);
-//		Element rootElement = dom.getRootElement();// 获取根节点：
-//		getNodes(rootElement);// 调用遍历节点的方法，从跟节点遍历
-		Module module = ModuleParse.getInstance().getValidModule("src/resource/module/Module.xml");
-//		List<ModuleTable> validModuleTableList = ModuleTableParse.getInstance().getValidModuleTableList("src/resource/field/ModuleTable.xml");
+	public static void main(String[] args) throws Exception {
+		Modules modules = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class);
+		Module module = modules.getValidModule();
 		System.out.println(module);
 	}
 
 	/**
 	 * <p>单模块-一对多的多</p>
 	 * <p>再生成一对多的一java代码</p>
+	 * @throws Exception 
 	 */
 //	public static void AddSingleModuleFun() {
 ////		String packageName = "com.eplugger.assess.personAssess";
@@ -100,8 +96,8 @@ public class AddModuleFun {
 //		ProduceJspFiles.produceJspFiles(mainModule, template);
 //	}
 	
-	public static void AddMultipleModuleFun() {
-		Module module = ModuleParse.getInstance().getValidModule("src/resource/module/Module.xml");
+	public static void AddMultipleModuleFun() throws Exception {
+		Module module = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class).getValidModule();
 		module.getMainModule().setPackageName("com.eplugger.business.project");
 //		String packageName = "com.eplugger.assess.personAssess";
 		Map<String, String> superClassMap = new HashMap<String, String>();
@@ -154,9 +150,10 @@ public class AddModuleFun {
 	
 	/**
 	 * 生成一个列表字段的所有东西
+	 * @throws Exception 
 	 */
-	public static void AddListModuleFun() {
-		Module module = ModuleParse.getInstance().getValidModule("src/main/resource/module/Module.xml");
+	public static void AddListModuleFun() throws Exception {
+		Module module = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class).getValidModule();
 //		module.getMainModule().setPackageName("com.eplugger.business.projectApply");
 //		Map<String, String> superClassMap = new HashMap<String, String>();
 //		superClassMap.put("entity", "BizEntity");
@@ -177,9 +174,10 @@ public class AddModuleFun {
 	
 	/**
 	 * 多个关联模块
+	 * @throws Exception 
 	 */
-	public static void AddMultiModuleFun() {
-		List<Module> moduleList = ModuleParse.getInstance().getValidList("src/resource/module/Module.xml");
+	public static void AddMultiModuleFun() throws Exception {
+		List<Module> moduleList = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class).getValidList();
 		for (Module module : moduleList) {
 			AddSingleModuleFun(module);
 			Constants.putFullClassNameMap(module.getMainModule().getModuleName(), module.getMainModule().getPackageName() + "." + module.getMainModule().getModuleName());
@@ -192,8 +190,8 @@ public class AddModuleFun {
 		ProduceSqlFiles.produceCreateTableSqlFiles(module);
 	}
 	
-	public static void AddMultipleModuleFun1() {
-		Module module = ModuleParse.getInstance().getValidModule("src/resource/module/Module.xml");
+	public static void AddMultipleModuleFun1() throws Exception {
+		Module module = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class).getValidModule();
 		Map<String, String> superClassMap = new HashMap<String, String>();
 		superClassMap.put("entity", "BusinessEntity");
 		superClassMap.put("bo", "BusinessBO");

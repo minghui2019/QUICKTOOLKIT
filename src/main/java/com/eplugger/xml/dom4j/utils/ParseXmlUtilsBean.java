@@ -4,40 +4,42 @@ import java.util.Map;
 
 import org.dom4j.Document;
 
-import com.eplugger.onekey.addField.entity.Fields;
-import com.eplugger.onekey.addField.entity.ModuleTables;
+import com.eplugger.onekey.entity.Fields;
+import com.eplugger.onekey.entity.ModuleTables;
+import com.eplugger.onekey.entity.Modules;
 import com.eplugger.trans.entity.SimpleFields;
 import com.eplugger.xml.dom4j.utils.parsers.FieldParser;
+import com.eplugger.xml.dom4j.utils.parsers.ModuleParser;
 import com.eplugger.xml.dom4j.utils.parsers.ModuleTableParser;
 import com.eplugger.xml.dom4j.utils.parsers.SimpleFieldParser;
 import com.google.common.collect.Maps;
 
 /**
- * 新导出的Parser需要手动注册于{@link #register(Class, Parser)}
+ * 新导出的Parser需要手动注册于{@link #register(Class, ParserXml)}
  * 使用前一定要注册
  * @author Admin
  *
  */
-public class ParseUtilsBean {
-	private Map<Class<?>, Parser<?>> parsers = Maps.newHashMap();
+public class ParseXmlUtilsBean {
+	private Map<Class<?>, ParserXml<?>> parsers = Maps.newHashMap();
 
-	protected static ParseUtilsBean getInstance() {
+	protected static ParseXmlUtilsBean getInstance() {
 		return BeanUtilsBean.getInstance().getParseUtils();
 	}
 
-	public ParseUtilsBean() {
+	public ParseXmlUtilsBean() {
 		deregister();
 	}
 	
 	/**
-	 * 调用{@link com.eplugger.xml.dom4j.utils.Parser#toBean(Class, Parser) Parser.toBean}进行解析
+	 * 调用{@link com.eplugger.xml.dom4j.utils.ParserXml#toBean(Class, ParserXml) Parser.toBean}进行解析
 	 * @param path
 	 * @param clazz
 	 * @return
 	 * @throws Exception
 	 */
 	public <T> T toBean(String path, Class<T> clazz) throws Exception {
-		Parser<T> parser = lookup(clazz);
+		ParserXml<T> parser = lookup(clazz);
 		if (parser == null) {
 			throw new Exception("尚未注册该解析器" + clazz.getSimpleName());
 		}
@@ -45,19 +47,19 @@ public class ParseUtilsBean {
 	}
 	
 	/**
-	 * 调用{@link com.eplugger.xml.dom4j.utils.Parser#fromBean(T, Parser) Parser.fromBean}进行解析
-	 * @param path
+	 * 调用{@link com.eplugger.xml.dom4j.utils.ParserXml#fromBean(T, ParserXml) Parser.fromBean}进行解析
+	 * @param outPath
 	 * @param data
 	 * @return
 	 * @throws Exception
 	 */
-	public <T> Document fromBean(String path, T data) throws Exception {
+	public <T> Document fromBean(String outPath, T data, boolean isAutoWrite2File) throws Exception {
 		Class<? extends Object> clazz = data.getClass();
-		Parser<T> parser = lookup(clazz);
+		ParserXml<T> parser = lookup(clazz);
 		if (parser == null) {
 			throw new Exception("尚未注册该解析器" + clazz.getSimpleName());
 		}
-		return parser.fromBean(data, path);
+		return parser.fromBean(data, outPath, isAutoWrite2File);
 	}
 
 	public void deregister() {
@@ -72,10 +74,11 @@ public class ParseUtilsBean {
 		register(ModuleTables.class, new ModuleTableParser());
 		register(Fields.class, new FieldParser());
 		register(SimpleFields.class, new SimpleFieldParser());
+		register(Modules.class, new ModuleParser());
 	}
 	
-	private void register(Class<?> clazz, Parser<?> parser) {
-		register(new ParserFacade<>(parser), clazz);
+	private void register(Class<?> clazz, ParserXml<?> parser) {
+		register(new ParserXmlFacade<>(parser), clazz);
 	}
 
 	/**
@@ -83,12 +86,12 @@ public class ParseUtilsBean {
 	 * @param parser
 	 * @param clazz
 	 */
-	public void register(Parser<?> parser, Class<?> clazz) {
+	public void register(ParserXml<?> parser, Class<?> clazz) {
 		parsers.put(clazz, parser);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> Parser<T> lookup(Class<?> clazz) {
-		return (Parser<T>) parsers.get(clazz);
+	public <T> ParserXml<T> lookup(Class<?> clazz) {
+		return (ParserXml<T>) parsers.get(clazz);
 	}
 }

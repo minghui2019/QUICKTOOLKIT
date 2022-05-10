@@ -8,7 +8,7 @@ import org.dom4j.tree.DefaultDocumentType;
  * document type.
  * </p>
  */
-public class XMLDocumentType extends DefaultDocumentType {
+public class DocType extends DefaultDocumentType {
     private static final long serialVersionUID = -4242541910505181668L;
 
     /** The root element name of the document type */
@@ -20,7 +20,7 @@ public class XMLDocumentType extends DefaultDocumentType {
     /** Holds value of property systemID. */
     private String systemID;
 
-    public XMLDocumentType() {
+    public DocType() {
     }
 
     /**
@@ -32,7 +32,7 @@ public class XMLDocumentType extends DefaultDocumentType {
      * @param elementName is the root element name of the document type
      * @param systemID    is the system ID of the external DTD
      */
-    public XMLDocumentType(String elementName, String systemID) {
+    public DocType(String elementName, String systemID) {
         this.elementName = elementName;
         this.systemID = systemID;
     }
@@ -47,7 +47,7 @@ public class XMLDocumentType extends DefaultDocumentType {
      * @param publicID    is the public ID of the DTD
      * @param systemID    is the system ID of the DTD
      */
-    public XMLDocumentType(String elementName, String publicID, String systemID) {
+    public DocType(String elementName, String publicID, String systemID) {
         this.elementName = elementName;
         this.publicID = publicID;
         this.systemID = systemID;

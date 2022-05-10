@@ -1,4 +1,4 @@
-package com.eplugger.onekey.addField.entity;
+package com.eplugger.onekey.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +45,13 @@ public class ModuleTables {
 	public Map<String, String> getValidModuleTableMap() {
 		List<ModuleTable> moduleTables = this.getValidList();
 		return moduleTables.stream().filter(m -> {
+			return !(Strings.isNullOrEmpty(m.getModuleName()) || Strings.isNullOrEmpty(m.getTableName()));
+		}).collect(Collectors.toMap(ModuleTable::getModuleName, ModuleTable::getTableName));
+	}
+	
+	public Map<String, String> getModuleTableMap() {
+		List<ModuleTable> moduleTableList = this.moduleTableList;
+		return moduleTableList.stream().filter(m -> {
 			return !(Strings.isNullOrEmpty(m.getModuleName()) || Strings.isNullOrEmpty(m.getTableName()));
 		}).collect(Collectors.toMap(ModuleTable::getModuleName, ModuleTable::getTableName));
 	}

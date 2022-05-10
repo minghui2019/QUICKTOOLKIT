@@ -1,4 +1,4 @@
-package com.eplugger.onekey.addField.entity;
+package com.eplugger.onekey.entity;
 
 import java.util.List;
 

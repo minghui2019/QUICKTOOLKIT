@@ -14,17 +14,17 @@ public class BeanUtilsBean {
 		return (BeanUtilsBean) BEANS_BY_CLASSLOADER.get();
 	}
 	
-	private ParseUtilsBean parseUtilsBean;
+	private ParseXmlUtilsBean parseUtilsBean;
 	
 	public BeanUtilsBean() {
-		this(new ParseUtilsBean());
+		this(new ParseXmlUtilsBean());
 	}
 
-	public BeanUtilsBean(ParseUtilsBean parseUtilsBean) {
+	public BeanUtilsBean(ParseXmlUtilsBean parseUtilsBean) {
 		this.parseUtilsBean = parseUtilsBean;
 	}
 
-	public ParseUtilsBean getParseUtils() {
+	public ParseXmlUtilsBean getParseUtils() {
 		return parseUtilsBean;
 	}
 }

@@ -6,10 +6,10 @@ import java.util.List;
 
 import com.eplugger.common.io.FileUtils;
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addModule.Constants;
-import com.eplugger.onekey.addModule.entity.Module;
-import com.eplugger.onekey.addModule.entity.ModuleInfo;
+import com.eplugger.onekey.entity.Field;
+import com.eplugger.onekey.entity.Module;
+import com.eplugger.onekey.entity.ModuleInfo;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.DBUtils;
 

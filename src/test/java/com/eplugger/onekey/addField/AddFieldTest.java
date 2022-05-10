@@ -11,10 +11,11 @@ import java.util.stream.Collectors;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.eplugger.onekey.addField.entity.Field;
-import com.eplugger.onekey.addField.util.FieldParse;
-import com.eplugger.onekey.addField.util.ModuleTableParse;
+import com.eplugger.onekey.entity.Field;
+import com.eplugger.onekey.entity.Fields;
+import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.uuid.UUIDFun;
+import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
 
 public class AddFieldTest {
 	private String classPath;
@@ -28,14 +29,14 @@ public class AddFieldTest {
 	
 	@Test
 	public void testParseField() throws Exception {
-		List<Field> fieldList = FieldParse.getInstance().getValidList(classPath + "field/Field.xml");
+		List<Field> fieldList = ParseXmlUtils.toBean(classPath + "field/Field.xml", Fields.class).getFieldList();
 		System.out.println(fieldList);
 	}
 	
 	@Test
 	public void testParseModuleTable() throws Exception {
-		Map<String, String> map1 = ModuleTableParse.getInstance().getModuleTableMap(classPath + "field/ModuleTable.xml");
-		Map<String, String> map = ModuleTableParse.getInstance().getValidModuleTableMap(classPath + "field/ModuleTable.xml");
+		Map<String, String> map1 = ParseXmlUtils.toBean(classPath + "field/ModuleTable.xml", ModuleTables.class).getModuleTableMap();
+		Map<String, String> map = ParseXmlUtils.toBean(classPath + "field/ModuleTable.xml", ModuleTables.class).getValidModuleTableMap();
 		System.out.println(map1);
 		System.out.println(map);
 	}

@@ -3,211 +3,233 @@
 <Modules>
 	<Module ignore="false">
 		<MainModule>
-			<BeanId>yfContractCooperationUnit</BeanId>
-			<ModuleName>YFContractCooperationUnit</ModuleName>
-			<TableName>BIZ_YF_CONTRACT_COOPERATION_UNIT</TableName>
-			<ModuleZHName>横向合作单位</ModuleZHName>
-			<PackageName>com.eplugger.business.contract</PackageName>
-			<SuperClassMap>
-				<Clazz key="entity" value="EntityImpl" />
+			<beanId>yfContractCooperationUnit</beanId>
+			<moduleName>YFContractCooperationUnit</moduleName>
+			<tableName>BIZ_YF_CONTRACT_COOPERATION_UNIT</tableName>
+			<moduleZHName>横向合作单位</moduleZHName>
+			<packageName>com.eplugger.business.contract</packageName>
+			<superClassMap>
+				<param key="entity" value="EntityImpl" />
 				<!-- <Clazz key="bo" value="PublicBusiness" />
 				<Clazz key="action" value="PublicAction" /> -->
-			</SuperClassMap>
+			</superClassMap>
 			<Fields>
-				<Field dataType="Integer">
-					<FieldName>排序号</FieldName>
-					<FieldId>orderId</FieldId>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>orderId</fieldId>
+					<fieldName>排序号</fieldName>
+					<dataType>Integer</dataType>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>合作方名称</FieldName>
-					<FieldId>unitName</FieldId>
-					<Precision>500</Precision>
+				<Field>
+					<fieldId>unitName</fieldId>
+					<fieldName>合作方名称</fieldName>
+					<dataType>String</dataType>
+					<precision>500</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>合作方类型</FieldName>
-					<FieldId>unitType</FieldId>
-					<CategoryName>UNIT_TYPE_YF</CategoryName>
-					<Precision>50</Precision>
+				<Field>
+					<fieldId>unitType</fieldId>
+					<fieldName>合作方类型</fieldName>
+					<dataType>String</dataType>
+					<categoryName>UNIT_TYPE_YF</categoryName>
+					<precision>50</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>合作方联系人</FieldName>
-					<FieldId>unitContacter</FieldId>
-					<Precision>50</Precision>
+				<Field>
+					<fieldId>unitContacter</fieldId>
+					<fieldName>合作方联系人</fieldName>
+					<dataType>String</dataType>
+					<precision>50</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>合作方联系电话</FieldName>
-					<FieldId>unitContactNum</FieldId>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>unitContactNum</fieldId>
+					<fieldName>合作方联系电话</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>合作方所属省份</FieldName>
-					<FieldId>unitContactArea</FieldId>
-					<CategoryName>JF_LOCATION</CategoryName>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>unitContactArea</fieldId>
+					<fieldName>合作方所属省份</fieldName>
+					<dataType>String</dataType>
+					<categoryName>JF_LOCATION</categoryName>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>合作方所属地市</FieldName>
-					<FieldId>unitContactCity</FieldId>
-					<CategoryName>JF_CITY</CategoryName>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>unitContactCity</fieldId>
+					<fieldName>合作方所属地市</fieldName>
+					<dataType>String</dataType>
+					<categoryName>JF_CITY</categoryName>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>合同编号</FieldName>
-					<FieldId>contractId</FieldId>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>contractId</fieldId>
+					<fieldName>合同编号</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="YFContract" association="ManyToOne" ignoreImport="true" updateInsert="false">
-					<FieldName>横向项目</FieldName>
-					<FieldId>yfContract</FieldId>
-					<JoinColumn>CONTRACT_ID</JoinColumn>
+				<Field association="ManyToOne" ignoreImport="true" updateInsert="false">
+					<fieldId>yfContract</fieldId>
+					<fieldName>横向项目</fieldName>
+					<dataType>YFContract</dataType>
+					<joinColumn>CONTRACT_ID</joinColumn>
 				</Field>
 			</Fields>
 		</MainModule>
 	</Module>
 	<Module ignore="true">
 		<MainModule>
-			<BeanId>projectBusinessPlan</BeanId>
-			<ModuleName>ProjectBusinessPlan</ModuleName>
-			<TableName>BIZ_PROJECT_BUSINESS_PLAN</TableName>
-			<ModuleZHName>项目业务计划</ModuleZHName>
-			<PackageName>com.eplugger.business.projectBusiness</PackageName>
-			<SuperClassMap>
-				<Clazz key="entity" value="BusinessEntity" />
-				<Clazz key="bo" value="BusinessBO" />
-				<Clazz key="action" value="BusinessAction" />
-			</SuperClassMap>
+			<beanId>projectBusinessPlan</beanId>
+			<moduleName>ProjectBusinessPlan</moduleName>
+			<tableName>BIZ_PROJECT_BUSINESS_PLAN</tableName>
+			<moduleZHName>项目业务计划</moduleZHName>
+			<packageName>com.eplugger.business.projectBusiness</packageName>
+			<superClassMap>
+				<param key="entity" value="BusinessEntity" />
+				<param key="bo" value="BusinessBO" />
+				<param key="action" value="BusinessAction" />
+			</superClassMap>
 			<Fields>
-				<Field dataType="String">
-					<FieldName>计划名称</FieldName>
-					<FieldId>name</FieldId>
-					<Precision>500</Precision>
+				<Field>
+					<fieldId>name</fieldId>
+					<fieldName>计划名称</fieldName>
+					<dataType>String</dataType>
+					<precision>500</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>项目分类</FieldName>
-					<FieldId>projectType</FieldId>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>projectType</fieldId>
+					<fieldName>项目分类</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>项目性质</FieldName>
-					<FieldId>projectClass</FieldId>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>projectClass</fieldId>
+					<fieldName>项目性质</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="Date">
-					<FieldName>开始日期</FieldName>
-					<FieldId>startDate</FieldId>
+				<Field>
+					<fieldId>startDate</fieldId>
+					<fieldName>开始日期</fieldName>
+					<dataType>Date</dataType>
 				</Field>
-				<Field dataType="Date">
-					<FieldName>结束日期</FieldName>
-					<FieldId>endDate</FieldId>
+				<Field>
+					<fieldId>endDate</fieldId>
+					<fieldName>结束日期</fieldName>
+					<dataType>Date</dataType>
 				</Field>
-				<Field dataType="String">
-					<FieldName>业务类别</FieldName>
-					<FieldId>businessType</FieldId>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>businessType</fieldId>
+					<fieldName>业务类别</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>计划状态</FieldName>
-					<FieldId>planStatus</FieldId>
-					<CategoryName>PLAN_STATUS</CategoryName>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>planStatus</fieldId>
+					<fieldName>计划状态</fieldName>
+					<dataType>String</dataType>
+					<categoryName>PLAN_STATUS</categoryName>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>说明附件</FieldName>
-					<FieldId>fileIds</FieldId>
-					<Precision>500</Precision>
+				<Field>
+					<fieldId>fileIds</fieldId>
+					<fieldName>说明附件</fieldName>
+					<dataType>String</dataType>
+					<precision>500</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>备注</FieldName>
-					<FieldId>note</FieldId>
-					<Precision>4000</Precision>
+				<Field>
+					<fieldId>note</fieldId>
+					<fieldName>备注</fieldName>
+					<dataType>String</dataType>
+					<precision>4000</precision>
 				</Field>
-				<Field dataType="List" association="OneToMany">
-					<FieldName>材料</FieldName>
-					<FieldId>materials</FieldId>
-					<JoinColumn>BUSINESS_PLAN_ID</JoinColumn>
-					<Genericity>ProjectBusinessMaterial</Genericity>
+				<Field association="OneToMany">
+					<fieldId>materials</fieldId>
+					<fieldName>材料</fieldName>
+					<dataType>List</dataType>
+					<joinColumn>BUSINESS_PLAN_ID</joinColumn>
+					<genericity>ProjectBusinessMaterial</genericity>
 				</Field>
 			</Fields>
 		</MainModule>
 		<!-- <AuthorModule>
-			<BeanId>projectBusinessMaterial</BeanId>
-			<ModuleName>ProjectBusinessMaterial</ModuleName>
-			<TableName>BIZ_PROJECT_BUSINESS_MATERIAL</TableName>
-			<ModuleZHName>项目业务材料</ModuleZHName>
+			<beanId>projectBusinessMaterial</beanId>
+			<moduleName>ProjectBusinessMaterial</moduleName>
+			<tableName>BIZ_PROJECT_BUSINESS_MATERIAL</tableName>
+			<moduleZHName>项目业务材料</moduleZHName>
 			<Fields>
-				<Field dataType="String">
-					<FieldName>项目ID</FieldName>
-					<FieldId>projectId</FieldId>
-					<Precision>32</Precision>
+				<Field>
+					<fieldName>项目ID</fieldName>
+					<fieldId>projectId</fieldId>
+					<precision>32</precision>
 				</Field>
 				<Field dataType="VProject" association="ManyToOne">
-					<FieldName>项目</FieldName>
-					<FieldId>project</FieldId>
-					<JoinColumn>PROJECT_ID</JoinColumn>
+					<fieldName>项目</fieldName>
+					<fieldId>project</fieldId>
+					<joinColumn>PROJECT_ID</joinColumn>
 				</Field>
-				<Field dataType="String">
-					<FieldName>提交状态</FieldName>
-					<FieldId>submitStatus</FieldId>
-					<Precision>32</Precision>
+				<Field>
+					<fieldName>提交状态</fieldName>
+					<fieldId>submitStatus</fieldId>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>项目名称</FieldName>
-					<FieldId>project.name</FieldId>
+				<Field onlyMeta="true">
+					<fieldName>项目名称</fieldName>
+					<fieldId>project.name</fieldId>
 				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>项目ID</FieldName>
-					<FieldId>project.id</FieldId>
+				<Field onlyMeta="true">
+					<fieldName>项目ID</fieldName>
+					<fieldId>project.id</fieldId>
 				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>负责人</FieldName>
-					<FieldId>project.chargerName</FieldId>
+				<Field onlyMeta="true">
+					<fieldName>负责人</fieldName>
+					<fieldId>project.chargerName</fieldId>
 				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>负责人ID</FieldName>
-					<FieldId>project.chargerCode</FieldId>
+				<Field onlyMeta="true">
+					<fieldName>负责人ID</fieldName>
+					<fieldId>project.chargerCode</fieldId>
 				</Field>
-				<Field dataType="String" onlyMeta="true">
-					<FieldName>所属单位</FieldName>
-					<FieldId>project.unitId</FieldId>
-				</Field>
-				<Field dataType="Date" onlyMeta="true">
-					<FieldName>立项日期</FieldName>
-					<FieldId>project.authorizeDate</FieldId>
+				<Field onlyMeta="true">
+					<fieldName>所属单位</fieldName>
+					<fieldId>project.unitId</fieldId>
 				</Field>
 				<Field dataType="Date" onlyMeta="true">
-					<FieldName>计划完成日期</FieldName>
-					<FieldId>project.planEndDate</FieldId>
+					<fieldName>立项日期</fieldName>
+					<fieldId>project.authorizeDate</fieldId>
+				</Field>
+				<Field dataType="Date" onlyMeta="true">
+					<fieldName>计划完成日期</fieldName>
+					<fieldId>project.planEndDate</fieldId>
 				</Field>
 			</Fields>
 		</AuthorModule> -->
 	</Module>
 	<Module ignore="true">
 		<MainModule>
-			<BeanId>projectApplyBookDirectlaborcost</BeanId>
-			<ModuleName>ProjectApplyBookDirectlaborcost</ModuleName>
-			<TableName>BIZ_PROJECT_APPLY_BOOK_DIRECTLABORCOST</TableName>
-			<ModuleZHName>直接人力成本</ModuleZHName>
-			<PackageName>com.eplugger.business.projectApply</PackageName>
-			<SuperClassMap>
-				<Clazz key="entity" value="CheckBusinessEntity" />
-			</SuperClassMap>
+			<beanId>projectApplyBookDirectlaborcost</beanId>
+			<moduleName>ProjectApplyBookDirectlaborcost</moduleName>
+			<tableName>BIZ_PROJECT_APPLY_BOOK_DIRECTLABORCOST</tableName>
+			<moduleZHName>直接人力成本</moduleZHName>
+			<packageName>com.eplugger.business.projectApply</packageName>
+			<superClassMap>
+				<param key="entity" value="CheckBusinessEntity" />
+			</superClassMap>
 			<Fields>
-				<Field dataType="String">
-					<FieldName>需求类型</FieldName>
-					<FieldId>demandType</FieldId>
-					<CategoryName>DEMAND_TYPE</CategoryName>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>demandType</fieldId>
+					<fieldName>需求类型</fieldName>
+					<dataType>String</dataType>
+					<categoryName>DEMAND_TYPE</categoryName>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="String">
-					<FieldName>月份</FieldName>
-					<FieldId>month</FieldId>
-					<CategoryName>MONTH</CategoryName>
-					<Precision>32</Precision>
+				<Field>
+					<fieldId>month</fieldId>
+					<fieldName>月份</fieldName>
+					<dataType>String</dataType>
+					<categoryName>MONTH</categoryName>
+					<precision>32</precision>
 				</Field>
-				<Field dataType="Double">
-					<FieldName>工作量（人月）</FieldName>
-					<FieldId>workload</FieldId>
+				<Field>
+					<fieldId>workload</fieldId>
+					<fieldName>工作量（人月）</fieldName>
+					<dataType>Double</dataType>
 				</Field>
 			</Fields>
 		</MainModule>

@@ -2,10 +2,10 @@ package com.eplugger.xml.dom4j.utils;
 
 import org.dom4j.Document;
 
-public final class ParserFacade<T> implements Parser<T> {
-	private final Parser<T> parser;
+public final class ParserXmlFacade<T> implements ParserXml<T> {
+	private final ParserXml<T> parser;
 	
-	public ParserFacade(Parser<T> parser) {
+	public ParserXmlFacade(ParserXml<T> parser) {
 		if (parser == null) {
             throw new IllegalArgumentException("Parser is missing");
         }
@@ -18,8 +18,8 @@ public final class ParserFacade<T> implements Parser<T> {
 	}
 	
 	@Override
-	public Document fromBean(T data, String path) {
-		return parser.fromBean(data, path);
+	public Document fromBean(T data, String outPath, boolean isAutoWrite2File) {
+		return parser.fromBean(data, outPath, isAutoWrite2File);
 	}
 	
 	@Override

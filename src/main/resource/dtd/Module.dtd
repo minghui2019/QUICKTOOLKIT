@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT Modules (Module+)>
 <!ELEMENT Module (MainModule, AuthorModule?)>
-<!ELEMENT MainModule (BeanId, ModuleName?, TableName, ModuleZHName, PackageName, SuperClassMap+, Fields)>
-<!ELEMENT AuthorModule (BeanId, ModuleName?, TableName, ModuleZHName, PackageName, SuperClassMap+, Fields)>
+<!ELEMENT MainModule (beanId, moduleName?, tableName, moduleZHName, packageName, superClassMap+, Fields)>
+<!ELEMENT AuthorModule (beanId, moduleName?, tableName, moduleZHName, packageName, superClassMap+, Fields)>
 <!ATTLIST Module
 		ignore (true|false) "false">
-<!ELEMENT BeanId (#PCDATA)>
-<!ELEMENT ModuleName (#PCDATA)>
-<!ELEMENT TableName (#PCDATA)>
-<!ELEMENT ModuleZHName (#PCDATA)>
-<!ELEMENT PackageName (#PCDATA)>
-<!ELEMENT SuperClassMap (Clazz+)>
+<!ELEMENT beanId (#PCDATA)>
+<!ELEMENT moduleName (#PCDATA)>
+<!ELEMENT tableName (#PCDATA)>
+<!ELEMENT moduleZHName (#PCDATA)>
+<!ELEMENT packageName (#PCDATA)>
+<!ELEMENT superClassMap (param+)>
+<!ELEMENT param EMPTY>
+<!ATTLIST param 
+		key (entity|bo|action) #REQUIRED 
+		value CDATA #REQUIRED>
 <!ELEMENT Fields (Field+)>
-<!ELEMENT Field (FieldName, FieldId, CategoryName?, Precision?, JoinColumn?, Genericity?, OrderBy?, Fetch?)>
+<!ELEMENT Field (fieldId, fieldName, dataType, categoryName?, precision?, joinColumn?, tranSient?, AppendSearch?, genericity?, orderBy?, fetch?)>
 <!ATTLIST Field 
-		dataType (String|Integer|Date|List|Double|VProject|Patent|YFContract) #IMPLIED 
 		association (OneToMany|ManyToOne) #IMPLIED 
 		onlyMeta (true|false) "false" 
 		ignoreImport (true|false) "false"
 		updateInsert (true|false) "true">
-<!ELEMENT FieldName (#PCDATA)>
-<!ELEMENT FieldId (#PCDATA)>
-<!ELEMENT CategoryName (#PCDATA)>
-<!ELEMENT Precision (#PCDATA)>
-<!ELEMENT JoinColumn (#PCDATA)>
-<!ELEMENT Genericity (#PCDATA)>
-<!ELEMENT OrderBy (#PCDATA)>
-<!ELEMENT Fetch (#PCDATA)>
-<!ELEMENT Clazz EMPTY>
-<!ATTLIST Clazz 
-		key (entity|bo|action) #REQUIRED 
-		value CDATA #REQUIRED>
+<!ELEMENT fieldId (#PCDATA)>
+<!ELEMENT fieldName (#PCDATA)>
+<!ELEMENT dataType (#PCDATA)>
+<!ELEMENT categoryName (#PCDATA)>
+<!ELEMENT precision (#PCDATA)>
+<!ELEMENT joinColumn (#PCDATA)>
+<!ELEMENT tranSient (#PCDATA)>
+<!ELEMENT AppendSearch (value)>
+<!ELEMENT value (#PCDATA)>
+<!ATTLIST AppendSearch 
+		relativeField CDATA #REQUIRED 
+		relativeThisProperty CDATA "id" 
+		searchValLabel (val) #IMPLIED 
+		mergeMultiVals (true|false) "false" 
+		symbol CDATA ",">
+<!ELEMENT genericity (#PCDATA)>
+<!ELEMENT orderBy (#PCDATA)>
+<!ELEMENT fetch (#PCDATA)>

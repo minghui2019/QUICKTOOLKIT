@@ -8,14 +8,13 @@ import java.util.stream.Collectors;
 
 import com.eplugger.common.io.FileUtils;
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.onekey.addField.entity.AppendSearch;
-import com.eplugger.onekey.addField.entity.Field;
 import com.eplugger.onekey.addModule.Constants;
-import com.eplugger.onekey.addModule.entity.Module;
-import com.eplugger.onekey.addModule.entity.ModuleInfo;
+import com.eplugger.onekey.entity.AppendSearch;
+import com.eplugger.onekey.entity.Field;
+import com.eplugger.onekey.entity.Module;
+import com.eplugger.onekey.entity.ModuleInfo;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.OtherUtils;
-import com.google.common.base.Strings;
 
 public class ProduceJavaFiles {
 	private static String modulePath = "C:/Users/Admin/Desktop/AddModule/java/";
@@ -611,7 +610,7 @@ public class ProduceJavaFiles {
 		sb.append(OtherUtils.TAB_FOUR + "private static final long serialVersionUID = 1L;" + StringUtils.CRLF);
 		sb.append(StringUtils.CRLF);
 		
-		sb.append(produceEntityJavaCode(fieldList));
+		sb.append(ProduceJavaFactory.getInstance().produceEntityJavaCode(fieldList));
 		
 		if ("BizEntity".equals(superClass)) {
 			sb.append(OtherUtils.TAB_FOUR + "@Override" + StringUtils.CRLF);
@@ -643,7 +642,7 @@ public class ProduceJavaFiles {
 				fieldList.add(field1);
 			}
 		}
-		sb.append(produceEntityJavaCode(fieldList));
+		sb.append(ProduceJavaFactory.getInstance().produceEntityJavaCode(fieldList));
 		return sb.toString();
 	}
 	
@@ -752,7 +751,7 @@ public class ProduceJavaFiles {
 		sb.append(OtherUtils.TAB_FOUR + "private static final long serialVersionUID = 1L;" + StringUtils.CRLF);
 		sb.append(StringUtils.CRLF);
 		
-		sb.append(produceEntityJavaCode(fieldList));
+		sb.append(ProduceJavaFactory.getInstance().produceEntityJavaCode(fieldList));
 		
 		sb.append(StringUtils.CRLF);
 		
@@ -773,97 +772,6 @@ public class ProduceJavaFiles {
 		return sb.toString();
 	}
 	
-	/**
-	 * 生产field代码，包括setter和getter
-	 * @param fieldList
-	 * @return
-	 */
-	public static String produceEntityJavaCode(List<Field> fieldList) {
-		StringBuffer fieldSb = new StringBuffer();
-		StringBuffer sgSb = new StringBuffer();
-		
-		for (Field field : fieldList) {
-			if (field.isOnlyMeta() == true) {
-				continue;
-			}
-			if (field.getFieldName() == null) {
-				fieldSb.append(OtherUtils.TAB_FOUR + "private " + field.getDataType() + " " + field.getFieldId() + ";" + StringUtils.CRLF);
-				
-				sgSb.append(OtherUtils.TAB_FOUR + Constants.getAssociationMap(field.getAssociation()) + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "@JoinColumn(name = \"" + field.getJoinColumn() + "\")" + StringUtils.CRLF);
-				appendGetter(sgSb, field);
-				appendSetter(sgSb, field);
-			} else if (OtherUtils.TPYE_LIST.equals(field.getDataType())) {
-				appendProperty(fieldSb, field);
-				
-				sgSb.append(OtherUtils.TAB_FOUR + Constants.getAssociationMap(field.getAssociation()) + StringUtils.CRLF);
-				sgSb.append(OtherUtils.TAB_FOUR + "@JoinColumn(name = \"" + field.getJoinColumn() + "\")" + StringUtils.CRLF);
-				if (field.getOrderBy() != null) {
-					sgSb.append(OtherUtils.TAB_FOUR + "@OrderBy(\"" + field.getOrderBy() + "\")" + StringUtils.CRLF);
-				}
-				if (field.getFetch() != null) {
-					sgSb.append(OtherUtils.TAB_FOUR + "@Fetch(value=" + field.getFetch() + ")" + StringUtils.CRLF);
-				}
-				appendGetter(sgSb, field);
-				appendSetter(sgSb, field);
-			} else {
-				appendProperty(fieldSb, field);
-			
-				if (field.isTranSient()) {
-					sgSb.append(OtherUtils.TAB_FOUR + "@Transient" + StringUtils.CRLF);
-					AppendSearch appendSearch = field.getAppendSearch();
-					if (appendSearch != null) {
-						sgSb.append(OtherUtils.TAB_FOUR).append(appendSearch.toString());
-					}
-				} else {
-					sgSb.append(OtherUtils.TAB_FOUR + "@Column(name = \"" + field.getTableFieldId() + "\"");
-					if (!field.isUpdateInsert()) {
-						sgSb.append(", updatable = false, insertable = false");
-					}
-					sgSb.append(")" + StringUtils.CRLF);
-				}
-				appendGetter(sgSb, field);
-				appendSetter(sgSb, field);
-			}
-		}
-		return fieldSb.toString() + StringUtils.CRLF + sgSb.toString();
-	}
-	
-	private static void appendGetter(StringBuffer sb, Field field) {
-		sb.append(OtherUtils.TAB_FOUR).append("public ").append(field.getDataType());
-		if (!Strings.isNullOrEmpty(field.getGenericity())) {
-			sb.append("<").append(field.getGenericity()).append(">");
-		}
-		sb.append(" get").append(StringUtils.firstCharUpperCase(field.getFieldId())).append("() {").append(StringUtils.CRLF);
-		sb.append(OtherUtils.TAB_EIGHT).append("return ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
-		sb.append(OtherUtils.TAB_FOUR).append("}").append(StringUtils.CRLF);
-		sb.append(StringUtils.CRLF);
-	}
-	
-	private static void appendSetter(StringBuffer sb, Field field) {
-		sb.append(OtherUtils.TAB_FOUR).append("public void set").append(StringUtils.firstCharUpperCase(field.getFieldId())).append("(").append(field.getDataType());
-		if (!Strings.isNullOrEmpty(field.getGenericity())) {
-			sb.append("<").append(field.getGenericity()).append(">");
-		}
-		sb.append(" ").append(field.getFieldId()).append(") {").append(StringUtils.CRLF);
-		sb.append(OtherUtils.TAB_EIGHT).append("this.").append(field.getFieldId()).append(" = ").append(field.getFieldId()).append(";").append(StringUtils.CRLF);
-		sb.append(OtherUtils.TAB_FOUR).append("}").append(StringUtils.CRLF);
-		sb.append(StringUtils.CRLF);
-	}
-	
-	private static void appendProperty(StringBuffer sb, Field field) {
-		sb.append(OtherUtils.TAB_FOUR).append("@Meaning(\"").append(field.getFieldName()).append("\")").append(StringUtils.CRLF);
-		sb.append(OtherUtils.TAB_FOUR).append("private ").append(field.getDataType());
-		if (!Strings.isNullOrEmpty(field.getGenericity())) {
-			sb.append("<").append(field.getGenericity()).append(">");
-		}
-		sb.append(" ").append(field.getFieldId());
-		if (!Strings.isNullOrEmpty(field.getGenericity())) {
-			sb.append(" = new ArrayList<>()");
-		}
-		sb.append(";").append(StringUtils.CRLF);
-	}
-	
 	private static String listModulePath = "C:/Users/Admin/Desktop/AddListModule/java/";
 	
 	public static void produceJavaFiles(Module module) {
@@ -871,11 +779,11 @@ public class ProduceJavaFiles {
 		String moduleName = mainModule.getModuleName();
 		boolean authorSwitch = module.getAuthorModule() != null;
 		// entity File
-		String entityJavaCode = ProduceJavaFactory.produceEntityJavaFile(mainModule.getPackageName(), mainModule, false, null, moduleName);
+		String entityJavaCode = ProduceJavaFactory.getInstance().produceEntityJavaFile(mainModule.getPackageName(), mainModule, false, null, moduleName);
 		FileUtils.write(listModulePath + mainModule.getBeanId() + File.separator + "entity" + File.separator + moduleName + ".java", entityJavaCode);
 		
 		if (authorSwitch) {
-			String authorentityJavaCode = ProduceJavaFactory.produceEntityJavaFile(module.getAuthorModule().getPackageName(), module.getAuthorModule(), authorSwitch, mainModule.getBeanId(), mainModule.getModuleName());
+			String authorentityJavaCode = ProduceJavaFactory.getInstance().produceEntityJavaFile(module.getAuthorModule().getPackageName(), module.getAuthorModule(), authorSwitch, mainModule.getBeanId(), mainModule.getModuleName());
 			FileUtils.write(listModulePath + mainModule.getBeanId() + File.separator + "entity" + File.separator + module.getAuthorModule().getModuleName() + ".java", authorentityJavaCode);
 		}
 		

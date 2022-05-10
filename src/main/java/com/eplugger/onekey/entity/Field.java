@@ -1,4 +1,4 @@
-package com.eplugger.onekey.addField.entity;
+package com.eplugger.onekey.entity;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,15 +45,15 @@ public class Field {
 	private String genericity;
 	@Dom4JField(comment = "排序字段")
 	private String orderBy;
-	@Dom4JField(comment = "关联关系：多对一，一对多")
+	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "关联关系：多对一，一对多")
 	private String association;
 	@Dom4JField(comment = "查询关联集合注解")
 	private String fetch;
-	@Dom4JField(comment = "updatable = false, insertable = false")
+	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "updatable = false, insertable = false")
 	private boolean updateInsert = true;
-	@Dom4JField(comment = "忽略导入包，默认导入")
+	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "忽略导入包，默认导入")
 	private boolean ignoreImport = false;
-	@Dom4JField(comment = "生成java方法，默认不生成")
+	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "生成java方法，默认不生成")
 	private boolean onlyMeta = false;
 	
 	public String getTableFieldId() {

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.eplugger.common.io.FileUtils;
-import com.eplugger.onekey.addCategoryEntry.utils.ProduceCategorySqlCode;
+import com.eplugger.onekey.addCategoryEntry.utils.ProduceCategorySqlCodeFactory;
 
 /**
  * 新增字典
@@ -22,7 +22,7 @@ public class AddCategoryEntry {
 		String[] keyArray = {"1", "2", "3"};//字典代码
 		String[] valueArray = "企业、事业单位、政府单位".split("、");
 //		String[] valueArray = {"技术开发", "技术服务", };//字典值
-		String content = ProduceCategorySqlCode.createCategoryStr(keyArray, valueArray, categoryName, bizName, bizType, version);
+		String content = ProduceCategorySqlCodeFactory.getInstance().createCategoryStr(keyArray, valueArray, categoryName, bizName, bizType, version);
 		String fileName = bizName + "字典配置SQL.sql";
 		FileUtils.write("C:\\Users\\Admin\\Desktop" + File.separator + fileName, content);
 		try {

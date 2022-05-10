@@ -1,4 +1,4 @@
-package com.eplugger.onekey.addField.entity;
+package com.eplugger.onekey.entity;
 
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
 import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;

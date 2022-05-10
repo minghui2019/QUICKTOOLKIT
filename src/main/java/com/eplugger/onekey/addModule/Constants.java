@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.eplugger.onekey.addField.entity.Field;
+import com.eplugger.onekey.entity.Field;
 import com.eplugger.utils.OtherUtils;
 import com.google.common.collect.Maps;
 

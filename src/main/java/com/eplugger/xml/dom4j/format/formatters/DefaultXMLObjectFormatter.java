@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import org.apache.commons.collections4.MapUtils;
 
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.xml.dom4j.XMLDocumentType;
+import com.eplugger.xml.dom4j.DocType;
 import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.format.XMLObjectFormatter;
 
@@ -64,7 +64,7 @@ public class DefaultXMLObjectFormatter implements XMLObjectFormatter {
 		return content;
 	}
 
-	private void writeDocumentType(XMLDocumentType docType, StringBuilder content, String currentNewLine) {
+	private void writeDocumentType(DocType docType, StringBuilder content, String currentNewLine) {
 		if (docType == null)
 			return;
 		

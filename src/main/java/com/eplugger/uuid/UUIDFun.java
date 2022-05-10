@@ -131,7 +131,7 @@ public class UUIDFun {
 	 * 把剩余的uuids写出到xml文件后销毁uuids变量
 	 * @throws IOException
 	 */
-	public void destroyUuids() throws IOException {
+	public void destroyUuids() {
 		int i = 0;
 		for (Uuid uuid : this.uuids.getUuidList()) {
 			uuid.setId(++i);
@@ -139,7 +139,11 @@ public class UUIDFun {
 		// Bean 转化为 XMLObject
     	XMLObject root = XMLObject.of(this.uuids).setRootElement(true).setDocumentType("uuids", null, "../dtd/UUID.dtd");
 
-    	XMLParser.transfer(root, new File(URL_XML_UUIDS), false);
+    	try {
+			XMLParser.transfer(root, new File(URL_XML_UUIDS), false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     	this.uuids = null;
 	}
 	

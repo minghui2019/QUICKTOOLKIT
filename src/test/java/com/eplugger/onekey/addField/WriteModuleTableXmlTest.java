@@ -17,8 +17,8 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.junit.Test;
 
-import com.eplugger.onekey.addField.entity.ModuleTable;
-import com.eplugger.onekey.addField.entity.ModuleTables;
+import com.eplugger.onekey.entity.ModuleTable;
+import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.xml.dom4j.util.XmlFileUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;

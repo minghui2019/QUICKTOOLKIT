@@ -163,22 +163,19 @@ public class DBUtils {
 	
 	public static int getOrdersFromEntityMeta(String sql) {
 		int result = 0;
+		Connection conn = getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
-			Connection conn = getConnection();
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-			try {
-				ps = conn.prepareStatement(sql);
-				rs = ps.executeQuery();
-				while (rs.next()) {
-					result = rs.getInt(1);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				closeAll(conn, ps, rs);
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				result = rs.getInt(1);
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(conn, ps, rs);
 		}
 		return result;
 	}

@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.eplugger.common.io.FileUtils;
 import com.eplugger.common.lang.StringUtils;
-import com.eplugger.onekey.addModule.entity.ModuleInfo;
+import com.eplugger.onekey.entity.ModuleInfo;
 
 public class ProduceSingleJspFiles {
 

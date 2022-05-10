@@ -1,6 +1,8 @@
 package com.eplugger.utils;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.eplugger.common.lang.StringUtils;
 
@@ -17,6 +19,23 @@ public class OtherUtils {
 	public static final String TPYE_TIMESTAMP = "Timestamp";
 	public static final String TPYE_LIST = "List";
 	public static final String TPYE_ARRAYLIST = "ArrayList";
+	
+	public static final Set<String> TYPE_SET = new HashSet<String>() {
+		private static final long serialVersionUID = 6382701752284525058L;
+		{
+			add(TPYE_STRING);
+			add(TPYE_INTEGER);
+			add(TPYE_DOUBLE);
+			add(TPYE_DATE);
+			add(TPYE_TIMESTAMP);
+		}
+	};
+	
+	public static boolean isSimpleType(String dataType) {
+		return OtherUtils.TPYE_STRING.equals(dataType) || OtherUtils.TPYE_INTEGER.equals(dataType)
+				|| OtherUtils.TPYE_DOUBLE.equals(dataType) || OtherUtils.TPYE_DATE.equals(dataType)
+				|| OtherUtils.TPYE_TIMESTAMP.equals(dataType);
+	}
 	
 	/**
 	 * 生成实体类的beanid

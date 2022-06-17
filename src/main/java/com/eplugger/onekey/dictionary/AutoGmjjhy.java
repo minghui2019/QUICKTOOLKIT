@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
@@ -116,7 +116,7 @@ public class AutoGmjjhy {
         sheet.setColumnWidth(2, 8000);
         sheet.setColumnWidth(3, 8000);
         CellStyle style = wb.createCellStyle();
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
         ExcelUtils.setCellValues(sheet, 0, 4, new String[] { "一级", "二级", "三级", "四级" });
         int rowNum = 0;
         Map<String, List<Gmjjhy>> groupingByLevelId = list.stream().collect(Collectors.groupingBy(Gmjjhy::getLevelId));

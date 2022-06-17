@@ -3,6 +3,130 @@
 <Modules>
 	<Module ignore="false">
 		<MainModule>
+			<beanId>projectFreeze</beanId>
+			<moduleName>ProjectFreeze</moduleName>
+			<tableName>BIZ_PROJECT_FREEZE</tableName>
+			<moduleZHName>经费冻结</moduleZHName>
+			<packageName>com.eplugger.business.projectFreeze</packageName>
+			<superClassMap>
+				<param key="entity" value="EntityImpl" />
+				<param key="bo" value="BusinessBO" />
+				<param key="action" value="BusinessAction" />
+			</superClassMap>
+			<Fields>
+				<Field>
+			        <fieldId>feeCardNum</fieldId>
+			        <fieldName>财务系统编号</fieldName>
+			        <dataType>String</dataType>
+			        <precision>50</precision>
+			    </Field>
+			    <Field>
+			        <fieldId>cooperUnitsFunds</fieldId>
+			        <fieldName>下拨合作单位</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			    <Field>
+			        <fieldId>sciReseExpend</fieldId>
+			        <fieldName>科研支出</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			    <Field>
+			        <fieldId>personnelExpend</fieldId>
+			        <fieldName>人员支出</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			    <Field>
+			        <fieldId>publicAdminFee</fieldId>
+			        <fieldName>公共管理费</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			    <Field>
+			        <fieldId>purchaseFreezing</fieldId>
+			        <fieldName>采购冻结</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			    <Field>
+			        <fieldId>frozenPersonnelFees</fieldId>
+			        <fieldName>冻结人员费</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			    <Field>
+			        <fieldId>summerSalary</fieldId>
+			        <fieldName>暑期工资</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			    <Field>
+			        <fieldId>freezingManagementFee</fieldId>
+			        <fieldName>冻结管理费</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			    <Field>
+			        <fieldId>balanceFee</fieldId>
+			        <fieldName>结余</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+				<Field>
+			        <fieldId>projectId</fieldId>
+			        <fieldName>项目ID</fieldName>
+			        <dataType>String</dataType>
+			        <precision>32</precision>
+			    </Field>
+				<Field association="ManyToOne" ignoreImport="true" updateInsert="false">
+					<fieldId>vproject</fieldId>
+					<fieldName>关联项目</fieldName>
+					<dataType>VProject</dataType>
+					<joinColumn>PROJECT_ID</joinColumn>
+				</Field>
+				<Field onlyMeta="true">
+			        <fieldId>vproject.code</fieldId>
+			        <fieldName>项目编号</fieldName>
+			        <dataType>String</dataType>
+			    </Field>
+			    <Field onlyMeta="true">
+			        <fieldId>vproject.name</fieldId>
+			        <fieldName>项目名称</fieldName>
+			        <dataType>String</dataType>
+			    </Field>
+			    <Field onlyMeta="true">
+			        <fieldId>vproject.unitId</fieldId>
+			        <fieldName>所属部门</fieldName>
+			        <dataType>String</dataType>
+			    </Field>
+			    <Field onlyMeta="true">
+			        <fieldId>vproject.planEndDate</fieldId>
+			        <fieldName>计划完成日期</fieldName>
+			        <dataType>Date</dataType>
+			    </Field>
+			    <Field onlyMeta="true">
+			        <fieldId>vproject.projectType</fieldId>
+			        <fieldName>项目类别</fieldName>
+			        <dataType>String</dataType>
+			    </Field>
+			    <Field onlyMeta="true">
+			        <fieldId>vproject.chargerName</fieldId>
+			        <fieldName>项目负责人</fieldName>
+			        <dataType>String</dataType>
+			    </Field>
+			    <Field onlyMeta="true">
+			        <fieldId>vproject.chargerCode</fieldId>
+			        <fieldName>负责人编号</fieldName>
+			        <dataType>String</dataType>
+			    </Field>
+			    <Field onlyMeta="true">
+			        <fieldId>vproject.projectStatusId</fieldId>
+			        <fieldName>项目状态</fieldName>
+			        <dataType>String</dataType>
+			    </Field>
+			    <Field onlyMeta="true">
+			        <fieldId>vproject.feeAuthorize</fieldId>
+			        <fieldName>批准经费</fieldName>
+			        <dataType>Double</dataType>
+			    </Field>
+			</Fields>
+		</MainModule>
+	</Module>
+	<Module ignore="true">
+		<MainModule>
 			<beanId>yfContractCooperationUnit</beanId>
 			<moduleName>YFContractCooperationUnit</moduleName>
 			<tableName>BIZ_YF_CONTRACT_COOPERATION_UNIT</tableName>

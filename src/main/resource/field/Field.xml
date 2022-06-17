@@ -3,39 +3,69 @@
 
 <Fields>
     <Field>
-        <fieldId>mainProject</fieldId>
-        <fieldName>主项目</fieldName>
+        <fieldId>financialSystemNumber</fieldId>
+        <fieldName>财务系统编号</fieldName>
         <dataType>String</dataType>
         <precision>500</precision>
     </Field>
     <Field>
-        <fieldId>projectType</fieldId>
-        <fieldName>项目类型</fieldName>
+        <fieldId>projectID</fieldId>
+        <fieldName>项目ID</fieldName>
         <dataType>String</dataType>
         <precision>500</precision>
     </Field>
     <Field>
-        <fieldId>projectIntroduction</fieldId>
-        <fieldName>项目介绍</fieldName>
+        <fieldId>allocateFundsToCooperativeUnits</fieldId>
+        <fieldName>下拨合作单位</fieldName>
         <dataType>String</dataType>
         <precision>500</precision>
     </Field>
     <Field>
-        <fieldId>vicePresidentInCharge</fieldId>
-        <fieldName>分管副院长</fieldName>
+        <fieldId>scientificResearchExpenditure</fieldId>
+        <fieldName>科研支出</fieldName>
         <dataType>String</dataType>
         <precision>500</precision>
     </Field>
     <Field>
-        <fieldId>mainProjectId</fieldId>
-        <fieldName>主项目ID</fieldName>
+        <fieldId>personnelExpenditure</fieldId>
+        <fieldName>人员支出</fieldName>
         <dataType>String</dataType>
-        <precision>32</precision>
+        <precision>500</precision>
     </Field>
     <Field>
-        <fieldId>vicePresidentInChargeId</fieldId>
-        <fieldName>分管副院长ID</fieldName>
+        <fieldId>publicAdministrationFee</fieldId>
+        <fieldName>公共管理费</fieldName>
         <dataType>String</dataType>
-        <precision>32</precision>
+        <precision>500</precision>
+    </Field>
+    <Field>
+        <fieldId>purchaseFreezing</fieldId>
+        <fieldName>采购冻结</fieldName>
+        <dataType>String</dataType>
+        <precision>500</precision>
+    </Field>
+    <Field>
+        <fieldId>frozenPersonnelFees</fieldId>
+        <fieldName>冻结人员费</fieldName>
+        <dataType>String</dataType>
+        <precision>500</precision>
+    </Field>
+    <Field>
+        <fieldId>summerSalary</fieldId>
+        <fieldName>暑期工资</fieldName>
+        <dataType>String</dataType>
+        <precision>500</precision>
+    </Field>
+    <Field>
+        <fieldId>freezingManagementFee</fieldId>
+        <fieldName>冻结管理费</fieldName>
+        <dataType>String</dataType>
+        <precision>500</precision>
+    </Field>
+    <Field>
+        <fieldId>balance</fieldId>
+        <fieldName>结余</fieldName>
+        <dataType>String</dataType>
+        <precision>500</precision>
     </Field>
 </Fields>

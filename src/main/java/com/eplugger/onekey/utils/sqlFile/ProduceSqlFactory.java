@@ -35,7 +35,7 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	public static String produceCreateTableSql(ModuleInfo module, boolean authorSwitch, String joinColumn, String mainTableName) {
 		StringBuffer sb = new StringBuffer(), endsb = new StringBuffer();
 		String tableName = module.getTableName();
-		List<Field> fieldList = module.getFields();
+		List<Field> fieldList = module.getFieldList();
 		if (DBUtils.isSqlServer()) {
 			sb.append("CREATE TABLE [dbo].[").append(tableName).append("] (").append(StringUtils.CRLF);
 			sb.append("[ID] varchar(32) NOT NULL ,").append(StringUtils.CRLF);

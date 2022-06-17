@@ -485,7 +485,7 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 		sb.append("package ").append(packageName).append(OtherUtils.SPOT).append("entity;").append(StringUtils.CRLF); //包名
 		sb.append(StringUtils.CRLF);
 		
-		List<Field> fieldList = module.getFields();
+		List<Field> fieldList = module.getFieldList();
 		List<String> javaTypeList = fieldList .stream().map(a -> a.getDataType())
 				.filter(a -> !(OtherUtils.TPYE_STRING.equals(a) || OtherUtils.TPYE_INTEGER.equals(a) || OtherUtils.TPYE_DOUBLE.equals(a)))
 				.distinct().collect(Collectors.toList()); 

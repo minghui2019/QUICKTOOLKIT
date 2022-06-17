@@ -1,6 +1,5 @@
 package com.eplugger.onekey.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,7 +16,7 @@ import lombok.Data;
 @Dom4JTag
 public class ModuleTables {
 	@Dom4JField(type = Dom4JFieldType.TAG)
-	List<ModuleTable> moduleTableList = new ArrayList<ModuleTable>();
+	List<ModuleTable> moduleTableList = Lists.newArrayList();
 
 	@Override
 	public String toString() {
@@ -54,5 +53,15 @@ public class ModuleTables {
 		return moduleTableList.stream().filter(m -> {
 			return !(Strings.isNullOrEmpty(m.getModuleName()) || Strings.isNullOrEmpty(m.getTableName()));
 		}).collect(Collectors.toMap(ModuleTable::getModuleName, ModuleTable::getTableName));
+	}
+
+	public boolean add(ModuleTable moduleTable) {
+		if (moduleTable == null) {
+			return false;
+		}
+		if (this.moduleTableList == null) {
+			this.moduleTableList = Lists.newArrayList();
+		}
+		return moduleTableList.add(moduleTable);
 	}
 }

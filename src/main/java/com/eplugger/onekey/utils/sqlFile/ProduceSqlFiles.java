@@ -54,7 +54,7 @@ public class ProduceSqlFiles {
 		StringBuffer sb = new StringBuffer();
 		StringBuffer endsb = new StringBuffer();
 		String tableName = module.getTableName();
-		List<Field> fieldList = module.getFields();
+		List<Field> fieldList = module.getFieldList();
 		String superClass = module.getSuperClassMap().get("entity");
 		if (DBUtils.isSqlServer()) {
 			sb.append("CREATE TABLE [dbo].[" + tableName + "] (" + StringUtils.CRLF);
@@ -108,7 +108,7 @@ public class ProduceSqlFiles {
 		StringBuffer sb = new StringBuffer();
 		StringBuffer endsb = new StringBuffer();
 		String tableName = module.getTableName();
-		List<Field> fieldList = module.getFields();
+		List<Field> fieldList = module.getFieldList();
 		String superClass = module.getSuperClassMap().get("entity");
 		if (DBUtils.isSqlServer()) {
 			sb.append("CREATE TABLE [dbo].[" + tableName + "] (" + StringUtils.CRLF);
@@ -413,7 +413,7 @@ public class ProduceSqlFiles {
 	public static void produceCreateTableSqlFiles(Module module, String version) {
 		String sqlCode = ProduceSqlFactory.produceCreateTableSql(module.getMainModule(), false, null, null);
 		
-		List<Field> fields = module.getMainModule().getFields();
+		List<Field> fields = module.getMainModule().getFieldList();
 		fields.addAll(Constants.getSuperClassFieldMap(module.getMainModule().getSuperClassMap().get("entity")));
 		
 		String metadata = ProduceMetaDataFactory.getInstance().produceMetadata(module.getMainModule().getBeanId(), fields);
@@ -422,7 +422,7 @@ public class ProduceSqlFiles {
 	}
 	
 	public static void produceCreateTableSqlFiles(Module module) {
-		List<Field> fields = module.getMainModule().getFields();
+		List<Field> fields = module.getMainModule().getFieldList();
 		String key = module.getMainModule().getSuperClassMap().get("entity");
 		List<Field> addSuperClassFields = addSuperClassFields(key);
 		if (addSuperClassFields != null) {

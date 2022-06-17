@@ -2,6 +2,7 @@ package com.eplugger.uuid;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -99,9 +100,7 @@ public class UUIDFun {
 	
 
 	public static void main(String[] args) throws Exception {
-		UUIDFun uuidFun = UUIDFun.getInstance();
-		uuidFun.initUuids();
-		uuidFun.consumeUuids();
+		System.out.println(Arrays.toString(UUIDFun.getInstance().randomUUID(1)));
 	}
 	
 	private void consumeUuids() throws IOException {

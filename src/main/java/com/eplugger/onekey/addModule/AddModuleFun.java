@@ -153,7 +153,7 @@ public class AddModuleFun {
 	 * @throws Exception 
 	 */
 	public static void AddListModuleFun() throws Exception {
-		Module module = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class).getValidModule();
+		Module module = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidModule();
 //		module.getMainModule().setPackageName("com.eplugger.business.projectApply");
 //		Map<String, String> superClassMap = new HashMap<String, String>();
 //		superClassMap.put("entity", "BizEntity");
@@ -166,10 +166,15 @@ public class AddModuleFun {
 //		field.setAssociation(Constants.MANY_TO_ONE);
 //		field.setIgnoreImport(true);
 //		module.getMainModule().getFields().add(field);
+		String template = "meeting";
 		
 		ProduceJavaFiles.produceJavaFiles(module);
 		
 		ProduceSqlFiles.produceCreateTableSqlFiles(module);
+		
+		ProduceXmlFiles.produceXmlFile(module.getMainModule().getPackageName(), module.getMainModule(), module.getAuthorModule(), false, template);
+		
+		ProduceJspFiles.produceJspFiles(module.getMainModule(), template);
 	}
 	
 	/**
@@ -177,7 +182,7 @@ public class AddModuleFun {
 	 * @throws Exception 
 	 */
 	public static void AddMultiModuleFun() throws Exception {
-		List<Module> moduleList = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class).getValidList();
+		List<Module> moduleList = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidList();
 		for (Module module : moduleList) {
 			AddSingleModuleFun(module);
 			Constants.putFullClassNameMap(module.getMainModule().getModuleName(), module.getMainModule().getPackageName() + "." + module.getMainModule().getModuleName());

@@ -325,6 +325,8 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 		Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
 		Class<?> fieldType = field.getType();
 
+		String childTagName1 = getTargetTagName(xmlField, field.getDeclaringClass().getSimpleName());
+		
 		// 列表&数组
 		FieldUtils.CollectionType collectionType = FieldUtils.isCollection(fieldType);
 

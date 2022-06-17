@@ -23,9 +23,14 @@ public class ModuleTable {
 	private boolean ignore = true;
 	@Dom4JField
 	private String described;
+	
 	@Override
 	public String toString() {
 		return "\nModuleTable [moduleName=" + moduleName + ", tableName=" + tableName + ", ignore=" + ignore
 				+ ", described=" + described + "]";
+	}
+
+	public ModuleTable(String moduleName) {
+		this.moduleName = moduleName;
 	}
 }

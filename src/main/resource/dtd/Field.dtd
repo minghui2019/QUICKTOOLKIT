@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT Fields (Field+)>
 <!ELEMENT Field (fieldId, fieldName, dataType, categoryName?, precision?, joinColumn?, tranSient?, AppendSearch?)>
+<!ATTLIST Field 
+		association (OneToMany|ManyToOne) #IMPLIED 
+		onlyMeta (true|false) "false" 
+		ignoreImport (true|false) "false"
+		updateInsert (true|false) "true">
 <!ELEMENT fieldId (#PCDATA)>
 <!ELEMENT fieldName (#PCDATA)>
 <!ELEMENT dataType (#PCDATA)>

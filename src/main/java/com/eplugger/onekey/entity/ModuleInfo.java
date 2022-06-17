@@ -37,11 +37,14 @@ public class ModuleInfo {
 	@Dom4JField(comment = "beanId, 默认同模块名")
 	private String beanId;
 	@Dom4JField(type = Dom4JFieldType.TAG, comment = "字段列表")
-	List<Field> fields = Lists.newArrayList();
+	Fields fields;
+//	List<Field> fields = Lists.newArrayList();
 	@Dom4JField(type = Dom4JFieldType.TAG, name = "interfaces", comment = "实现的接口")
 	private String[] interfaces = null;
 	@Dom4JField(comment = "包名")
 	private String packageName;
+	List<Field> fieldList = Lists.newArrayList();
+	
 	
 	@Override
 	public String toString() {
@@ -61,8 +64,8 @@ public class ModuleInfo {
 		if (StringUtils.isNotBlank(beanId)) {
 			sb.append("beanId=").append(beanId).append(", \n");
 		}
-		if (fields.size() != 0) {
-			sb.append("fields=").append(fields).append(", \n");
+		if (fields != null) {
+			sb.append("fields=").append(fields.getFieldList()).append(", \n");
 		}
 		if (interfaces != null) {
 			sb.append("interfaces=").append(Arrays.toString(interfaces)).append(", \n");
@@ -71,5 +74,10 @@ public class ModuleInfo {
 			sb.append("packageName=").append(packageName).append(", \n");
 		}
 		return sb.substring(0, sb.length() - 3) + "]";
+	}
+
+
+	public List<Field> getFieldList() {
+		return fields.getFieldList();
 	}
 }

@@ -53,7 +53,7 @@ public class ProduceJavaFiles {
 		}
 		
 		// bo File
-		Set<AppendSearch> collectAppendSearch = mainModule.getFields().stream().map(a -> a.getAppendSearch()).filter(a -> StringUtils.isNotBlank(a.getValue())).distinct().collect(Collectors.toSet());
+		Set<AppendSearch> collectAppendSearch = mainModule.getFieldList().stream().map(a -> a.getAppendSearch()).filter(a -> StringUtils.isNotBlank(a.getValue())).distinct().collect(Collectors.toSet());
 		String boJavaCode = produceBOJavaFile(packageName, mainModule, authorSwitch, joinColumn, collectAppendSearch.size() != 0);
 		FileUtils.write(modulePath + mainModule.getBeanId() + File.separator + "bo" + File.separator + mainModule.getModuleName() + "BO.java", boJavaCode);
 		
@@ -526,7 +526,7 @@ public class ProduceJavaFiles {
 		sb.append("package " + packageName + OtherUtils.SPOT + "entity;" + StringUtils.CRLF); //包名
 		sb.append(StringUtils.CRLF);
 		
-		List<Field> fieldList = module.getFields();
+		List<Field> fieldList = module.getFieldList();
 		List<Field> newfieldList = fieldList .stream()
 				.filter(a -> !(OtherUtils.TPYE_STRING.equals(a.getDataType()) || OtherUtils.TPYE_INTEGER.equals(a.getDataType()) || OtherUtils.TPYE_DOUBLE.equals(a.getDataType())))
 				.filter(Field.distinctByKey(a -> a.getDataType())).collect(Collectors.toList());
@@ -634,7 +634,7 @@ public class ProduceJavaFiles {
 	private static String produceOneEntityJavaFile(String packageName, ModuleInfo module) {
 		StringBuffer sb = new StringBuffer();
 		List<Field> fieldList = new ArrayList<Field>();
-		for (Field field : module.getFields()) {
+		for (Field field : module.getFieldList()) {
 			if (StringUtils.isNotBlank(field.getAssociation()) && Constants.MANY_TO_ONE.equals(field.getAssociation())) {
 				Field field1 = new Field(module.getBeanId() + "s", module.getModuleZHName(), "List", null, field.getJoinColumn(), module.getModuleName());
 				field1.setAssociation(Constants.ONE_TO_MANY);
@@ -665,7 +665,7 @@ public class ProduceJavaFiles {
 		}
 		sb.append(StringUtils.CRLF);
 		
-		List<Field> fieldList = module.getFields();
+		List<Field> fieldList = module.getFieldList();
 		List<String> javaTypeList = fieldList .stream().map(a -> a.getDataType())
 				.filter(a -> !(OtherUtils.TPYE_STRING.equals(a) || OtherUtils.TPYE_INTEGER.equals(a) || OtherUtils.TPYE_DOUBLE.equals(a)))
 				.distinct().collect(Collectors.toList());
@@ -789,8 +789,8 @@ public class ProduceJavaFiles {
 		
 		if (StringUtils.isNotBlank(mainModule.getSuperClassMap().get("bo"))) {
 			// bo File
-			Set<AppendSearch> collectAppendSearch = mainModule.getFields().stream().filter(a -> a.getAppendSearch() != null).map(a -> a.getAppendSearch()).distinct().collect(Collectors.toSet());
-			List<String> joinColumn = mainModule.getFields().stream().map(a -> a.getJoinColumn()).filter(a -> a != null).distinct().collect(Collectors.toList());
+			Set<AppendSearch> collectAppendSearch = mainModule.getFieldList().stream().filter(a -> a.getAppendSearch() != null).map(a -> a.getAppendSearch()).distinct().collect(Collectors.toSet());
+			List<String> joinColumn = mainModule.getFieldList().stream().map(a -> a.getJoinColumn()).filter(a -> a != null).distinct().collect(Collectors.toList());
 			String boJavaCode = ProduceJavaFactory.produceBOJavaFile(mainModule.getPackageName(), mainModule, authorSwitch, joinColumn.get(0), collectAppendSearch.size() != 0);
 			FileUtils.write(listModulePath + mainModule.getBeanId() + File.separator + "bo" + File.separator + mainModule.getModuleName() + "BO.java", boJavaCode);
 			// todo File

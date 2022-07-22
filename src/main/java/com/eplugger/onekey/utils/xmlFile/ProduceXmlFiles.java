@@ -28,8 +28,12 @@ public class ProduceXmlFiles {
 		String moduleName = mainModule.getModuleName();
 		String beanId = mainModule.getBeanId();
 		String moduleZHName = mainModule.getModuleZHName();
-		String authormoduleName = authorModule.getModuleName();
-		String authorbeanId = authorModule.getBeanId();
+		String authormoduleName = null, authorbeanId = null;
+		try {
+			authormoduleName = authorModule.getModuleName();
+			authorbeanId = authorModule.getBeanId();
+		} catch (Exception e) {
+		}
 		String xmlCode = produceSpringXmlCode(packageName, moduleName, beanId, authormoduleName, authorbeanId, authorSwitch, mainModule.getSuperClassMap().get("bo"), mainModule.getSuperClassMap().get("action"));
 		FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\xml" + File.separator + "applicationContext-" + beanId + ".xml", xmlCode);
 		

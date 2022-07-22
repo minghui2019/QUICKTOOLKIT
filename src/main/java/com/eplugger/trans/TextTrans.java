@@ -1,6 +1,5 @@
 package com.eplugger.trans;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -8,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.dom4j.Document;
 
-import com.eplugger.common.io.FileUtils;
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.AddFieldFun;
 import com.eplugger.onekey.entity.ModuleTable;
@@ -49,7 +47,7 @@ public class TextTrans {
 		
 		Document document = ParseXmlUtils.fromBean(AddFieldFun.FILE_OUT_PATH_FIELD, fields, true);
 		log.debug("\n" + document.asXML());
-		FileUtils.openTaskBar(new File(AddFieldFun.FILE_OUT_PATH_FIELD).getParentFile());
+//		FileUtils.openTaskBar(new File(AddFieldFun.FILE_OUT_PATH_FIELD).getParentFile());
 	}
 	
 	public static SimpleFields bulidFields(String[] srcs, String[] result) {

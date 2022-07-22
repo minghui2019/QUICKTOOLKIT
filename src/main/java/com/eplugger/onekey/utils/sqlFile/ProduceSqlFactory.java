@@ -108,7 +108,7 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	public String produceSqlCode(String tableName, List<Field> fieldList) {
 		StringBuffer sb = new StringBuffer();
 		for (Field field : fieldList) {
-			if (field.isTranSient()) {
+			if (field.isTranSient() || field.isOnlyMeta() == true) {
 				continue;
 			}
 			if (DBUtils.isSqlServer()) {

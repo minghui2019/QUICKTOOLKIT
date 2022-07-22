@@ -3,69 +3,10 @@
 
 <Fields>
     <Field>
-        <fieldId>financialSystemNumber</fieldId>
-        <fieldName>财务系统编号</fieldName>
+        <fieldId>subject2Id</fieldId>
+        <fieldName>二级学科</fieldName>
         <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>projectID</fieldId>
-        <fieldName>项目ID</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>allocateFundsToCooperativeUnits</fieldId>
-        <fieldName>下拨合作单位</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>scientificResearchExpenditure</fieldId>
-        <fieldName>科研支出</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>personnelExpenditure</fieldId>
-        <fieldName>人员支出</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>publicAdministrationFee</fieldId>
-        <fieldName>公共管理费</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>purchaseFreezing</fieldId>
-        <fieldName>采购冻结</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>frozenPersonnelFees</fieldId>
-        <fieldName>冻结人员费</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>summerSalary</fieldId>
-        <fieldName>暑期工资</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>freezingManagementFee</fieldId>
-        <fieldName>冻结管理费</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>balance</fieldId>
-        <fieldName>结余</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
+        <categoryName>SUBJECT2</categoryName>
+        <precision>320</precision>
     </Field>
 </Fields>

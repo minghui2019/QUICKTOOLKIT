@@ -33,4 +33,8 @@ public class ModuleTable {
 	public ModuleTable(String moduleName) {
 		this.moduleName = moduleName;
 	}
+
+	public ModuleTable(String moduleName, String tableName, String described) {
+		this(moduleName, tableName, false, described);
+	}
 }

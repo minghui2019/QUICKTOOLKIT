@@ -2,14 +2,16 @@
 package com.eplugger.poi;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,7 +19,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
-import com.monitorjbl.xlsx.StreamingReader;
+import com.eplugger.utils.ExcelUtils;
 
 public class XSSFWriter {
 	@Test
@@ -38,15 +40,14 @@ public class XSSFWriter {
 			int starowNum, int stacolumn) throws Exception {
 		// 定义返回值
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
-		InputStream inputStream = new FileInputStream(file);
-		try (Workbook wk = StreamingReader.builder().rowCacheSize(100) // 缓存到内存中的行数，默认是10
-				.bufferSize(4096) // 读取资源时，缓存到内存的字节大小，默认是1024
-				.open(inputStream)) { // 打开资源，必须，可以是InputStream或者是File，注意：只能打开XLSX格式的文件
+		try (Workbook wk = ExcelUtils.openWorkbook(file, true)) { // 打开资源，必须，可以是InputStream或者是File，注意：只能打开XLSX格式的文件
 			Sheet sheet = wk.getSheetAt(stasheetNum);
 			String[] rownameSplit = rowname.split(",");
 			int columnlength = rownameSplit.length;
 			Cell cell = null;// 定义单元格
 			// 遍历所有的行（）
+			System.out.println(sheet.getFirstRowNum());
+			System.out.println(sheet.getLastRowNum());
 			for (Row row : sheet) {
 				// row=sheet.getRow(i);//获取当前循环的行数据(因为只缓存了部分数据，所以不能用getRow来获取)此处采用增强for循环直接获取row对象
 				Map<String, Object> paramMap = new HashMap<String, Object>();// 定义一个map做数据接收
@@ -57,7 +58,7 @@ public class XSSFWriter {
 						if (row == null) {
 							paramMap.put(rownameSplit[j], null);// 将单元格值放入map
 						} else {
-							cell = row.getCell(j);// 获取单元格数据
+							 
 							if (cell == null || cell.getCellType() == CellType.BLANK) {
 								paramMap.put(rownameSplit[j], null);// 将单元格值放入map
 							} else {
@@ -74,5 +75,39 @@ public class XSSFWriter {
 
 		}
 		return resultList;
+	}
+	
+	@Test
+	public void testReadCellType() throws Exception {
+		readBigExcel("C:\\Users\\Admin\\Desktop\\工作簿1.xlsx");
+	}
+	
+	private void readBigExcel(String file) {
+		Workbook wk = ExcelUtils.openWorkbook(file, true);
+		try {
+			Sheet sheet = wk.getSheetAt(0);
+			for (Row row : sheet) {
+				for (Cell cell : row) {
+					CellType cellType = cell.getCellType();
+					if (cellType == CellType.STRING) {
+						System.out.println((cell.getColumnIndex() + 1) + ": " + cellType + ": " + cell.getRichStringCellValue());
+					} else if (cellType == CellType.NUMERIC) {
+						if (HSSFDateUtil.isCellDateFormatted(cell)) {
+			                Date d = cell.getDateCellValue();
+			                if (d != null)
+			                	System.out.println((cell.getColumnIndex() + 1) + ": " + cellType + ": " + new SimpleDateFormat("yyyy-MM-dd").format(d));
+			            } else {
+			            	System.out.println((cell.getColumnIndex() + 1) + ": " + cellType + ": " + cell.getNumericCellValue());
+			            }
+					}
+				}
+			}
+		} finally {
+			try {
+				wk.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

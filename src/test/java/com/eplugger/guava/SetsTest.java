@@ -43,12 +43,21 @@ public class SetsTest {
 		log.debug(setView.toString());
 	}
 	
+	@Test
+	public void testDifference1() {
+		Set<String> newSets = Sets.newHashSet("王者荣耀", "英雄联盟", "地下城与勇士", "魔兽世界", "魔兽世界1", "魔兽世界2");
+		Set<String> delSets = Sets.newHashSet("穿越火线");
+		Set<String> oldSets = Sets.newHashSet("王者荣耀", "英雄联盟", "地下城与勇士", "穿越火线");
+		Set<String> setView = Sets.difference(newSets, Sets.difference(oldSets, delSets));
+		log.debug(setView.toString());
+	}
+	
 	/**
 	 * 并集
 	 * @throws Exception
 	 */
 	@Test
-	public void testName() {
+	public void testUnion() {
 		Set<String> setView = Sets.union(set1, set2);
 		log.debug(setView.toString());
 	}

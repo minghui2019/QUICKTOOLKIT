@@ -84,7 +84,7 @@ public class AutoViewFile {
 	public static LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();// key:表字段名,value:别名,没有别名存空值
 
 	public static void generationViewSql() {
-		Workbook workbook = ExcelUtils.getWorkbook(filePath + File.separator + "xls" + File.separator, xlsName);
+		Workbook workbook = ExcelUtils.openWorkbook(filePath + File.separator + "xls" + File.separator, xlsName);
 		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
 			Sheet sheet = workbook.getSheetAt(i);// 遍历拿每一个sheet
 			TABEL_NAME = sheet.getSheetName();

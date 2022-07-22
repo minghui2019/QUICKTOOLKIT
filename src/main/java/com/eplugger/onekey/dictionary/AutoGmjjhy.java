@@ -35,7 +35,7 @@ public class AutoGmjjhy {
     private static void importExcel() {
         String sql = "SELECT * FROM DM_GMJJHY";
         List<Gmjjhy> list = getListBySql(sql);
-        Workbook workbook = ExcelUtils.getWorkbook("C:/Users/Admin/Desktop" + File.separator, "国民经济行业(1).xls");
+        Workbook workbook = ExcelUtils.openWorkbook("C:/Users/Admin/Desktop" + File.separator, "国民经济行业(1).xls");
         List<String> level1 = new ArrayList<String>();
         List<String> level2 = new ArrayList<String>();
         List<String> level3 = new ArrayList<String>();

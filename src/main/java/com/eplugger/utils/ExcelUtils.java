@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.eplugger.common.io.FileUtils;
+import com.monitorjbl.xlsx.StreamingReader;
 
 public class ExcelUtils {
 	private static final String EXCEL_XLS = "xls";
@@ -21,38 +22,65 @@ public class ExcelUtils {
 	
 	/**
 	 * 判断文件是否是excel
+	 * @throws Exception 
 	 */
-	public static void checkExcelVaild(File file) {
-		try {
-			if (!file.exists()) {
-				throw new Exception("文件不存在");
-			}
-			if (!(file.isFile() && (file.getName().endsWith(EXCEL_XLS) || file.getName().endsWith(EXCEL_XLSX)))) {
-				throw new Exception("文件不是Excel");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public static File checkExcelVaild(String pathname) throws Exception {
+		File file = new File(pathname);
+		if (!file.exists() || !file.isFile()) {
+			throw new Exception("文件不存在");
 		}
+		if (!(pathname.endsWith(EXCEL_XLS) || pathname.endsWith(EXCEL_XLSX))) {
+			throw new Exception("请使用Excel文件");
+		}
+		return file;
 	}
 	
 	/**
 	 * 判断Excel的版本,获取Workbook
 	 */
-	public static Workbook getWorkbook(String filePath, String xlsName) {
-		File excelFile = new File(filePath + File.separator + xlsName); // 创建文件对象
-		Workbook wb = null;
+	public static Workbook openWorkbook(String filePath, String xlsName) {
+		return openWorkbook(filePath + File.separator + xlsName, false);
+	}
+	
+	/**
+	 * 判断Excel的版本，打开Excel文件
+	 * @param pathname
+	 * @param isCache 是否使用StreamingReader打开文件，可以提高大文件读取速度，但不支持导出
+	 * @return
+	 */
+	public static Workbook openWorkbook(String pathname, boolean isCache) {
+		File excelFile = null;
 		try {
-			FileInputStream in = new FileInputStream(excelFile);// 文件流
-			ExcelUtils.checkExcelVaild(excelFile);
+			excelFile = ExcelUtils.checkExcelVaild(pathname);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		FileInputStream in = null;
+		try {
+			in = new FileInputStream(excelFile);// 文件流
 			if (excelFile.getName().endsWith(EXCEL_XLS)) { // Excel 2003
-				wb = new HSSFWorkbook(in);
-			} else if (excelFile.getName().endsWith(EXCEL_XLSX)) { // Excel 2007/2010
-				wb = new XSSFWorkbook(in);
+				return new HSSFWorkbook(in);
+			}
+			if (excelFile.getName().endsWith(EXCEL_XLSX)) { // Excel 2007/2010
+				if (isCache) {
+					return StreamingReader.builder().rowCacheSize(100) // 缓存到内存中的行数，默认是10
+							.bufferSize(4096) // 读取资源时，缓存到内存的字节大小，默认是1024
+							.open(in);
+				}
+				return new XSSFWorkbook(in);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		return wb;
+		return null;
 	}
 	
 	/**

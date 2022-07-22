@@ -3,6 +3,75 @@
 <Modules>
 	<Module ignore="false">
 		<MainModule>
+			<beanId>jointProject</beanId>
+			<moduleName>JointProject</moduleName>
+			<tableName>BIZ_JOINT_PROJECT</tableName>
+			<moduleZHName>供方单位合作项目</moduleZHName>
+			<packageName>com.eplugger.business.unitAptitude</packageName>
+			<superClassMap>
+				<param key="entity" value="BizEntity" />
+				<!-- <param key="bo" value="BusinessBO" />
+				<param key="action" value="BusinessAction" /> -->
+			</superClassMap>
+			<Fields>
+				<Field>
+			        <fieldId>orderId</fieldId>
+			        <fieldName>序号</fieldName>
+			        <dataType>Integer</dataType>
+			    </Field>
+				<Field>
+			        <fieldId>projectName</fieldId>
+			        <fieldName>项目名称</fieldName>
+			        <dataType>String</dataType>
+			        <precision>500</precision>
+			    </Field>
+				<Field>
+			        <fieldId>projectId</fieldId>
+			        <fieldName>项目Id</fieldName>
+			        <dataType>String</dataType>
+			        <precision>500</precision>
+			    </Field>
+			    <Field>
+			        <fieldId>projectCode</fieldId>
+			        <fieldName>项目编号</fieldName>
+			        <dataType>String</dataType>
+			        <precision>100</precision>
+			    </Field>
+			    <Field>
+			        <fieldId>unitId</fieldId>
+			        <fieldName>合作中心</fieldName>
+			        <dataType>String</dataType>
+			        <precision>100</precision>
+			    </Field>
+			    <Field>
+			        <fieldId>cooperationNature</fieldId>
+			        <fieldName>合作性质</fieldName>
+			        <dataType>String</dataType>
+			        <precision>32</precision>
+			    </Field>
+			    <Field>
+			        <fieldId>projectTypeId</fieldId>
+			        <fieldName>项目类型</fieldName>
+			        <dataType>String</dataType>
+			        <precision>32</precision>
+			    </Field>
+				<Field>
+			        <fieldId>unitAptitudeId</fieldId>
+			        <fieldName>供方单位ID</fieldName>
+			        <dataType>String</dataType>
+			        <precision>32</precision>
+			    </Field>
+				<Field association="ManyToOne" ignoreImport="true" updateInsert="false">
+					<fieldId>unitAptitude</fieldId>
+					<fieldName>供方单位</fieldName>
+					<dataType>UnitAptitude</dataType>
+					<joinColumn>UNIT_APTITUDE_ID</joinColumn>
+				</Field>
+			</Fields>
+		</MainModule>
+	</Module>
+	<Module ignore="true">
+		<MainModule>
 			<beanId>projectFreeze</beanId>
 			<moduleName>ProjectFreeze</moduleName>
 			<tableName>BIZ_PROJECT_FREEZE</tableName>

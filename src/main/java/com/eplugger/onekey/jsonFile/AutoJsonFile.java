@@ -63,7 +63,7 @@ public class AutoJsonFile {
 	public static Map<String, String> dictionaryMap = new HashMap();
 
 	private static void generationViewSql() {
-		Workbook workbook = ExcelUtils.getWorkbook(filePath + File.separator + "xls" + File.separator, xlsName);
+		Workbook workbook = ExcelUtils.openWorkbook(filePath + File.separator + "xls" + File.separator, xlsName);
 		for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
 			Sheet sheet = workbook.getSheetAt(i);// 遍历拿每一个sheet
 			TABEL_NAME = sheet.getSheetName();

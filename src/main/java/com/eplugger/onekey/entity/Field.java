@@ -37,7 +37,7 @@ public class Field {
 	private int precision;
 	@Dom4JField(comment = "")
 	private String joinColumn;
-	@Dom4JField(comment = "虚拟字段")
+	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "虚拟字段")
 	private boolean tranSient = false;
 	@Dom4JField(type = Dom4JFieldType.TAG, comment = "虚拟字段的查询条件")
 	private AppendSearch appendSearch;
@@ -64,13 +64,13 @@ public class Field {
 		this(fieldId, fieldName, OtherUtils.TPYE_STRING);
 	}
 	public Field(String fieldId, String fieldName, String dataType) {
-		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), null, null, null, null, null, null, null);
+		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), null, 0, null, false, null, null, null);
 	}
-	public Field(String fieldId, String fieldName, String dataType, Integer precision) {
+	public Field(String fieldId, String fieldName, String dataType, int precision) {
 		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), precision);
 	}
-	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, Integer precision) {
-		this(fieldId, fieldName, dataType, tableFieldId, null, precision, null, null, null, null, null);
+	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, int precision) {
+		this(fieldId, fieldName, dataType, tableFieldId, null, precision, null, false, null, null, null);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class Field {
 	 * @param genericity List的泛型，非List不需要
 	 */
 	public Field(String fieldId, String fieldName, String dataType, String categoryName, String joinColumn, String genericity) {
-		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, null, joinColumn, null, null, genericity, null);
+		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, 0, joinColumn, false, null, genericity, null);
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class Field {
 	 * @param genericity List的泛型，非List不需要
 	 * @param association 关联关系：多对一，一对多
 	 */
-	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, Integer precision, String joinColumn, Boolean tranSient, AppendSearch appendSearch, String genericity, String association) {
+	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, int precision, String joinColumn, boolean tranSient, AppendSearch appendSearch, String genericity, String association) {
 		super();
 		this.fieldId = fieldId;
 		this.fieldName = fieldName;
@@ -114,8 +114,8 @@ public class Field {
 	}
 	
 	public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 	
 	@Override

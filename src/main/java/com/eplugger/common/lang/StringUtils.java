@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
@@ -28,16 +29,16 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static final String SEPARATOR_OF_UNIX_FILE = "/";
     public static final String SEPARATOR_OF_WINDOWS_FILE = "\\";
 
-    /**
-     * <pre>
-     * 追加有效字符串
-     * 无效字符串:  null; ""(空字符串); " "(空格);
-     * </pre>
-     * 
-     * @param sb        StringBuilder
-     * @param targetStr 目标字符串
-     * @return true: 追加成功, false: 追加失败
-     */
+	/**
+	 * <pre>
+	 * 追加有效字符串
+	 * 无效字符串:  null; ""(空字符串); " "(空格);
+	 * </pre>
+	 * 
+	 * @param sb        StringBuilder
+	 * @param targetStr 目标字符串
+	 * @return true: 追加成功, false: 追加失败
+	 */
     public static boolean appendEffectiveVal(StringBuilder sb, String targetStr) {
         if (null != sb && isNotEmpty(targetStr, true)) {
             sb.append(targetStr);
@@ -366,10 +367,6 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         cs[0] -= 32;
         return String.valueOf(cs);
     }
-    
-    public static void main(String[] args) {
-		System.out.println(firstCharUpperCase("sdddf"));
-	}
 
     /**
      * 将字符串的首字母小写
@@ -513,5 +510,68 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 			}
 		}
 		return pybf.toString().replaceAll("\\W", "").trim(); //替换掉非单词字符(^A-Za-z0-9_)
+	}
+
+	/**
+	 * 小驼峰命名法转化为下划线命名法<br>
+	 * @param field
+	 * @return
+	 */
+	public static String lowerCamelCase2UnderScoreCase(String field) {
+		Pattern p = Pattern.compile("[A-Z]");
+		Matcher m = p.matcher(field);
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			m.appendReplacement(sb, "_" + m.group());
+		}
+		m.appendTail(sb);
+		return sb.toString().toUpperCase();
+	}
+
+	/**
+	 * 小驼峰命名法转化为下划线命名法<br>
+	 * 举例： paperId --> PAPER_ID<br>
+	 * @param fields
+	 * @return
+	 */
+	public static String[] lowerCamelCase2UnderScoreCase(String[] fields) {
+		List<String> list = new ArrayList<String>();
+		for (String field : fields) {
+			list.add(lowerCamelCase2UnderScoreCase(field));
+		}
+		return list.toArray(new String[] {});
+	}
+	
+	/**
+	 * 下划线命名法转化为小驼峰命名法
+	 * @param field
+	 * @return
+	 */
+	public static String underScoreCase2LowerCamelCase(String field) {
+		Pattern p = Pattern.compile("[A-Z_]");
+		Matcher m = p.matcher(field);
+		StringBuffer sb = new StringBuffer();
+		boolean upperCase = false;
+		while (m.find()) {
+			String group = m.group();
+			if ("_".equals(group)) {
+				m.appendReplacement(sb, "");
+				upperCase = true;
+				continue;
+			}
+			if (upperCase) {
+				m.appendReplacement(sb, group);
+				upperCase = false;
+			} else {
+				m.appendReplacement(sb, group.toLowerCase());
+			}
+		}
+		m.appendTail(sb);
+		return sb.toString();
+	}
+	
+	public static void main(String[] args) {
+		String str = underScoreCase2LowerCamelCase("TRADEMARK_ID");
+		System.out.println(str);
 	}
 }

@@ -57,13 +57,6 @@
 					<JoinColumn>PROJECT_ID</JoinColumn>
 					<Genericity></Genericity>
 				</Field>
-				<Field>
-					<FieldName>计划总材料</FieldName>
-					<FieldId>materials</FieldId>
-					<DataType></DataType>
-					<JoinColumn>PROJECT_ID</JoinColumn>
-					<Genericity></Genericity>
-				</Field>
 			</Fields>
 		</MainModule>
 		<AuthorModule>

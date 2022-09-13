@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * of处理器，交换前后匹配字符串位置
- * @author Admin
+ * @author minghui
  */
 @Slf4j
 public class OfCharMatcherHandler implements CharMatcherHandler {
@@ -21,7 +21,7 @@ public class OfCharMatcherHandler implements CharMatcherHandler {
 		Matcher matcher = patternOf.matcher(resource);
 		if (matcher.matches()) {
 			resource = matcher.group(2) + " " + matcher.group(1);
-			log.debug("处理后的词组为：" + matcher.group(2) + " " + matcher.group(1));
+			log.debug("处理后的词组为：" + resource);
 		}
 		return resource;
 	}

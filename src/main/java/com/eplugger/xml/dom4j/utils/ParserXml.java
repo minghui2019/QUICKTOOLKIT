@@ -6,7 +6,7 @@ import com.eplugger.xml.dom4j.annotation.Dom4JTag;
 
 /**
  * Dom4j解析器顶层接口
- * @author Admin
+ * @author minghui
  *
  * @param <T>
  */

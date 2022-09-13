@@ -1,246 +1,209 @@
 package com.eplugger.onekey.addModule;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.eplugger.enums.DataType;
+import com.eplugger.common.io.FileUtils;
 import com.eplugger.onekey.entity.Field;
-import com.eplugger.utils.OtherUtils;
+import com.eplugger.utils.DBUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 public class Constants {
-	private static List<Field> fieldList = new ArrayList<Field>();
-	private static List<Field> authorfieldList = new ArrayList<Field>();
+	private Constants() {}
 	
-	private Constants() {
-		System.out.println("Constants.Constants()");
+	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	
+	public enum SuperClassName {
+		ApplyInfo,
+		ApplyBook,
+		Product,
+		ProductAuthor,
+		CheckBusinessEntity,
+		BusinessEntity,
+		BizEntity;
 	}
 	
-	public static List<Field> getFieldList() {
-		return fieldList;
-	}
-
-	public static List<Field> getAuthorfieldList() {
-		return authorfieldList;
-	}
-
-	private static List<Field> singleFieldList = new ArrayList<Field>();
-	public static List<Field> getSingleFieldList() {
-		singleFieldList.add(new Field("orderId", "序号", "Integer"));
-		singleFieldList.add(new Field("startDate", "开始时间", "Date"));
-		singleFieldList.add(new Field("endDate", "终止时间", "Date"));
-		singleFieldList.add(new Field("projectName", "项目名称", DataType.STRING.java));
-		singleFieldList.add(new Field("awardsUnit", "获奖情况/颁发单位", DataType.STRING.java));
-		Field field1 = new Field("applyBookId", "项目ID", DataType.STRING.java, 32);
-		field1.setUpdateInsert(false);
-		singleFieldList.add(field1);
-		Field field = new Field("projectApplyBook", null, "ProjectApplyBook", null, "APPLY_BOOK_ID", null);
-		field.setAssociation(Constants.MANY_TO_ONE);
-		field.setIgnoreImport(true);
-		singleFieldList.add(field);
-		return singleFieldList;
-	}
-	
-	static {
-//		fieldList.add(new Field("name", "会议名称", DataType.STRING.java));
-//		fieldList.add(new Field("meetingTheme", "会议主题", DataType.STRING.java));
-//		fieldList.add(new Field("operateUnit", "主办单位", DataType.STRING.java));
-//		fieldList.add(new Field("assistanceUnit", "协办单位", DataType.STRING.java));
-//		fieldList.add(new Field("unitId", "承办部门", DataType.STRING.java));
-//		fieldList.add(new Field("divisionId", "教研室", DataType.STRING.java));
-//		fieldList.add(new Field("subjectClassId", "学科门类", DataType.STRING.java));
-//		fieldList.add(new Field("subjectId", "一级学科", DataType.STRING.java));
-//		fieldList.add(new Field("meetingPlace", "会议地点", DataType.STRING.java));
-//		fieldList.add(new Field("meetingTypeId", "会议类型", DataType.STRING.java));
-//		fieldList.add(new Field("beginDate", "开始日期", "Date"));
-//		fieldList.add(new Field("endDate", "开始日期", "Date"));
-//		fieldList.add(new Field("paperNumber", "论文数量", "Integer"));
-//		fieldList.add(new Field("personNumber", "代表人数", "Integer"));
-//		fieldList.add(new Field("foreignDeputyNumber", "国外代表数量", "Integer"));
-//		fieldList.add(new Field("meetingContacts", "会议联系人", DataType.STRING.java));
-//		fieldList.add(new Field("meetingTel", "会议电话", DataType.STRING.java));
-//		fieldList.add(new Field("meetingEmail", "会议电邮", DataType.STRING.java));
-//		fieldList.add(new Field("isFormReport", "是否形成综合报告或建议", DataType.STRING.java));
-//		fieldList.add(new Field("feeTotal", "会议经费", "Double"));
-//		fieldList.add(new Field("feeSource", "经费来源", DataType.STRING.java));
-//		fieldList.add(new Field("intro", "简介", DataType.STRING.java));
-//		fieldList.add(new Field("fileIds", "附件", DataType.STRING.java));
-//		fieldList.add(new Field("completeDataStatus", "数据完善状态", DataType.STRING.java));
-		
-//		fieldList.add(new Field("code", "编号", DataType.STRING.java));
-//		fieldList.add(new Field("typeId", "著作类别", DataType.STRING.java));
-//		fieldList.add(new Field("modeId", "著作形式", DataType.STRING.java));
-//		fieldList.add(new Field("publishUnit", "出版单位", DataType.STRING.java));
-//		fieldList.add(new Field("isbn", "ISBN号", DataType.STRING.java));
-//		fieldList.add(new Field("publishDate", "出版时间", "Date"));
-//		fieldList.add(new Field("publishAddressId", "出版地", DataType.STRING.java));
-//		fieldList.add(new Field("isTranslated", "是否翻译为外文", DataType.STRING.java));
-//		fieldList.add(new Field("languageId", "语种", DataType.STRING.java));
-//		fieldList.add(new Field("wordNumber", "总字数", "Double"));
-//		fieldList.add(new Field("assessValue", "考核分值", "Double"));
-//		fieldList.add(new Field("publishLevel", "出版社级别", DataType.STRING.java));
-//		fieldList.add(new Field("cip", "CIP号", DataType.STRING.java));
-//		fieldList.add(new Field("isRecension", "是否为修订版", DataType.STRING.java));
-//		fieldList.add(new Field("subjectClassId", "学科门类", DataType.STRING.java));
-//		fieldList.add(new Field("subjectId", "一级学科", DataType.STRING.java));
-//		fieldList.add(new Field("projectSourceId", "项目来源", DataType.STRING.java));
-//		fieldList.add(new Field("schoolSign", "学校署名", DataType.STRING.java));
-//		Field authorfield = new Field("authors", "著作作者", "List", null, "BOOK_ID", "BookTestAuthor");
-//		authorfield.setAssociation("OneToMany");
-//		authorfield.setOrderBy("orderId asc");
-//		authorfield.setFetch("FetchMode.SELECT");
-//		fieldList.add(authorfield);
-//		fieldList.add(new Field("results", "考核总分", "List", null, "ENTITY_ID", "EntityAssessResult", "OneToMany"));
-//		fieldList.add(new Field("allAuthor", "所有作者", DataType.STRING.java, "BOOK_ID", true,
-//				"SELECT BOOK_ID, concat(AUTHOR_NAME, (CASE WHEN AUTHOR_TYPE='2' THEN '（学）' WHEN AUTHOR_TYPE='3' THEN '（外）' ELSE concat('（',AUTHOR_ACCOUNT,'）') END)) val FROM BIZ_BOOK_AUTHOR WHERE BOOK_ID IN (^{id}) ORDER BY ORDER_ID"));
-//		fieldList.add(new Field("allAuthorId", "所有作者ID", DataType.STRING.java, "BOOK_ID", true,
-//				"SELECT BOOK_ID, concat(PERSON_ID, (CASE WHEN AUTHOR_TYPE='2' THEN '' WHEN AUTHOR_TYPE='3' THEN '' ELSE '' END)) val FROM BIZ_BOOK_AUTHOR WHERE BOOK_ID IN (^{id}) ORDER BY ORDER_ID"));
-		
-		
-		
-//		fieldList.add(new Field("orderId", "序号", "Integer"));
-//		fieldList.add(new Field("changeScore", "变更分值", DataType.STRING.java, 32, "CHANGE_SCORE"));
-//		fieldList.add(new Field("bonusValue", "分值", "Double"));
-//		fieldList.add(new Field("bonusReason", "原因", DataType.STRING.java, 500));
-//		Field field1 = new Field("personAssessId", "考核人员Id", DataType.STRING.java, 32);
-//		field1.setUpdateInsert(false);
-//		fieldList.add(field1);
-//		Field field = new Field("personAssess", null, "PersonAssess", null, "PERSON_ASSESS_ID", null);
-//		field.setAssociation("ManyToOne");
-//		fieldList.add(field);
-		
-//		authorfieldList.add(new Field("bookId", "著作id", DataType.STRING.java, 32));
-//		authorfieldList.add(new Field("wordNumber", "参编字数", "Double"));
-//		authorfieldList.add(new Field("bearTypeId", "承担角色", DataType.STRING.java));
-//		Field field = new Field("bookTest", null, "BookTest", null, "BOOK_ID", null);
-//		field.setAssociation("ManyToOne");
-//		authorfieldList.add(field);
-		
-		
-		
-//		fieldList.add(new Field("", "", DataType.STRING.java));
-//		fieldList.add(new Field("", "", "Date"));
-//		fieldList.add(new Field("", "", "Double"));
-//		fieldList.add(new Field("", "", "Integer"));
-	}
-	
-	private static Map<String, String> fullClassNameMap = new HashMap<String, String>();
-	private static final Map<String, String> ASSOCIATION_MAP = new HashMap<String, String>();
-	public static final String MANY_TO_ONE = "ManyToOne";
-	public static final String ONE_TO_MANY = "OneToMany";
-	
+	private static Map<String, String> fullClassNameMap = Maps.newHashMap();
 	public static String getFullClassNameMap(String key) {
+		if (fullClassNameMap.isEmpty()) {
+			String jsonStr = FileUtils.readFile4String("src/main/resource/other/fullClassNames.json");
+			Type type = new TypeToken<HashMap<String, String>>() {
+			}.getType();
+			fullClassNameMap = gson.fromJson(jsonStr, type);
+		}
 		return fullClassNameMap.get(key);
 	}
-	
 	public static String putFullClassNameMap(String key, String value) {
 		return fullClassNameMap.put(key, value);
 	}
 	
+	private static final Map<String, String> ASSOCIATION_MAP = Maps.newHashMap();
+	public static final String MANY_TO_ONE = "ManyToOne";
+	public static final String ONE_TO_MANY = "OneToMany";
 	public static String getAssociationMap(String key) {
+		if (ASSOCIATION_MAP.isEmpty()) {
+			ASSOCIATION_MAP.put(ONE_TO_MANY, "@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)");
+			ASSOCIATION_MAP.put(MANY_TO_ONE, "@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)");
+		}
 		return ASSOCIATION_MAP.get(key);
 	}
 	
-	private static final Map<String, List<Field>> SUPER_CLASS_FIELD_MAP = Maps.newHashMap();
+	private static Map<String, List<Field>> superClassFieldMap = Maps.newHashMap();
 	public static List<Field> getSuperClassFieldMap(String key) {
-		if (SUPER_CLASS_FIELD_MAP.isEmpty()) {
-			Constants.initSuperClassFieldMap();
+		if (superClassFieldMap.isEmpty()) {
+			String jsonStr = FileUtils.readFile4String("src/main/resource/other/superClassFields.json");
+			JsonParser jsonParser = new JsonParser();
+			JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
+			Constants.initSuperClassFieldMap(jsonObject);
 		}
-		return SUPER_CLASS_FIELD_MAP.get(key);
+		return superClassFieldMap.get(key);
 	}
 
-	private static void initSuperClassFieldMap() {
-		initProductSuperClassFieldMap();
-		initProductAuthorSuperClassFieldMap();
-		initCheckBusinessEntitySuperClassFieldMap();
-		initBizEntitySuperClassFieldMap();
+	private static void initSuperClassFieldMap(JsonObject jsonObject) {
+		initApplyInfoClassFieldMap(jsonObject);
+		initApplyBookClassFieldMap(jsonObject);
+		initProductSuperClassFieldMap(jsonObject);
+		initProductAuthorSuperClassFieldMap(jsonObject);
+		initCheckBusinessEntitySuperClassFieldMap(jsonObject);
+		initBizEntitySuperClassFieldMap(jsonObject);
 	}
 
-	private static void initBizEntitySuperClassFieldMap() {
-		List<Field> bizEntityClassFields = new ArrayList<Field>();
-		bizEntityClassFields.add(new Field("createUserID", "创建用户编号", DataType.STRING.java, "CREATEUSERID", 100));
-		bizEntityClassFields.add(new Field("createUserName", "创建用户名", DataType.STRING.java, "CREATEUSERNAME", 100));
-		bizEntityClassFields.add(new Field("createDate", "创建时间", OtherUtils.TPYE_TIMESTAMP, "CREATEDATE", 0));
-		bizEntityClassFields.add(new Field("lastEditUserID", "最后编辑用户编号", DataType.STRING.java, "LASTEDITUSERID", 100));
-		bizEntityClassFields.add(new Field("lastEditUserName", "最后编辑用户名", DataType.STRING.java, "LASTEDITUSERNAME", 100));
-		bizEntityClassFields.add(new Field("lastEditDate", "最后编辑日期", OtherUtils.TPYE_TIMESTAMP, "LASTEDITDATE", 0));
-		SUPER_CLASS_FIELD_MAP.put("BizEntity", bizEntityClassFields);
+	private static void initApplyBookClassFieldMap(JsonObject jsonObject) {
+		String key = SuperClassName.ApplyBook.toString();
+		superClassFieldMap.put(key, fromJson(jsonObject, key));
 	}
 
-	private static void initCheckBusinessEntitySuperClassFieldMap() {
-		List<Field> checkBusinessEntityClassFields = new ArrayList<Field>();
-		checkBusinessEntityClassFields.add(new Field("checkStatus", "审核状态", DataType.STRING.java, "CHECKSTATUS", 64));
-		checkBusinessEntityClassFields.add(new Field("checkDate", "审核时间", DataType.STRING.java, "CHECKDATE", 64));
-		checkBusinessEntityClassFields.add(new Field("checker", "审核人", DataType.STRING.java, "CHECKER", 80));
-		SUPER_CLASS_FIELD_MAP.put("CheckBusinessEntity", checkBusinessEntityClassFields);
+	private static void initApplyInfoClassFieldMap(JsonObject jsonObject) {
+		String key = SuperClassName.ApplyInfo.toString();
+		superClassFieldMap.put(key, fromJson(jsonObject, key));
+	}
+	
+	/**
+	 * @param jsonObject
+	 * @param key
+	 * @return
+	 */
+	public static List<Field> fromJson(JsonObject jsonObject, String key) {
+		return gson.fromJson(jsonObject.get(key).getAsJsonArray(), new TypeToken<List<Field>>() {}.getType());
 	}
 
-	private static void initProductAuthorSuperClassFieldMap() {
-		List<Field> productAuthorClassFields = new ArrayList<Field>();
-		productAuthorClassFields.add(new Field("authorType", "作者类型", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("personId", "人员Id", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("authorAccount", "职工号", DataType.STRING.java, 64));
-		productAuthorClassFields.add(new Field("authorName", "作者姓名", DataType.STRING.java, 64));
-		productAuthorClassFields.add(new Field("sexId", "性别", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("eduLevelId", "学历", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("titleId", "职称", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("subjectId", "学科", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("authorUnit", "工作单位", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("authorUnitId", "工作单位id", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("eduDegreeId", "学位", DataType.STRING.java, 32));
-		productAuthorClassFields.add(new Field("workRatio", "贡献率", OtherUtils.TPYE_DOUBLE));
-		productAuthorClassFields.add(new Field("orderId", "署名顺序", OtherUtils.TPYE_INTEGER));
-		SUPER_CLASS_FIELD_MAP.put("ProductAuthor", productAuthorClassFields);
+	private static void initBizEntitySuperClassFieldMap(JsonObject jsonObject) {
+		String key = SuperClassName.BizEntity.toString();
+		superClassFieldMap.put(key, fromJson(jsonObject, key));
 	}
 
-	private static void initProductSuperClassFieldMap() {
-		List<Field> productClassFields = Lists.newArrayList();
-		productClassFields.add(new Field("name", "名称", DataType.STRING.java, 512));
-		productClassFields.add(new Field("unitId", "所属单位", DataType.STRING.java, 32));
-		productClassFields.add(new Field("divisionId", "所属教研室", DataType.STRING.java, 32));
-		productClassFields.add(new Field("authorNumber", "作者数", OtherUtils.TPYE_INTEGER));
-		productClassFields.add(new Field("note", "备注", DataType.STRING.java, 2000));
-		productClassFields.add(new Field("firstAuthorId", "第一作者id", DataType.STRING.java, 32));
-		productClassFields.add(new Field("firstAuthorName", "第一作者姓名", DataType.STRING.java, 64));
-		productClassFields.add(new Field("firstAuthorAccount", "第一作者职工号", DataType.STRING.java, 64));
-		productClassFields.add(new Field("firstAuthorTitleId", "第一作者职称", DataType.STRING.java, 32));
-		productClassFields.add(new Field("firstAuthorSexId", "第一作者性别", DataType.STRING.java, 32));
-		productClassFields.add(new Field("firstAuthorEduLevelId", "第一作者学历", DataType.STRING.java, 32));
-		productClassFields.add(new Field("firstAuthorEduDeGreeId", "第一作者学位", DataType.STRING.java, 32));
-		productClassFields.add(new Field("fileIds", "附件", DataType.STRING.java, 500));
-		productClassFields.add(new Field("authorPIds", "成员personId合集", DataType.STRING.java, "AUTHORPIDS", 2000));
-		productClassFields.add(new Field("authorUnitIds", "成员unitId合集", DataType.STRING.java, "AUTHORUNITIDS", 2000));
-		productClassFields.add(new Field("completeDataStatus", "数据完善状态", DataType.STRING.java, "COMPLETEDATASTATUS", 40));
-		SUPER_CLASS_FIELD_MAP.put("Product", productClassFields);
+	private static void initCheckBusinessEntitySuperClassFieldMap(JsonObject jsonObject) {
+		String key = SuperClassName.CheckBusinessEntity.toString();
+		superClassFieldMap.put(key, fromJson(jsonObject, key));
 	}
 
-	static {
-		fullClassNameMap.put("Date", "java.sql.Date");
-		fullClassNameMap.put("CheckBusinessEntity", "com.eplugger.business.pub.entity.CheckBusinessEntity");
-		fullClassNameMap.put("CheckBusinessBO", "com.eplugger.business.pub.bo.CheckBusinessBO");
-		fullClassNameMap.put("CheckBusinessAction", "com.eplugger.business.pub.action.CheckBusinessAction");
-		fullClassNameMap.put("IUnit", "com.eplugger.system.role.user.entity.IUnit");
-		fullClassNameMap.put("ICompleteData", "com.eplugger.service.entity.ICompleteData");
-		fullClassNameMap.put("BusinessDAO", "com.eplugger.business.pub.dao.BusinessDAO");
-		fullClassNameMap.put("List", "java.util.List");
-		fullClassNameMap.put("ArrayList", "java.util.ArrayList");
-		fullClassNameMap.put("Product", "com.eplugger.business.product.entity.Product");
-		fullClassNameMap.put("ProductBO", "com.eplugger.business.product.bo.ProductBO");
-		fullClassNameMap.put("ProductAction", "com.eplugger.business.product.action.ProductAction");
-		fullClassNameMap.put("ProductAuthor", "com.eplugger.business.product.entity.ProductAuthor");
-		fullClassNameMap.put("EntityAssessResult", "com.eplugger.assess.personAssess.entity.EntityAssessResult");
-		fullClassNameMap.put("BizEntity", "com.eplugger.service.entity.BizEntity");
-		fullClassNameMap.put("EntityImpl", "com.eplugger.service.entity.EntityImpl");
-		fullClassNameMap.put("ZXProject", "com.eplugger.business.project.entity.ZXProject");
-		fullClassNameMap.put("VProject", "com.eplugger.business.pub.entity.VProject");
-		fullClassNameMap.put("BusinessBO", "com.eplugger.business.pub.bo.BusinessBO");
-		fullClassNameMap.put("BusinessAction", "com.eplugger.business.pub.action.BusinessAction");
-		fullClassNameMap.put("", "");
+	private static void initProductAuthorSuperClassFieldMap(JsonObject jsonObject) {
+		String key = SuperClassName.ProductAuthor.toString();
+		List<Field> fields = fromJson(jsonObject, key);
+		for (Iterator<Field> iterator = fields.iterator(); iterator.hasNext();) {
+			Field field = iterator.next();
+			if (!"V8.5.3".equals(DBUtils.getEadpDataType()) && "srScore".equals(field.getFieldId())) {
+				iterator.remove();
+			}
+		}
+		superClassFieldMap.put(key, fields);
+	}
+
+	private static void initProductSuperClassFieldMap(JsonObject jsonObject) {
+		String key = SuperClassName.ApplyInfo.toString();
+		List<Field> fields = fromJson(jsonObject, key);
+		HashSet<String> set = Sets.newHashSet("subjectClassId", "subjectId", "schoolSign");
+		for (Iterator<Field> iterator = fields.iterator(); iterator.hasNext();) {
+			Field field = iterator.next();
+			if (!"V8.5.3".equals(DBUtils.getEadpDataType()) && set.contains(field.getFieldId())) {
+				iterator.remove();
+			}
+		}
+		superClassFieldMap.put(key, fields);
+	}
+	
+
+	public static void main(String[] args) throws IOException {
+		String jsonStr = FileUtils.readFile4String("src/main/resource/other/superClassFields.json");
+		JsonParser jsonParser = new JsonParser();
+		JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
+		JsonArray jsonArray = jsonObject.get(SuperClassName.ApplyInfo.toString()).getAsJsonArray();
 		
-		ASSOCIATION_MAP.put(ONE_TO_MANY, "@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)");
-		ASSOCIATION_MAP.put(MANY_TO_ONE, "@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)");
+		Type type = new TypeToken<List<Field>>() {}.getType();
+		List<Field> applyInfoClassFields = gson.fromJson(jsonArray, type);
+		System.out.println(applyInfoClassFields);
+		
+//		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//		String json = gson.toJson(superClassFieldMap);
+//		FileUtils.write("src/main/resource/other/superClassFields.json", json);
+	}
+
+	/**
+	 * 继承父类需要添加的字段
+	 * @param superClass
+	 * @return
+	 */
+	public static List<Field> addSuperClassFields(String superClass) {
+		return addSuperClassFields(Enum.valueOf(SuperClassName.class, superClass));
+	}
+	
+	/**
+	 * 继承父类需要添加的字段
+	 * @param superClass
+	 * @return
+	 */
+	public static List<Field> addSuperClassFields(SuperClassName superClass) {
+		List<Field> fields = Lists.newArrayList();
+		int step = -1;
+		switch (superClass) {
+		case ApplyInfo: // 6
+			if (step == -1 || step == 6) {
+				fields.addAll(Constants.getSuperClassFieldMap(SuperClassName.ApplyInfo.toString()));
+				step = 1;
+			}
+		case ApplyBook: // 5
+			if (step == -1 || step == 5) {
+				fields.addAll(Constants.getSuperClassFieldMap(SuperClassName.ApplyBook.toString()));
+				step = 2;
+			}
+		case Product: // 4
+			if (step == -1 || step == 4) {
+				fields.addAll(getSuperClassFieldMap(SuperClassName.Product.toString()));
+				step = 2;
+			}
+		case ProductAuthor: // 3
+			if (step == -1 || step == 3) {
+				fields.addAll(getSuperClassFieldMap(SuperClassName.ProductAuthor.toString()));
+				step = 0;
+			}
+		case CheckBusinessEntity: // 2
+			if (step == -1 || step == 2) {
+				fields.addAll(getSuperClassFieldMap(SuperClassName.CheckBusinessEntity.toString()));
+				step = 1;
+			}
+		case BusinessEntity:
+		case BizEntity: // 1
+			if (step == -1 || step == 1) {
+				fields.addAll(getSuperClassFieldMap(SuperClassName.BizEntity.toString()));
+				step = 0;
+			}
+			break;
+		default: // 0
+			break;
+		}
+		return fields;
 	}
 }

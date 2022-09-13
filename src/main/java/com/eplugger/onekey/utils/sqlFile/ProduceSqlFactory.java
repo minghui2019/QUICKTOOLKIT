@@ -1,16 +1,22 @@
 package com.eplugger.onekey.utils.sqlFile;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.eplugger.common.io.FileUtils;
+import com.eplugger.common.lang.DefaultStringBuilder;
 import com.eplugger.common.lang.StringUtils;
+import com.eplugger.onekey.addModule.Constants;
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.entity.ModuleInfo;
 import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.DBUtils;
 import com.eplugger.utils.OtherUtils;
+import com.eplugger.uuid.UUIDFun;
 
 public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	private static class ProduceSqlFactorySingleton {
@@ -32,10 +38,16 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	 * @param mainTableName
 	 * @return
 	 */
-	public static String produceCreateTableSql(ModuleInfo module, boolean authorSwitch, String joinColumn, String mainTableName) {
+	public String produceCreateTableSql(ModuleInfo module, boolean authorSwitch, String joinColumn, String mainTableName) {
 		StringBuffer sb = new StringBuffer(), endsb = new StringBuffer();
-		String tableName = module.getTableName();
 		List<Field> fieldList = module.getFieldList();
+		String key = module.getSuperClassMap().get("entity");
+		List<Field> addSuperClassFields = Constants.addSuperClassFields(key);
+		if (addSuperClassFields != null) {
+			fieldList.addAll(addSuperClassFields);
+		}
+		
+		String tableName = module.getTableName();
 		if (DBUtils.isSqlServer()) {
 			sb.append("CREATE TABLE [dbo].[").append(tableName).append("] (").append(StringUtils.CRLF);
 			sb.append("[ID] varchar(32) NOT NULL ,").append(StringUtils.CRLF);
@@ -43,7 +55,7 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 			endsb.append("PRIMARY KEY ([ID])");
 			if (authorSwitch) {
 				endsb.append(",").append(StringUtils.CRLF);
-				endsb.append("CONSTRAINT [FK_").append(module.getTableName()).append("__").append(mainTableName).append("] FOREIGN KEY ([").append(SqlUtils.lowerCamelCase2UnderScoreCase(joinColumn)).append("]) REFERENCES [dbo].[").append(mainTableName).append("] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION").append(StringUtils.CRLF);
+				endsb.append("CONSTRAINT [FK_").append(tableName).append("__").append(mainTableName).append("] FOREIGN KEY ([").append(joinColumn).append("]) REFERENCES [dbo].[").append(mainTableName).append("] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION").append(StringUtils.CRLF);
 			} else {
 				endsb.append(StringUtils.CRLF);
 			}
@@ -56,7 +68,7 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 			endsb.append("PRIMARY KEY (\"ID\")");
 			if (authorSwitch) {
 				endsb.append(",").append(StringUtils.CRLF);
-				endsb.append("CONSTRAINT \"FK_").append(module.getTableName()).append("__").append(mainTableName).append("\" FOREIGN KEY (\"").append(joinColumn).append("\") REFERENCES \"").append(mainTableName).append("\" (\"ID\") ").append(StringUtils.CRLF);
+				endsb.append("CONSTRAINT \"FK_").append(tableName).append("__").append(mainTableName).append("\" FOREIGN KEY (\"").append(joinColumn).append("\") REFERENCES \"").append(mainTableName).append("\" (\"ID\") ").append(StringUtils.CRLF);
 			} else {
 				endsb.append(StringUtils.CRLF);
 			}
@@ -66,7 +78,10 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 		}
 		
 		sb.append(bulidFieldsSql(fieldList));
-		return sb.toString() + endsb.toString();
+		sb.append(endsb);
+		String produceMetadata = ProduceMetaDataFactory.getInstance().produceMetadata(module.getBeanId(), fieldList);
+		sb.append(produceMetadata);
+		return sb.toString();
 	}
 	
 	private static String bulidFieldsSql(List<Field> fieldList) {
@@ -106,24 +121,38 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	 * @return
 	 */
 	public String produceSqlCode(String tableName, List<Field> fieldList) {
-		StringBuffer sb = new StringBuffer();
+		DefaultStringBuilder dsb = new DefaultStringBuilder();
 		for (Field field : fieldList) {
 			if (field.isTranSient() || field.isOnlyMeta() == true) {
 				continue;
 			}
 			if (DBUtils.isSqlServer()) {
-				sb.append("ALTER TABLE [dbo].[").append(tableName).append("] ADD [").append(field.getTableFieldId()).append("] ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(" NULL").append(StringUtils.CRLF);
-				sb.append("GO").append(StringUtils.CRLF).append(StringUtils.CRLF);
+				dsb.append("ALTER TABLE [dbo].[").append(tableName).append("] ADD [").append(field.getTableFieldId()).append("] ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL");
+				dsb.appendln("GO").appendln();
 			}
 			if (DBUtils.isOracle()) {
-				sb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(" NULL ) ");
-				sb.append(StringUtils.CRLF);
+				dsb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL ) ");
 			}
 		}
-		if (DBUtils.isOracle() && sb.length() > 0) {
-			sb.append(";").append(StringUtils.CRLF);
-			sb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
+		if (DBUtils.isOracle() && dsb.length() > 0) {
+			dsb.appendln(";");
+			dsb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
 		}
-		return sb.toString();
+		return dsb.toString();
+	}
+
+	public void produceCreateTableSqlFiles(ModuleInfo mainModule, ModuleInfo authorModule, boolean authorSwitch) {
+		List<String> joinColumn = mainModule.getFieldList().stream().map(a -> a.getJoinColumn()).filter(a -> a != null).distinct().collect(Collectors.toList());
+		String joinColumn_ = null;
+		if (joinColumn != null && joinColumn.size() != 0) {
+			joinColumn_ = joinColumn.get(0);
+		}
+		String sqlCode = produceCreateTableSql(mainModule, false, joinColumn_, mainModule.getTableName());
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\sql" + File.separator + mainModule.getModuleName() + ".SQL", sqlCode);
+		if (authorSwitch) {
+			String authorsqlCode = produceCreateTableSql(authorModule, true, joinColumn_, mainModule.getTableName());
+			FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\sql" + File.separator + authorModule.getModuleName() + ".SQL", authorsqlCode);
+		}
+		UUIDFun.getInstance().destroyUuids();
 	}
 }

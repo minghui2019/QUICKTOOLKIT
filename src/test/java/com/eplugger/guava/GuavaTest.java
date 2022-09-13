@@ -66,6 +66,22 @@ public class GuavaTest {
         stringBuilder = joiner1.appendTo(stringBuilder, "jim", "jack", null, "kevin");
         System.out.println(stringBuilder);
     }
+    
+    /**
+     * <pre>
+     * Guava 字符串连接器Splitter
+     * 输出：嗨，jim|jack|kevin
+     * </pre>
+     */
+    @Test
+    public void testGuavaSplitter() {
+    	String str = "嗨，jim|jack|kevin";
+    	// 字符串连接器，以|为分隔符，同时去掉null元素
+    	Splitter splitter = Splitter.on("|").trimResults().omitEmptyStrings();
+    	System.out.println(splitter.split(str));
+    	System.out.println(splitter.split("12345"));
+    	System.out.println(splitter.split(null));
+    }
 
     /**
      * <pre>

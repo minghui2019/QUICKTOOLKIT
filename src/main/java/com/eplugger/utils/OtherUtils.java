@@ -37,6 +37,11 @@ public class OtherUtils {
 				|| OtherUtils.TPYE_TIMESTAMP.equals(dataType);
 	}
 	
+	public static boolean isSimpleType1(String dataType) {
+		return OtherUtils.TPYE_STRING.equals(dataType) || OtherUtils.TPYE_INTEGER.equals(dataType)
+				|| OtherUtils.TPYE_DOUBLE.equals(dataType);
+	}
+	
 	/**
 	 * 生成实体类的beanid
 	 * @param str

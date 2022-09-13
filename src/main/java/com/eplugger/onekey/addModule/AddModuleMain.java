@@ -3,29 +3,20 @@ package com.eplugger.onekey.addModule;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.junit.Test;
 
-import com.eplugger.onekey.entity.Field;
+import com.eplugger.common.io.FileUtils;
 
 public class AddModuleMain {
 	public static void main(String[] args) {
-//		AddModuleFun.AddSingleModuleFun();
-//		AddModuleFun.AddMultipleModuleFun();
-//		List<Module> module = ModuleParse.getInstance().getValidList("src/main/resource/module/Module.xml");
-//		Module module = ModuleParse.getInstance().getValidModule("src/resource/module/Module.xml");
-//		System.out.println(module);
-		List<Field> fieldList = Constants.getFieldList();
-		System.out.println(fieldList);
-		
 	}
 	
 	@Test
 	public void testAddListModuleFun() throws Exception {
 		AddModuleFun.AddListModuleFun();
 		try {
-			Desktop.getDesktop().open(new File("C:/Users/Admin/Desktop/AddListModule"));
+			Desktop.getDesktop().open(new File(FileUtils.getUserHomeDirectory() + "AddListModule"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -35,9 +26,22 @@ public class AddModuleMain {
 	public void testAddMultiModuleFun() throws Exception {
 		AddModuleFun.AddMultiModuleFun();
 		try {
-			Desktop.getDesktop().open(new File("C:/Users/Admin/Desktop/AddListModule"));
+			Desktop.getDesktop().open(new File(FileUtils.getUserHomeDirectory() + "AddListModule"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void testAddMultiModuleFun1() throws Exception {
+		boolean authorSwitch = false;
+		String template = "honor";
+		AddModuleFun.AddMultipleModuleFun1(authorSwitch, template);
+		try {
+			Desktop.getDesktop().open(new File(FileUtils.getUserHomeDirectory() + "AddModule"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

@@ -18,7 +18,7 @@ public class Test1 {
 			sb.append(preSql).append(uuids[i]).append("', ").append(strs[i]).append(minSql).append(StringUtils.CRLF);
 		}
 		UUIDFun.getInstance().destroyUuids();
-		FileUtils.write("C:/Users/Admin/Desktop/Product.sql", sb);
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "Product.sql", sb);
 	}
 	
 	@Test
@@ -32,6 +32,6 @@ public class Test1 {
 			sb.append(preSql).append(uuids[i]).append("', ").append(strs[i]).append(minSql).append(StringUtils.CRLF);
 		}
 		UUIDFun.getInstance().destroyUuids();
-		FileUtils.write("C:/Users/Admin/Desktop/Project.sql", sb);
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "Project.sql", sb);
 	}
 }

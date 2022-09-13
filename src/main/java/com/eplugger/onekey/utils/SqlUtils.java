@@ -1,42 +1,9 @@
 package com.eplugger.onekey.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.eplugger.utils.DBUtils;
 
 public class SqlUtils {
-	
-	/**
-	 * 小驼峰命名法转化为下划线命名法<br>
-	 * @param field
-	 * @return
-	 */
-	public static String lowerCamelCase2UnderScoreCase(String field) {
-		Pattern p = Pattern.compile("[A-Z]");
-		Matcher m = p.matcher(field);
-		StringBuffer sb = new StringBuffer();
-		while (m.find()) {
-			m.appendReplacement(sb, "_" + m.group());
-		}
-		m.appendTail(sb);
-		return sb.toString().toUpperCase();
-	}
-	
-	/**
-	 * 小驼峰命名法转化为下划线命名法<br>
-	 * 举例： paperId --> PAPER_ID<br>
-	 * @param fields
-	 * @return
-	 */
-	public static String[] lowerCamelCase2UnderScoreCase(String[] fields) {
-		List<String> list = new ArrayList<String>();
-		for (String field : fields) {
-			list.add(lowerCamelCase2UnderScoreCase(field));
-		}
-		return list.toArray(new String[] {});
+	private SqlUtils() {
 	}
 	
 	/**

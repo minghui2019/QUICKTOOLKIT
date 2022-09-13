@@ -102,7 +102,7 @@
         <tableName>BIZ_PATENT_PROPOSAL</tableName>
         <described>专利提案</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>expert</moduleName>
         <tableName>BIZ_EXPERT</tableName>
         <described>专家</described>
@@ -416,5 +416,50 @@
         <moduleName>honorApplyBook</moduleName>
         <tableName>BIZ_HONOR_APPLY_BOOK</tableName>
         <described>获奖申请材料</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>socialOrganization</moduleName>
+        <tableName>BIZ_SOCIAL_ORGANIZATION</tableName>
+        <described>参与社会团体组织</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>trademark</moduleName>
+        <tableName>BIZ_TRADEMARK</tableName>
+        <described>商标</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>bookApplyInfo</moduleName>
+        <tableName>BIZ_BOOK_APPLY_INFO</tableName>
+        <described>著作出版资助申报批次</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>bookApplyBook</moduleName>
+        <tableName>BIZ_BOOK_APPLY_INFO_BOOK</tableName>
+        <described>著作出版资助申请材料</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>reviewPlan</moduleName>
+        <tableName>BIZ_REVIEW_PLAN</tableName>
+        <described>评审计划</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>contractConclusionMaterial</moduleName>
+        <tableName>BIZ_CONTRACT_CONCLUSION_MATERIAL</tableName>
+        <described>横向项目验收结题（结项）档案材料</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>transformation</moduleName>
+        <tableName>BIZ_TRANSFORMATION</tableName>
+        <described>转化情况</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>vproject</moduleName>
+        <tableName>V_PROJECT</tableName>
+        <described>项目视图</described>
+    </ModuleTable>
+    <ModuleTable ignore="false">
+        <moduleName>servPoint</moduleName>
+        <tableName>SYS_SERV_POINT</tableName>
+        <described>服务点</described>
     </ModuleTable>
 </ModuleTables>

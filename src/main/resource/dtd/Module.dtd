@@ -16,7 +16,7 @@
 		key (entity|bo|action) #REQUIRED 
 		value CDATA #REQUIRED>
 <!ELEMENT Fields (Field+)>
-<!ELEMENT Field (fieldId, fieldName, dataType, categoryName?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
+<!ELEMENT Field (fieldId, tableFieldId?, fieldName, dataType, categoryName?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
 <!ATTLIST Field 
 		association (OneToMany|ManyToOne) #IMPLIED 
 		onlyMeta (true|false) "false" 
@@ -24,6 +24,7 @@
 		updateInsert (true|false) "true"
 		tranSient (true|false) "true">
 <!ELEMENT fieldId (#PCDATA)>
+<!ELEMENT tableFieldId (#PCDATA)>
 <!ELEMENT fieldName (#PCDATA)>
 <!ELEMENT dataType (#PCDATA)>
 <!ELEMENT categoryName (#PCDATA)>

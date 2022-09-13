@@ -14,6 +14,9 @@ import com.eplugger.xml.dom4j.XMLObject;
 import com.eplugger.xml.dom4j.XMLParser;
 import com.google.common.collect.Lists;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class UUIDFun {
 	private static class UUIDFunSingleton {
 		private static UUIDFun instance = new UUIDFun();
@@ -29,7 +32,7 @@ public class UUIDFun {
 		return UUIDFunSingleton.instance;
 	}
 	
-	private static final String URL_XML_UUIDS = UUIDFun.class.getResource("/").getPath() + "../../src/main/resource/uuid/UUID.xml";
+	private static final String URL_XML_UUIDS = "src/main/resource/uuid/UUID.xml";
 	private static final Integer INIT_NUM_UUIDS = 1000;
 	private Uuids uuids;
 	
@@ -76,6 +79,7 @@ public class UUIDFun {
 	}
 	
 	public List<String> getUuidsList(int count) {
+		log.debug("开始消费uuid");
 		return Lists.newArrayList(getUuidsArray(count));
 	}
 	
@@ -84,6 +88,7 @@ public class UUIDFun {
 	 * @return
 	 */
 	public String getUuid() {
+		log.debug("开始消费uuid");
 		if (this.uuids == null) {
 			initUuids();
 		}
@@ -103,14 +108,14 @@ public class UUIDFun {
 		System.out.println(Arrays.toString(UUIDFun.getInstance().randomUUID(1)));
 	}
 	
-	private void consumeUuids() throws IOException {
-		Stack<String> uuids2 = getUuids(5);
-		for (int i = 0; i < 5; i++) {
-			System.out.println(uuids2.pop());
-		}
-		
-		destroyUuids(uuids2);
-	}
+//	private void consumeUuids() throws IOException {
+//		Stack<String> uuids2 = getUuids(5);
+//		for (int i = 0; i < 5; i++) {
+//			System.out.println(uuids2.pop());
+//		}
+//		
+//		destroyUuids(uuids2);
+//	}
 	
 	/**
 	 * 把堆栈中剩余uuid放回变量uuids中，接着备份并销毁uuids变量
@@ -144,6 +149,7 @@ public class UUIDFun {
 			e.printStackTrace();
 		}
     	this.uuids = null;
+    	log.debug("销毁回收uuid");
 	}
 	
 	/**
@@ -172,6 +178,7 @@ public class UUIDFun {
 		} catch (Exception e) {
 			this.uuids = new Uuids();
 		}
+		log.debug("uuid初始化完成");
 	}
 	
 	/**

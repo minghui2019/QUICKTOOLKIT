@@ -11,7 +11,7 @@ import lombok.Setter;
 
 /**
  * <p>模块信息</p>
- * @author Admin
+ * @author minghui
  */
 @Setter
 @Getter

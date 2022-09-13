@@ -6,8 +6,10 @@ import java.util.Map;
 
 import com.eplugger.onekey.entity.Module;
 import com.eplugger.onekey.entity.Modules;
+import com.eplugger.onekey.utils.javaFile.ProduceJavaFactory;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFiles;
 import com.eplugger.onekey.utils.jspFile.ProduceJspFiles;
+import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
 import com.eplugger.onekey.utils.xmlFile.ProduceXmlFiles;
 import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
@@ -141,7 +143,7 @@ public class AddModuleFun {
 		
 		ProduceJavaFiles.produceJavaFiles(module.getMainModule().getPackageName(), module.getMainModule(), module.getAuthorModule(), authorSwitch, joinColumn, template);
 		
-		ProduceSqlFiles.produceCreateTableSqlFiles(module.getMainModule(), module.getAuthorModule(), databaseType, database, authorSwitch, joinColumn);
+		ProduceSqlFactory.getInstance().produceCreateTableSqlFiles(module.getMainModule(), module.getAuthorModule(), authorSwitch);
 		
 		ProduceXmlFiles.produceXmlFile(module.getMainModule().getPackageName(), module.getMainModule(), module.getAuthorModule(), authorSwitch, template);
 		
@@ -195,42 +197,12 @@ public class AddModuleFun {
 		ProduceSqlFiles.produceCreateTableSqlFiles(module);
 	}
 	
-	public static void AddMultipleModuleFun1() throws Exception {
-		Module module = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class).getValidModule();
-		Map<String, String> superClassMap = new HashMap<String, String>();
-		superClassMap.put("entity", "BusinessEntity");
-		superClassMap.put("bo", "BusinessBO");
-		superClassMap.put("action", "BusinessAction");
-		module.getMainModule().setSuperClassMap(superClassMap);
-		module.getMainModule().setPackageName("com.eplugger.business.projectBusiness");
+	public static void AddMultipleModuleFun1(boolean authorSwitch, String template) throws Exception {
+		Module module = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidModule();
 		
-		Map<String, String> authorsuperClassMap = new HashMap<String, String>();
-		authorsuperClassMap.put("entity", "CheckBusinessEntity");
-		authorsuperClassMap.put("bo", "EntityImpl");
-		authorsuperClassMap.put("action", "EntityImpl");
-		module.getAuthorModule().setSuperClassMap(authorsuperClassMap);
-//		String[] authorinterfaces = null;
-//		List<Field> authorfieldList = Constants.getAuthorfieldList();
-//		
-//		ModuleInfo1 authorModule = new ModuleInfo1();
-//		authorModule.setModuleName("BookTestAuthor");
-//		authorModule.setModuleZHName("著作作者");
-//		authorModule.setTableName("BIZ_BOOK_TEST_AUTHOR");
-//		authorModule.setBeanId("bookTestAuthor");
-//		authorModule.setSuperClassMap(authorsuperClassMap);
-//		authorModule.setInterfaces(authorinterfaces);
-//		authorModule.setFieldList(authorfieldList);
+		ProduceJavaFactory.getInstance().produceJavaFiles(module, template);
 		
-		boolean authorSwitch = false;
-		String joinColumn = "personAssessId";
-		String template = "meeting";
-		
-		String databaseType = "sqlserver"; //数据库类型默认sqlserver,oracle
-		String database = "RDSYSEDUV82310831"; //oracle数据库username
-		
-		ProduceJavaFiles.produceJavaFiles(module.getMainModule().getPackageName(), module.getMainModule(), module.getAuthorModule(), authorSwitch, joinColumn, template);
-		
-		ProduceSqlFiles.produceCreateTableSqlFiles(module.getMainModule(), module.getAuthorModule(), databaseType, database, authorSwitch, joinColumn);
+		ProduceSqlFactory.getInstance().produceCreateTableSqlFiles(module.getMainModule(), module.getAuthorModule(), authorSwitch);
 		
 		ProduceXmlFiles.produceXmlFile(module.getMainModule().getPackageName(), module.getMainModule(), module.getAuthorModule(), authorSwitch, template);
 		

@@ -3,10 +3,8 @@
 
 <Fields>
     <Field>
-        <fieldId>subject2Id</fieldId>
-        <fieldName>二级学科</fieldName>
-        <dataType>String</dataType>
-        <categoryName>SUBJECT2</categoryName>
-        <precision>320</precision>
+        <fieldId>orderId</fieldId>
+        <fieldName>排序号</fieldName>
+        <dataType>Integer</dataType>
     </Field>
 </Fields>

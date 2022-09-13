@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 去重：根据javaBean的某个属性去重
- * @author Admin
+ * @author minghui
  *
  */
 @Slf4j

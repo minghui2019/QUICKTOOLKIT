@@ -1,0 +1,75 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="e" uri="/firefly-theme-taglib" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<e:import resource="datepicker,validator,float,tableorder,ep,layer,select" />
+<script src="${contextPath}/business/js/pub.js" charset="UTF-8"></script>
+<script src="${contextPath}/business/js/productAuthor.js" charset="UTF-8"></script>
+<script src="${contextPath}/business/js/product.js" charset="UTF-8"></script>
+<script type="text/javascript">
+var csrfparam = "${e:csrfparam()}";
+//科研人员新增成果作者时，不进行过滤
+var isTeacher=${e:userInfo().teacher};
+//科研秘书新增成果作者时，不进行过滤
+var isUnit = ${e:userInfo().unitAdmin};
+var curPersonId = '${e:userInfo().personId}';
+var curPersonName = '${e:userInfo().person.name}';
+$(function() {
+	checkBusinessFilter(isTeacher);
+	if (!isTeacher) {
+		checkBusinessFilter(isUnit);
+	}
+	initPersonAutoComplete();
+});
+function checkMember(){
+	var totalRatio = 0;
+	$("input[name^='entity.authors['][name$='workRatio']").each(function(){
+		if(this.value){
+			totalRatio += parseFloat(this.value);
+		}
+	});
+	if(totalRatio>100){
+		ep.alert("贡献率不能大于100！");
+		return false;
+	}
+	deleteRowNum = 0;
+	
+	if (!checkProductAuthor(isTeacher, curPersonId, 'honorAuthor', '仅允许校内教师中的第一完成人登记信息，即“'+curPersonName+'”必须为校内教师中的第一完成人，请修改。')) {
+		return false;
+	}
+	
+	if(!checkMemberNull()){
+		return false;
+	}
+	
+	//这段代码要放在表单验证的最后，否则可能会造成科研秘书可以选择所属单位
+	setUnitValid($("select[name='entity.unitId']"));
+	return true;
+}
+
+</script>
+</head>
+<body class="ep-nopadding-body popOperate">
+<form id="finishForm" action="${actionPath}!do_save.action" enctype="multipart/form-data" method="post">
+	<e:form pageType="add" value="${entity}" hasZoning="true"/>
+	
+	<div eprole="fieldset" legend="<e:moduleSimpleName beanId="honorAuthor"/>">
+		<a class="a-legend"><e:moduleSimpleName beanId="honorAuthor"/>
+		<button type="button" id="editableGridTag_honorAuthor_add" class="btn btn-default btn-sm floatRight" onclick="ep.addRow(this, 'editableGridTag_honorAuthor', null);addPersonAutoComplete('editableGridTag_honorAuthor');">添加</button>
+		</a>
+	<e:editableGrid beanId="honorAuthor" cls="editableGridDiv" value="${entity.authors}" needAdd="false"  propertyName="entity.authors" orderColumn="orderId" initRow="1">
+		<e:delete type="a" label="删除"/>
+	</e:editableGrid>
+	</div>
+	<input type="hidden" value="${applyBookId }" name="applyBookId"/>
+	<e:foot layerFooter="true">
+		<div class="ep-footer">
+			<e:save changePageSubmit="${e:userInfo().servModel}" icon4Save="" icon4Submit="" cls4Submit="btn btn-primary btn-sm" cls4Save="btn btn-primary btn-sm" onSubmit="checkMember"/>
+			<e:btn label="关闭" onclick="closeThis(${e:userInfo().servModel},${pageType == 'ADD'},true,null)" cls="btn btn-primary btn-sm"/>
+		</div>
+	</e:foot>
+</form>
+</body>
+</html>

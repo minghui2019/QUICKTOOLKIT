@@ -4,7 +4,7 @@ import com.eplugger.trans.CharMatcherHandler;
 
 /**
  * 默认的处理器，不作任何处理
- * @author Admin
+ * @author minghui
  *
  */
 public class DefaultCharMatcherHandler implements CharMatcherHandler {

@@ -1,10 +1,12 @@
 package com.eplugger.trans;
 
-import java.util.HashMap;
+import java.util.Map;
 
+import com.eplugger.trans.handles.AndCharMatcherHandler;
 import com.eplugger.trans.handles.DefaultCharMatcherHandler;
 import com.eplugger.trans.handles.ForCharMatcherHandler;
 import com.eplugger.trans.handles.OfCharMatcherHandler;
+import com.eplugger.trans.handles.TheCharMatcherHandler;
 import com.google.common.collect.Maps;
 
 /**
@@ -17,10 +19,10 @@ import com.google.common.collect.Maps;
  * 或调用 {@link com.eplugger.trans.CharMatcherHandlerFactory#register(CharMatcherHandler) 静态工厂注册方法} 注册
  * 才有效
  * </pre>
- * @author Admin
+ * @author minghui
  */
 public class CharMatcherHandlerFactory {
-	private static HashMap<String, CharMatcherHandler> store = Maps.newHashMap();
+	private static Map<String, CharMatcherHandler> store = Maps.newLinkedHashMap();
 	
 	private static class CharMatcherFactorySingleton {
 		// 利用内部类实现对象唯一性
@@ -43,6 +45,8 @@ public class CharMatcherHandlerFactory {
 	 * 内部注册处理器
 	 */
 	private void registerStandard() {
+		register(new TheCharMatcherHandler());
+		register(new AndCharMatcherHandler());
 		register(new OfCharMatcherHandler());
 		register(new ForCharMatcherHandler());
 		register(new DefaultCharMatcherHandler());
@@ -54,15 +58,12 @@ public class CharMatcherHandlerFactory {
 	 * @return
 	 */
 	public String matcherChar(String resource) {
-		String key = null;
 		for (CharMatcherHandler handler : store.values()) {
 			if (handler.caseAnastomotic(resource)) {
-				key = handler.getTarget();
-				break;
+				resource = handler.matcherChar(resource);
 			}
 		}
-		CharMatcherHandler handler = store.getOrDefault(key, store.get("default"));
-		return handler.matcherChar(resource);
+		return resource;
 	}
 	
 	/**

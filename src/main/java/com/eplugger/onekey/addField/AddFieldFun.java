@@ -25,10 +25,10 @@ import com.google.common.collect.Sets;
  * Date -- datetime,
  * Double -- decimal(18,6),
  * Integer -- decimal(18,6)
- * @author Admin
+ * @author minghui
  */
 public class AddFieldFun {
-	private static final String FILE_OUT_PATH_PARENT = "C:/Users/Admin/Desktop/AddField";
+	private static final String FILE_OUT_PATH_PARENT = FileUtils.getUserHomeDirectory() + "AddField";
 	public static final String FILE_OUT_PATH_FIELD = "src/main/resource/field/Field.xml";
 	public static final String FILE_OUT_PATH_MODULETABLE = "src/main/resource/field/ModuleTable.xml";
 	public static void main(String[] args) throws Exception {

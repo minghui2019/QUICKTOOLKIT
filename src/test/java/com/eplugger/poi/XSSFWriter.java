@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
+import com.eplugger.common.io.FileUtils;
 import com.eplugger.utils.ExcelUtils;
 
 public class XSSFWriter {
@@ -79,7 +80,7 @@ public class XSSFWriter {
 	
 	@Test
 	public void testReadCellType() throws Exception {
-		readBigExcel("C:\\Users\\Admin\\Desktop\\工作簿1.xlsx");
+		readBigExcel(FileUtils.getUserHomeDirectory() + "Desktop\\工作簿1.xlsx");
 	}
 	
 	private void readBigExcel(String file) {

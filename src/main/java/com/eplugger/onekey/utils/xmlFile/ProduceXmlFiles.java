@@ -13,7 +13,7 @@ public class ProduceXmlFiles {
 		String moduleName = moduleInfo.getModuleName();
 		String beanId = moduleInfo.getBeanId();
 		String xmlCode = produceSpringXmlCode(packageName, moduleName, beanId);
-		FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\xml" + File.separator + "applicationContext-" + beanId + ".xml", xmlCode);
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\xml" + File.separator + "applicationContext-" + beanId + ".xml", xmlCode);
 	}
 	
 	/**
@@ -35,11 +35,11 @@ public class ProduceXmlFiles {
 		} catch (Exception e) {
 		}
 		String xmlCode = produceSpringXmlCode(packageName, moduleName, beanId, authormoduleName, authorbeanId, authorSwitch, mainModule.getSuperClassMap().get("bo"), mainModule.getSuperClassMap().get("action"));
-		FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\xml" + File.separator + "applicationContext-" + beanId + ".xml", xmlCode);
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\xml" + File.separator + "applicationContext-" + beanId + ".xml", xmlCode);
 		
 		if (!"meeting".equals(template)) {
 			String strutsBusiness = produceStrutsXmlCode(packageName, moduleName, beanId, authormoduleName, authorbeanId, authorSwitch, moduleZHName, template);
-			FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\xml" + File.separator + "struts-business.xml", strutsBusiness);
+			FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\xml" + File.separator + "struts-business.xml", strutsBusiness);
 		}
 	}
 	

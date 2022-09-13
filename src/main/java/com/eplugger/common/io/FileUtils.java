@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.filechooser.FileSystemView;
+
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.utils.DateUtils;
 import com.google.common.base.Strings;
@@ -77,14 +79,45 @@ public class FileUtils {
 
 	/**
 	 * 读取文件内容
-	 *
 	 * @param file    文件
-	 * @param charSet 字符集
+	 * @param charSet 字符集的字符串
 	 * @return 内容列表
+	 * @see StandardCharsets
 	 */
 	public static List<String> readLines(File file, String charSet) {
+		return readLines(file, Charset.forName(charSet));
+	}
+	
+	/**
+	 * 读取文件内容
+	 * @param file    文件
+	 * @param charSet 字符集
+	 * @return 内容的可变列表
+	 */
+	public static List<String> readLines(File file, Charset charset) {
 		try {
-			return Files.readLines(file, Charset.forName(charSet));
+			return Files.readLines(file, charset);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static String readFile4String(String pathname) {
+		File file = getFile(pathname);
+		return readFile4String(file);
+	}
+	
+	public static String readFile4String(File file) {
+		return readFile4String(file, StandardCharsets.UTF_8);
+	}
+	
+	public static String readFile4String(File file, String charSet) {
+		return readFile4String(file, Charset.forName(charSet));
+	}
+	
+	public static String readFile4String(File file, Charset charset) {
+		try {
+			return Files.asCharSource(file, charset).read();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -333,5 +366,22 @@ public class FileUtils {
 		} catch (IOException e) {
 			log.error("路径不存在，打开失败！[path=" + file.getAbsolutePath() + "]");
 		}
+	}
+	
+	/**
+	 * <pre>
+	 * 获取当前用户的桌面路径
+	 * C:\Users\Admin\Desktop\
+	 * Windows
+	 * </pre>
+	 * @return
+	 */
+	public static String getUserHomeDirectory() {
+		File desktopDir = getUserHomeFile();
+		return desktopDir.getAbsolutePath() + File.separator;
+	}
+	
+	public static File getUserHomeFile() {
+		return FileSystemView.getFileSystemView().getHomeDirectory();
 	}
 }

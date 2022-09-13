@@ -7,7 +7,7 @@ import com.eplugger.onekey.addCategoryEntry.utils.ProduceCategorySqlCodeFactory;
 
 /**
  * 新增字典
- * @author Admin
+ * @author minghui
  */
 public class AddCategoryEntry {
 	/** "人员", "项目", "成果" */
@@ -29,12 +29,7 @@ public class AddCategoryEntry {
 	public static void createCategorySqlFile(String categoryName, String bizName, String bizType, String version, String[] keyArray, String[] valueArray) {
 		String content = ProduceCategorySqlCodeFactory.getInstance().createCategoryStr(keyArray, valueArray, categoryName, bizName, bizType, version);
 		String fileName = bizName + "字典配置SQL.sql";
-		FileUtils.write("C:\\Users\\Admin\\Desktop" + File.separator + fileName, content);
-		FileUtils.openTaskBar(new File("C:\\Users\\Admin\\Desktop"));
-//		try {
-//			Runtime.getRuntime().exec("notepad.exe  C:\\Users\\Admin\\Desktop\\");
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "Category\\" + fileName, content);
+		FileUtils.openTaskBar(new File(FileUtils.getUserHomeDirectory() + "Category\\"));
 	}
 }

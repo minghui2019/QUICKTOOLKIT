@@ -8,7 +8,7 @@ import org.dom4j.Element;
 
 /**
  * 具体内容解析工具
- * @author Admin
+ * @author minghui
  *
  * @param <T>
  */

@@ -9,7 +9,7 @@ import com.eplugger.xml.dom4j.util.XmlFileUtils;
 
 /**
  * xml解析模版工具
- * @author Admin
+ * @author minghui
  *
  * @param <T>
  */

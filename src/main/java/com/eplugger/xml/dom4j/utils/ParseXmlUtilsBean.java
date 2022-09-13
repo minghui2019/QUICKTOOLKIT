@@ -17,7 +17,7 @@ import com.google.common.collect.Maps;
 /**
  * 新导出的Parser需要手动注册于{@link #register(Class, ParserXml)}
  * 使用前一定要注册
- * @author Admin
+ * @author minghui
  *
  */
 public class ParseXmlUtilsBean {

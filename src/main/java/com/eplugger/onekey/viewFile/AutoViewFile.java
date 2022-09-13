@@ -73,7 +73,7 @@ public class AutoViewFile {
 		generationViewSql();
 	}
 
-	private static String filePath = "C:/Users/Admin/Desktop/视图";
+	private static String filePath = FileUtils.getUserHomeDirectory() + "视图";
 	private static String xlsName = "共享视图.xls";
 	private static String VIEW_NAME = null;// 视图名
 	private static String TABEL_NAME = null;// 表名

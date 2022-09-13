@@ -1,0 +1,125 @@
+package ^{packageName};
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.eplugger.abilities.workflow.entity.ICheckAble;
+import com.eplugger.abilities.workflow.flowChart.Workflow;
+import com.eplugger.abilities.workflow.utils.WorkFlowServ;
+import com.eplugger.appService.todoItem.entity.AppTodoItem;
+import com.eplugger.business.pub.bo.BaseToDoProvider;
+import com.eplugger.business.^{beanId}.entity.^{moduleName};
+import com.eplugger.serv.servPoint.BO.ServPointBO;
+import com.eplugger.serv.servPoint.entity.ServPoint;
+import com.eplugger.serv.servPoint.entity.ServPointEnum;
+import com.eplugger.service.action.HomepageBaseAction;
+import com.eplugger.service.convert.convert.date.DateConverter;
+import com.eplugger.system.category.CategoryDAO;
+import com.eplugger.system.entity.TodoItem;
+import com.eplugger.system.entity.UserInfo;
+import com.eplugger.system.entityMeta.EntityMetaUtils;
+import com.eplugger.system.role.user.bo.BaseUserBO;
+import com.eplugger.system.security.utils.SecurityUtils;
+import com.eplugger.utils.bean.SpringContextUtil;
+import com.eplugger.utils.category.CategoryUtil;
+import com.eplugger.utils.date.DateUtil;
+import com.google.common.collect.Lists;
+
+public class ^{moduleName}ToDoProvider extends BaseToDoProvider {
+    private String moduleActionName = "^{beanId}Action";
+
+    public ^{moduleName}ToDoProvider() {
+        HomepageBaseAction.registerPortal(getName(), ^{moduleName}ToDoProvider.class);
+    }
+
+    @Override
+    public String getName() {
+        return "todos";
+    }
+
+    @Override
+    public List<TodoItem> getInfo() {
+        List<TodoItem> infos = new ArrayList<TodoItem>();
+        List<^{moduleName}> list = getList(^{moduleName}.class);
+        UserInfo userInfo = BaseUserBO.getCurUserInfo(UserInfo.class);
+        for (^{moduleName} child : list) {
+            TodoItem item = new TodoItem();
+            item.setModuleId(getBeanId());
+            item.setModuleName(getModuleName());
+            item.setTitle(child.getName());
+            item.setChargerName(child.getChargerName());
+            item.setHref(SecurityUtils.noCsrfURL("business/" + moduleActionName + "!to_checkPage.action?entity.id=" + child.getId()));
+            item.setLastEditDate(child.getLastEditDate());
+            item.setDataId(child.getId());
+            item.setOwnHref(SecurityUtils.noCsrfURL("business/" + moduleActionName + "!to_view.action?entity.id=" + child.getId()));
+            item.setOwnDetails(DateConverter.toString(child.getLastEditDate(), DateUtil.DATE_FORMAT_DATEONLY) + "      " + CategoryDAO.getInstance().convertVal(child.getCheckStatus(), "CHECK_STATE"));
+            if (WorkFlowServ.isCanOperation(userInfo.getGroupId(), (ICheckAble) child)) {
+                item.setEditHref(SecurityUtils.noCsrfURL("business/" + moduleActionName + "!to_edit.action?entity.id=" + child.getId()));
+            }
+            if (WorkFlowServ.isCanDelete((ICheckAble) child)) {
+                item.setDeleteHref(SecurityUtils.noCsrfURL(moduleActionName + "!do_delete.action?entity.id=" + child.getId()));
+            }
+            infos.add(item);
+        }
+        return infos;
+    }
+
+    @Override
+    public String getBeanId() {
+        return "^{beanId}";
+    }
+
+    @Override
+	public List<TodoItem> getServTodoItems(List<String> dataIds) {
+		List<TodoItem> infos = Lists.newArrayList();
+		if (dataIds.isEmpty()) {
+			return infos;
+		}
+		String[] ids = (String[]) dataIds.toArray(new String[0]);
+		List<^{moduleName}> list = getPersonServListByIds(^{moduleName}.class, ids);
+		UserInfo userInfo = BaseUserBO.getCurUserInfo(UserInfo.class);
+		ServPointBO servPointBO = SpringContextUtil.getBean(ServPointBO.class);
+		ServPoint servPointByIdentify = servPointBO.getServPointByIdentify(ServPointEnum..toString());
+		for (^{moduleName} child : list) {
+			TodoItem item = new TodoItem();
+			item.setModuleId(getBeanId());
+			item.setModuleName(servPointByIdentify.getName());
+			item.setTitle(child.getName());
+			item.setChargerName(child.getChargerName());
+			item.setHref(SecurityUtils.noCsrfURL("business/" + moduleActionName + "!to_checkPage.action?entity.id=" + child.getId()));
+			item.setLastEditDate(child.getLastEditDate());
+			item.setDataId(child.getId());
+			item.setOwnHref(SecurityUtils.noCsrfURL("business/" + moduleActionName + "!to_view.action?entity.id=" + child.getId()));
+			String dataType = WorkFlowServ.getCheckDataTypeByCheckStatus(child.getCheckStatus());
+			item.setOwnDetails(EntityMetaUtils.getMetaMeaning(getBeanId(), "participationForm") + "："
+					+ CategoryDAO.getInstance().convertVal(child.getParticipationForm(), "PARTICIPATION_FORM") + "&nbsp;&nbsp;&nbsp;&nbsp;"
+					+ EntityMetaUtils.getMetaMeaning(getBeanId(), "issuingAuthority") + "：" + child.getIssuingAuthority()
+					+ "&nbsp;&nbsp;&nbsp;&nbsp;" + EntityMetaUtils.getMetaMeaning(getBeanId(), "createDate") + "："
+					+ DateConverter.toString(child.getCreateDate(), DateUtil.DATE_FORMAT_DATEONLY)
+					+ "&nbsp;&nbsp;&nbsp;&nbsp;" + EntityMetaUtils.getMetaMeaning(getBeanId(), "checkStatus") + "："
+					+ CategoryDAO.getInstance().convertVal(child.getCheckStatus(), "CHECK_STATE") + showCheckDate(child));
+			if (WorkFlowServ.isCanOperation(userInfo.getGroupId(), (ICheckAble) child)) {
+				item.setEditHref(SecurityUtils.noCsrfURL("business/" + moduleActionName + "!to_edit.action?entity.id=" + child.getId()));
+			}
+			if (WorkFlowServ.isCanDelete((ICheckAble) child)) {
+				item.setDeleteHref(SecurityUtils.noCsrfURL(moduleActionName + "!do_delete.action?entity.id=" + child.getId()));
+			}
+			item.setCheckStatus(child.getCheckStatus());
+			// 审核不通过记录审核信息
+			if (Workflow.CHECK_TYPE_REFUSE.equals(dataType)) {
+				item.setRecentCheckLog(getRecentCheckLog(child));
+			}
+			// 初始化服务点
+			item.setServPointIdentify(ServPointEnum..toString());
+			item.setServPointId(servPointByIdentify.getId());
+
+			infos.add(item);
+		}
+		return infos;
+	}
+
+    @Override
+    public List<AppTodoItem> getAppTodoItems(List<String> dataIds) {
+        return null;
+    }
+}

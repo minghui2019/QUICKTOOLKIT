@@ -16,36 +16,36 @@ public class ProduceSingleJspFiles {
 		}
 		// add File
 		String addCode = produceAddJspFile(template, beanId);
-		FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\jsp\\" + beanId + File.separator + beanId + "Add.jsp", addCode);
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\jsp\\" + beanId + File.separator + beanId + "Add.jsp", addCode);
 		
 		// check File
 		String checkCode = produceCheckJspFile(template, beanId);
-		FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\jsp\\" + beanId + File.separator + beanId + "Check.jsp", checkCode);
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\jsp\\" + beanId + File.separator + beanId + "Check.jsp", checkCode);
 		
 		// list File
 		String listCode = produceListJspFile(beanId, template, moduleZHName);
-		FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\jsp\\" + beanId + File.separator + beanId + "List.jsp", listCode);
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\jsp\\" + beanId + File.separator + beanId + "List.jsp", listCode);
 		
 		// top File
 		if ("paper".equals(template)) {
 			String topCode = produceTopJspFile(beanId);
-			FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\jsp\\" + beanId + File.separator + beanId + "Top.jsp", topCode);
+			FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\jsp\\" + beanId + File.separator + beanId + "Top.jsp", topCode);
 		}
 		
 		// view File
 		String viewCode = produceViewJspFile(beanId, template, moduleZHName);
-		FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\jsp\\" + beanId + File.separator + beanId + "View.jsp", viewCode);
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\jsp\\" + beanId + File.separator + beanId + "View.jsp", viewCode);
 		
 		// finishStep File
 		if ("paper".equals(template)) {
 			String finishStepCode = produceFinishStepJspFile(beanId, template, moduleZHName);
-			FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\jsp\\" + beanId + File.separator + "finishStep.jsp", finishStepCode);
+			FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\jsp\\" + beanId + File.separator + "finishStep.jsp", finishStepCode);
 		}
 		
 		// supportProject File
 		if ("paper".equals(template)) {
 			String supportProjectCode = produceSupportProjectJspFile(beanId, template, moduleZHName);
-			FileUtils.write("C:\\Users\\Admin\\Desktop\\AddModule\\jsp\\" + beanId + File.separator + "supportProject.jsp", supportProjectCode);
+			FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\jsp\\" + beanId + File.separator + "supportProject.jsp", supportProjectCode);
 		}
 	}
 	

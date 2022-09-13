@@ -9,7 +9,7 @@ package com.eplugger.trans;
  * *** of ***
  * ...
  * </pre>
- * @author Admin
+ * @author minghui
  */
 public interface CharMatcherHandler {
 

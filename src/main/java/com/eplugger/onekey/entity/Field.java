@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import com.eplugger.onekey.utils.SqlUtils;
+import com.eplugger.common.lang.StringUtils;
 import com.eplugger.utils.OtherUtils;
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
 import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
@@ -57,20 +57,29 @@ public class Field {
 	private boolean onlyMeta = false;
 	
 	public String getTableFieldId() {
-		return Strings.isNullOrEmpty(tableFieldId) ? SqlUtils.lowerCamelCase2UnderScoreCase(fieldId) : tableFieldId;
+		return Strings.isNullOrEmpty(tableFieldId) ? StringUtils.lowerCamelCase2UnderScoreCase(fieldId) : tableFieldId;
 	}
 	
 	public Field(String fieldId, String fieldName) {
 		this(fieldId, fieldName, OtherUtils.TPYE_STRING);
 	}
 	public Field(String fieldId, String fieldName, String dataType) {
-		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), null, 0, null, false, null, null, null);
+		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), null, 0);
 	}
 	public Field(String fieldId, String fieldName, String dataType, int precision) {
-		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), precision);
+		this(fieldId, fieldName, dataType, precision, StringUtils.lowerCamelCase2UnderScoreCase(fieldId));
 	}
-	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, int precision) {
-		this(fieldId, fieldName, dataType, tableFieldId, null, precision, null, false, null, null, null);
+	public Field(String fieldId, String fieldName, String dataType, boolean tranSient) {
+		this(fieldId, fieldName, dataType, null, null, 0, null, tranSient, null, null, null);
+	}
+	public Field(String fieldId, String fieldName, String dataType, int precision, String tableFieldId) {
+		this(fieldId, fieldName, dataType, tableFieldId, null, precision);
+	}
+	public Field(String fieldId, String fieldName, String dataType, String categoryName, int precision) {
+		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, precision);
+	}
+	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, int precision) {
+		this(fieldId, fieldName, dataType, tableFieldId, categoryName, precision, null, false, null, null, null);
 	}
 	
 	/**
@@ -82,14 +91,14 @@ public class Field {
 	 * @param genericity List的泛型，非List不需要
 	 */
 	public Field(String fieldId, String fieldName, String dataType, String categoryName, String joinColumn, String genericity) {
-		this(fieldId, fieldName, dataType, SqlUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, 0, joinColumn, false, null, genericity, null);
+		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, 0, joinColumn, false, null, genericity, null);
 	}
 	
 	/**
 	 * @param fieldId 字段名
 	 * @param fieldName 字段中文名
 	 * @param dataType 数据类型
-	 * @param tableFieldId
+	 * @param tableFieldId 数据库表字段名
 	 * @param categoryName 字典名
 	 * @param precision varchar的精度
 	 * @param joinColumn 连接字段名称，数据库字段
@@ -99,7 +108,6 @@ public class Field {
 	 * @param association 关联关系：多对一，一对多
 	 */
 	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, int precision, String joinColumn, boolean tranSient, AppendSearch appendSearch, String genericity, String association) {
-		super();
 		this.fieldId = fieldId;
 		this.fieldName = fieldName;
 		this.dataType = dataType;

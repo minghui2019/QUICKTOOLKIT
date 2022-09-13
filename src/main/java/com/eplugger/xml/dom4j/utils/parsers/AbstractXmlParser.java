@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Dom4j解析器抽象实现类
- * @author Admin
+ * @author minghui
  *
  * @param <T>
  */
@@ -212,7 +212,7 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 		isFired = isFired || tryCollectionOrArray(bean, field, element);
 		isFired = isFired || tryMap(bean, field, element);
 		isFired = isFired || tryCustomType(bean, field, element);
-		log.debug("path&hierarchy处理结果: " + isFired);
+//		log.debug("path&hierarchy处理结果: " + isFired);
 	}
 	
 	/**
@@ -325,7 +325,7 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 		Dom4JField xmlField = field.getAnnotation(Dom4JField.class);
 		Class<?> fieldType = field.getType();
 
-		String childTagName1 = getTargetTagName(xmlField, field.getDeclaringClass().getSimpleName());
+//		String childTagName1 = getTargetTagName(xmlField, field.getDeclaringClass().getSimpleName());
 		
 		// 列表&数组
 		FieldUtils.CollectionType collectionType = FieldUtils.isCollection(fieldType);

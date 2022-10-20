@@ -33,7 +33,8 @@ public class Constants {
 		ProductAuthor,
 		CheckBusinessEntity,
 		BusinessEntity,
-		BizEntity;
+		BizEntity,
+		EntityImpl;
 	}
 	
 	private static Map<String, String> fullClassNameMap = Maps.newHashMap();

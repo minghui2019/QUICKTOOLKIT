@@ -64,6 +64,7 @@ public class Field {
 		this(fieldId, fieldName, OtherUtils.TPYE_STRING);
 	}
 	public Field(String fieldId, String fieldName, String dataType) {
+//		this(fieldName, fieldId, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldName), null, 0);
 		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), null, 0);
 	}
 	public Field(String fieldId, String fieldName, String dataType, int precision) {

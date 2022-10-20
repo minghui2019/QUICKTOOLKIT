@@ -884,5 +884,6 @@
       "ignoreImport": false,
       "onlyMeta": false
     }
-  ]
+  ],
+  "EntityImpl": []
 }

@@ -91,7 +91,7 @@ public class FileUtils {
 	/**
 	 * 读取文件内容
 	 * @param file    文件
-	 * @param charSet 字符集
+	 * @param charset 字符集
 	 * @return 内容的可变列表
 	 */
 	public static List<String> readLines(File file, Charset charset) {

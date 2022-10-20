@@ -3,96 +3,409 @@
 <Modules>
 	<Module ignore="false">
 		<MainModule>
-			<beanId>projectAcceptanceApplyBook</beanId>
-			<moduleName>ProjectAcceptanceApplyBook</moduleName>
-			<tableName>BIZ_PROJECT_ACCEPTANCE_APPLY_BOOK</tableName>
-			<moduleZHName>项目验收申请</moduleZHName>
-			<packageName>com.eplugger.business.projectAcceptanceApplyBook</packageName>
+			<beanId>personPaper</beanId>
+			<moduleName>PersonPaper</moduleName>
+			<tableName>BIZ_PERSON_PAPER</tableName>
+			<moduleZHName>科研人员论文</moduleZHName>
+			<packageName>com.eplugger.business.person</packageName>
 			<superClassMap>
-				<param key="entity" value="CheckBusinessEntity" />
-				<param key="bo" value="CheckBusinessBO" />
-				<param key="action" value="CheckBusinessAction" />
+				<param key="entity" value="EntityImpl" />
 			</superClassMap>
 			<Fields>
 			    <Field>
-			        <fieldId>projectId</fieldId>
-			        <fieldName>项目id</fieldName>
-			        <dataType>String</dataType>
-			        <precision>32</precision>
+			        <fieldId>orderId</fieldId>
+			        <fieldName>序号</fieldName>
+			        <dataType>Integer</dataType>
 			    </Field>
-			    <Field>
-			        <fieldId>applyDate</fieldId>
-			        <fieldName>申请日期</fieldName>
-			        <dataType>Date</dataType>
-			    </Field>
-			    <Field>
-			        <fieldId>projectState</fieldId>
-			        <fieldName>申请状态</fieldName>
-			        <dataType>String</dataType>
-			        <precision>32</precision>
-			    </Field>
-			    <Field>
-			        <fieldId>acceptanceApprovalFileIds</fieldId>
-			        <fieldName>结项验收审批表</fieldName>
-			        <dataType>String</dataType>
-			        <precision>300</precision>
-			    </Field>
-			    <Field>
-			        <fieldId>projectDeclarationFileIds</fieldId>
-			        <fieldName>项目申报书</fieldName>
+				<Field>
+					<fieldId>name</fieldId>
+					<fieldName>论文题目</fieldName>
 					<dataType>String</dataType>
 					<precision>300</precision>
-			    </Field>
+				</Field>
+				<Field>
+					<fieldId>magazineName</fieldId>
+					<fieldName>发表期刊名称/会议名称</fieldName>
+					<dataType>String</dataType>
+					<precision>100</precision>
+				</Field>
+				<Field>
+					<fieldId>publishDate</fieldId>
+					<fieldName>发表时间</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field>
+					<fieldId>allAuthor</fieldId>
+					<fieldName>所有作者</fieldName>
+					<dataType>String</dataType>
+					<precision>500</precision>
+				</Field>
+				<Field>
+					<fieldId>embodyTypeId</fieldId>
+					<fieldName>收录类别</fieldName>
+					<dataType>String</dataType>
+					<categoryName>EMBODY_TYPE</categoryName>
+					<precision>32</precision>
+				</Field>
+				<Field>
+					<fieldId>jcrPartition</fieldId>
+					<fieldName>JCR分区</fieldName>
+					<dataType>String</dataType>
+					<categoryName>PARTITION</categoryName>
+					<precision>50</precision>
+				</Field>
+				<Field updateInsert="false">
+					<fieldId>personId</fieldId>
+					<fieldName>人员id</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
+				</Field>
+				<Field association="ManyToOne" ignoreImport="true">
+					<fieldId>person</fieldId>
+					<fieldName>人员</fieldName>
+					<dataType>Person</dataType>
+					<joinColumn>PERSON_ID</joinColumn>
+				</Field>
+			</Fields>
+		</MainModule>
+	</Module>
+	<Module ignore="false">
+		<MainModule>
+			<beanId>personPatent</beanId>
+			<moduleName>PersonPatent</moduleName>
+			<tableName>BIZ_PERSON_PATENT</tableName>
+			<moduleZHName>科研人员专利</moduleZHName>
+			<packageName>com.eplugger.business.person</packageName>
+			<superClassMap>
+				<param key="entity" value="EntityImpl" />
+			</superClassMap>
+			<Fields>
 			    <Field>
-			        <fieldId>contractAssignmentFileIds</fieldId>
-			        <fieldName>合同书或者任务书</fieldName>
+			        <fieldId>orderId</fieldId>
+			        <fieldName>序号</fieldName>
+			        <dataType>Integer</dataType>
+			    </Field>
+				<Field>
+					<fieldId>name</fieldId>
+					<fieldName>专利名称</fieldName>
 					<dataType>String</dataType>
 					<precision>300</precision>
-			    </Field>
+				</Field>
+				<Field>
+					<fieldId>patentee</fieldId>
+					<fieldName>专利权人</fieldName>
+					<dataType>String</dataType>
+					<precision>50</precision>
+				</Field>
+				<Field>
+					<fieldId>inventorNames</fieldId>
+					<fieldName>发明人</fieldName>
+					<dataType>String</dataType>
+					<precision>50</precision>
+				</Field>
+				<Field>
+					<fieldId>typeId</fieldId>
+					<fieldName>专利类型</fieldName>
+					<dataType>String</dataType>
+					<categoryName>PATENT_TYPE</categoryName>
+					<precision>32</precision>
+				</Field>
+				<Field>
+					<fieldId>applyDate</fieldId>
+					<fieldName>申请日期</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field>
+					<fieldId>applyCode</fieldId>
+					<fieldName>申请号</fieldName>
+					<dataType>String</dataType>
+					<precision>50</precision>
+				</Field>
+				<Field>
+					<fieldId>lawStatus</fieldId>
+					<fieldName>法律状态</fieldName>
+					<dataType>String</dataType>
+					<categoryName>PATENT_STATE</categoryName>
+					<precision>32</precision>
+				</Field>
+				<Field>
+					<fieldId>authorizeDate</fieldId>
+					<fieldName>授权日期</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field>
+					<fieldId>patentCode</fieldId>
+					<fieldName>专利号</fieldName>
+					<dataType>String</dataType>
+					<precision>100</precision>
+				</Field>
+				<Field updateInsert="false">
+					<fieldId>personId</fieldId>
+					<fieldName>人员id</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
+				</Field>
+				<Field association="ManyToOne" ignoreImport="true">
+					<fieldId>person</fieldId>
+					<fieldName>人员</fieldName>
+					<dataType>Person</dataType>
+					<joinColumn>PERSON_ID</joinColumn>
+				</Field>
+			</Fields>
+		</MainModule>
+	</Module>
+	<Module ignore="false">
+		<MainModule>
+			<beanId>personCopyRight</beanId>
+			<moduleName>PersonCopyRight</moduleName>
+			<tableName>BIZ_PERSON_COPYRIGHT</tableName>
+			<moduleZHName>科研人员著作权</moduleZHName>
+			<packageName>com.eplugger.business.person</packageName>
+			<superClassMap>
+				<param key="entity" value="EntityImpl" />
+			</superClassMap>
+			<Fields>
 			    <Field>
-			        <fieldId>projectChangeFileIds</fieldId>
-			        <fieldName>重要事项变更申请表</fieldName>
+			        <fieldId>orderId</fieldId>
+			        <fieldName>序号</fieldName>
+			        <dataType>Integer</dataType>
+			    </Field>
+				<Field>
+					<fieldId>name</fieldId>
+					<fieldName>著作权名称</fieldName>
 					<dataType>String</dataType>
 					<precision>300</precision>
-			    </Field>
+				</Field>
+				<Field>
+					<fieldId>completionDate</fieldId>
+					<fieldName>开发完成日期</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field>
+					<fieldId>registerCode</fieldId>
+					<fieldName>登记号</fieldName>
+					<dataType>String</dataType>
+					<precision>100</precision>
+				</Field>
+				<Field>
+					<fieldId>ascriptionPerson</fieldId>
+					<fieldName>著作权人</fieldName>
+					<dataType>String</dataType>
+					<precision>50</precision>
+				</Field>
+				<Field updateInsert="false">
+					<fieldId>personId</fieldId>
+					<fieldName>人员id</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
+				</Field>
+				<Field association="ManyToOne" ignoreImport="true">
+					<fieldId>person</fieldId>
+					<fieldName>人员</fieldName>
+					<dataType>Person</dataType>
+					<joinColumn>PERSON_ID</joinColumn>
+				</Field>
+			</Fields>
+		</MainModule>
+	</Module>
+	<Module ignore="false">
+		<MainModule>
+			<beanId>personStandard</beanId>
+			<moduleName>PersonStandard</moduleName>
+			<tableName>BIZ_PERSON_STANDARD</tableName>
+			<moduleZHName>科研人员标准</moduleZHName>
+			<packageName>com.eplugger.business.person</packageName>
+			<superClassMap>
+				<param key="entity" value="EntityImpl" />
+			</superClassMap>
+			<Fields>
 			    <Field>
-			        <fieldId>projectAchievementsFileIds</fieldId>
-			        <fieldName>项目成果一览表</fieldName>
+			        <fieldId>orderId</fieldId>
+			        <fieldName>序号</fieldName>
+			        <dataType>Integer</dataType>
+			    </Field>
+				<Field>
+					<fieldId>name</fieldId>
+					<fieldName>标准名称</fieldName>
 					<dataType>String</dataType>
 					<precision>300</precision>
-			    </Field>
+				</Field>
+				<Field>
+					<fieldId>publicUnit</fieldId>
+					<fieldName>发布单位</fieldName>
+					<dataType>String</dataType>
+					<precision>100</precision>
+				</Field>
+				<Field>
+					<fieldId>implementationDate</fieldId>
+					<fieldName>实施日期</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field>
+					<fieldId>publicDate</fieldId>
+					<fieldName>发布日期</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field>
+					<fieldId>typeId</fieldId>
+					<fieldName>标准类别</fieldName>
+					<dataType>String</dataType>
+					<categoryName>STANDARD_TYPE</categoryName>
+					<precision>32</precision>
+				</Field>
+				<Field updateInsert="false">
+					<fieldId>personId</fieldId>
+					<fieldName>人员id</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
+				</Field>
+				<Field association="ManyToOne" ignoreImport="true">
+					<fieldId>person</fieldId>
+					<fieldName>人员</fieldName>
+					<dataType>Person</dataType>
+					<joinColumn>PERSON_ID</joinColumn>
+				</Field>
+			</Fields>
+		</MainModule>
+	</Module>
+	<Module ignore="false">
+		<MainModule>
+			<beanId>personHonor</beanId>
+			<moduleName>PersonHonor</moduleName>
+			<tableName>BIZ_PERSON_HONOR</tableName>
+			<moduleZHName>科研人员获奖</moduleZHName>
+			<packageName>com.eplugger.business.person</packageName>
+			<superClassMap>
+				<param key="entity" value="EntityImpl" />
+			</superClassMap>
+			<Fields>
 			    <Field>
-			        <fieldId>projectResearchReportFileIds</fieldId>
-			        <fieldName>项目研究报告</fieldName>
+			        <fieldId>orderId</fieldId>
+			        <fieldName>序号</fieldName>
+			        <dataType>Integer</dataType>
+			    </Field>
+				<Field>
+					<fieldId>name</fieldId>
+					<fieldName>奖励名称/成果名称</fieldName>
 					<dataType>String</dataType>
 					<precision>300</precision>
-			    </Field>
+				</Field>
+				<Field>
+					<fieldId>honorDate</fieldId>
+					<fieldName>获奖日期</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field>
+					<fieldId>honorGradeId</fieldId>
+					<fieldName>获奖等级</fieldName>
+					<dataType>String</dataType>
+					<categoryName>HONOR_GRADE</categoryName>
+					<precision>32</precision>
+				</Field>
+				<Field>
+					<fieldId>honorLevelId</fieldId>
+					<fieldName>获奖级别</fieldName>
+					<dataType>String</dataType>
+					<categoryName>HONOR_LEVEL</categoryName>
+					<precision>32</precision>
+				</Field>
+				<Field>
+					<fieldId>honorTypeId</fieldId>
+					<fieldName>奖励类别</fieldName>
+					<dataType>String</dataType>
+					<categoryName>HONOR_TYPE</categoryName>
+					<precision>32</precision>
+				</Field>
+				<Field>
+					<fieldId>completeUnit</fieldId>
+					<fieldName>所有完成单位</fieldName>
+					<dataType>String</dataType>
+					<precision>500</precision>
+				</Field>
+				<Field>
+					<fieldId>allAuthor</fieldId>
+					<fieldName>所有完成人</fieldName>
+					<dataType>String</dataType>
+					<precision>500</precision>
+				</Field>
+				<Field updateInsert="false">
+					<fieldId>personId</fieldId>
+					<fieldName>人员id</fieldName>
+					<dataType>String</dataType>
+					<precision>32</precision>
+				</Field>
+				<Field association="ManyToOne" ignoreImport="true">
+					<fieldId>person</fieldId>
+					<fieldName>人员</fieldName>
+					<dataType>Person</dataType>
+					<joinColumn>PERSON_ID</joinColumn>
+				</Field>
+			</Fields>
+		</MainModule>
+	</Module>
+	<Module ignore="false">
+		<MainModule>
+			<beanId>personLearningServ</beanId>
+			<moduleName>PersonLearningServ</moduleName>
+			<tableName>BIZ_PERSON_LEARNING_SERV</tableName>
+			<moduleZHName>科研人员学术任职</moduleZHName>
+			<packageName>com.eplugger.business.person</packageName>
+			<superClassMap>
+				<param key="entity" value="EntityImpl" />
+			</superClassMap>
+			<Fields>
 			    <Field>
-			        <fieldId>supportingMaterialsFileIds</fieldId>
-			        <fieldName>项目成果佐证材料</fieldName>
+			        <fieldId>orderId</fieldId>
+			        <fieldName>序号</fieldName>
+			        <dataType>Integer</dataType>
+			    </Field>
+				<Field>
+					<fieldId>name</fieldId>
+					<fieldName>姓名</fieldName>
+					<dataType>String</dataType>
+					<precision>50</precision>
+				</Field>
+				<Field>
+					<fieldId>organization</fieldId>
+					<fieldName>任职机构</fieldName>
+					<dataType>String</dataType>
+					<precision>100</precision>
+				</Field>
+				<Field>
+					<fieldId>servType</fieldId>
+					<fieldName>任职类型</fieldName>
+					<dataType>String</dataType>
+					<categoryName>SERV_TYPE</categoryName>
+					<precision>32</precision>
+				</Field>
+				<Field>
+					<fieldId>servPosition</fieldId>
+					<fieldName>任职职位</fieldName>
 					<dataType>String</dataType>
 					<precision>300</precision>
-			    </Field>
-			    <Field tranSient="true">
-			        <fieldId>name</fieldId>
-			        <fieldName>项目名称</fieldName>
+				</Field>
+				<Field>
+					<fieldId>beginDate</fieldId>
+					<fieldName>开始时间</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field>
+					<fieldId>endDate</fieldId>
+					<fieldName>结束时间</fieldName>
+					<dataType>Date</dataType>
+				</Field>
+				<Field updateInsert="false">
+					<fieldId>personId</fieldId>
+					<fieldName>人员id</fieldName>
 					<dataType>String</dataType>
-			    </Field>
-			    <Field tranSient="true">
-			        <fieldId>unitId</fieldId>
-			        <fieldName>所属部门</fieldName>
-					<dataType>String</dataType>
-			    </Field>
-			    <Field tranSient="true">
-			        <fieldId>chargerName</fieldId>
-			        <fieldName>负责人</fieldName>
-					<dataType>String</dataType>
-			    </Field>
-			    <Field tranSient="true">
-			        <fieldId>chargerCode</fieldId>
-			        <fieldName>负责人ID</fieldName>
-					<dataType>String</dataType>
-			    </Field>
+					<precision>32</precision>
+				</Field>
+				<Field association="ManyToOne" ignoreImport="true">
+					<fieldId>person</fieldId>
+					<fieldName>人员</fieldName>
+					<dataType>Person</dataType>
+					<joinColumn>PERSON_ID</joinColumn>
+				</Field>
 			</Fields>
 		</MainModule>
 	</Module>

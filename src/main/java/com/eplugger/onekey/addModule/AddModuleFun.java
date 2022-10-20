@@ -198,14 +198,17 @@ public class AddModuleFun {
 	}
 	
 	public static void AddMultipleModuleFun1(boolean authorSwitch, String template) throws Exception {
-		Module module = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidModule();
-		
-		ProduceJavaFactory.getInstance().produceJavaFiles(module, template);
-		
-		ProduceSqlFactory.getInstance().produceCreateTableSqlFiles(module.getMainModule(), module.getAuthorModule(), authorSwitch);
-		
-		ProduceXmlFiles.produceXmlFile(module.getMainModule().getPackageName(), module.getMainModule(), module.getAuthorModule(), authorSwitch, template);
-		
-		ProduceJspFiles.produceJspFiles(module.getMainModule(), template);
+		List<Module> validList = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidList();
+		for (Module module : validList) {
+			ProduceJavaFactory.getInstance().produceJavaFiles(module, template);
+
+			ProduceSqlFactory.getInstance().produceCreateTableSqlFiles(module.getMainModule(), module.getAuthorModule(), authorSwitch);
+
+			ProduceXmlFiles.produceXmlFile(module.getMainModule().getPackageName(), module.getMainModule(), module.getAuthorModule(), authorSwitch, template);
+
+			ProduceJspFiles.produceJspFiles(module.getMainModule(), template);
+
+		}
+//		Module module = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidModule();
 	}
 }

@@ -46,7 +46,6 @@ public class Modules {
 	
 	/**
 	 * 利用XmlParse进行xml解析
-	 * @param filePath
 	 * @return
 	 */
 	public Module getValidModule() {

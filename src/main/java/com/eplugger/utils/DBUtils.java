@@ -16,14 +16,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import cn.hutool.core.lang.Assert;
 import com.eplugger.common.lang.StringUtils;
+import com.eplugger.onekey.schoolInfo.entity.SchoolInfo;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DBUtils {
+	// 必须首先设置学校的信息
+	public static SchoolInfo schoolInfo;
 	// 利用线程保存conn连接，不用每次关闭
-	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<Connection>();
+	private static ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
 	private static String driver;
 	private static String url;
 	private static String user;
@@ -33,11 +37,16 @@ public class DBUtils {
 		return url;
 	}
 
-	static {
+	private static void initDBParam() {
+		if (driver != null) {
+			return;
+		}
+		Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
+		log.debug(schoolInfo.toString());
 		try {
 			Properties properties = new Properties();
-			//用的是磁盘符的绝对路径 
-			InputStream input = new BufferedInputStream(new FileInputStream("src/main/resource/jdbc.properties"));
+			//用的是磁盘符的绝对路径
+			InputStream input = new BufferedInputStream(new FileInputStream("src/main/resource/jdbc/" + DBUtils.getDatabaseName() + ".properties"));
 			properties.load(input);
 			driver = properties.getProperty("jdbc.driver");
 			url = properties.getProperty("jdbc.url");
@@ -58,6 +67,7 @@ public class DBUtils {
 		// 从线程获得数据库的连接
 		Connection conn = threadLocal.get();
 		if (conn == null) {
+			DBUtils.initDBParam();
 			try {
 				conn = DriverManager.getConnection(url, user, pwd);
 			} catch (SQLException e) {
@@ -185,7 +195,8 @@ public class DBUtils {
 	 * @return <code>true</code>:是sqlserver数据库；<code>false</code>:不是sqlserver数据库
 	 */
 	public static boolean isSqlServer() {
-		return StringUtils.containsIgnoreCase(url, "sqlserver");
+		Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
+		return StringUtils.equals(schoolInfo.dbType, "sqlserver");
 	}
 
 	/**
@@ -193,7 +204,8 @@ public class DBUtils {
 	 * @return <code>true</code>:是MySql数据库；<code>false</code>:不是MySql数据库
 	 */
 	public static boolean isMySql() {
-		return StringUtils.containsIgnoreCase(url, "mysql");
+		Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
+		return StringUtils.equals(schoolInfo.dbType, "mysql");
 	}
 
 	/**
@@ -201,7 +213,8 @@ public class DBUtils {
 	 * @return <code>true</code>:是Oracle数据库；<code>false</code>:不是Oracle数据库
 	 */
 	public static boolean isOracle() {
-		return StringUtils.containsIgnoreCase(url, "oracle");
+		Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
+		return StringUtils.equals(schoolInfo.dbType, "oracle");
 	}
 	
 	/**
@@ -210,12 +223,8 @@ public class DBUtils {
 	 * @return
 	 */
 	public static String getDatabaseName() {
-		if (isSqlServer()) {
-			return url.substring(url.indexOf("=") + 1);
-		} else if (isOracle()) {
-			return user;
-		}
-		return "";
+		Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
+		return schoolInfo.dbName;
 	}
 
 	/**
@@ -223,17 +232,7 @@ public class DBUtils {
 	 * @return
 	 */
 	public static String getEadpDataType() {
-		String databaseName = DBUtils.getDatabaseName();
-		Pattern pattern = Pattern.compile("[\\d]+[A-Z]?$");
-		Matcher matcher = pattern.matcher(databaseName);
-		String group = null;
-		if (matcher.find()) {
-			group = matcher.group();
-		}
-		if (group != null && group.indexOf("HIS") != -1) {
-			return "V3.1.0";
-		} else {
-			return "V" + group.substring(0, 1) + "." + group.substring(1, 2) + "." + group.substring(2, 3);
-		}
+		Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
+		return schoolInfo.version;
 	}
 }

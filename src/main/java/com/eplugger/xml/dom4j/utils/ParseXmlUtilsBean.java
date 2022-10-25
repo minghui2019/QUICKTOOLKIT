@@ -2,17 +2,18 @@ package com.eplugger.xml.dom4j.utils;
 
 import java.util.Map;
 
-import org.dom4j.Document;
-
 import com.eplugger.onekey.entity.Fields;
 import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.onekey.entity.Modules;
+import com.eplugger.onekey.viewFile.entity.ModuleViews;
 import com.eplugger.trans.entity.SimpleFields;
 import com.eplugger.xml.dom4j.utils.parsers.FieldParser;
 import com.eplugger.xml.dom4j.utils.parsers.ModuleParser;
 import com.eplugger.xml.dom4j.utils.parsers.ModuleTableParser;
+import com.eplugger.xml.dom4j.utils.parsers.ModuleViewParser;
 import com.eplugger.xml.dom4j.utils.parsers.SimpleFieldParser;
 import com.google.common.collect.Maps;
+import org.dom4j.Document;
 
 /**
  * 新导出的Parser需要手动注册于{@link #register(Class, ParserXml)}
@@ -32,7 +33,7 @@ public class ParseXmlUtilsBean {
 	}
 	
 	/**
-	 * 调用{@link com.eplugger.xml.dom4j.utils.ParserXml#toBean(Class, ParserXml) Parser.toBean}进行解析
+	 * 调用{@link com.eplugger.xml.dom4j.utils.ParserXml#toBean(Class, String) Parser.toBean}进行解析
 	 * @param path
 	 * @param clazz
 	 * @return
@@ -47,7 +48,7 @@ public class ParseXmlUtilsBean {
 	}
 	
 	/**
-	 * 调用{@link com.eplugger.xml.dom4j.utils.ParserXml#fromBean(T, ParserXml) Parser.fromBean}进行解析
+	 * 调用{@link com.eplugger.xml.dom4j.utils.ParserXml#fromBean(Object, String, boolean) Parser.fromBean}进行解析
 	 * @param outPath
 	 * @param data
 	 * @return
@@ -75,6 +76,7 @@ public class ParseXmlUtilsBean {
 		register(Fields.class, new FieldParser());
 		register(SimpleFields.class, new SimpleFieldParser());
 		register(Modules.class, new ModuleParser());
+		register(ModuleViews.class, new ModuleViewParser());
 	}
 	
 	private void register(Class<?> clazz, ParserXml<?> parser) {

@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Strings;
-
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -490,25 +489,30 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 		if (Strings.isNullOrEmpty(chinese)) {
 			return null;
 		}
+        chinese = chinese.replaceAll("\\(.*\\)", "").replaceAll("（.*）", "");
 		StringBuffer pybf = new StringBuffer();
 		char[] arr = chinese.toCharArray();
 		HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
 		defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
 		defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-		for (char c : arr) {
-			if (c > 128) {
-				try {
-					String[] temp = PinyinHelper.toHanyuPinyinStringArray(c, defaultFormat);
-					if (temp != null) {
-						pybf.append(temp[0].charAt(0));
-					}
-				} catch (BadHanyuPinyinOutputFormatCombination e) {
-					log.error(e.getMessage() + ": 汉字转换错误[" + c + "]");
-				}
-			} else {
-				pybf.append(c);
-			}
-		}
+		try {
+            for (char c : arr) {
+                if (c > 128) {
+                    try {
+                        String[] temp = PinyinHelper.toHanyuPinyinStringArray(c, defaultFormat);
+                        if (temp != null) {
+                            pybf.append(temp[0].charAt(0));
+                        }
+                    } catch (BadHanyuPinyinOutputFormatCombination e) {
+                        log.error(e.getMessage() + ": 汉字转换错误[" + c + "]");
+                    }
+                } else {
+                    pybf.append(c);
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            log.error(e.getMessage() + ": 汉字转换错误[" + chinese + "]");
+        }
 		return pybf.toString().replaceAll("\\W", "").trim(); //替换掉非单词字符(^A-Za-z0-9_)
 	}
 

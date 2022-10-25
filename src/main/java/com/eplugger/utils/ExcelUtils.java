@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.eplugger.common.io.FileUtils;
+import com.monitorjbl.xlsx.StreamingReader;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -13,9 +16,9 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.eplugger.common.io.FileUtils;
-import com.monitorjbl.xlsx.StreamingReader;
+import static com.google.common.base.Preconditions.checkNotNull;
 
+@Slf4j
 public class ExcelUtils {
 	private static final String EXCEL_XLS = "xls";
 	private static final String EXCEL_XLSX = "xlsx";
@@ -82,6 +85,23 @@ public class ExcelUtils {
 		}
 		return null;
 	}
+
+	/**
+	 * 创建新的sheet对象（excel的工作表）
+	 * @param wb
+	 * @param sheetname
+	 * @param widths
+	 * @return
+	 */
+	public static HSSFSheet createSheet(HSSFWorkbook wb, String sheetname, int[] widths) {
+		checkNotNull(wb);
+		// 建立新的sheet对象（excel的表单）
+		HSSFSheet sheet = wb.createSheet(sheetname);
+		for (int i = 0; i < widths.length; i++) {
+			sheet.setColumnWidth(i, widths[i]);
+		}
+		return sheet;
+	}
 	
 	/**
 	 * 填充一行单元格
@@ -118,8 +138,8 @@ public class ExcelUtils {
 			wb.write(output); // 写入磁盘
 			output.flush();
 			output.close();
-			System.out.println("EXCEL文件 " + fileName + " 生成成功");
-			System.out.println("由于实体类属性命名不规则，带星号的别名必须核对清楚！");
+			log.debug("EXCEL文件 " + fileName + " 生成成功");
+			log.debug("由于实体类属性命名不规则，带星号的别名必须核对清楚！");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

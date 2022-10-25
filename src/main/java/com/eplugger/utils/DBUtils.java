@@ -83,33 +83,35 @@ public class DBUtils {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement(sql);
+			ps = new LoggableStatement(conn, sql);
+			log.debug("Executing SQL: " + ((LoggableStatement) ps).getQueryString());
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				map.put(rs.getString(1), rs.getString(2));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.debug("Executing SQL: " + sql + "执行失败！");
 		} finally {
 			closeAll(conn, ps, rs);
 		}
 		return map;
 	}
-	
-	public static Map<String, String> getEntryNameBySql(String sql){
+
+	public static Map<String, String> getEntryNameBySql(String sql) {
 		Map<String, String> map = new HashMap<String, String>();
 		Connection conn = getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement(sql);
+			ps = new LoggableStatement(conn, sql);
+			log.debug("Executing SQL: " + ((LoggableStatement) ps).getQueryString());
 			rs = ps.executeQuery();
 			ResultSetMetaData data = rs.getMetaData();
 			for (int i = 1; i <= data.getColumnCount(); i++) {
 				map.put(OtherUtils.deleteTextDecoration(data.getColumnName(i)).toUpperCase(), data.getColumnName(i).toUpperCase());
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.debug("Executing SQL: " + sql + "执行失败！");
 		} finally {
 			closeAll(conn, ps, rs);
 		}
@@ -122,13 +124,14 @@ public class DBUtils {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement(sql);
+			ps = new LoggableStatement(conn, sql);
+			log.debug("Executing SQL: " + ((LoggableStatement) ps).getQueryString());
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				list.add(new String[]{rs.getString(1), rs.getString(2), rs.getString(3)});
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.debug("Executing SQL: " + sql + "执行失败！");
 		} finally {
 			closeAll(conn, ps, rs);
 		}
@@ -141,14 +144,15 @@ public class DBUtils {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement(sql);
+			ps = new LoggableStatement(conn, sql);
+			log.debug("Executing SQL: " + ((LoggableStatement) ps).getQueryString());
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				strs[0] = rs.getString(1);
 				strs[1] = rs.getString(2);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.debug("Executing SQL: " + sql + "执行失败！");
 		} finally {
 			closeAll(conn, ps, rs);
 		}
@@ -177,13 +181,14 @@ public class DBUtils {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-			ps = conn.prepareStatement(sql);
+			ps = new LoggableStatement(conn, sql);
+			log.debug("Executing SQL: " + ((LoggableStatement) ps).getQueryString());
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				result = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			log.debug("Executing SQL: " + sql + "执行失败！");
 		} finally {
 			closeAll(conn, ps, rs);
 		}

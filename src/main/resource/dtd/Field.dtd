@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT Fields (Field+)>
-<!ELEMENT Field (fieldId, fieldName, dataType, categoryName?, precision?, joinColumn?, AppendSearch?)>
-<!ATTLIST Field 
-		association (OneToMany|ManyToOne) #IMPLIED 
-		onlyMeta (true|false) "false" 
+<!ELEMENT Field (fieldId, fieldName, dataType, categoryName?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
+<!ATTLIST Field
+		association (OneToMany|ManyToOne) #IMPLIED
+		onlyMeta (true|false) "false"
 		ignoreImport (true|false) "false"
 		updateInsert (true|false) "true"
 		tranSient (true|false) "true">
@@ -15,9 +15,12 @@
 <!ELEMENT joinColumn (#PCDATA)>
 <!ELEMENT AppendSearch (value)>
 <!ELEMENT value (#PCDATA)>
-<!ATTLIST AppendSearch 
-		relativeField CDATA #REQUIRED 
-		relativeThisProperty CDATA "id" 
-		searchValLabel (val) #IMPLIED 
-		mergeMultiVals (true|false) "false" 
+<!ATTLIST AppendSearch
+		relativeField CDATA #REQUIRED
+		relativeThisProperty CDATA "id"
+		searchValLabel (val) #IMPLIED
+		mergeMultiVals (true|false) "false"
 		symbol CDATA ",">
+<!ELEMENT genericity (#PCDATA)>
+<!ELEMENT orderBy (#PCDATA)>
+<!ELEMENT fetch (#PCDATA)>

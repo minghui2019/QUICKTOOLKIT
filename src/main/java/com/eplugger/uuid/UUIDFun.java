@@ -2,7 +2,6 @@ package com.eplugger.uuid;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -21,9 +20,11 @@ public class UUIDFun {
 	private static class UUIDFunSingleton {
 		private static UUIDFun instance = new UUIDFun();
 	}
+	
 	private UUIDFun() {
 		initUuids();
 	}
+	
 	/**
 	 * 单例模式对外提供访问唯一实例的入口
 	 * @return
@@ -102,20 +103,6 @@ public class UUIDFun {
 		}
 		return null;
 	}
-	
-
-	public static void main(String[] args) throws Exception {
-		System.out.println(Arrays.toString(UUIDFun.getInstance().randomUUID(1)));
-	}
-	
-//	private void consumeUuids() throws IOException {
-//		Stack<String> uuids2 = getUuids(5);
-//		for (int i = 0; i < 5; i++) {
-//			System.out.println(uuids2.pop());
-//		}
-//		
-//		destroyUuids(uuids2);
-//	}
 	
 	/**
 	 * 把堆栈中剩余uuid放回变量uuids中，接着备份并销毁uuids变量

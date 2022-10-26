@@ -75,6 +75,12 @@ public class TextTrans {
 		return dests;
 	}
 
+	/**
+	 * 字段翻译并生成常规的Field.xml文件方法
+	 * @param src 待翻译中文，全角顿号（、）隔开
+	 * @param moduleTableList {@link com.eplugger.onekey.entity.ModuleTable ModuleTable}列表
+	 * @throws Exception
+	 */
 	public static void createFieldXml(String src, List<ModuleTable> moduleTableList) throws Exception {
 		if (moduleTableList == null || moduleTableList.isEmpty()) {
 			return;

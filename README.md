@@ -1,147 +1,217 @@
-# XML - Util
-简单封装 [`Apache dom4j(1.6.1)`](http://www.dom4j.org/dom4j-1.6.1/ "官方网站"), 封装后将使用面向对象的思维读写 XML 文件</br>.
+## 模块加字段过程
+### 1. 利用com.eplugger.onekey.addField.AddFieldMain.testCreateFieldXml()，提供字段翻译并生成XML文件方法，或者手动编辑Field.xml文件
+### 2. 执行com.eplugger.onekey.addField.AddFieldMain.testCreateSqlAndJavaFile()，生成sql文件和java文件
+### 3. 然后把java文件的代码复制到相应类，sql文件检查无误后直接执行即可。
+### 4. 最后配置场景
 
-# 版本
+### 代码示例
+#### 
+```java
+/**
+ * <pre>
+ * 创建字段数据XML
+ * 文件位置：src/main/resource/field/Field.xml
+ * @throws Exception
+ */
+@Test
+public void testCreateFieldXml() throws Exception {
+    TextTrans.createFieldXml("", list);
+}
 
-* Version 1.3
-    1. 新增字段解析器接口 `SimpleValueParser`
-    2. 新增`实体类`转化为`XMLObject`接口`XMLObject.of(T)`
-    3. 实体类导出XML文件示例:  
-    ```java
-      // 数据对象必须使用 @XmlTag 注解,
-      // 并且只导出 @XmlField 注解的字段.
-      // 注意: 自定义复杂属性也要遵循此规则
-      Object data = ...;
-      XMLObject root = XMLObject.of(data);
-  
-      // 目标节点必须是根节点
-      root.setRootElement(true);
-  
-      // true-紧凑排版, false-缩进排版
-      boolean compact = true;
-      XMLParser.transfer(root, new File("outFilePath.xml"), compact);
-    ```
+/**
+ * 字段翻译并生成常规的Field.xml文件方法
+ * @param src 待翻译中文，全角顿号（、）隔开
+ * @param moduleTableList {@link com.eplugger.onekey.entity.ModuleTable ModuleTable}列表
+ * @throws Exception
+ */
+public static void createFieldXml(String src, List<ModuleTable> moduleTableList) throws Exception {}
+```
 
-* Version 1.2
-    1. 新增实体类注解`@XmlTag`  
-       `@XmlTag`注解的实体类可以通过`XMLObject.toBean()`映射到实体类
-    2. 新增实体类字段注解`@XmlField`  
-       `@XmlField`注解的字段可以通过`XMLObject.toBean()`映射, 同时该注解具备子孙标签查询功能.
-    3. 新增转换接口`XMLObject.toBean(java.lang.Class)`
-       把当前`XML`节点映射到参数指定的实体类中, 实体类必须使用`@XmlTag`注解, 目标字段必须使用`@XmlField`注解.
-       组合自定义属性类也需要满足相同规则.
-    4. 新增转换接口`XMLObject.toBeans(java.lang.String, java.lang.Class)`
-       在当前节点中查找`子节点`并映射到`实体类`, 实体类规则同 `#toBean(java.lang.Class)`
-    5. 构造解析器`XMLParser`支持指定文件编码
-    6. 注解示例
-        ```java
-        // @XmlTag 建立TourAction和XMLObject映射关系 
-        @XmlTag
-        public class TourAction {
-        
-            @XmlField
-            // @XmlField(name = "mountDvsType", type = FieldType.ATTRIBUTE)
-            // 以上两种注解方式完全一致
-            private int mountDvsType;
-        
-            @XmlField
-            private String actionName;
-        
-            @XmlField
-            private int detectedDvsType;
-        
-            /*
-             * <TourAction mountDvsType="1" actionName="默认动作名称" detectedDvsType="0">
-             *     <SensorInfo time="1599058642"/>
-             * </TourAction>
-             * 通过 path&name 读取子孙节点属性(或标签体)的值
-             * path + name => TourAction.SensorInfo[time]
-             */
-            @XmlField(name = "time", type = FieldType.ATTRIBUTE, path = "SensorInfo")
-            private long sensorInfoTime;
-        
-            /*
-             * <SnapshotPosition arm1="0" arm2="90" arm3="0" arm4="0" arm5="0" arm6="0" zoom="1" thermal="1">
-             *     <SnapshotSample image="仪表_20200902_145725.jpg" analysis="" time="1599058645"/>
-             * </SnapshotPosition>
-             * 指明 snapshotPosition 数据来源是直接子标签, 具体映射方案由 SnapshotPosition 类的 @XmlTag & @XmlField 决定
-             */
-            @XmlField(type = FieldType.TAG)
-            private SnapshotPosition snapshotPosition;
-        }
-        ```
+```java
+/**
+ * <pre>
+ * 根据Field.xml生成加字段需要的java代码和sql语句
+ * @throws Exception
+ */
+@Test
+public void testCreateSqlAndJavaFile() throws Exception {
+    AddFieldFun.createSqlAndJavaFile();
+}
+```
 
-    版本测试详情查看`XMLParserTest3`.   
-    下期更新计划:
-    1. 调用者支持自定义字符串转`Class<T>`任意类型接口.   
-       当前仅支持: JSONString->String, JSONString->JSONObject->Any  
+```java
+/**
+ * <pre>
+ * 创建字典SQL
+ * version：eadp版本，"V8.5.3"; "V8.5.2"; "V8.5.0"; "V8.3.0"; "V3.1.0"...
+ * keyArray：字典代码数组
+ * valueArray：字典值数组
+ * @throws Exception
+ */
+@Test
+public void testCreateCategorySqlFile() throws Exception {
+    String categoryName = "PROJECT_PROPERTIES"; //常量名
+    String bizName = "项目属性"; //业务名称
+    String bizType = AddCategoryEntry.BIZ_TYPE[1]; //业务类型
+    // 字典代码
+    String[] keyArray = "1,2,3,4,5,6,7,8".split(",");
+    // 字典值
+    String[] valueArray = "独立纵向项目、主持的纵向合作项目、参与的纵向合作项目、学会项目、科研平台、子课题、开放课题、其他".split("、");
+    AddCategoryEntry.createCategorySqlFile(categoryName, bizName, bizType, "V8.5.3", keyArray, valueArray);
+}
+```
+### `Field.xml`示例
+#### 常规的String
+```xml
+<Field>
+    <fieldId></fieldId>
+    <fieldName></fieldName>
+    <dataType>String</dataType>
+    <precision></precision>
+</Field>
+```
+#### 带字典的String
+```xml
+<Field>
+    <fieldId></fieldId>
+    <fieldName></fieldName>
+    <dataType>String</dataType>
+    <categoryName></categoryName>
+    <precision>32</precision>
+</Field>
+```
+#### 常规的Double, Integer, java.sql.Date...
+```xml
+<Field>
+    <fieldId></fieldId>
+    <fieldName></fieldName>
+    <dataType>Double</dataType>
+</Field>
+```
+#### 虚拟字段
+```xml
+<Field tranSient="true">
+    <fieldId></fieldId>
+    <fieldName></fieldName>
+    <dataType>String</dataType>
+</Field>
+```
+#### 带AppendSearch的虚拟字段
+```xml
+<Field tranSient="true">
+    <fieldId></fieldId>
+    <fieldName></fieldName>
+    <dataType></dataType>
+    <AppendSearch relativeField="**ID">
+        <value>SELECT...</value>
+    </AppendSearch>
+</Field>
+```
+#### 其他属性解释
+##### onlyMeta，默认false，仅生成系统元数据sql
+```xml
+<Field onlyMeta="true">
+    <fieldId></fieldId>
+    <fieldName></fieldName>
+    <dataType></dataType>
+    <precision></precision>
+</Field>
+```
+##### 一对多属性
+```xml
+<Field association="OneToMany">
+    <fieldId></fieldId>
+    <fieldName></fieldName>
+    <dataType>List</dataType>
+    <joinColumn>关联列</joinColumn>
+    <genericity>泛型类</genericity>
+    <orderBy>可选</orderBy>
+</Field>
+```
+##### 多对一属性，updateInsert="true" -> @Column(updatable=false, insertable=false)
+```xml
+<Field association="ManyToOne" updateInsert="true">
+    <fieldId></fieldId>
+    <fieldName></fieldName>
+    <dataType></dataType>
+    <joinColumn>关联列</joinColumn>
+</Field>
+```
+**注意：**
 
+\@Column(updatable=false, insertable=false)加在关联列上，维护关联关系是需要维护关联对象属性
 
-* Version 1.1  
-  * 使用`XMLParser`创建新节点<br/>
-  ```Java
-  // XMLObject XMLParser.createNode(String tagName, String content, Map<String, String> attrs)
-  XMLObject newNode = XMLParser.createNode(tagName, content, attrs);
-  ```
-  * 将新创建的节点插入到现有结构中
-    * 添加到指定节点`内部`
-      * 插入到指定节点内部第一个子节点的位置, 已存在的节点将依次向后移动<br/>
-      ```Java
-      // boolean XMLObject.insertBefore(XMLObject parentNode)
-      boolean success = newNode.insertBefore(targetParentNode);
-      ```
-      * 插入到指定节点内部最后一个子节点的位置<br/>
-      ```Java
-      // boolean XMLObject.insertAfter(XMLObject parentNode)
-      boolean success = newNode.insertAfter(targetParentNode);
-      ```
-    * 添加到指定节点`外部`
-      * 追加到标记节点之前
-      ```Java
-      // boolean XMLObject.appendBefore(XMLObject markerNode, boolean sameLevel)  
-      // markerNode必须与newNode是同名节点(推荐)  
-      boolean success = newNode.appendBefore(markerNode, true);  
-      // markerNode可以是任意节点    
-      boolean success = newNode.appendBefore(markerNode, false);  
-      ```
-      * 追加到标记节点之后
-      ```Java
-      // boolean XMLObject.appendAfter(XMLObject markerNode, boolean sameLevel)  
-      // markerNode必须与newNode是同名节点(推荐)  
-      boolean success = newNode.appendBefore(markerNode, true);  
-      // markerNode可以是任意节点  
-      boolean success = newNode.appendBefore(markerNode, false);  
-      ```
-  
-  * 导出`XML`文件
-  ```Java
-	// boolean XMLParser.transferRoot(XMLObject root, File outputFile, boolean compact) throws IOException
-	// 导出缩进排版的文件
-	String path = XMLParserTest2.class.getResource("/").getPath() + "xml-transfer2-retract.xml";
-	boolean success = xmlParser.transferRoot(root, new File(path), false);
-	
-	// 导出紧凑格排版的文件
-	path = XMLParserTest2.class.getResource("/").getPath() + "xml-test-transfer2-compact.xml";
-	success = xmlParser.transferRoot(root, new File(path), true);
-  ```
-* Version1.0   
-  实现最基本的`XML`读取操作
+\@Column(updatable=false, insertable=false)加在关联对象上，维护关联关系是需要维护关联列属性
 
-# 基础解析XML
-* 获取`XMLParser`对象
-  * 获取`.xml`文件的绝对路径<br/>
-  ```Java
-  // 这里以`XMLParserTest`为例
-  String xmlPath = XMLParserTest.class.getResource("/xml-test-2.xml").getFile();
-  ```
-  * 获取`XMLParser`对象. 一个`XMLParser`对象即代表一份被解析的`.xml`文件<br>
-  ```Java
-  XMLParser xmlParser = new XMLParser(xmlPath);
-  ```
-* 读取`节点`内容
-  * 解析`.xml`文件, 获取`XMLObject`对象
-  ```Java
-  XMLObject root = xmlParser.parse();
-  ```
-  * 操作`XMLObject`实例对象来读取文件中的内容<br/>
-  使用`XMLObject`实例对象可以获取`标签名`, `属性列表`, `子标签实例`, 等等...(API 详情请在`/doc/index.html`中查阅)
+## 系统加模块
+### 这部分适配性比较差
+### 1. 编辑src/main/resource/module/Module.xml文件
+
+示例：
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Modules SYSTEM '../dtd/Module.dtd'>
+<Modules>
+    <Module ignore="false">
+        <MainModule>
+            <beanId>paper</beanId>
+            <moduleName>Paper</moduleName>
+            <tableName>BIZ_PAPER</tableName>
+            <moduleZHName>论文</moduleZHName>
+            <packageName>com.eplugger.business.paper</packageName>
+            <superClassMap>
+                <param key="entity" value="CheckBusinessEntity" />
+                <param key="bo" value="CheckBusinessBO" />
+                <param key="action" value="CheckBusinessAction" />
+            </superClassMap>
+            <Fields>
+                <Field>
+                    <fieldId>name</fieldId>
+                    <fieldName>论文题目</fieldName>
+                    <dataType>String</dataType>
+                    <precision>300</precision>
+                </Field>
+                <Field association="OneToMany">
+                    <fieldId>authors</fieldId>
+                    <fieldName>论文作者</fieldName>
+                    <dataType>List</dataType>
+                    <joinColumn>PAPER_ID</joinColumn>
+                    <genericity>PaperAuthor</genericity>
+                    <orderBy>orderId asc</orderBy><!-- 可选 -->
+                </Field>
+            </Fields>
+        </MainModule>
+        <AuthorModule>
+            <beanId>paperAuthor</beanId>
+            <moduleName>PaperAuthor</moduleName>
+            <tableName>BIZ_PAPER_AUTHOR</tableName>
+            <moduleZHName>论文作者</moduleZHName>
+            <packageName>com.eplugger.business.paper</packageName>
+            <superClassMap>
+                <param key="entity" value="ProductAuthor" />
+            </superClassMap>
+            <Fields>
+                <Field>
+                    <fieldId>paperId</fieldId>
+                    <fieldName>论文ID</fieldName>
+                    <dataType>String</dataType>
+                    <precision>32</precision>
+                </Field>
+                <Field association="ManyToOne" ignoreImport="true">
+                    <fieldId>paper</fieldId>
+                    <fieldName>论文</fieldName>
+                    <dataType>Paper</dataType>
+                    <joinColumn>PAPER_ID</joinColumn>
+                </Field>
+            </Fields>
+        </AuthorModule>
+    </Module>
+</Modules>
+```
+
+### 2. 代码入口，com.eplugger.onekey.addModule.AddModuleMain.testAddMultiModuleFun1()
+
+## 数据共享视图sql
+### 1. 修改
+### 2. 生成模块字段对照Excel表格，com.eplugger.onekey.viewFile.AutoViewFile.generationTabelExcel()
+### 3. 自动生成视图语句文件，com.eplugger.onekey.viewFile.AutoViewFile.generationViewSql()

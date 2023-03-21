@@ -139,9 +139,9 @@ public void testCreateCategorySqlFile() throws Exception {
 ```
 **注意：**
 
-\@Column(updatable=false, insertable=false)加在关联列上，维护关联关系是需要维护关联对象属性
+@Column(updatable=false, insertable=false)加在关联列上，维护关联关系是需要维护关联对象属性
 
-\@Column(updatable=false, insertable=false)加在关联对象上，维护关联关系是需要维护关联列属性
+@Column(updatable=false, insertable=false)加在关联对象上，维护关联关系是需要维护关联列属性
 
 ## 系统加模块
 ### 这部分适配性比较差

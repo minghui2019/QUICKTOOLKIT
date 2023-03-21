@@ -2,9 +2,12 @@ package com.eplugger.trans;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
+import com.google.gson.JsonObject;
 import org.dom4j.Document;
 
 import com.eplugger.common.lang.StringUtils;
@@ -41,7 +44,7 @@ public class TextTrans {
 		String[] dsts = dst.split(",");
 		String[] result = transText2En(dsts);
 		log.debug(Arrays.toString(result));
-		src = src.replaceAll("；", "、");
+		src = src.replaceAll("；", "、").replaceAll("，", "、");
 		String[] srcs = src.split("、");
 		SimpleFields fields = TextTrans.bulidFields(srcs, result);
 		
@@ -75,6 +78,10 @@ public class TextTrans {
 		return dests;
 	}
 
+	public static void createFieldXml(String src, ModuleTable... moduleTables) throws Exception {
+		createFieldXml(src, Lists.newArrayList(moduleTables));
+	}
+
 	/**
 	 * 字段翻译并生成常规的Field.xml文件方法
 	 * @param src 待翻译中文，全角顿号（、）隔开
@@ -106,5 +113,27 @@ public class TextTrans {
 		}
 		ParseXmlUtils.fromBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, moduleTables, true);
 		createFieldXml(src);
+	}
+
+	public static void hasModuleTables(ModuleTable... moduleTables) throws Exception {
+		hasModuleTables(Lists.newArrayList(moduleTables));
+	}
+
+	public static void hasModuleTables(List<ModuleTable> moduleTableList) throws Exception {
+		if (moduleTableList == null || moduleTableList.isEmpty()) {
+			return;
+		}
+		Set<String> set = moduleTableList.stream().map(ModuleTable::getModuleName).collect(Collectors.toSet());
+		ModuleTables moduleTables = ParseXmlUtils.toBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
+		Map<String, String> moduleTableMap = moduleTables.getModuleTableMap();
+		JsonObject jsonObject = new JsonObject();
+		for (String key : set) {
+			if (moduleTableMap.containsKey(key)) {
+				jsonObject.addProperty(key, true);
+			} else {
+				jsonObject.addProperty(key, false);
+			}
+		}
+		log.debug("模块检查信息如下\n" + jsonObject.toString());
 	}
 }

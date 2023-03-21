@@ -28,7 +28,7 @@ public class AutoViewFileFun {
     public static Map<String, String> tableList = Maps.newLinkedHashMap(); // key:表名,value:视图名
     public static Map<String, ModuleView> moduleViewMap = Maps.newHashMap(); // key:表名,value:视图名
     private static String filePath = FileUtils.getUserHomeDirectory() + "视图";
-    private static String xlsName = "共享视图.xlsx";
+    private static String xlsName = "共享视图.xls";
 
     private static void initModuleViewMap() {
         if (moduleViewMap != null && !moduleViewMap.isEmpty()) {
@@ -48,6 +48,15 @@ public class AutoViewFileFun {
             Sheet sheet = workbook.getSheetAt(i); // 遍历拿每一个sheet
             String tableName = sheet.getSheetName(); // 表名
             ModuleView moduleView = moduleViewMap.get(tableName);
+            if (moduleView == null) {
+                for (String key : moduleViewMap.keySet()) {
+                    ModuleView view = moduleViewMap.get(key);
+                    if (tableName.equals(view.getSheetName())) {
+                        moduleView = view;
+                        break;
+                    }
+                }
+            }
             String viewName = moduleView.getViewName(); // 视图名
             List<ViewRow> viewRows = Lists.newArrayList();
             for (Row row : sheet) {
@@ -122,7 +131,7 @@ public class AutoViewFileFun {
     /**
      * 根据所有表名生成对应Excel
      */
-    public static void generationTabelExcel() {
+    public static void generationTableExcel() {
         initModuleViewMap();
         // 创建HSSFWorkbook对象(excel的工作簿)
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -171,8 +180,9 @@ public class AutoViewFileFun {
             String sqlToMeaning = "select NAME,MEANING from SYS_ENTITY_META where BEANID='" + beanId + "'";
             Map<String, String> meaningMap = DBUtils.getMeaningBySql(sqlToMeaning); // 存放表中注释
 
+            String sheetName = entry.getValue().getSheetName();
             // 建立新的sheet对象（excel的工作表）
-            HSSFSheet sheet = ExcelUtils.createSheet(wb, entry.getKey(), new int[]{8000, 3000, 2000, 6000, 10000, 5000});
+            HSSFSheet sheet = ExcelUtils.createSheet(wb, sheetName, new int[]{8000, 3000, 2000, 6000, 10000, 5000});
             // 在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
             // 添加表头
             ExcelUtils.setCellValues(sheet, 0, 6, new String[]{"列名", "别名", "是否为空值", "自定义字典", "关联表名及查询值", "注释"});

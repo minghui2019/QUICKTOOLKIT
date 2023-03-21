@@ -1,9 +1,9 @@
 package com.eplugger.guava;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
-import org.junit.Test;
-
+import cn.hutool.core.date.DateUtil;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -14,10 +14,13 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 /**
  * Guava API使用教程
  */
+@Slf4j
 public class GuavaTest {
 
     /**
@@ -48,23 +51,6 @@ public class GuavaTest {
         mapM.put("test", 1);
         mapM.put("test", 2);
         System.out.println(mapM.get("test"));
-
-    }
-
-    /**
-     * <pre>
-     * Guava 字符串连接器Joiner
-     * 输出：嗨，jim|jack|kevin
-     * </pre>
-     */
-    @Test
-    public void testGuavaJoiner() {
-        StringBuilder stringBuilder = new StringBuilder("嗨，");
-        // 字符串连接器，以|为分隔符，同时去掉null元素
-        Joiner joiner1 = Joiner.on("|").skipNulls();
-        // 构成一个字符串jim|jack|kevin并添加到stringBuilder
-        stringBuilder = joiner1.appendTo(stringBuilder, "jim", "jack", null, "kevin");
-        System.out.println(stringBuilder);
     }
     
     /**
@@ -166,5 +152,16 @@ public class GuavaTest {
         String number = CharMatcher.javaDigit().retainFrom(letterAndNumber);
         // 123456789
         System.out.println(number);
+    }
+
+    @Test
+    public void testCharMatcher1() {
+        // 空白回车换行对应换成一个#，一对一换
+        String str = "2021 1P    32";
+        Pattern r = Pattern.compile("([\\d]{4})([\\s1][\\d])P.*");
+        String s = r.matcher(str).replaceAll("$1-$2-01");
+        s = CharMatcher.whitespace().replaceFrom(s, "0");
+        log.debug(s);
+        log.debug(DateUtil.parse(s).toSqlDate().toString());
     }
 }

@@ -2,7 +2,6 @@
 <!DOCTYPE ModuleTables SYSTEM "../dtd/ModuleTable.dtd">
 
 <ModuleTables>
-    <!-- 项目 -->
     <ModuleTable ignore="true">
         <moduleName>zXProject</moduleName>
         <tableName>BIZ_ZX_PROJECT</tableName>
@@ -84,7 +83,7 @@
         <described>项目申报材料</described>
     </ModuleTable>
     <ModuleTable ignore="true">
-        <moduleName>xjProject</moduleName>
+        <moduleName>xJProject</moduleName>
         <tableName>BIZ_XJ_PROJECT</tableName>
         <described>校级项目</described>
     </ModuleTable>
@@ -118,7 +117,6 @@
         <tableName>BIZ_PROJECT_COMPLETE</tableName>
         <described>项目结题</described>
     </ModuleTable>
-    <!-- 成果 -->
     <ModuleTable ignore="true">
         <moduleName>paper</moduleName>
         <tableName>BIZ_PAPER</tableName>
@@ -139,7 +137,7 @@
         <tableName>BIZ_BOOK_AUTHOR</tableName>
         <described>著作作者</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>researchReport</moduleName>
         <tableName>BIZ_RESEARCH_REPORT</tableName>
         <described>研究报告</described>
@@ -169,12 +167,12 @@
         <tableName>BIZ_APPRAISAL_PRODUCT_AUTHOR</tableName>
         <described>鉴定成果作者</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>sciTechProductRecord</moduleName>
         <tableName>BIZ_SCITECH_PRODUCT_RECORD</tableName>
         <described>科技成果备案</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>sciTechProductRecordAuthor</moduleName>
         <tableName>BIZ_SCITECH_PRODUCT_RECORD_AUTHOR</tableName>
         <described>科技成果备案成员</described>
@@ -184,7 +182,7 @@
         <tableName>BIZ_PRODUCT_TRANS</tableName>
         <described>成果转化</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>productTransAuthor</moduleName>
         <tableName>BIZ_PRODUCT_TRANS_AUTHOR</tableName>
         <described>成果转化作者</described>
@@ -194,7 +192,7 @@
         <tableName>BIZ_PATENT_APPLY</tableName>
         <described>专利申请</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>patentProposal</moduleName>
         <tableName>BIZ_PATENT_PROPOSAL</tableName>
         <described>专利提案</described>
@@ -274,7 +272,7 @@
         <tableName>BIZ_TRADEMARK</tableName>
         <described>商标</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>trademarkAuthor</moduleName>
         <tableName>BIZ_TRADEMARK_AUTHOR</tableName>
         <described>商标完成人</described>
@@ -334,13 +332,11 @@
         <tableName>BIZ_SOCIAL_ORGANIZATION_AUTHOR</tableName>
         <described>参与社会团体组织人员</described>
     </ModuleTable>
-    <!-- 经费 -->
     <ModuleTable ignore="true">
         <moduleName>cWIncome</moduleName>
         <tableName>BIZ_CW_INCOME</tableName>
         <described>财务来款</described>
     </ModuleTable>
-    <!-- 其他 -->
     <ModuleTable ignore="true">
         <moduleName>unit</moduleName>
         <tableName>BIZ_UNIT</tableName>
@@ -361,7 +357,7 @@
         <tableName>BIZ_EXPERT</tableName>
         <described>专家</described>
     </ModuleTable>
-    <ModuleTable ignore="true">
+    <ModuleTable ignore="false">
         <moduleName>expertReview</moduleName>
         <tableName>BIZ_EXPERT_REVIEW</tableName>
         <described>专家评审</described>
@@ -463,7 +459,7 @@
     </ModuleTable>
     <ModuleTable ignore="true">
         <moduleName>bookApplyBook</moduleName>
-        <tableName>BIZ_BOOK_APPLY_INFO_BOOK</tableName>
+        <tableName>BIZ_BOOK_APPLY_BOOK</tableName>
         <described>著作出版资助申请材料</described>
     </ModuleTable>
     <ModuleTable ignore="true">
@@ -473,7 +469,7 @@
     </ModuleTable>
     <ModuleTable ignore="true">
         <moduleName>contractConclusionMaterial</moduleName>
-        <tableName>BIZ_CONTRACT_CONCLUSION_MATERIAL</tableName>
+        <tableName>BIZ_PROJECT_ACCEPTANCE_APPLY_BOOK</tableName>
         <described>横向项目验收结题（结项）档案材料</described>
     </ModuleTable>
     <ModuleTable ignore="true">
@@ -505,5 +501,70 @@
         <moduleName>projectAcceptanceApplyBook</moduleName>
         <tableName>BIZ_PROJECT_ACCEPTANCE_APPLY_BOOK</tableName>
         <described>校级项目验收申请</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>projectPayoutDetail</moduleName>
+        <tableName>BIZ_PROJECT_PAYOUT_DETAIL</tableName>
+        <described>经费报销明细</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>paperInclude</moduleName>
+        <tableName>BIZ_PAPER_INCLUDE</tableName>
+        <described>论文收录</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>paperEmbodyType</moduleName>
+        <tableName>BIZ_PAPER_EMBODY_TYPE</tableName>
+        <described>论文收录</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>paperReshipType</moduleName>
+        <tableName>BIZ_PAPER_RESHIP_TYPE</tableName>
+        <described>论文转载详情</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>paperReship</moduleName>
+        <tableName>BIZ_PAPER_RESHIP</tableName>
+        <described>论文转载</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>assessScheme</moduleName>
+        <tableName>KH_SCHEME</tableName>
+        <described>计分细则</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>projectComplete</moduleName>
+        <tableName>BIZ_PROJECT_COMPLETE</tableName>
+        <described>项目结项</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>intellectualPropertyRight</moduleName>
+        <tableName>BIZ_INTELLECTUAL_PROPERTY_RIGHT</tableName>
+        <described>知识产权</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>student</moduleName>
+        <tableName>BIZ_STUDENT</tableName>
+        <described>学生</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>researchUnit</moduleName>
+        <tableName>BIZ_RESEARCH_UNIT</tableName>
+        <described>研究机构</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>customTeam</moduleName>
+        <tableName>BIZ_CUSTOM_TEAM</tableName>
+        <described>自定义团队</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>projectType</moduleName>
+        <tableName>DM_PROJECT_TYPE</tableName>
+        <described>项目分类</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>downloadArea</moduleName>
+        <tableName>BIZ_DOWNLOAD_AREA</tableName>
+        <described>下载专区</described>
     </ModuleTable>
 </ModuleTables>

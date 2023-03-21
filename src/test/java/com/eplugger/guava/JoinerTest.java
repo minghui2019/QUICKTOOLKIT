@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JoinerTest {
 	/**
+	 * 常规的分割器
 	 * print: a;b;c
 	 * @throws Exception
 	 */
@@ -52,7 +53,7 @@ public class JoinerTest {
 		StringBuilder ab = new StringBuilder("start: ");
 		log.debug(joiner.appendTo(ab, new String[]{"a","b","c"}).toString());
 	}
-	
+
 	/**
 	 * 1->a;2->b
 	 * @throws Exception

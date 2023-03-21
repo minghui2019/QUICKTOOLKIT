@@ -44,13 +44,13 @@
         <viewName>V_KY_ZXXM_RY</viewName>
         <described>纵向项目成员</described>
     </ModuleView>
-    <ModuleView ignore="false">
+    <ModuleView ignore="true">
         <beanId>xJProject</beanId>
         <tableName>BIZ_XJ_PROJECT</tableName>
         <viewName>V_KY_XJXM</viewName>
         <described>校级项目</described>
     </ModuleView>
-    <ModuleView ignore="false">
+    <ModuleView ignore="true">
         <beanId>xJProjectMember</beanId>
         <tableName>BIZ_XJ_PROJECT_MEMBER</tableName>
         <viewName>V_KY_XJXM_RY</viewName>
@@ -344,4 +344,30 @@
         <viewName>V_KY_XM_JFBR</viewName>
         <described>经费外拨</described>
     </ModuleView>
+    <ModuleView ignore="false">
+        <beanId>patentProposal</beanId>
+        <tableName>BIZ_PATENT_PROPOSAL</tableName>
+        <viewName>V_KY_ZSCQSQ</viewName>
+        <described>知识产权申请</described>
+    </ModuleView>
+    <ModuleView ignore="false">
+        <beanId>patentProposalAuthor</beanId>
+        <tableName>BIZ_PATENT_PROPOSAL_AUTHOR</tableName>
+        <viewName>V_KY_ZSCQSQ_RY</viewName>
+        <described>知识产权申请作者</described>
+    </ModuleView>
+    <ModuleView ignore="false">
+        <beanId>intellectualPropertyRight</beanId>
+        <tableName>BIZ_INTELLECTUAL_PROPERTY_RIGHT</tableName>
+        <viewName>V_KY_QTZSCQ</viewName>
+        <described>其他知识产权</described>
+    </ModuleView>
+    <ModuleView ignore="false">
+        <beanId>intellectualPropertyRightAuthor</beanId>
+        <tableName>BIZ_INTELLECTUAL_PROPERTY_RIGHT_AUTHOR</tableName>
+        <sheetName>BIZ_IPR_AUTHOR</sheetName>
+        <viewName>V_KY_QTZSCQ_RY</viewName>
+        <described>其他知识产权作者</described>
+    </ModuleView>
+
 </ModuleViews>

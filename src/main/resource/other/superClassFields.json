@@ -458,7 +458,8 @@
       "tranSient": false,
       "updateInsert": true,
       "ignoreImport": false,
-      "onlyMeta": false
+      "onlyMeta": false,
+      "businessFilterType": "userinfo"
     },
     {
       "fieldId": "divisionId",
@@ -502,7 +503,8 @@
       "tranSient": false,
       "updateInsert": true,
       "ignoreImport": false,
-      "onlyMeta": false
+      "onlyMeta": false,
+      "businessFilterType": "userinfo"
     },
     {
       "fieldId": "firstAuthorName",
@@ -594,7 +596,8 @@
       "tranSient": false,
       "updateInsert": true,
       "ignoreImport": false,
-      "onlyMeta": false
+      "onlyMeta": false,
+      "businessFilterType": "userinfo"
     },
     {
       "fieldId": "authorUnitIds",
@@ -605,7 +608,8 @@
       "tranSient": false,
       "updateInsert": true,
       "ignoreImport": false,
-      "onlyMeta": false
+      "onlyMeta": false,
+      "businessFilterType": "userinfo"
     },
     {
       "fieldId": "completeDataStatus",

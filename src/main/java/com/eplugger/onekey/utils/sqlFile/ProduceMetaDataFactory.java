@@ -48,7 +48,7 @@ public class ProduceMetaDataFactory extends AbstractProduceCodeFactory {
 			.append(",").append(++orders).append(",'").append(field.getFieldName()).append("','")
 			.append(field.getFieldId()).append("','")
 			.append(this.getMetadataDataType(field.getDataType())).append("',").append("'")
-			.append(eadpDataType).append("','no','use');").append(StringUtils.CRLF);
+			.append(eadpDataType).append("','").append(field.getBusinessFilterType()).append("','use');").append(StringUtils.CRLF);
 		}
 		sb.append(StringUtils.CRLF);
 		return sb.toString();

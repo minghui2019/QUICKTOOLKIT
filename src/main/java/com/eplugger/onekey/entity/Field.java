@@ -55,7 +55,9 @@ public class Field {
 	private boolean ignoreImport = false;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "生成java方法，默认不生成")
 	private boolean onlyMeta = false;
-	
+	@Dom4JField(comment = "业务过滤类型，否-no，用户属性-userinfo，值-value，字典-dictionary")
+	private String businessFilterType = "no";
+
 	public String getTableFieldId() {
 		return Strings.isNullOrEmpty(tableFieldId) ? StringUtils.lowerCamelCase2UnderScoreCase(fieldId) : tableFieldId;
 	}
@@ -174,7 +176,10 @@ public class Field {
 			sb.append("ignoreImport=").append(ignoreImport).append(", ");
 		}
 		if (onlyMeta) {
-			sb.append("onlyMeta=").append(onlyMeta).append("]");
+			sb.append("onlyMeta=").append(onlyMeta).append("]").append(", ");
+		}
+		if (!Strings.isNullOrEmpty(businessFilterType)) {
+			sb.append("businessFilterType=").append(businessFilterType);
 		}
 		if (sb.lastIndexOf("]") == -1) {
 			sb.replace(sb.length() - 2, sb.length(), "");

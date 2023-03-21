@@ -3,94 +3,10 @@
 
 <Fields>
     <Field>
-        <fieldId>projectFundSource</fieldId>
-        <fieldName>项目资金来源</fieldName>
-        <dataType>String</dataType>
-        <categoryName>FUND_SOURCE</categoryName>
-        <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>projectName</fieldId>
-        <fieldName>项目名称</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>projectId</fieldId>
-        <fieldName>项目id</fieldName>
-        <dataType>String</dataType>
-        <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>projectChargerName</fieldId>
-        <fieldName>项目负责人</fieldName>
-        <dataType>String</dataType>
-        <precision>50</precision>
-    </Field>
-    <Field>
-        <fieldId>projectChargerCode</fieldId>
-        <fieldName>项目负责人id</fieldName>
-        <dataType>String</dataType>
-        <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>projectType</fieldId>
-        <fieldName>项目分类</fieldName>
-        <dataType>String</dataType>
-        <categoryName>PROJECT_TYPE</categoryName>
-        <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>feeCode</fieldId>
-        <fieldName>财务编号</fieldName>
-        <dataType>String</dataType>
-        <precision>100</precision>
-    </Field>
-    <Field>
-        <fieldId>majorDegreeAssociation</fieldId>
-        <fieldName>与所学专业关联度</fieldName>
-        <dataType>String</dataType>
-        <categoryName>ASSOCIATION</categoryName>
-        <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>postDegreeAssociation</fieldId>
-        <fieldName>与岗位关联度</fieldName>
-        <dataType>String</dataType>
-        <categoryName>ASSOCIATION</categoryName>
-        <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>projectAssociation</fieldId>
-        <fieldName>与研发项目关联度</fieldName>
-        <dataType>String</dataType>
-        <categoryName>ASSOCIATION</categoryName>
-        <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>isDuty</fieldId>
-        <fieldName>是否职务专利</fieldName>
+        <fieldId>isAgreeApply</fieldId>
+        <fieldName>是否同意申请</fieldName>
         <dataType>String</dataType>
         <categoryName>SF</categoryName>
         <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>isOpenAdvance</fieldId>
-        <fieldName>发明专利是否提前公开</fieldName>
-        <dataType>String</dataType>
-        <categoryName>SF</categoryName>
-        <precision>32</precision>
-    </Field>
-    <Field>
-        <fieldId>applicantAddressZipCode</fieldId>
-        <fieldName>申请人地址和邮编</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
-    </Field>
-    <Field>
-        <fieldId>firstAuthorWorking</fieldId>
-        <fieldName>第一发明人工作从事内容</fieldName>
-        <dataType>String</dataType>
-        <precision>500</precision>
     </Field>
 </Fields>

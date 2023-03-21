@@ -188,9 +188,9 @@ public class WriteModuleTableXmlTest {
 					String name = super.pullElementName();
 //					System.out.println(name);
 					return name.substring(0, 1).toLowerCase() + name.substring(1);
-				};
+				}
 			};
-		};
+		}
 	});
 	
 	public static void object2Xml(ModuleTable moduleTable) {

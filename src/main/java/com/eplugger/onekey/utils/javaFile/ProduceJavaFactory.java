@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.eplugger.common.io.FileUtils;
-import com.eplugger.common.lang.DefaultStringBuilder;
+import com.eplugger.common.lang.CustomStringBuilder;
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addModule.Constants;
 import com.eplugger.onekey.entity.AppendSearch;
@@ -631,7 +631,7 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 		if (StringUtils.isBlank(module.getSuperClassMap().get("bo"))) {
 			return null;
 		}
-		DefaultStringBuilder dsb = new DefaultStringBuilder();
+		CustomStringBuilder dsb = new CustomStringBuilder();
 		File file;
 		if ("V8.5.3".equals(DBUtils.getEadpDataType())) {
 			file = FileUtils.getFile("src/main/resource/template/todo/todoTemplateV8.5.3.txt");

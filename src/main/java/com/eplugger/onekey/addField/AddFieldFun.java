@@ -6,16 +6,20 @@ import java.util.Map;
 import java.util.Set;
 
 import com.eplugger.common.io.FileUtils;
+import com.eplugger.common.lang.CustomStringBuilder;
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.entity.Fields;
 import com.eplugger.onekey.entity.ModuleTables;
+import com.eplugger.onekey.utils.entityMeta.EntityMetaField;
+import com.eplugger.onekey.utils.entityMeta.FieldEntityMetaFacade;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceMetaDataFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
 import com.eplugger.utils.DateUtils;
 import com.eplugger.uuid.UUIDFun;
 import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 /**
@@ -71,5 +75,35 @@ public class AddFieldFun {
 		
 		FileUtils.openTaskBar(new File(FILE_OUT_PATH_PARENT + File.separator + dateFm));
 	}
-	
+
+	public static final String ITEM_TYPE_MONEY = "money-元";// 金额
+	public static final String ITEM_TYPE_GREAT_MONEY = "money-万元";// 金额
+
+    public static void createUpdateSceneEntityMetas(EntityMetaField... fields) {
+		createUpdateSceneEntityMetas(Lists.newArrayList(fields));
+    }
+
+    private static void createUpdateSceneEntityMetas(List<EntityMetaField> fields) {
+		List<FieldEntityMetaFacade> fieldFacades = register(fields);
+		CustomStringBuilder csb = new CustomStringBuilder();
+		for (FieldEntityMetaFacade fieldFacade : fieldFacades) {
+			csb.appendln(fieldFacade.toString());
+		}
+		String today = DateUtils.formatDate();
+		String dateFm = DateUtils.formatDateNoSeparator();
+		FileUtils.writeAndBackupSrcFile(FileUtils.getUserHomeDirectory() + "entityMeta" + File.separator + dateFm + File.separator + today + ".sql", csb.toString());
+		FileUtils.openTaskBar(new File(FileUtils.getUserHomeDirectory() + "entityMeta" + File.separator + dateFm));
+	}
+
+	private static List<FieldEntityMetaFacade> register(List<EntityMetaField> fields) {
+		List<FieldEntityMetaFacade> fieldFacades = Lists.newArrayList();
+		for (EntityMetaField field : fields) {
+			fieldFacades.add(register(field));
+		}
+		return fieldFacades;
+	}
+
+	private static FieldEntityMetaFacade register(EntityMetaField field) {
+		return new FieldEntityMetaFacade(field);
+	}
 }

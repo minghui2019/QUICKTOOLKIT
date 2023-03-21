@@ -124,7 +124,7 @@ public class Constants {
 	}
 
 	private static void initProductSuperClassFieldMap(JsonObject jsonObject) {
-		String key = SuperClassName.ApplyInfo.toString();
+		String key = SuperClassName.Product.toString();
 		List<Field> fields = fromJson(jsonObject, key);
 		HashSet<String> set = Sets.newHashSet("subjectClassId", "subjectId", "schoolSign");
 		for (Iterator<Field> iterator = fields.iterator(); iterator.hasNext();) {

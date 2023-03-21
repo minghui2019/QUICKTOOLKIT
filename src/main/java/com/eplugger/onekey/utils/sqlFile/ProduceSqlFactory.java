@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.eplugger.common.io.FileUtils;
-import com.eplugger.common.lang.DefaultStringBuilder;
+import com.eplugger.common.lang.CustomStringBuilder;
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addModule.Constants;
 import com.eplugger.onekey.entity.Field;
@@ -117,11 +117,10 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	 * 20220429 修改
 	 * @param tableName
 	 * @param fieldList
-	 * @param database
 	 * @return
 	 */
 	public String produceSqlCode(String tableName, List<Field> fieldList) {
-		DefaultStringBuilder dsb = new DefaultStringBuilder();
+		CustomStringBuilder dsb = new CustomStringBuilder();
 		for (Field field : fieldList) {
 			if (field.isTranSient() || field.isOnlyMeta() == true) {
 				continue;

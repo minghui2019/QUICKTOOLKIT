@@ -17,8 +17,8 @@ public class AutoViewFile {
 	 * 1、根据表名生成Excel;tableList:需要生成视图的有序map集合
 	 */
 	@Test
-	public void generationTabelExcel() {
-		AutoViewFileFun.generationTabelExcel();
+	public void generationTableExcel() {
+		AutoViewFileFun.generationTableExcel();
 	}
 	
 	/**

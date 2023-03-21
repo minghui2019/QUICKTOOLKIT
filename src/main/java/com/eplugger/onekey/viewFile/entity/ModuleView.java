@@ -3,6 +3,7 @@ package com.eplugger.onekey.viewFile.entity;
 import com.eplugger.xml.dom4j.annotation.Dom4JField;
 import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
 import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+import com.google.common.base.Strings;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ public class ModuleView {
 	private String beanId;
 	@Dom4JField
 	private String tableName;
+	@Dom4JField
+	private String sheetName;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE)
 	private boolean ignore = true;
 	@Dom4JField
@@ -27,11 +30,22 @@ public class ModuleView {
 
 	@Override
 	public String toString() {
-		return "\nModuleTable [beanId=" + beanId + ", tableName='" + tableName + ", viewName='" + viewName
+		return "\nModuleTable [beanId=" + beanId + ", tableName='" + tableName + ", sheetName='" + sheetName + ", viewName='" + viewName
 				+ ", ignore=" + ignore + ", described=" + described + "]";
 	}
 
+	public String getSheetName() {
+		if (Strings.isNullOrEmpty(sheetName)) {
+			return tableName;
+		}
+		return sheetName;
+	}
+
 	public ModuleView(String beanId, String tableName, String described, String viewName) {
-		this(beanId, tableName, false, described, viewName);
+		this(beanId, tableName, tableName, false, described, viewName);
+	}
+
+	public ModuleView(String beanId, String tableName, String sheetName, String described, String viewName) {
+		this(beanId, tableName, sheetName, false, described, viewName);
 	}
 }

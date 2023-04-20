@@ -3,10 +3,8 @@
 
 <Fields>
     <Field>
-        <fieldId>isAgreeApply</fieldId>
-        <fieldName>是否同意申请</fieldName>
-        <dataType>String</dataType>
-        <categoryName>SF</categoryName>
-        <precision>32</precision>
+        <fieldId>delayingNumber</fieldId>
+        <fieldName>建议推迟人数</fieldName>
+        <dataType>Integer</dataType>
     </Field>
 </Fields>

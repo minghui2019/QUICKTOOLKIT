@@ -6,9 +6,9 @@ import com.eplugger.onekey.entity.ModuleTable;
 import com.eplugger.onekey.schoolInfo.entity.SchoolInfo;
 import com.eplugger.onekey.utils.entityMeta.EntityMetaField;
 import com.eplugger.trans.TextTrans;
-import com.eplugger.trans.service.TransService;
 import com.eplugger.utils.DBUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,13 +21,13 @@ public class AddFieldMain {
 
 	@Test
 	public void testHasModuleTable() throws Exception {
-		TextTrans.hasModuleTables(new ModuleTable("expertReview"));
+		TextTrans.hasModuleTables(new ModuleTable("notify"));
 	}
 
 	@Test
 	public void testCreateFieldXml() throws Exception {
-		TextTrans.createFieldXml("是否同意申请",
-			new ModuleTable("expertReview")
+		TextTrans.createFieldXml("建议推迟人数",
+			new ModuleTable("changeLog", "SYS_CHANGE_LOG", "系统更新日志")
 		);
 	}
 	
@@ -38,7 +38,7 @@ public class AddFieldMain {
 	
 	@Test
 	public void testTransText2En() throws Exception {
-		String dst = TransService.transText2En("同意");
+		String dst = com.baidu.translate.service.TransService.transTextZh2En("经费收支");
 		System.out.println(dst);
 	}
 	
@@ -64,12 +64,23 @@ public class AddFieldMain {
 	
 	@Test
 	public void testName() throws Exception {
-		double d1 = 11.36;
-		log.debug(Long.toBinaryString(Double.doubleToLongBits(d1)));
-		for (int i = 1; i < 10; i++) {
-			log.debug(Long.toBinaryString(Float.floatToIntBits(i * 1f)));
+		String fileName = "bookApplyBookTab_的场景SQL";
+
+		try {
+			int lastPointIndex = fileName.lastIndexOf(".");
+			lastPointIndex = lastPointIndex == -1 ? fileName.length() : lastPointIndex;
+			StringBuilder sb = new StringBuilder();
+			sb.append(fileName.substring(0, 10))
+				.append("...")
+				.append(fileName.substring(lastPointIndex - 10, lastPointIndex))
+				.append(fileName.substring(lastPointIndex));
+			System.out.println(sb);
+		} catch (Exception e) {
 		}
-		log.debug(Long.toBinaryString(Float.floatToIntBits(4.5f)));
-		System.out.println(111);
+
+		int lastIndex = fileName.lastIndexOf(".");
+		String ext = StringUtils.isBlank(fileName) || lastIndex == -1 ? "" : fileName.substring(lastIndex);
+		System.out.println(ext);
+
 	}
 }

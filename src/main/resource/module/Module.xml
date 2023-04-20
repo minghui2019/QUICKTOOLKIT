@@ -3,119 +3,82 @@
 <Modules>
     <Module ignore="false">
         <MainModule>
-            <beanId>projectApplyInfoRestriction</beanId>
-            <moduleName>ProjectApplyInfoRestriction</moduleName>
-            <tableName>BIZ_PROJECT_APPLY_INFO_RESTRICTION</tableName>
-            <moduleZHName>项目申报限制条件</moduleZHName>
-            <packageName>com.eplugger.business.projectApply</packageName>
+            <beanId>changeLog</beanId>
+            <moduleName>ChangeLog</moduleName>
+            <tableName>SYS_CHANGE_LOG</tableName>
+            <moduleZHName>系统更新日志</moduleZHName>
+            <packageName>com.eplugger.system.changeLog</packageName>
             <superClassMap>
                 <param key="entity" value="EntityImpl" />
+                <param key="bo" value="BusinessBO" />
+                <param key="action" value="BusinessAction" />
             </superClassMap>
             <Fields>
                 <Field>
-                    <fieldId>限制字段</fieldId>
-                    <fieldName>限制字段</fieldName>
+                    <fieldId>name</fieldId>
+                    <fieldName>更新名称</fieldName>
                     <dataType>String</dataType>
-                    <precision>100</precision>
+                    <precision>300</precision>
                 </Field>
                 <Field>
-                    <fieldId>registerCode</fieldId>
-                    <fieldName>知识产权登记号</fieldName>
-                    <dataType>String</dataType>
-                    <precision>100</precision>
-                </Field>
-                <Field>
-                    <fieldId>rightType</fieldId>
-                    <fieldName>知识产权类型</fieldName>
-                    <dataType>String</dataType>
-                    <categoryName>RIGHT_TYPE</categoryName>
-                    <precision>32</precision>
-                </Field>
-                <Field>
-                    <fieldId>applyDate</fieldId>
-                    <fieldName>申请日期</fieldName>
+                    <fieldId>updateTime</fieldId>
+                    <fieldName>更新时间</fieldName>
                     <dataType>Date</dataType>
                 </Field>
                 <Field>
-                    <fieldId>completeDate</fieldId>
-                    <fieldName>完成日期</fieldName>
-                    <dataType>Date</dataType>
+                    <fieldId>estimatedDuration</fieldId>
+                    <fieldName>预计维护时长（分钟）</fieldName>
+                    <dataType>Integer</dataType>
                 </Field>
                 <Field>
-                    <fieldId>certificationDate</fieldId>
-                    <fieldName>颁证日期</fieldName>
-                    <dataType>Date</dataType>
+                    <fieldId>predictedRisks</fieldId>
+                    <fieldName>预知风险</fieldName>
+                    <dataType>String</dataType>
+                    <precision>500</precision>
                 </Field>
                 <Field>
-                    <fieldId>righter</fieldId>
-                    <fieldName>权利人</fieldName>
+                    <fieldId>unknownRisks</fieldId>
+                    <fieldName>未知风险</fieldName>
+                    <dataType>String</dataType>
+                    <precision>500</precision>
+                </Field>
+                <Field>
+                    <fieldId>updateContent</fieldId>
+                    <fieldName>更新内容</fieldName>
+                    <dataType>String</dataType>
+                    <precision>500</precision>
+                </Field>
+                <Field>
+                    <fieldId>finished</fieldId>
+                    <fieldName>是否完成</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>SF</categoryName>
+                    <precision>4</precision>
+                </Field>
+                <Field>
+                    <fieldId>fullServerPush</fieldId>
+                    <fieldName>是否全服推送</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>SF</categoryName>
+                    <precision>4</precision>
+                </Field>
+                <Field>
+                    <fieldId>stopPush</fieldId>
+                    <fieldName>结束推送</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>SF</categoryName>
+                    <precision>4</precision>
+                </Field>
+                <Field>
+                    <fieldId>registrant</fieldId>
+                    <fieldName>登记人</fieldName>
                     <dataType>String</dataType>
                     <precision>50</precision>
                 </Field>
                 <Field>
-                    <fieldId>righterAddress</fieldId>
-                    <fieldName>权利人地址</fieldName>
-                    <dataType>String</dataType>
-                    <precision>500</precision>
-                </Field>
-                <Field>
-                    <fieldId>jobAchievements</fieldId>
-                    <fieldName>是否职务成果</fieldName>
-                    <dataType>String</dataType>
-                    <categoryName>SF</categoryName>
-                    <precision>32</precision>
-                </Field>
-                <Field>
-                    <fieldId>cooperationType</fieldId>
-                    <fieldName>合作类型</fieldName>
-                    <dataType>String</dataType>
-                    <categoryName>COOPERATION_TYPE</categoryName>
-                    <precision>32</precision>
-                </Field>
-                <Field>
-                    <fieldId>jointApplicant</fieldId>
-                    <fieldName>联合申请单位</fieldName>
-                    <dataType>String</dataType>
-                    <precision>500</precision>
-                </Field>
-                <Field>
-                    <fieldId>agreementFileIds</fieldId>
-                    <fieldName>联合申请知识产权协议书附件</fieldName>
-                    <dataType>String</dataType>
-                    <precision>500</precision>
-                </Field>
-                <Field association="OneToMany" ignoreImport="true" updateInsert="false">
-                    <fieldId>authors</fieldId>
-                    <fieldName>知识产权完成人</fieldName>
-                    <dataType>List</dataType>
-                    <joinColumn>RIGHT_ID</joinColumn>
-                    <genericity>IntellectualPropertyRightAuthor</genericity>
-                    <orderBy>orderId asc</orderBy>
-                    <fetch>FetchMode.SELECT</fetch>
-                </Field>
-                <Field tranSient="true">
-                    <fieldId>allAuthor</fieldId>
-                    <fieldName>所有人员</fieldName>
-                    <dataType>String</dataType>
-                    <AppendSearch relativeField="RIGHT_ID" symbol="；" mergeMultiVals="true">
-                        <value>SELECT RIGHT_ID, concat(replace(AUTHOR_NAME,'；',';'), (CASE WHEN AUTHOR_TYPE='2' THEN '（学）' WHEN AUTHOR_TYPE='3' THEN '（外）' ELSE '' END)) val FROM BIZ_INTELLECTUAL_PROPERTY_RIGHT_AUTHOR WHERE RIGHT_ID IN (^{id}) ORDER BY ORDER_ID</value>
-                    </AppendSearch>
-                </Field>
-                <Field tranSient="true">
-                    <fieldId>allAuthorId</fieldId>
-                    <fieldName>所有人员ID</fieldName>
-                    <dataType>String</dataType>
-                    <AppendSearch relativeField="RIGHT_ID" symbol="；" mergeMultiVals="true">
-                        <value>SELECT RIGHT_ID, PERSON_ID val FROM BIZ_INTELLECTUAL_PROPERTY_RIGHT_AUTHOR WHERE RIGHT_ID IN (^{id}) ORDER BY ORDER_ID</value>
-                    </AppendSearch>
-                </Field>
-                <Field association="OneToMany" ignoreImport="true" updateInsert="false">
-                    <fieldId>formations</fieldId>
-                    <fieldName>转化情况</fieldName>
-                    <dataType>List</dataType>
-                    <joinColumn>PRODUCT_ID</joinColumn>
-                    <genericity>IntellectualPropertyRightFormation</genericity>
-                    <orderBy>orderId asc</orderBy>
+                    <fieldId>registrationTime</fieldId>
+                    <fieldName>登记时间</fieldName>
+                    <dataType>Date</dataType>
                 </Field>
             </Fields>
         </MainModule>

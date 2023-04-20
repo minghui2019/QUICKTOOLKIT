@@ -131,14 +131,17 @@ public class ExcelUtils {
      * 写出EXCEL文件
      */
     public static void outExcel(Workbook wb, String filePath, String fileName) {
-    	File file = new File(filePath + fileName);
+    	outExcel(wb, new File(filePath + fileName));
+    }
+
+    public static void outExcel(Workbook wb, File file) {
     	FileUtils.createFileParentDir(file);
     	try {
 			FileOutputStream output = new FileOutputStream(file);
 			wb.write(output); // 写入磁盘
 			output.flush();
 			output.close();
-			log.debug("EXCEL文件 " + fileName + " 生成成功");
+			log.debug("EXCEL文件 " + file.getName() + " 生成成功");
 			log.debug("由于实体类属性命名不规则，带星号的别名必须核对清楚！");
 		} catch (Exception e) {
 			e.printStackTrace();

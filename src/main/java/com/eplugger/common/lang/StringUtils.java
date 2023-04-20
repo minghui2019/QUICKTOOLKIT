@@ -486,16 +486,20 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @return
 	 */
 	public static String getFirstSpell(String chinese) {
-		if (Strings.isNullOrEmpty(chinese)) {
-			return null;
-		}
+		return getFirstSpell(chinese, HanyuPinyinCaseType.UPPERCASE); //替换掉非单词字符(^A-Za-z0-9_)
+	}
+
+    public static String getFirstSpell(String chinese, HanyuPinyinCaseType type) {
+        if (Strings.isNullOrEmpty(chinese)) {
+            return null;
+        }
         chinese = chinese.replaceAll("\\(.*\\)", "").replaceAll("（.*）", "");
-		StringBuffer pybf = new StringBuffer();
-		char[] arr = chinese.toCharArray();
-		HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
-		defaultFormat.setCaseType(HanyuPinyinCaseType.UPPERCASE);
-		defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-		try {
+        StringBuffer pybf = new StringBuffer();
+        char[] arr = chinese.toCharArray();
+        HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
+        defaultFormat.setCaseType(type);
+        defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+        try {
             for (char c : arr) {
                 if (c > 128) {
                     try {
@@ -513,8 +517,8 @@ public final class StringUtils extends org.apache.commons.lang3.StringUtils {
         } catch (ArrayIndexOutOfBoundsException e) {
             log.error(e.getMessage() + ": 汉字转换错误[" + chinese + "]");
         }
-		return pybf.toString().replaceAll("\\W", "").trim(); //替换掉非单词字符(^A-Za-z0-9_)
-	}
+        return pybf.toString().replaceAll("\\W", "").trim(); //替换掉非单词字符(^A-Za-z0-9_)
+    }
 
 	/**
 	 * 小驼峰命名法转化为下划线命名法<br>

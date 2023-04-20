@@ -6,21 +6,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
-import com.google.gson.JsonObject;
-import org.dom4j.Document;
-
 import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.AddFieldFun;
 import com.eplugger.onekey.entity.ModuleTable;
 import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.trans.entity.SimpleField;
 import com.eplugger.trans.entity.SimpleFields;
-import com.eplugger.trans.service.TransService;
 import com.eplugger.utils.OtherUtils;
 import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
-
+import com.google.common.collect.Lists;
+import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
+import org.dom4j.Document;
 
 @Slf4j
 public class TextTrans {
@@ -39,7 +36,7 @@ public class TextTrans {
 	 * @throws Exception
 	 */
 	public static void createFieldXml(String src) throws Exception {
-		String dst = TransService.transText2En(src);
+		String dst = com.baidu.translate.service.TransService.transTextZh2En(src);
 		dst = dst.replaceAll(";", ",");
 		String[] dsts = dst.split(",");
 		String[] result = transText2En(dsts);

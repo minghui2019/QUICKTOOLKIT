@@ -38,8 +38,8 @@ public class AddModuleMain {
 	
 	@Test
 	public void testAddMultiModuleFun1() throws Exception {
-		boolean authorSwitch = true;
-		String template = "paper";
+		boolean authorSwitch = false;
+		String template = "honor";
 		AddModuleFun.AddMultipleModuleFun1(authorSwitch, template);
 		try {
 			Desktop.getDesktop().open(new File(FileUtils.getUserHomeDirectory() + "AddModule"));

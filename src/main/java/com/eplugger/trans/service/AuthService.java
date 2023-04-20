@@ -6,29 +6,27 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
-import com.eplugger.common.lang.StringUtils;
-import com.eplugger.utils.HttpRequestUtils;
-
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import net.sf.json.JSONObject;
+import com.eplugger.common.lang.StringUtils;
+import com.eplugger.trans.api.BaidubceApi;
+import com.eplugger.utils.HttpRequestFacade;
+import com.google.gson.JsonObject;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  * 获取token类
+ * 官网获取的 API Key: EN46EdO9KCPS9CtppYIaGzaP
+ * 官网获取的 Secret Key: onkAHr1QFlf22PCuueoez9ncOOb7lIHO
  */
+@Slf4j
 public class AuthService {
-	/** 官网获取的 API Key */
-	private static final String CLIENT_ID = "EN46EdO9KCPS9CtppYIaGzaP";
-	/** 官网获取的 Secret Key */
-	private static final String CLIENT_SECRET = "onkAHr1QFlf22PCuueoez9ncOOb7lIHO";
-	/** 获取token地址 */
-	private static final String AUTH_HOST = "https://aip.baidubce.com/oauth/2.0/token";
-	private static final String PROPERTIES_FILE = "src/main/resource/baiduAuth.properties";
+	private static final String PROPERTIES_FILE = "src/main/resource/baidubceAuth.properties";
 	private AuthService() {}
 	
 	public static void main(String[] args) throws IOException {
-		getAuth();
+		log.debug(getAuth());
 	}
 
     /**
@@ -47,6 +45,8 @@ public class AuthService {
 			FileInputStream in = new FileInputStream(PROPERTIES_FILE);
 			pro.load(in);
 			String time = pro.getProperty("time");
+			String clientId = pro.getProperty("clientId");
+			String clientSecret = pro.getProperty("clientSecret");
 			endDate = new Date();
 			if (StringUtils.isNotBlank(time)) {
 				beginDate = DateUtil.parseDateTime(time);
@@ -56,7 +56,9 @@ public class AuthService {
 					return pro.getProperty("token");
 				}
 			}
-			String auth = getAuth(CLIENT_ID, CLIENT_SECRET);
+			String auth = getAuth(clientId, clientSecret);
+			pro.put("clientId", clientId);
+			pro.put("clientSecret", clientSecret);
 			pro.put("token", auth);
 			pro.put("time", DateUtil.formatDateTime(endDate));
 			FileOutputStream out = new FileOutputStream(PROPERTIES_FILE);
@@ -78,12 +80,12 @@ public class AuthService {
      * "24.460da4889caad24cccdb1fea17221975.2592000.1491995545.282335-1234567"
      */
     public static String getAuth(String ak, String sk) {
-    	try {
-    		JSONObject jsonObject = HttpRequestUtils.postHttp(AUTH_HOST, "grant_type=client_credentials" + "&client_id=" + ak + "&client_secret=" + sk);
-    		return jsonObject.getString("access_token");
+		try {
+			HttpRequestFacade httpRequestFacade = new HttpRequestFacade(BaidubceApi.OAUTH_TOKEN);
+			JsonObject jsonObject = httpRequestFacade.get(ak, sk);
+			return jsonObject.get("access_token").getAsString();
 		} catch (Exception e) {
-			System.err.printf("获取token失败！");
-            e.printStackTrace(System.err);
+			log.error("获取token失败！" + e.getMessage());
 		}
         return null;
     }

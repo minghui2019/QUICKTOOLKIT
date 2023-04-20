@@ -357,7 +357,7 @@
         <tableName>BIZ_EXPERT</tableName>
         <described>专家</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>expertReview</moduleName>
         <tableName>BIZ_EXPERT_REVIEW</tableName>
         <described>专家评审</described>
@@ -566,5 +566,15 @@
         <moduleName>downloadArea</moduleName>
         <tableName>BIZ_DOWNLOAD_AREA</tableName>
         <described>下载专区</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>notify</moduleName>
+        <tableName>BIZ_NOTIFY</tableName>
+        <described>通知公告</described>
+    </ModuleTable>
+    <ModuleTable ignore="false">
+        <moduleName>changeLog</moduleName>
+        <tableName>SYS_CHANGE_LOG</tableName>
+        <described>系统更新日志</described>
     </ModuleTable>
 </ModuleTables>

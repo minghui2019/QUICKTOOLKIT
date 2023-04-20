@@ -1,12 +1,12 @@
 package com.eplugger.trans.service;
 
-import com.eplugger.utils.HttpRequestUtils;
+import com.eplugger.trans.api.BaidubceApi;
+import com.eplugger.utils.HttpRequestFacade;
+import com.google.gson.JsonObject;
+import lombok.extern.slf4j.Slf4j;
 
-import net.sf.json.JSONObject;
-
+@Slf4j
 public class TransService {
-	/** 获取token地址 */
-	private static final String TRANS_HOST = "https://aip.baidubce.com/rpc/2.0/mt/texttrans/v1?access_token=%s";
 	private TransService() {}
 	
 	/**
@@ -30,13 +30,27 @@ public class TransService {
 	 * @return
 	 */
 	public static String transText2En(String query) {
-		JSONObject body = new JSONObject();
-		body.put("q", query);
-		body.put("from", "zh");
-		body.put("to", "en");
-		body.put("termIds", "");
-		JSONObject result = HttpRequestUtils.postHttp(String.format(TRANS_HOST, AuthService.getAuth()), body.toString());
-		System.out.println(result.toString());
-		return ((JSONObject) result.getJSONObject("result").getJSONArray("trans_result").get(0)).getString("dst");
+		JsonObject body = new JsonObject();
+		body.addProperty("q", query);
+		body.addProperty("from", "zh");
+		body.addProperty("to", "en");
+		body.addProperty("termIds", "");
+		try {
+			HttpRequestFacade httpRequestFacade = new HttpRequestFacade(BaidubceApi.TEXT_TRANS);
+			JsonObject jsonObject = httpRequestFacade.post(body.toString(), AuthService.getAuth());
+			/**
+			 * {"error_code":18,"error_msg":"Open api qps request limit reached"}
+			 */
+			if (jsonObject.get("error_code").getAsInt() == 18) {
+				log.error(jsonObject.get("error_msg").getAsString());
+				return null;
+			}
+			return jsonObject.get("result").getAsJsonObject()
+				.get("trans_result").getAsJsonArray().get(0).getAsJsonObject()
+				.get("dst").getAsString();
+		} catch (Exception e) {
+			log.error("获取token失败！" + e.getMessage());
+		}
+		return null;
 	}
 }

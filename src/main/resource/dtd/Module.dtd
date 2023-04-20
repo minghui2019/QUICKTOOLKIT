@@ -14,7 +14,7 @@
 <!ELEMENT param EMPTY>
 <!ATTLIST param 
 		key (entity|bo|action) #REQUIRED 
-		value (EntityImpl|BizEntity|BusinessEntity|ProductAuthor|Product|ApplyInfo|ApplyBook|CheckBusinessEntity) #REQUIRED>
+		value (EntityImpl|BizEntity|BusinessEntity|ProductAuthor|Product|ApplyInfo|ApplyBook|CheckBusinessEntity|BusinessBO|BusinessAction) #REQUIRED>
 <!ELEMENT Fields (Field+)>
 <!ELEMENT Field (fieldId, tableFieldId?, fieldName, dataType, categoryName?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
 <!ATTLIST Field 

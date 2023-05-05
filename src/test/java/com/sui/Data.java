@@ -1,14 +1,14 @@
 package com.sui;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class Data {
     // Export data to file (xls file in Feidee web format)
@@ -19,13 +19,13 @@ public class Data {
 
     public byte[] exportToBuffer() throws Exception {
         String downloadAddr = getExportLink();
-        return get(downloadAddr).body().bytes();
+        return HttpClient.get(downloadAddr).body().getBytes();
     }
 
     // Get data export link (export as xls file in Feidee web format)
     public String getExportLink() throws Exception {
-        String addr = BASE_URL + "/data/index.jsp";
-        Document doc = Jsoup.parse(get(addr).body().string());
+        String addr = com.sui.Client.BASE_URL + "/data/index.jsp";
+        Document doc = Jsoup.parse(HttpClient.get(addr).body().toString());
 
         Elements anchors = doc.select("table.out-data a");
         for (Element anchor : anchors) {

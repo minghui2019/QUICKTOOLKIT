@@ -1,12 +1,5 @@
 package com.sui;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.net.http.HttpResponse;
 import java.security.MessageDigest;
 import java.util.HashMap;
@@ -17,10 +10,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.net.http.HttpResponse;
-import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sui.pojo.VCCodeInfo;
 
 public class Login {
     // Maximum recursive call count when automatically redirecting to refresh authentication information
@@ -30,18 +22,14 @@ public class Login {
     public void login(String email, String password) throws Exception {
         VCCodeInfo vccodeInfo = getVccode();
         verifyUser(vccodeInfo, email, password);
-        authRedirect("GET", LOGIN_URL + "/auth.do", null, 0);
-        syncAccountBookList();
-    }
-
-    public static class VCCodeInfo {
-        public String VCCode;
-        public String uid;
+        authRedirect("GET", com.sui.Client.BASE_URL + "/auth.do", null, 0);
+        AccountBookApi accountBookApi = new AccountBookApi();
+        accountBookApi.syncAccountBookList();
     }
 
     // Get VCCode
     public VCCodeInfo getVccode() throws Exception {
-        HttpResponse<String> resp = get(LOGIN_URL + "/login.do?opt=vccode");
+        HttpResponse<String> resp = HttpClient.get(com.sui.Client.BASE_URL + "/login.do?opt=vccode");
         if (resp.statusCode() != 200) {
             throw new Exception("Error requesting VCCode: " + resp.statusCode());
         }
@@ -69,10 +57,10 @@ public class Login {
         data.put("password", password);
         data.put("uid", vccodeInfo.uid);
 
-        HttpResponse<String> resp = get(LOGIN_URL + "/login.do?" + mapToQueryString(data));
+        HttpResponse<String> resp = HttpClient.get(Client.LOGIN_URL + "/login.do?" + HttpClient.mapToQueryString(data));
 
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> respInfo = mapper.readValue(resp.body(), Map.class);
+        Map<String, String> respInfo = mapper.readValue(resp.body(), new TypeReference<Map<String, String>>() {});
 
         String status = respInfo.get("Status");
         switch (status) {
@@ -105,18 +93,18 @@ public class Login {
 
     // Automatically follow authentication redirects to complete verification information refresh
     public void authRedirect(String method, String address, Map<String, String> data, int jumpCount) throws Exception {
-        if (verbose) {
-            System.out.println("Authentication redirect " + jumpCount + " times " + method + " " + address + " parameters " + data);
-        }
+//        if (Client.verbose) {
+//            System.out.println("Authentication redirect " + jumpCount + " times " + method + " " + address + " parameters " + data);
+//        }
         if (jumpCount > MAX_AUTH_REDIRECT_COUNT) {
             throw new Exception("Too many redirects");
         }
 
         HttpResponse<String> resp;
         if (method.equals("POST")) {
-            resp = postForm(address, data);
+            resp = HttpClient.postForm(address, data);
         } else if (method.equals("GET")) {
-            resp = get(address + "?" + mapToQueryString(data));
+            resp = HttpClient.get(address + "?" + HttpClient.mapToQueryString(data));
         } else {
             throw new Exception("Unknown redirect method " + method);
         }

@@ -1,5 +1,6 @@
 package com.sui;
 
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,32 +12,19 @@ import java.util.Map;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 
-import com.sui.Client.IncomeAndPayout;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sui.pojo.IncomeAndPayout;
+import com.sui.pojo.TallyGroup;
+import com.sui.pojo.TallyResponseInfo;
 
 public class TallyApi {
-    // Transaction group (usually grouped by day)
-    public static class TallyGroup {
-        public IncomeAndPayout incomeAndPayout;
-        public List<Tally> list;
-    }
-
-    // Response for transaction query interface
-    public static class TallyResponseInfo {
-        public IncomeAndPayout incomeAndPayout;
-        public int pageNo;
-        public int pageCount;
-        public String symbol;
-        public String endDate;
-        public String beginDate;
-        public List<TallyGroup> groups;
-    }
-
     //获取流水，可用参数包括
-//    bids账户、cids科目、mids类型、pids项目、sids商户、memids成员，这几个参数都是逗号分割的ID列表
-//    order:  排序字段，支持: project_id项目排序、buyer_name账户、item_amount金额、tran_type类型、category_id科目、tran_time时间
-//    isDesc: 是否降序，0升序、1降序
-//    note:   搜备注关键字
-public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, String> data) throws Exception {
+	//    bids账户、cids科目、mids类型、pids项目、sids商户、memids成员，这几个参数都是逗号分割的ID列表
+	//    order:  排序字段，支持: project_id项目排序、buyer_name账户、item_amount金额、tran_type类型、category_id科目、tran_time时间
+	//    isDesc: 是否降序，0升序、1降序
+	//    note:   搜备注关键字
+	public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, String> data) throws Exception {
         // First get information from all pages to form a list
         int pageCount = 1;
         List<TallyResponseInfo> infos = new ArrayList<>();
@@ -87,9 +75,9 @@ public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, S
             TallyGroup group = new TallyGroup();
             group.list = new ArrayList<>();
             for (Tally tally : tallies) {
-                if (tally.tranType == TRAN_TYPE_PAYOUT) {
+                if (tally.tranType == Client.TRAN_TYPE_PAYOUT) {
                     group.incomeAndPayout.payout += tally.itemAmount;
-                } else if (tally.tranType == TRAN_TYPE_INCOME) {
+                } else if (tally.tranType == Client.TRAN_TYPE_INCOME) {
                     group.incomeAndPayout.income += tally.itemAmount;
                 }
                 group.list.add(tally);
@@ -144,7 +132,7 @@ public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, S
             data.put("memids", "0");
         }
 
-        HttpResponse<String> resp = postForm(BASE_URL + "/tally/new.rmi", data);
+        HttpResponse<String> resp = HttpClient.postForm(Client.BASE_URL + "/tally/new.rmi", data);
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(resp.body(), TallyResponseInfo.class);
@@ -157,7 +145,7 @@ public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, S
         data.put("endYear", Integer.toString(endYear));
         data.put("beginYear", Integer.toString(beginYear));
 
-        HttpResponse<String> resp = postForm(BASE_URL + "/tally/new.rmi", data);
+        HttpResponse<String> resp = HttpClient.postForm(Client.BASE_URL + "/tally/new.rmi", data);
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Map<String, IncomeAndPayout>> respInfo = mapper.readValue(resp.body(), new TypeReference<Map<String, Map<String, IncomeAndPayout>>>() {});
@@ -191,20 +179,20 @@ public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, S
 
         String tranType;
         switch (tally.tranType) {
-            case TRAN_TYPE_PAYOUT:
+            case Client.TRAN_TYPE_PAYOUT:
                 tranType = "payout";
                 break;
-            case TRAN_TYPE_TRANSFER:
+            case Client.TRAN_TYPE_TRANSFER:
                 tranType = "transfer";
                 break;
-            case TRAN_TYPE_INCOME:
+            case Client.TRAN_TYPE_INCOME:
                 tranType = "income";
                 break;
             default:
                 throw new Exception("Unknown transaction type " + tally.tranType);
         }
 
-        HttpResponse<String> resp = postForm(BASE_URL + "/tally/" + tranType + ".rmi", data);
+        HttpResponse<String> resp = HttpClient.postForm(Client.BASE_URL + "/tally/" + tranType + ".rmi", data);
 
         if (resp.body().equals("{result:'ok'}")) {
             return;
@@ -240,14 +228,14 @@ public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, S
         String targetUri;
         Pattern apiResponsePattern = Pattern.compile("id:{id:[0-9]+},");
 
-        if (tally.tranType == TRAN_TYPE_INCOME) {
-            targetUri = BASE_URL + "/tally/income.rmi";
+        if (tally.tranType == Client.TRAN_TYPE_INCOME) {
+            targetUri = Client.BASE_URL + "/tally/income.rmi";
             data.put("account", Integer.toString(tally.account));
-        } else if (tally.tranType == TRAN_TYPE_PAYOUT) {
-            targetUri = BASE_URL + "/tally/payout.rmi";
+        } else if (tally.tranType == Client.TRAN_TYPE_PAYOUT) {
+            targetUri = Client.BASE_URL + "/tally/payout.rmi";
             data.put("account", Integer.toString(tally.account));
-        } else if (tally.tranType == TRAN_TYPE_TRANSFER) {
-            targetUri = BASE_URL + "/tally/transfer.rmi";
+        } else if (tally.tranType == Client.TRAN_TYPE_TRANSFER) {
+            targetUri = Client.BASE_URL + "/tally/transfer.rmi";
             apiResponsePattern = Pattern.compile("id:{outId:\\d+,inId:\\d+}");
             data.put("in_account", Integer.toString(tally.sellerAcountId));
             data.put("out_account", Integer.toString(tally.buyerAcountId));
@@ -255,7 +243,7 @@ public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, S
             throw new Exception("Unsupported transaction type: " + tally.tranType);
         }
 
-        HttpResponse<String> resp = postForm(targetUri, data);
+        HttpResponse<String> resp = HttpClient.postForm(targetUri, data);
 
         // Check if the returned data is valid
         if (apiResponsePattern.matcher(resp.body()).find()) {
@@ -276,7 +264,7 @@ public TallyResponseInfo tallyList(LocalDate begin, LocalDate end, Map<String, S
         }
         data.put("ids", joiner.toString());
 
-        HttpResponse<String> resp = postForm(BASE_URL + "/tally/new.rmi", data);
+        HttpResponse<String> resp = HttpClient.postForm(Client.BASE_URL + "/tally/new.rmi", data);
 
         // Returns irregular data containing the number of deleted records
         if (resp.body().equals("{result:'" + tranIds.length + "'}")) {

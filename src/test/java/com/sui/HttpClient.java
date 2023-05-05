@@ -2,27 +2,22 @@ package com.sui;
 
 import java.net.URI;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+
 public class HttpClient {
     private static final String HTTP_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36";
 
-    public HttpResponse<String> postForm(String url, Map<String, String> data) throws Exception {
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-            sb.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8));
-            sb.append('=');
-            sb.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8));
-            sb.append('&');
-        }
+    public static HttpResponse<String> postForm(String url, Map<String, String> data) throws Exception {
+        StringBuilder sb = new StringBuilder(mapToQueryString(data));
         if (sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);
         }
 
+        java.net.http.HttpClient httpClient = java.net.http.HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Content-Type", "application/x-www-form-urlencoded")
@@ -33,13 +28,24 @@ public class HttpClient {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public HttpResponse<String> get(String url) throws Exception {
+	public static String mapToQueryString(Map<String, String> data) {
+		StringBuilder sb = new StringBuilder();
+		for (Map.Entry<String, String> entry : data.entrySet()) {
+            sb.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8));
+            sb.append('=');
+            sb.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8));
+            sb.append('&');
+        }
+		return sb.toString();
+	}
+
+    public static HttpResponse<String> get(String url) throws Exception {
+    	java.net.http.HttpClient httpClient = java.net.http.HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("User-Agent", HTTP_USER_AGENT)
                 .GET()
                 .build();
-
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }

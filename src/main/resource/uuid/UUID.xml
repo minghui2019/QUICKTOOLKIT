@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE uuids SYSTEM "../dtd/UUID.dtd">
 <uuids>
-    <uuid id="11">627ddf0da8e04e489398e608b72a498a</uuid>
-    <uuid id="12">90a79956d4b84d95b9a01f4da408959b</uuid>
-    <uuid id="13">b6e7aa07225a4d179a12651b3a0ce397</uuid>
-    <uuid id="14">4bef881868834de9a9cfeadc3497e178</uuid>
-    <uuid id="15">fdd370d9e1e84f4fb1c76843523b9442</uuid>
-    <uuid id="16">10a813a3022c4046809076ef901a259e</uuid>
-    <uuid id="17">dc299ec6b8a7458b9714bf0d3898aaa4</uuid>
-    <uuid id="18">6a45862837b14bce808cb03920ff8d8d</uuid>
-    <uuid id="19">4e09428334d547d4b91e37c8dc873667</uuid>
-    <uuid id="20">dfafad7fd11f47df94cc60bafca7fd54</uuid>
-    <uuid id="21">3f3408c7ad41490c8e5192b595f8b9ac</uuid>
-    <uuid id="22">33c62b75720d42e69304dbd4636afc46</uuid>
-    <uuid id="23">a87ddc6cbaad40d4995ba92e0483eeec</uuid>
     <uuid id="24">4f6b42b18ec040e59d4106f51fa61590</uuid>
     <uuid id="25">45cc5ce123be49a98886f66028beee7a</uuid>
     <uuid id="26">5dd275ec57434fb9908f00ac6063a468</uuid>

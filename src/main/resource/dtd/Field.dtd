@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT Fields (Field+)>
-<!ELEMENT Field (fieldId, fieldName, dataType, categoryName?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
+<!ELEMENT Field (fieldId, fieldName, dataType, categoryName|Category?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
 <!ATTLIST Field
 		association (OneToMany|ManyToOne) #IMPLIED
 		onlyMeta (true|false) "false"
@@ -11,6 +11,11 @@
 <!ELEMENT fieldName (#PCDATA)>
 <!ELEMENT dataType (#PCDATA)>
 <!ELEMENT categoryName (#PCDATA)>
+<!ELEMENT Category (#PCDATA)>
+<!ATTLIST Category
+	name CDATA #REQUIRED
+	note CDATA #REQUIRED
+	type (人员|项目|成果|系统|平台|系统图表|学术交流|评审|经费|合同|考核|系统参数|个人空间|财务同步|编号生成) #REQUIRED>
 <!ELEMENT precision (#PCDATA)>
 <!ELEMENT joinColumn (#PCDATA)>
 <!ELEMENT AppendSearch (value)>

@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import com.eplugger.common.lang.StringUtils;
+import top.tobak.common.lang.StringUtils;
 import com.eplugger.trans.api.BaidubceApi;
 import com.eplugger.utils.HttpRequestFacade;
 import com.google.gson.JsonObject;

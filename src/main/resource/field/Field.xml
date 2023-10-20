@@ -3,8 +3,17 @@
 
 <Fields>
     <Field>
-        <fieldId>delayingNumber</fieldId>
-        <fieldName>建议推迟人数</fieldName>
-        <dataType>Integer</dataType>
+        <fieldId>isTranslated</fieldId>
+        <fieldName>是否为译文</fieldName>
+        <dataType>String</dataType>
+        <categoryName>SF</categoryName>
+        <precision>4</precision>
+    </Field>
+    <Field>
+        <fieldId>pageSpace</fieldId>
+        <fieldName>版面</fieldName>
+        <dataType>String</dataType>
+        <categoryName>PAPER_SPACE</categoryName>
+        <precision>4</precision>
     </Field>
 </Fields>

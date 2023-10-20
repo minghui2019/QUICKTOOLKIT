@@ -2,7 +2,7 @@ package com.eplugger.network;
 
 import java.util.Map;
 
-import com.eplugger.utils.HttpRequestUtils;
+import top.tobak.utils.HttpRequestUtils;
 
 public interface IApiRequest {
     default String post(Map<String, Object> formMap) throws Exception {

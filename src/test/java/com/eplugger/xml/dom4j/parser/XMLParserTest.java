@@ -1,15 +1,15 @@
 package com.eplugger.xml.dom4j.parser;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 
 import com.alibaba.fastjson.JSON;
-import com.eplugger.xml.dom4j.XMLObject;
-import com.eplugger.xml.dom4j.XMLParser;
-
 import org.junit.Before;
 import org.junit.Test;
+import top.tobak.xml.dom4j.XMLObject;
+import top.tobak.xml.dom4j.XMLParser;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * XML解析器测试

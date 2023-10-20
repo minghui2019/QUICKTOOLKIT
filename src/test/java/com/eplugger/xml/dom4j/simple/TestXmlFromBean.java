@@ -1,17 +1,16 @@
 package com.eplugger.xml.dom4j.simple;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.util.List;
-
-import org.dom4j.Document;
-import org.junit.Test;
 
 import com.eplugger.onekey.entity.ModuleTable;
 import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.uuid.UUIDFun;
 import com.eplugger.uuid.entity.Uuids;
-import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
+import org.dom4j.Document;
+import org.junit.Test;
+import top.tobak.xml.dom4j.utils.ParseXmlUtils;
+
+import static org.junit.Assert.assertNotNull;
 
 public class TestXmlFromBean {
 	@Test

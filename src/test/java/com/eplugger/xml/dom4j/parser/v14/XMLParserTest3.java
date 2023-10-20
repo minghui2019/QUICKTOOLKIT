@@ -1,9 +1,5 @@
 package com.eplugger.xml.dom4j.parser.v14;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -14,16 +10,9 @@ import java.util.Map;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.alibaba.fastjson.JSON;
-import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.entity.ModuleTable;
 import com.eplugger.onekey.entity.ModuleTables;
-import com.eplugger.utils.DateUtils;
-import com.eplugger.xml.dom4j.XMLObject;
-import com.eplugger.xml.dom4j.XMLParser;
 import com.eplugger.xml.dom4j.entity.SnapshotPosition;
 import com.eplugger.xml.dom4j.entity.TourAction;
 import com.eplugger.xml.dom4j.entity.TourLine;
@@ -31,8 +20,18 @@ import com.eplugger.xml.dom4j.entity.TourReport;
 import com.eplugger.xml.dom4j.entity.TourStation;
 import com.eplugger.xml.dom4j.entity.TourStatus;
 import com.eplugger.xml.dom4j.entity.TourTask;
-import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
-import com.eplugger.xml.dom4j.parse.SimpleValueParser;
+import org.junit.Before;
+import org.junit.Test;
+import top.tobak.common.lang.StringUtils;
+import top.tobak.utils.DateUtils;
+import top.tobak.xml.dom4j.XMLObject;
+import top.tobak.xml.dom4j.XMLParser;
+import top.tobak.xml.dom4j.parse.FieldValueParserFactory;
+import top.tobak.xml.dom4j.parse.SimpleValueParser;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class XMLParserTest3 {
 

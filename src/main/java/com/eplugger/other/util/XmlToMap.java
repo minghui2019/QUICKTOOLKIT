@@ -4,13 +4,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
-
-import com.eplugger.xml.dom4j.util.XmlFileUtils;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import top.tobak.xml.dom4j.util.XmlFileUtils;
 
 /**
  * <pre>
@@ -23,7 +22,7 @@ public class XmlToMap {
 	/**
 	 * 将Document对象转为Map（String→Document→Map）
 	 * 
-	 * @param Document
+	 * @param doc
 	 * @return
 	 */
 	public static Map<String, Object> Dom2Map(Document doc) {
@@ -45,7 +44,7 @@ public class XmlToMap {
 	/**
 	 * 将Element对象转为Map（String→Document→Element→Map）
 	 * 
-	 * @param Element
+	 * @param e
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")

@@ -1,7 +1,5 @@
 package com.eplugger.xml.dom4j.parser;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -9,9 +7,10 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import top.tobak.xml.dom4j.XMLObject;
+import top.tobak.xml.dom4j.XMLParser;
 
-import com.eplugger.xml.dom4j.XMLObject;
-import com.eplugger.xml.dom4j.XMLParser;
+import static org.junit.Assert.assertEquals;
 
 public class XMLParserTest2 {
 

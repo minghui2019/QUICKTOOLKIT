@@ -8,6 +8,13 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -16,24 +23,15 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.Node;
-
-import com.eplugger.common.lang.StringUtils;
-import com.eplugger.commons.collections.CollectionUtils;
-import com.eplugger.commons.lang3.reflect.FieldUtils;
-import com.eplugger.xml.dom4j.annotation.Dom4JField;
-import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
-import com.eplugger.xml.dom4j.annotation.Dom4JTag;
-import com.eplugger.xml.dom4j.parse.FieldValueParserFactory;
-import com.eplugger.xml.dom4j.util.XmlFileUtils;
-import com.eplugger.xml.dom4j.utils.ParserXml;
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import top.tobak.common.lang.StringUtils;
+import top.tobak.commons.collections.CollectionUtils;
+import top.tobak.commons.lang3.reflect.FieldUtils;
+import top.tobak.xml.dom4j.annotation.Dom4JField;
+import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
+import top.tobak.xml.dom4j.annotation.Dom4JTag;
+import top.tobak.xml.dom4j.parse.FieldValueParserFactory;
+import top.tobak.xml.dom4j.util.XmlFileUtils;
+import top.tobak.xml.dom4j.utils.ParserXml;
 
 /**
  * Dom4j解析器抽象实现类
@@ -66,7 +64,7 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 		try {
 			return XmlFileUtils.readDocument(path, encoding);
 		} catch (DocumentException e) {
-			log.error("xml文件读取失败, 请检查路径[path=" + path + "]" + e.getMessage());
+			log.error("xml文件读取失败, 请检查路径[path=" + path + "]");
 		}
 		return null;
 	}
@@ -117,7 +115,7 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 	 * 映射为实体类; 要注册自定义解析器需要在 {@link FieldValueParserFactory} 中注册 并且必须在调用当前方法之前.
 	 *
 	 * @param cls 实体类字节码
-	 * @param     <T> 实体类泛型
+	 * @param <D> 实体类泛型
 	 * @return 实体类对象
 	 * @throws Exception
 	 * @see FieldValueParserFactory 字段实例解析器工厂
@@ -125,16 +123,18 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 	public <D> D toBean(Class<D> cls, Element element) {
 		D bean;
 		try {
-			bean = cls.newInstance();
+			bean = cls.getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
 			throw new RuntimeException("类型[" + cls.getSimpleName() + "]创建实例失败，请检查是否缺少无参数的构造函数");
 		}
 
 		// 获取字段列表
 		List<Field> fields = FieldUtils.getAllFieldsList(cls);
-		for (Field field : fields)
-			if (!FieldUtils.isStaticOrFinal(field))
+		for (Field field : fields) {
+			if (!FieldUtils.isStaticOrFinal(field)) {
 				setValue(bean, field, element);
+			}
+		}
 
 		return bean;
 	}
@@ -220,7 +220,7 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
      *
      * @param bean  数据对象
      * @param field 字段对象
-	 * @param element 
+	 * @param root
      * @return 成功处理返回true, 否则返回false(需要其他方式处理)
      */
     private boolean tryMap(Object bean, Field field, Element root) {
@@ -404,7 +404,6 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
      *
      * @param data 目标对象
      * @param isAutoWrite2File 是否写出到文件
-     * @param      <T> 对象类型
      * @return Document实体, 目标对象为null时总是返回null
      */
 	public Document fromBean(T data, boolean isAutoWrite2File) {
@@ -422,7 +421,7 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
      * 指定对象转换为Element对象, 目标对象必须使用{@link Dom4JTag @Dom4JTag}注解
      *
      * @param data 目标对象
-     * @param      <T> 对象类型
+     * @param <D> 对象类型
      * @return Element实体, 目标对象为null时总是返回null
      */
 	private <D> Element fromBean1(D data) {
@@ -544,7 +543,7 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
      * @param root      数据对象
      * @param fieldType 字段类型
      * @param fieldName 字段名称
-     * @param target    目标标签
+     * @param fieldValue 字段值
      * @return 成功处理返回true, 否则返回false(需要其他方式处理)
      */
 	private boolean trySimpleValueByTag(Element root, Class<?> fieldType, String fieldName, Object fieldValue) {
@@ -559,8 +558,8 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 	/**
      * 使用子标签获取自定义类型值
      * 
-     * @param xmlObject
-     * @param field
+     * @param root
+     * @param fieldType
      * @param fieldValue
      * @return
      */

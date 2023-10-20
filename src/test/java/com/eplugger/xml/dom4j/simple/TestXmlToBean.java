@@ -1,15 +1,13 @@
 package com.eplugger.xml.dom4j.simple;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
-
 import com.eplugger.onekey.entity.Fields;
 import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.uuid.entity.Uuids;
-import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
-
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import top.tobak.xml.dom4j.utils.ParseXmlUtils;
+
+import static org.junit.Assert.assertNotNull;
 
 @Slf4j
 public class TestXmlToBean {

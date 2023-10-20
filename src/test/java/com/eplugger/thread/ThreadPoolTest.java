@@ -1,9 +1,9 @@
 package com.eplugger.thread;
 
-import com.eplugger.thread.utils.ThreadPoolManager;
-import com.eplugger.thread.utils.WorkRunnable;
-import com.eplugger.thread.utils.WorkThreadFactory;
 import com.google.common.base.Strings;
+import top.tobak.thread.utils.ThreadPoolManager;
+import top.tobak.thread.utils.WorkRunnable;
+import top.tobak.thread.utils.WorkThreadFactory;
 
 public class ThreadPoolTest {
     public static void main(String[] args) {

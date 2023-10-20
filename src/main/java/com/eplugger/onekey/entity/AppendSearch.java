@@ -1,8 +1,8 @@
 package com.eplugger.onekey.entity;
 
-import com.eplugger.xml.dom4j.annotation.Dom4JField;
-import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
-import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+import top.tobak.xml.dom4j.annotation.Dom4JField;
+import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
+import top.tobak.xml.dom4j.annotation.Dom4JTag;
 import com.google.common.base.Strings;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Dom4JTag
 public class AppendSearch {
-	@Dom4JField
+	@Dom4JField(type = Dom4JFieldType.NONE)
 	private String value;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE)
 	private String relativeField;

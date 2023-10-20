@@ -1,7 +1,7 @@
 package com.eplugger.trans.entity;
 
-import com.eplugger.xml.dom4j.annotation.Dom4JField;
-import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+import top.tobak.xml.dom4j.annotation.Dom4JField;
+import top.tobak.xml.dom4j.annotation.Dom4JTag;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -16,19 +16,18 @@ import org.junit.Test;
 public class AddFieldMain {
 	@Before
 	public void testSetSchoolCode() {
-		DBUtils.schoolInfo = SchoolInfo.广州番禺职业技术学院;
+		DBUtils.schoolInfo = SchoolInfo.广东工业大学;
 	}
 
 	@Test
 	public void testHasModuleTable() throws Exception {
-		TextTrans.hasModuleTables(new ModuleTable("notify"));
+		TextTrans.hasModuleTables(new ModuleTable("ptProject"));
 	}
 
 	@Test
 	public void testCreateFieldXml() throws Exception {
-		TextTrans.createFieldXml("建议推迟人数",
-			new ModuleTable("changeLog", "SYS_CHANGE_LOG", "系统更新日志")
-		);
+		TextTrans.createFieldXml("是否为译文；版面",
+			new ModuleTable("paper", "BIZ_PT_PROJECT", "平台团队项目"));
 	}
 	
 	@Test
@@ -38,17 +37,17 @@ public class AddFieldMain {
 	
 	@Test
 	public void testTransText2En() throws Exception {
-		String dst = com.baidu.translate.service.TransService.transTextZh2En("经费收支");
+		String dst = com.baidu.translate.service.TransService.transTextZh2En("出版社类别");
 		System.out.println(dst);
 	}
 	
 	@Test
 	public void testCreateCategorySqlFile() throws Exception {
-		String categoryName = "REVIEW_RESULT_BOOK"; //常量名
-		String bizName = "评审结果(著作)"; //业务名称
-		String bizType = BizType.评审.name(); //业务类型
-		String[] keyArray = "1,2,0".split(",");//字典代码
-		String[] valueArray = "达到要求、基本达到要求、未达到要求".split("、");
+		String categoryName = "PLATFORM_LEVEL"; //常量名
+		String bizName = "平台层次"; //业务名称
+		String bizType = BizType.项目.name(); //业务类型
+		String[] keyArray = "1,2,3,4,5,6".split(",");//字典代码
+		String[] valueArray = "1、2、3、4、5、6".split("、");
 //		String[] valueArray = {"技术开发", "技术服务", };//字典值
 		AddCategoryEntry.createCategorySqlFile(categoryName, bizName, bizType, DBUtils.schoolInfo.version, keyArray, valueArray);
 	}

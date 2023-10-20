@@ -3,7 +3,7 @@ package com.eplugger.onekey.utils.sqlFile;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.eplugger.common.lang.StringUtils;
+import top.tobak.common.lang.StringUtils;
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
 import com.eplugger.onekey.utils.SqlUtils;
@@ -41,8 +41,8 @@ public class ProduceMetaDataFactory extends AbstractProduceCodeFactory {
 		sb.append("-- 表[SYS_ENTITY_META]的数据如下:").append(StringUtils.CRLF);
 		int i = 0;
 		for (Field field : fields) {
-			sb.append("insert into \"SYS_ENTITY_META\"(\"ID\",\"BEANID\",\"CATEGORYNAME\",\"ORDERS\",\"MEANING\",\"NAME\",\"DATA_TYPE\",")
-			.append("\"EADPDATATYPE\",\"BUSINESSFILTERTYPE\",\"USESTATE\") values('")
+			sb.append("insert into SYS_ENTITY_META(ID,BEANID,CATEGORYNAME,ORDERS,MEANING,NAME,DATA_TYPE,")
+			.append("EADPDATATYPE,BUSINESSFILTERTYPE,USESTATE) values('")
 			.append(uuidList.get(i++)).append("','").append(beanId).append("',")
 			.append(field.getCategoryName() == null ? "NULL" : "'" + field.getCategoryName() + "'")
 			.append(",").append(++orders).append(",'").append(field.getFieldName()).append("','")

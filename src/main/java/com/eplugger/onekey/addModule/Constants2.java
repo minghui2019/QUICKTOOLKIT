@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.eplugger.common.io.FileUtils;
+import top.tobak.common.io.FileUtils;
 import com.eplugger.enums.DataType;
+import com.eplugger.onekey.entity.AppendSearch;
 import com.eplugger.onekey.entity.Field;
+import com.eplugger.onekey.schoolInfo.entity.SchoolInfo;
 import com.eplugger.utils.DBUtils;
 import com.eplugger.utils.OtherUtils;
 import com.google.common.collect.Lists;
@@ -24,16 +26,6 @@ public class Constants2 {
 	private Constants2() {}
 	
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	
-	public enum SuperClassName {
-		ApplyInfo,
-		ApplyBook,
-		Product,
-		ProductAuthor,
-		CheckBusinessEntity,
-		BusinessEntity,
-		BizEntity;
-	}
 	
 	private static Map<String, String> fullClassNameMap = Maps.newHashMap();
 	public static String getFullClassNameMap(String key) {
@@ -141,7 +133,7 @@ public class Constants2 {
 
 	private static void initCheckBusinessEntitySuperClassFieldMap() {
 		List<Field> checkBusinessEntityClassFields = Lists.newArrayList();
-		checkBusinessEntityClassFields.add(new Field("checkStatus", "审核状态", DataType.STRING.java, "CHECKSTATUS", "DM_CHECK_CHECKSTATUS", 64));
+		checkBusinessEntityClassFields.add(new Field("checkStatus", "审核状态", DataType.STRING.java, "CHECKSTATUS", "DM_CHECK_CHECKSTATUS", 64, "no"));
 		checkBusinessEntityClassFields.add(new Field("checkDate", "审核时间", DataType.STRING.java, 64, "CHECKDATE"));
 		checkBusinessEntityClassFields.add(new Field("checker", "审核人", DataType.STRING.java, 80, "CHECKER"));
 		superClassFieldMap.put("CheckBusinessEntity", checkBusinessEntityClassFields);
@@ -179,9 +171,9 @@ public class Constants2 {
 		productClassFields.add(new Field("firstAuthorName", "第一作者姓名", DataType.STRING.java, 64));
 		productClassFields.add(new Field("firstAuthorAccount", "第一作者职工号", DataType.STRING.java, 64));
 		productClassFields.add(new Field("firstAuthorTitleId", "第一作者职称", DataType.STRING.java, "TITLE_SELECT", 32));
-		productClassFields.add(new Field("firstAuthorSexId", "第一作者性别", DataType.STRING.java, "FIRST_AUTHOR_SEXID", "RY_XM_NN", 32));
+		productClassFields.add(new Field("firstAuthorSexId", "第一作者性别", DataType.STRING.java, "FIRST_AUTHOR_SEXID", "RY_XM_NN", 32, "no"));
 		productClassFields.add(new Field("firstAuthorEduLevelId", "第一作者学历", DataType.STRING.java, "EDU_LEVEL", 32));
-		productClassFields.add(new Field("firstAuthorEduDeGreeId", "第一作者学位", DataType.STRING.java, "FIRST_AUTHOR_EDU_DEGREE_ID", "EDU_DEGREE", 32));
+		productClassFields.add(new Field("firstAuthorEduDeGreeId", "第一作者学位", DataType.STRING.java, "FIRST_AUTHOR_EDU_DEGREE_ID", "EDU_DEGREE", 32, "no"));
 		productClassFields.add(new Field("fileIds", "附件", DataType.STRING.java, 500));
 		productClassFields.add(new Field("authorPIds", "成员personId合集", DataType.STRING.java, 2000, "AUTHORPIDS"));
 		productClassFields.add(new Field("authorUnitIds", "成员unitId合集", DataType.STRING.java, 2000, "AUTHORUNITIDS"));
@@ -194,18 +186,94 @@ public class Constants2 {
 		superClassFieldMap.put("Product", productClassFields);
 	}
 
+	private static void initProjectSuperClassFieldMap() {
+		List<Field> projectClassFields = Lists.newArrayList();
+		projectClassFields.add(new Field("code", "项目编号", DataType.STRING.java, 64));
+		projectClassFields.add(new Field("name", "项目名称", DataType.STRING.java, 512));
+		projectClassFields.add(new Field("unitId", "所属单位", DataType.STRING.java, "PERSON_KY_UNIT", 32, "userinfo"));
+		projectClassFields.add(new Field("divisionId", "所属教研室", DataType.STRING.java, 32));
+		projectClassFields.add(new Field("beginDate", "开始日期", DataType.DATE.java));
+		projectClassFields.add(new Field("authorizeDate", "立项日期", DataType.DATE.java));
+		projectClassFields.add(new Field("planEndDate", "计划完成日期", DataType.DATE.java));
+		projectClassFields.add(new Field("completeState", "结项状态", DataType.STRING.java, 32));
+		projectClassFields.add(new Field("projectStatusId", "项目状态", DataType.STRING.java, "PROJECT_STATE", 32));
+		projectClassFields.add(new Field("chargerType", "负责人类型", DataType.STRING.java, "AUTHOR_TYPE", 32));
+		projectClassFields.add(new Field("chargerCode", "负责人编号", DataType.STRING.java, 32, "CHARGER_CODE", "userinfo"));
+		projectClassFields.add(new Field("chargerName", "负责人姓名", DataType.STRING.java, 50));
+		projectClassFields.add(new Field("chargerNameView", "负责人姓名", DataType.STRING.java, true));
+		projectClassFields.add(new Field("chargerPhone", "负责人电话", DataType.STRING.java, 50));
+		projectClassFields.add(new Field("chargerEmail", "负责人邮箱", DataType.STRING.java, 50));
+		projectClassFields.add(new Field("transactor", "经办人", DataType.STRING.java, 50));
+		projectClassFields.add(new Field("transactorPhone", "经办人电话", DataType.STRING.java, 50));
+		projectClassFields.add(new Field("transactorEmail", "经办人邮箱", DataType.STRING.java, 50));
+		projectClassFields.add(new Field("feeAuthorize", "批准经费", DataType.DOUBLE.java));
+		projectClassFields.add(new Field("feeCode", "经费卡号", DataType.STRING.java, 50));
+		projectClassFields.add(new Field("subjectClassId", "教育部统计归属", DataType.STRING.java, "STA_CLASS", 32));
+		projectClassFields.add(new Field("subjectId", "一级学科", DataType.STRING.java, "SUBJECT1", 32));
+		projectClassFields.add(new Field("note", "备注", DataType.STRING.java, 2000));
+
+		projectClassFields.add(new Field("standby1", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby2", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby3", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby4", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby5", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby6", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby7", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby8", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby9", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+		projectClassFields.add(new Field("standby10", "备用字段", DataType.STRING.java, 400).setUseState("unuse"));
+
+		projectClassFields.add(new Field("incomeFee", "已到金额", DataType.DOUBLE.java, true));
+		projectClassFields.add(new Field("totalFee", "已借票金额", DataType.DOUBLE.java, true));
+		projectClassFields.add(new Field("payoutFee", "已报销金额", DataType.DOUBLE.java, true));
+		projectClassFields.add(new Field("isOutFee", "已拨金额", DataType.DOUBLE.java, true));
+		projectClassFields.add(new Field("transferFee", "结转金额", DataType.DOUBLE.java, true));
+
+		projectClassFields.add(new Field("authorPIds", "成员personId合集", DataType.STRING.java, 1000, "AUTHORPIDS", "userinfo"));
+		projectClassFields.add(new Field("authorUnitIds", "成员unitId合集", DataType.STRING.java, 1000, "AUTHORUNITIDS", "userinfo"));
+
+		projectClassFields.add(new Field("buyerContractCount", "出账合同数", DataType.INTEGER.java, true));
+
+		projectClassFields.add(new Field("completeDataStatus", "数据完善状态", DataType.STRING.java, 40, "COMPLETEDATASTATUS"));
+
+		projectClassFields.add(new Field("unCheckedIncomeFee", "待审核到账金额", DataType.DOUBLE.java, true));
+		projectClassFields.add(new Field("outFeeInCheck", "待审核外拨金额", DataType.DOUBLE.java, true));
+
+		projectClassFields.add(new Field("isBudgetControl", "是否管控预算", DataType.STRING.java, "SF", 32));
+		projectClassFields.add(new Field("budgetStandardId", "预算标准id", DataType.STRING.java,32));
+		projectClassFields.add(new Field("budgetCount", "项目预算", DataType.INTEGER.java, true));
+		projectClassFields.add(new Field("allowMiddleCheckDate", "允许中检时间", DataType.STRING.java, true));
+		projectClassFields.add(new Field("allowCompleteDate", "允许结项日期", DataType.STRING.java, true));
+		projectClassFields.add(new Field("budgetState", "调账状态", DataType.STRING.java, true));
+
+		Field field = new Field("memberNames", "项目成员", "String", true);
+		AppendSearch appendSearch = new AppendSearch();
+		field.setAppendSearch(appendSearch);
+		appendSearch.setValue("SELECT ddd, concat(PERSON_NAME, (CASE WHEN MEMBER_TYPE='2' THEN '（学）' WHEN MEMBER_TYPE='3' THEN '（外）' ELSE '' END)) val FROM ddd WHERE ddd IN (^{id}) ORDER BY ORDER_ID");
+		appendSearch.setRelativeField("ID");
+		appendSearch.setSymbol("；");
+		appendSearch.setMergeMultiVals(true);
+		projectClassFields.add(field);
+
+		superClassFieldMap.put("Project", projectClassFields);
+	}
+
+
 	public static void main(String[] args) throws IOException {
-		String jsonStr = FileUtils.readFile4String("src/main/resource/other/superClassFields.json");
-		JsonParser jsonParser = new JsonParser();
-		JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
-		JsonArray jsonArray = jsonObject.get(SuperClassName.ApplyInfo.toString()).getAsJsonArray();
-		
-		Type type = new TypeToken<List<Field>>() {}.getType();
-		List<Field> applyInfoClassFields = gson.fromJson(jsonArray, type);
-		System.out.println(applyInfoClassFields);
-		
-//		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//		String json = gson.toJson(superClassFieldMap);
+//		String jsonStr = FileUtils.readFile4String("src/main/resource/other/superClassFields.json");
+//		JsonParser jsonParser = new JsonParser();
+//		JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
+//		JsonArray jsonArray = jsonObject.get(SuperClassName.ApplyInfo.toString()).getAsJsonArray();
+//
+//		Type type = new TypeToken<List<Field>>() {}.getType();
+//		List<Field> applyInfoClassFields = gson.fromJson(jsonArray, type);
+//		System.out.println(applyInfoClassFields);
+
+		DBUtils.schoolInfo = SchoolInfo.广东工业大学;
+		initProjectSuperClassFieldMap();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String json = gson.toJson(superClassFieldMap);
+		System.out.println(json);
 //		FileUtils.write("src/main/resource/other/superClassFields.json", json);
 	}
 

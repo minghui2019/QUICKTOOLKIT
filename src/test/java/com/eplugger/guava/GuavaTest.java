@@ -85,6 +85,7 @@ public class GuavaTest {
         // 用:分割键值对，并用#分割每个元素，返回字符串
         String returnedString = Joiner.on("#").withKeyValueSeparator(":").join(testMap);
         System.out.println(returnedString);
+        System.out.println(Joiner.on("&").withKeyValueSeparator("=").join(testMap));
     }
 
     /**

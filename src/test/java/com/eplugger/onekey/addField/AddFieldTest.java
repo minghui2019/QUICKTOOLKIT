@@ -8,14 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.entity.Fields;
 import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.uuid.UUIDFun;
-import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
+import org.junit.Before;
+import org.junit.Test;
+import top.tobak.xml.dom4j.utils.ParseXmlUtils;
 
 public class AddFieldTest {
 	private String classPath;

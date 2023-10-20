@@ -1,8 +1,8 @@
 package com.eplugger.common.lang;
 
 public abstract class AbstractStringBuilder {
-    protected String lineSeparator = java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator"));
-
+//    protected String lineSeparator = java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator"));
+    protected String lineSeparator = System.lineSeparator();
     public AbstractStringBuilder append(CharSequence csq) {
         appendToBuilder(csq);
         return this;

@@ -1,0 +1,66 @@
+{
+  "Product": [
+    {
+      "fieldId": "allAuthor",
+      "fieldName": "所有人员",
+      "dataType": "String",
+      "precision": 0,
+      "tranSient": true,
+      "appendSearch":
+      {
+        "value": "SELECT %s, concat(replace(AUTHOR_NAME,'；',';'), (CASE WHEN AUTHOR_TYPE='2' THEN '（学）' WHEN AUTHOR_TYPE='3' THEN '（外）' ELSE '' END)) val FROM %s WHERE %s IN (^{id}) ORDER BY ORDER_ID",
+        "relativeField": "ID",
+        "relativeThisProperty": "id",
+        "searchValLabel": "val",
+        "mergeMultiVals": true,
+        "symbol": "；"
+      },
+      "updateInsert": true,
+      "ignoreImport": false,
+      "onlyMeta": false,
+      "businessFilterType": "no"
+    },
+    {
+      "fieldId": "allAuthorId",
+      "fieldName": "所有人员ID",
+      "dataType": "String",
+      "precision": 0,
+      "tranSient": true,
+      "appendSearch":
+      {
+        "value": "SELECT %s, PERSON_ID val FROM %s WHERE %s IN (^{id}) ORDER BY ORDER_ID",
+        "relativeField": "ID",
+        "relativeThisProperty": "id",
+        "searchValLabel": "val",
+        "mergeMultiVals": true,
+        "symbol": "；"
+      },
+      "updateInsert": true,
+      "ignoreImport": false,
+      "onlyMeta": false,
+      "businessFilterType": "no"
+    }
+  ],
+  "Project": [
+    {
+      "fieldId": "memberNames",
+      "fieldName": "项目成员",
+      "dataType": "String",
+      "precision": 0,
+      "tranSient": true,
+      "appendSearch": {
+        "value": "SELECT %s, concat(PERSON_NAME, (CASE WHEN MEMBER_TYPE='2' THEN '（学）' WHEN MEMBER_TYPE='3' THEN '（外）' ELSE '' END)) val FROM %s WHERE %s IN (^{id}) ORDER BY ORDER_ID",
+        "relativeField": "ID",
+        "relativeThisProperty": "id",
+        "searchValLabel": "val",
+        "mergeMultiVals": true,
+        "symbol": "；"
+      },
+      "updateInsert": true,
+      "ignoreImport": false,
+      "onlyMeta": false,
+      "businessFilterType": "no",
+      "useState": "use"
+    }
+  ]
+}

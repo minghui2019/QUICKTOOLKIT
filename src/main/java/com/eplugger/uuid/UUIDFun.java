@@ -9,11 +9,10 @@ import java.util.UUID;
 import com.eplugger.util.Stack;
 import com.eplugger.uuid.entity.Uuid;
 import com.eplugger.uuid.entity.Uuids;
-import com.eplugger.xml.dom4j.XMLObject;
-import com.eplugger.xml.dom4j.XMLParser;
 import com.google.common.collect.Lists;
-
 import lombok.extern.slf4j.Slf4j;
+import top.tobak.xml.dom4j.XMLObject;
+import top.tobak.xml.dom4j.XMLParser;
 
 @Slf4j
 public class UUIDFun {

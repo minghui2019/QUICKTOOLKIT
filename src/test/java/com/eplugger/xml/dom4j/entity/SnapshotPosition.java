@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.eplugger.xml.dom4j.annotation.Dom4JField;
-import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
-import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+import top.tobak.xml.dom4j.annotation.Dom4JField;
+import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
+import top.tobak.xml.dom4j.annotation.Dom4JTag;
 
 /**
  * 快照位置

@@ -5,11 +5,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import com.eplugger.common.lang.StringUtils;
+import top.tobak.common.lang.StringUtils;
 import com.eplugger.utils.OtherUtils;
-import com.eplugger.xml.dom4j.annotation.Dom4JField;
-import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
-import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+import top.tobak.xml.dom4j.annotation.Dom4JField;
+import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
+import top.tobak.xml.dom4j.annotation.Dom4JTag;
 import com.google.common.base.Strings;
 
 import lombok.AllArgsConstructor;
@@ -33,9 +33,11 @@ public class Field {
 	private String tableFieldId;
 	@Dom4JField(comment = "字典名")
 	private String categoryName;
+	@Dom4JField(type = Dom4JFieldType.TAG, name = "Category", comment = "字典")
+	private Category category;
 	@Dom4JField(comment = "精度")
 	private int precision;
-	@Dom4JField(comment = "")
+	@Dom4JField(comment = "级联列")
 	private String joinColumn;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "虚拟字段")
 	private boolean tranSient = false;
@@ -57,6 +59,8 @@ public class Field {
 	private boolean onlyMeta = false;
 	@Dom4JField(comment = "业务过滤类型，否-no，用户属性-userinfo，值-value，字典-dictionary")
 	private String businessFilterType = "no";
+	@Dom4JField(comment = "状态，启用-use，禁用-unuse")
+	private String useState = "use";
 
 	public String getTableFieldId() {
 		return Strings.isNullOrEmpty(tableFieldId) ? StringUtils.lowerCamelCase2UnderScoreCase(fieldId) : tableFieldId;
@@ -67,22 +71,28 @@ public class Field {
 	}
 	public Field(String fieldId, String fieldName, String dataType) {
 //		this(fieldName, fieldId, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldName), null, 0);
-		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), null, 0);
+		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), null, 0, "no");
 	}
 	public Field(String fieldId, String fieldName, String dataType, int precision) {
 		this(fieldId, fieldName, dataType, precision, StringUtils.lowerCamelCase2UnderScoreCase(fieldId));
 	}
 	public Field(String fieldId, String fieldName, String dataType, boolean tranSient) {
-		this(fieldId, fieldName, dataType, null, null, 0, null, tranSient, null, null, null);
+		this(fieldId, fieldName, dataType, null, null, 0, null, tranSient, null, null, null, "no");
 	}
 	public Field(String fieldId, String fieldName, String dataType, int precision, String tableFieldId) {
-		this(fieldId, fieldName, dataType, tableFieldId, null, precision);
+		this(fieldId, fieldName, dataType, tableFieldId, null, precision, "no");
+	}
+	public Field(String fieldId, String fieldName, String dataType, int precision, String tableFieldId, String businessFilterType) {
+		this(fieldId, fieldName, dataType, tableFieldId, null, precision, businessFilterType);
 	}
 	public Field(String fieldId, String fieldName, String dataType, String categoryName, int precision) {
-		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, precision);
+		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, precision, "no");
 	}
-	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, int precision) {
-		this(fieldId, fieldName, dataType, tableFieldId, categoryName, precision, null, false, null, null, null);
+	public Field(String fieldId, String fieldName, String dataType, String categoryName, int precision, String businessFilterType) {
+		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, precision, businessFilterType);
+	}
+	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, int precision, String businessFilterType) {
+		this(fieldId, fieldName, dataType, tableFieldId, categoryName, precision, null, false, null, null, null, businessFilterType);
 	}
 	
 	/**
@@ -94,7 +104,7 @@ public class Field {
 	 * @param genericity List的泛型，非List不需要
 	 */
 	public Field(String fieldId, String fieldName, String dataType, String categoryName, String joinColumn, String genericity) {
-		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, 0, joinColumn, false, null, genericity, null);
+		this(fieldId, fieldName, dataType, StringUtils.lowerCamelCase2UnderScoreCase(fieldId), categoryName, 0, joinColumn, false, null, genericity, null, "no");
 	}
 	
 	/**
@@ -109,8 +119,9 @@ public class Field {
 	 * @param appendSearch 虚拟字段的查询条件
 	 * @param genericity List的泛型，非List不需要
 	 * @param association 关联关系：多对一，一对多
+	 * @param businessFilterType 业务过滤
 	 */
-	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, int precision, String joinColumn, boolean tranSient, AppendSearch appendSearch, String genericity, String association) {
+	public Field(String fieldId, String fieldName, String dataType, String tableFieldId, String categoryName, int precision, String joinColumn, boolean tranSient, AppendSearch appendSearch, String genericity, String association, String businessFilterType) {
 		this.fieldId = fieldId;
 		this.fieldName = fieldName;
 		this.dataType = dataType;
@@ -122,13 +133,19 @@ public class Field {
 		this.appendSearch = appendSearch;
 		this.genericity = genericity;
 		this.association = association;
+		this.businessFilterType = businessFilterType;
 	}
-	
+
+	public Field setUseState(String useState) {
+		this.useState = useState;
+		return this;
+	}
+
 	public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
 		Map<Object, Boolean> seen = new ConcurrentHashMap<>();
 		return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("\nField [");

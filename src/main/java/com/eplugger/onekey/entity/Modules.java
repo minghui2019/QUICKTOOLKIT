@@ -3,9 +3,9 @@ package com.eplugger.onekey.entity;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.eplugger.xml.dom4j.annotation.Dom4JField;
-import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
-import com.eplugger.xml.dom4j.annotation.Dom4JTag;
+import top.tobak.xml.dom4j.annotation.Dom4JField;
+import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
+import top.tobak.xml.dom4j.annotation.Dom4JTag;
 import com.google.common.collect.Lists;
 
 import lombok.AllArgsConstructor;
@@ -55,5 +55,14 @@ public class Modules {
 		} catch (Exception e) {
 			return new Module();
 		}
+	}
+
+	public List<Category> getCategories() {
+		List<Module> fieldList = getValidList();
+		List<Category> categories = Lists.newArrayList();
+		fieldList.forEach(module -> {
+			categories.addAll(module.getCategories());
+		});
+		return categories;
 	}
 }

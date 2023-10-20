@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.eplugger.onekey.addCategoryEntry.utils.ProduceCategorySqlCodeFactory;
+import com.eplugger.onekey.entity.Category;
 import com.eplugger.onekey.entity.Module;
 import com.eplugger.onekey.entity.Modules;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFactory;
@@ -12,12 +14,14 @@ import com.eplugger.onekey.utils.jspFile.ProduceJspFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
 import com.eplugger.onekey.utils.xmlFile.ProduceXmlFiles;
-import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
+import top.tobak.xml.dom4j.utils.ParseXmlUtils;
 
 public class AddModuleFun {
 	public static void main(String[] args) throws Exception {
-		Modules modules = ParseXmlUtils.toBean("src/resource/module/Module.xml", Modules.class);
+		Modules modules = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class);
 		Module module = modules.getValidModule();
+		List<Category> categories = modules.getCategories();
+		System.out.println(categories);
 		System.out.println(module);
 	}
 
@@ -199,6 +203,7 @@ public class AddModuleFun {
 	
 	public static void AddMultipleModuleFun1(boolean authorSwitch, String template) throws Exception {
 		List<Module> validList = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidList();
+		ProduceCategorySqlCodeFactory.getInstance().produceSqlFiles(validList);
 		for (Module module : validList) {
 			ProduceJavaFactory.getInstance().produceJavaFiles(module, template);
 
@@ -209,6 +214,5 @@ public class AddModuleFun {
 			ProduceJspFiles.produceJspFiles(module.getMainModule(), template);
 
 		}
-//		Module module = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidModule();
 	}
 }

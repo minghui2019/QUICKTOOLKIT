@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.eplugger.network.IApiRequest;
 import com.google.gson.JsonObject;
-import com.google.utils.GoogleConstant;
+import top.tobak.utils.GoogleConstant;
 
 public class HttpRequestFacade {
     private IApiRequest api;

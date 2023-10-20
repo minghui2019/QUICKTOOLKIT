@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import cn.hutool.core.lang.Assert;
-import com.eplugger.common.lang.StringUtils;
+import top.tobak.common.lang.StringUtils;
 import com.eplugger.onekey.schoolInfo.entity.SchoolInfo;
 import lombok.extern.slf4j.Slf4j;
 

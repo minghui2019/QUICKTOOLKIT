@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.eplugger.common.io.FileUtils;
+import top.tobak.common.io.FileUtils;
 import com.eplugger.common.lang.CustomStringBuilder;
-import com.eplugger.common.lang.StringUtils;
+import top.tobak.common.lang.StringUtils;
 import com.eplugger.onekey.addModule.Constants;
 import com.eplugger.onekey.entity.AppendSearch;
 import com.eplugger.onekey.entity.Field;
@@ -36,7 +36,14 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 		ModuleInfo mainModule = module.getMainModule();
 		ModuleInfo authorModule = module.getAuthorModule();
 		boolean authorSwitch = authorModule != null;
-		
+
+		String entity = mainModule.getSuperClassMap().get("entity");
+		if (authorModule != null) {
+			List<Field> fields = Constants.getOtherFields(entity, mainModule.getJoinColumn(), authorModule.getTableName());
+			mainModule.getFieldList().addAll(fields);
+			Constants.putFullClassNameMap(authorModule.getModuleName(), authorModule.getPackageName() + ".entity." + authorModule.getModuleName());
+		}
+
 		// entity File
 		String entityJavaCode = ProduceJavaFactory.getInstance().produceEntityJavaFile(mainModule, authorSwitch);
 		FileUtils.write(modulePath + mainModule.getBeanId() + File.separator + "entity" + File.separator + mainModule.getModuleName() + ".java", entityJavaCode);
@@ -632,10 +639,8 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 			return null;
 		}
 		CustomStringBuilder dsb = new CustomStringBuilder();
-		File file;
-		if ("V8.5.3".equals(DBUtils.getEadpDataType())) {
-			file = FileUtils.getFile("src/main/resource/template/todo/todoTemplateV8.5.3.txt");
-		} else {
+		File file = FileUtils.getFile("src/main/resource/template/todo/todoTemplate" + DBUtils.getEadpDataType() + ".txt");
+		if (!file.exists()) {
 			file = FileUtils.getFile("src/main/resource/template/todo/todoTemplate.txt");
 		}
 		List<String> contents = FileUtils.readLines(file , StandardCharsets.UTF_8.toString());
@@ -971,7 +976,8 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 		sb.append("package ").append(module.getPackageName()).append(OtherUtils.SPOT).append("entity;").append(StringUtils.CRLF); //包名
 		sb.append(StringUtils.CRLF);
 		
-		List<Field> fieldList = module.getFieldList();
+//		List<Field> fieldList = module.getFieldList();
+		List<Field> fieldList = module.getFieldList().stream().filter(Field.distinctByKey(f -> f.getFieldId())).collect(Collectors.toList());
 		List<String> javaTypeList = fieldList.stream().map(a -> a.getDataType()).filter(a -> !OtherUtils.isSimpleType1(a)).distinct().collect(Collectors.toList()); 
 		for (String javaType : javaTypeList) {
 			if (OtherUtils.TPYE_LIST.equals(javaType)) {
@@ -1009,7 +1015,11 @@ public class ProduceJavaFactory extends AbstractProduceCodeFactory {
 		}
 		Set<String> collectGenericity = fieldList.stream().map(a -> a.getGenericity()).filter(a -> a != null && !(a.endsWith("Author") || a.endsWith("Member") || a.endsWith("Person"))).distinct().collect(Collectors.toSet());
 		for (String genericity : collectGenericity) {
-			sb.append("import ").append(Constants.getFullClassNameMap(genericity)).append(";").append(StringUtils.CRLF);
+			String fullClassNameMap = Constants.getFullClassNameMap(genericity);
+			if (Strings.isNullOrEmpty(fullClassNameMap)) {
+				continue;
+			}
+			sb.append("import ").append(fullClassNameMap).append(";").append(StringUtils.CRLF);
 		}
 		
 		Set<AppendSearch> collectAppendSearch = fieldList.stream().filter(a -> a.getAppendSearch() != null).map(a -> a.getAppendSearch()).distinct().collect(Collectors.toSet());

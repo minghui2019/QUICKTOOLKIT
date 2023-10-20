@@ -1,17 +1,19 @@
 package com.eplugger.xml.dom4j.object;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.eplugger.xml.dom4j.parser.XMLParserTest;
 import org.junit.Before;
 import org.junit.Test;
+import top.tobak.xml.dom4j.XMLObject;
+import top.tobak.xml.dom4j.XMLParser;
 
-import com.eplugger.xml.dom4j.XMLObject;
-import com.eplugger.xml.dom4j.XMLParser;
-import com.eplugger.xml.dom4j.parser.XMLParserTest;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class XMLObjectTest {
 

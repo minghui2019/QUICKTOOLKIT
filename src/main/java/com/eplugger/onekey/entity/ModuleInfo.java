@@ -4,13 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.eplugger.common.lang.StringUtils;
-import com.eplugger.xml.dom4j.annotation.Dom4JField;
-import com.eplugger.xml.dom4j.annotation.Dom4JFieldType;
-import com.eplugger.xml.dom4j.annotation.Dom4JTag;
-import com.google.common.collect.Lists;
+import top.tobak.common.lang.StringUtils;
+import top.tobak.xml.dom4j.annotation.Dom4JField;
+import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
+import top.tobak.xml.dom4j.annotation.Dom4JTag;
 import com.google.common.collect.Maps;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Dom4JTag
-public class ModuleInfo {
-	@Dom4JField(type = Dom4JFieldType.TAG, name = "superClassMap", comment = "继承的超类")
-	private Map<String, String> superClassMap = Maps.newHashMap();
+public class ModuleInfo implements ICategory {
 	@Dom4JField(comment = "模块名")
 	private String moduleName;
 	@Dom4JField(comment = "模块中文名")
@@ -38,14 +34,15 @@ public class ModuleInfo {
 	private String beanId;
 	@Dom4JField(type = Dom4JFieldType.TAG, comment = "字段列表")
 	Fields fields;
-//	List<Field> fields = Lists.newArrayList();
 	@Dom4JField(type = Dom4JFieldType.TAG, name = "interfaces", comment = "实现的接口")
 	private String[] interfaces = null;
 	@Dom4JField(comment = "包名")
 	private String packageName;
-	List<Field> fieldList = Lists.newArrayList();
-	
-	
+	@Dom4JField(type = Dom4JFieldType.TAG, name = "superClassMap", comment = "继承的超类")
+	private Map<String, String> superClassMap = Maps.newHashMap();
+	@Dom4JField(comment = "包名")
+	private String joinColumn;
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("ModuleInfo [");
@@ -73,11 +70,19 @@ public class ModuleInfo {
 		if (StringUtils.isNotBlank(packageName)) {
 			sb.append("packageName=").append(packageName).append(", \n");
 		}
+		if (StringUtils.isNotBlank(joinColumn)) {
+			sb.append("joinColumn=").append(joinColumn).append(", \n");
+		}
 		return sb.substring(0, sb.length() - 3) + "]";
 	}
 
 
 	public List<Field> getFieldList() {
 		return fields.getFieldList();
+	}
+
+	@Override
+	public List<Category> getCategories() {
+		return fields.getCategories();
 	}
 }

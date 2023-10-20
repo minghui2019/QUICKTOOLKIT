@@ -8,7 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.eplugger.common.io.FileUtils;
+import top.tobak.common.io.FileUtils;
+import top.tobak.common.lang.StringUtils;
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.utils.DBUtils;
 import com.google.common.collect.Lists;
@@ -25,33 +26,33 @@ public class Constants {
 	private Constants() {}
 	
 	public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	
-	public enum SuperClassName {
-		ApplyInfo,
-		ApplyBook,
-		Product,
-		ProductAuthor,
-		CheckBusinessEntity,
-		BusinessEntity,
-		BizEntity,
-		EntityImpl;
+	private static Map<String, List<Field>> superClassFieldMap = Maps.newHashMap();
+	private static Map<String, List<Field>> otherFieldMap = Maps.newHashMap();
+	private static final Map<String, String> ASSOCIATION_MAP = Maps.newHashMap();
+	private static Map<String, String> fullClassNameMap = Maps.newHashMap();
+
+	static {
+		initFullClassNameMap();
+		initSuperClassFieldMap();
+		initOtherFieldMap();
 	}
 	
-	private static Map<String, String> fullClassNameMap = Maps.newHashMap();
 	public static String getFullClassNameMap(String key) {
 		if (fullClassNameMap.isEmpty()) {
-			String jsonStr = FileUtils.readFile4String("src/main/resource/other/fullClassNames.json");
-			Type type = new TypeToken<HashMap<String, String>>() {
-			}.getType();
-			fullClassNameMap = gson.fromJson(jsonStr, type);
+			initFullClassNameMap();
 		}
 		return fullClassNameMap.get(key);
 	}
+
+	private static void initFullClassNameMap() {
+		String jsonStr = FileUtils.readFile4String("src/main/resource/other/fullClassNames.json");
+		fullClassNameMap = gson.fromJson(jsonStr, new TypeToken<HashMap<String, String>>() {}.getType());
+	}
+
 	public static String putFullClassNameMap(String key, String value) {
 		return fullClassNameMap.put(key, value);
 	}
 	
-	private static final Map<String, String> ASSOCIATION_MAP = Maps.newHashMap();
 	public static final String MANY_TO_ONE = "ManyToOne";
 	public static final String ONE_TO_MANY = "OneToMany";
 	public static String getAssociationMap(String key) {
@@ -62,15 +63,19 @@ public class Constants {
 		return ASSOCIATION_MAP.get(key);
 	}
 	
-	private static Map<String, List<Field>> superClassFieldMap = Maps.newHashMap();
+
 	public static List<Field> getSuperClassFieldMap(String key) {
 		if (superClassFieldMap.isEmpty()) {
-			String jsonStr = FileUtils.readFile4String("src/main/resource/other/superClassFields.json");
-			JsonParser jsonParser = new JsonParser();
-			JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
-			Constants.initSuperClassFieldMap(jsonObject);
+			Constants.initSuperClassFieldMap();
 		}
 		return superClassFieldMap.get(key);
+	}
+
+	private static void initSuperClassFieldMap() {
+		String jsonStr = FileUtils.readFile4String("src/main/resource/other/superClassFields.json");
+		JsonParser jsonParser = new JsonParser();
+		JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
+		Constants.initSuperClassFieldMap(jsonObject);
 	}
 
 	private static void initSuperClassFieldMap(JsonObject jsonObject) {
@@ -78,6 +83,9 @@ public class Constants {
 		initApplyBookClassFieldMap(jsonObject);
 		initProductSuperClassFieldMap(jsonObject);
 		initProductAuthorSuperClassFieldMap(jsonObject);
+		initProjectSuperClassFieldMap(jsonObject);
+		initProjectMemberSuperClassFieldMap(jsonObject);
+
 		initCheckBusinessEntitySuperClassFieldMap(jsonObject);
 		initBizEntitySuperClassFieldMap(jsonObject);
 	}
@@ -135,17 +143,44 @@ public class Constants {
 		}
 		superClassFieldMap.put(key, fields);
 	}
-	
+
+	private static void initProjectMemberSuperClassFieldMap(JsonObject jsonObject) {
+		String key = SuperClassName.ProjectMember.toString();
+		List<Field> fields = fromJson(jsonObject, key);
+		for (Iterator<Field> iterator = fields.iterator(); iterator.hasNext();) {
+			Field field = iterator.next();
+			if (!"V8.5.3".equals(DBUtils.getEadpDataType()) && "srScore".equals(field.getFieldId())) {
+				iterator.remove();
+			}
+		}
+		superClassFieldMap.put(key, fields);
+	}
+
+	private static void initProjectSuperClassFieldMap(JsonObject jsonObject) {
+		String key = SuperClassName.Project.toString();
+		List<Field> fields = fromJson(jsonObject, key);
+		superClassFieldMap.put(key, fields);
+	}
+
 
 	public static void main(String[] args) throws IOException {
 		String jsonStr = FileUtils.readFile4String("src/main/resource/other/superClassFields.json");
 		JsonParser jsonParser = new JsonParser();
 		JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
-		JsonArray jsonArray = jsonObject.get(SuperClassName.ApplyInfo.toString()).getAsJsonArray();
+		JsonArray jsonArray = jsonObject.get(SuperClassName.ProjectMember.toString()).getAsJsonArray();
 		
 		Type type = new TypeToken<List<Field>>() {}.getType();
 		List<Field> applyInfoClassFields = gson.fromJson(jsonArray, type);
+		for (Field field : applyInfoClassFields) {
+			if (field.isTranSient()) {
+				continue;
+			}
+			field.setTableFieldId(StringUtils.lowerCamelCase2UnderScoreCase(field.getFieldId()));
+		}
 		System.out.println(applyInfoClassFields);
+		String json = gson.toJson(applyInfoClassFields);
+		System.out.println(json);
+
 		
 //		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 //		String json = gson.toJson(superClassFieldMap);
@@ -160,25 +195,79 @@ public class Constants {
 	public static List<Field> addSuperClassFields(String superClass) {
 		return addSuperClassFields(Enum.valueOf(SuperClassName.class, superClass));
 	}
+
+	private static void initOtherFieldMap() {
+		String jsonStr = FileUtils.readFile4String("src/main/resource/other/otherFields.json");
+		JsonParser jsonParser = new JsonParser();
+		JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
+		Constants.initOtherFieldMap(jsonObject);
+	}
+	private static void initOtherFieldMap(JsonObject jsonObject) {
+		otherFieldMap.put(SuperClassName.Product.toString(), fromJson(jsonObject, SuperClassName.Product.toString()));
+		otherFieldMap.put(SuperClassName.Project.toString(), fromJson(jsonObject, SuperClassName.Project.toString()));
+	}
+	public static List<Field> getOtherFieldMap(String key) {
+		if (otherFieldMap.isEmpty()) {
+			String jsonStr = FileUtils.readFile4String("src/main/resource/other/otherFields.json");
+			JsonParser jsonParser = new JsonParser();
+			JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
+			Constants.initOtherFieldMap(jsonObject);
+		}
+		return otherFieldMap.get(key);
+	}
+	public static List<Field> getOtherFields(String entity, String joinColumn, String tableName) {
+		List<Field> fields = getOtherFields(Enum.valueOf(SuperClassName.class, entity));
+		if (fields == null) {
+			return Lists.newArrayList();
+		}
+		joinColumn = StringUtils.lowerCamelCase2UnderScoreCase(joinColumn);
+		for (Field field : fields) {
+			field.getAppendSearch().setRelativeField(joinColumn);
+			field.getAppendSearch().setValue(String.format(field.getAppendSearch().getValue(), joinColumn, tableName, joinColumn));
+		}
+		return fields;
+	}
+
+	private static List<Field> getOtherFields(SuperClassName superClass) {
+		switch (superClass) {
+			case Project: // 6
+				return getOtherFieldMap(SuperClassName.Project.toString());
+			case Product: // 4
+				return getOtherFieldMap(SuperClassName.Product.toString());
+			default: // 0
+				break;
+		}
+		return Lists.newArrayList();
+	}
 	
 	/**
 	 * 继承父类需要添加的字段
 	 * @param superClass
 	 * @return
 	 */
-	public static List<Field> addSuperClassFields(SuperClassName superClass) {
+	private static List<Field> addSuperClassFields(SuperClassName superClass) {
 		List<Field> fields = Lists.newArrayList();
 		int step = -1;
 		switch (superClass) {
-		case ApplyInfo: // 6
-			if (step == -1 || step == 6) {
+		case ApplyInfo: // 8
+			if (step == -1 || step == 8) {
 				fields.addAll(Constants.getSuperClassFieldMap(SuperClassName.ApplyInfo.toString()));
 				step = 1;
 			}
-		case ApplyBook: // 5
-			if (step == -1 || step == 5) {
+		case ApplyBook: // 7
+			if (step == -1 || step == 7) {
 				fields.addAll(Constants.getSuperClassFieldMap(SuperClassName.ApplyBook.toString()));
 				step = 2;
+			}
+		case Project: // 6
+			if (step == -1 || step == 6) {
+				fields.addAll(getSuperClassFieldMap(SuperClassName.Project.toString()));
+				step = 2;
+			}
+		case ProjectMember: // 5
+			if (step == -1 || step == 5) {
+				fields.addAll(getSuperClassFieldMap(SuperClassName.ProjectMember.toString()));
+				step = 0;
 			}
 		case Product: // 4
 			if (step == -1 || step == 4) {
@@ -199,7 +288,6 @@ public class Constants {
 		case BizEntity: // 1
 			if (step == -1 || step == 1) {
 				fields.addAll(getSuperClassFieldMap(SuperClassName.BizEntity.toString()));
-				step = 0;
 			}
 			break;
 		default: // 0

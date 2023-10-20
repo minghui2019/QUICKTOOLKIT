@@ -3,10 +3,9 @@ package com.eplugger.xml.dom4j.utils.parsers;
 import java.io.File;
 import java.io.IOException;
 
-import com.eplugger.common.io.FileUtils;
 import com.eplugger.trans.entity.SimpleFields;
-
 import lombok.extern.slf4j.Slf4j;
+import top.tobak.common.io.FileUtils;
 
 @Slf4j
 public class SimpleFieldParser extends AbstractXmlParser<SimpleFields> {

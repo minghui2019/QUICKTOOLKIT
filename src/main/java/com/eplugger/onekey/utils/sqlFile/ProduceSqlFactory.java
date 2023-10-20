@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.eplugger.common.io.FileUtils;
+import top.tobak.common.io.FileUtils;
 import com.eplugger.common.lang.CustomStringBuilder;
-import com.eplugger.common.lang.StringUtils;
+import top.tobak.common.lang.StringUtils;
 import com.eplugger.onekey.addModule.Constants;
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.entity.ModuleInfo;
@@ -32,7 +32,6 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	/**
 	 * 生产数据库表格sql代码
 	 * @param module
-	 * @param databaseType
 	 * @param authorSwitch
 	 * @param joinColumn
 	 * @param mainTableName
@@ -126,17 +125,18 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 				continue;
 			}
 			if (DBUtils.isSqlServer()) {
-				dsb.append("ALTER TABLE [dbo].[").append(tableName).append("] ADD [").append(field.getTableFieldId()).append("] ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL");
+				dsb.append("ALTER TABLE ").append(tableName).append(" ADD ").append(field.getTableFieldId()).append(" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL");
 				dsb.appendln("GO").appendln();
 			}
 			if (DBUtils.isOracle()) {
-				dsb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL ) ");
+				dsb.append("ALTER TABLE ").append(tableName).append(" ADD ").append(field.getTableFieldId()).append(" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL ; ");
+//				dsb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL ) ");
 			}
 		}
-		if (DBUtils.isOracle() && dsb.length() > 0) {
-			dsb.appendln(";");
-			dsb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
-		}
+//		if (DBUtils.isOracle() && dsb.length() > 0) {
+//			dsb.appendln(";");
+//			dsb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
+//		}
 		return dsb.toString();
 	}
 
@@ -148,7 +148,7 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 		}
 		String sqlCode = produceCreateTableSql(mainModule, false, joinColumn_, mainModule.getTableName());
 		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\sql" + File.separator + mainModule.getModuleName() + ".SQL", sqlCode);
-		if (authorSwitch) {
+		if (authorSwitch && authorModule != null) {
 			String authorsqlCode = produceCreateTableSql(authorModule, true, joinColumn_, mainModule.getTableName());
 			FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\sql" + File.separator + authorModule.getModuleName() + ".SQL", authorsqlCode);
 		}

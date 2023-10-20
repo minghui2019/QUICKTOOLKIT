@@ -3,82 +3,336 @@
 <Modules>
     <Module ignore="false">
         <MainModule>
-            <beanId>changeLog</beanId>
-            <moduleName>ChangeLog</moduleName>
-            <tableName>SYS_CHANGE_LOG</tableName>
-            <moduleZHName>系统更新日志</moduleZHName>
-            <packageName>com.eplugger.system.changeLog</packageName>
+            <beanId>supplementAssess</beanId>
+            <moduleName>SupplementAssess</moduleName>
+            <tableName>KH_SUPPLEMENT</tableName>
+            <moduleZHName>考核补录</moduleZHName>
+            <packageName>com.eplugger.assess.supplementAssess</packageName>
             <superClassMap>
-                <param key="entity" value="EntityImpl" />
-                <param key="bo" value="BusinessBO" />
-                <param key="action" value="BusinessAction" />
+                <param key="entity" value="CheckBusinessEntity" />
+                <param key="bo" value="CheckBusinessBO" />
+                <param key="action" value="CheckBusinessAction" />
             </superClassMap>
+            <joinColumn>supplementAssessId</joinColumn>
             <Fields>
                 <Field>
-                    <fieldId>name</fieldId>
-                    <fieldName>更新名称</fieldName>
+                    <fieldId>assessTimeId</fieldId>
+                    <fieldName>考核批次编号</fieldName>
                     <dataType>String</dataType>
-                    <precision>300</precision>
+                    <precision>32</precision>
+                </Field>
+                <Field updateInsert="false" association="ManyToOne" ignoreImport="true">
+                    <fieldId>assessTime</fieldId>
+                    <fieldName>考核批次</fieldName>
+                    <dataType>AssessTime</dataType>
+                    <joinColumn>ASSESS_TIME_ID</joinColumn>
                 </Field>
                 <Field>
-                    <fieldId>updateTime</fieldId>
-                    <fieldName>更新时间</fieldName>
-                    <dataType>Date</dataType>
-                </Field>
-                <Field>
-                    <fieldId>estimatedDuration</fieldId>
-                    <fieldName>预计维护时长（分钟）</fieldName>
-                    <dataType>Integer</dataType>
-                </Field>
-                <Field>
-                    <fieldId>predictedRisks</fieldId>
-                    <fieldName>预知风险</fieldName>
+                    <fieldId>personId</fieldId>
+                    <fieldName>第一成员ID</fieldName>
                     <dataType>String</dataType>
-                    <precision>500</precision>
+                    <precision>32</precision>
                 </Field>
                 <Field>
-                    <fieldId>unknownRisks</fieldId>
-                    <fieldName>未知风险</fieldName>
-                    <dataType>String</dataType>
-                    <precision>500</precision>
-                </Field>
-                <Field>
-                    <fieldId>updateContent</fieldId>
-                    <fieldName>更新内容</fieldName>
-                    <dataType>String</dataType>
-                    <precision>500</precision>
-                </Field>
-                <Field>
-                    <fieldId>finished</fieldId>
-                    <fieldName>是否完成</fieldName>
-                    <dataType>String</dataType>
-                    <categoryName>SF</categoryName>
-                    <precision>4</precision>
-                </Field>
-                <Field>
-                    <fieldId>fullServerPush</fieldId>
-                    <fieldName>是否全服推送</fieldName>
-                    <dataType>String</dataType>
-                    <categoryName>SF</categoryName>
-                    <precision>4</precision>
-                </Field>
-                <Field>
-                    <fieldId>stopPush</fieldId>
-                    <fieldName>结束推送</fieldName>
-                    <dataType>String</dataType>
-                    <categoryName>SF</categoryName>
-                    <precision>4</precision>
-                </Field>
-                <Field>
-                    <fieldId>registrant</fieldId>
-                    <fieldName>登记人</fieldName>
+                    <fieldId>personName</fieldId>
+                    <fieldName>第一成员姓名</fieldName>
                     <dataType>String</dataType>
                     <precision>50</precision>
                 </Field>
                 <Field>
-                    <fieldId>registrationTime</fieldId>
-                    <fieldName>登记时间</fieldName>
+                    <fieldId>personAccount</fieldId>
+                    <fieldName>第一成员职工号</fieldName>
+                    <dataType>String</dataType>
+                    <precision>50</precision>
+                </Field>
+                <Field>
+                    <fieldId>unitId</fieldId>
+                    <fieldName>所属部门</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>PERSON_KY_UNIT</categoryName>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>transformType</fieldId>
+                    <fieldName>转化方式</fieldName>
+                    <dataType>String</dataType>
+                    <Category name="TRANSFORM_TYPE" note="转化方式(成果转化)" type="成果">技术转让、专利权转让、专利许可、作价入股、其他</Category>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>transformFee</fieldId>
+                    <fieldName>转化金额</fieldName>
+                    <dataType>Double</dataType>
+                </Field>
+                <Field>
+                    <fieldId>caseInformation</fieldId>
+                    <fieldName>成果转化案例信息</fieldName>
+                    <dataType>String</dataType>
+                    <precision>2000</precision>
+                </Field>
+                <Field>
+                    <fieldId>exIncomeDate</fieldId>
+                    <fieldName>预计到账时间</fieldName>
                     <dataType>Date</dataType>
+                </Field>
+                <Field>
+                    <fieldId>pricingMethod</fieldId>
+                    <fieldName>估值方法</fieldName>
+                    <dataType>String</dataType>
+                    <Category name="PRICING_METHOD" note="估值方法(成果转化)" type="成果">协议定价、挂牌定价、评估定价、其他方式</Category>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>buyerName</fieldId>
+                    <fieldName>受让方企业名称</fieldName>
+                    <dataType>String</dataType>
+                    <precision>400</precision>
+                </Field>
+                <Field>
+                    <fieldId>buyerType</fieldId>
+                    <fieldName>受让方性质</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>BUYER_TYPE</categoryName>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>buyerArea</fieldId>
+                    <fieldName>受让方省份</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>JF_LOCATION</categoryName>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>buyerCity</fieldId>
+                    <fieldName>受让方城市</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>JF_CITY</categoryName>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>buyerAddress</fieldId>
+                    <fieldName>受让方地址</fieldName>
+                    <dataType>String</dataType>
+                    <precision>300</precision>
+                </Field>
+                <Field>
+                    <fieldId>buyerZipcode</fieldId>
+                    <fieldName>受让方邮编</fieldName>
+                    <dataType>String</dataType>
+                    <precision>40</precision>
+                </Field>
+                <Field>
+                    <fieldId>buyerChargerName</fieldId>
+                    <fieldName>受让方联系人</fieldName>
+                    <dataType>String</dataType>
+                    <precision>50</precision>
+                </Field>
+                <Field>
+                    <fieldId>buyerTel</fieldId>
+                    <fieldName>受让方联系电话</fieldName>
+                    <dataType>String</dataType>
+                    <precision>60</precision>
+                </Field>
+                <Field>
+                    <fieldId>legalRepresentative</fieldId>
+                    <fieldName>法定代理人</fieldName>
+                    <dataType>String</dataType>
+                    <precision>50</precision>
+                </Field>
+                <Field>
+                    <fieldId>registeredCapital</fieldId>
+                    <fieldName>注册资本</fieldName>
+                    <dataType>Double</dataType>
+                </Field>
+                <Field>
+                    <fieldId>isConnectedTransaction</fieldId>
+                    <fieldName>是否关联交易</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>SF</categoryName>
+                    <precision>4</precision>
+                </Field>
+                <Field>
+                    <fieldId>connectedTransaction</fieldId>
+                    <fieldName>关联交易详情</fieldName>
+                    <dataType>String</dataType>
+                    <precision>500</precision>
+                </Field>
+                <Field>
+                    <fieldId>note</fieldId>
+                    <fieldName>备注</fieldName>
+                    <dataType>String</dataType>
+                    <precision>2000</precision>
+                </Field>
+                <Field association="OneToMany" ignoreImport="true" updateInsert="false">
+                    <fieldId>members</fieldId>
+                    <fieldName>成果完成人</fieldName>
+                    <dataType>List</dataType>
+                    <joinColumn>PRODUCT_TRANS_ID</joinColumn>
+                    <genericity>ProductTransProjectMember</genericity>
+                    <orderBy>orderId asc</orderBy>
+                    <fetch>FetchMode.SELECT</fetch>
+                </Field>
+                <Field association="OneToMany" ignoreImport="true" updateInsert="false">
+                    <fieldId>products</fieldId>
+                    <fieldName>转化知识产权</fieldName>
+                    <dataType>List</dataType>
+                    <joinColumn>PROJECT_ID</joinColumn>
+                    <genericity>ProductTransProjectProduct</genericity>
+                    <orderBy>orderId asc</orderBy>
+                    <fetch>FetchMode.SELECT</fetch>
+                </Field>
+            </Fields>
+        </MainModule>
+        <AuthorModule>
+            <beanId>productTransProjectMember</beanId>
+            <moduleName>ProductTransProjectMember</moduleName>
+            <tableName>BIZ_PRODUCT_TRANS_PROJECT_MEMBER</tableName>
+            <moduleZHName>成果转化申请完成人</moduleZHName>
+            <packageName>com.eplugger.business.productTransProject</packageName>
+            <joinColumn>projectId</joinColumn>
+            <superClassMap>
+                <param key="entity" value="ProjectMember" />
+            </superClassMap>
+            <Fields>
+                <Field>
+                    <fieldId>bearTypeId</fieldId>
+                    <fieldName>承担类型</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>BEAR_TYPE</categoryName>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>idCard</fieldId>
+                    <fieldName>身份证号</fieldName>
+                    <dataType>String</dataType>
+                    <precision>40</precision>
+                </Field>
+                <Field>
+                    <fieldId>mobile</fieldId>
+                    <fieldName>联系电话</fieldName>
+                    <dataType>String</dataType>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>allocationRatio</fieldId>
+                    <fieldName>分配比例(%)</fieldName>
+                    <dataType>Double</dataType>
+                </Field>
+                <Field updateInsert="false">
+                    <fieldId>projectId</fieldId>
+                    <fieldName>成果转化项目ID</fieldName>
+                    <dataType>String</dataType>
+                    <precision>32</precision>
+                </Field>
+                <Field association="ManyToOne" ignoreImport="true">
+                    <fieldId>productTransProject</fieldId>
+                    <fieldName>成果转化申请</fieldName>
+                    <dataType>ProductTransProject</dataType>
+                    <joinColumn>PROJECT_ID</joinColumn>
+                </Field>
+            </Fields>
+        </AuthorModule>
+    </Module>
+    <Module>
+        <MainModule>
+            <beanId>productTransProjectProduct</beanId>
+            <moduleName>ProductTransProjectProduct</moduleName>
+            <tableName>BIZ_PRODUCT_TRANS_PROJECT_PRODUCT</tableName>
+            <moduleZHName>转化知识产权</moduleZHName>
+            <packageName>com.eplugger.business.productTransProject</packageName>
+            <superClassMap>
+                <param key="entity" value="EntityImpl"/>
+            </superClassMap>
+            <Fields>
+                <Field updateInsert="false">
+                    <fieldId>projectId</fieldId>
+                    <fieldName>成果转化ID</fieldName>
+                    <dataType>String</dataType>
+                    <precision>32</precision>
+                </Field>
+                <Field updateInsert="false">
+                    <fieldId>productId</fieldId>
+                    <fieldName>知识产权ID</fieldName>
+                    <dataType>String</dataType>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>orderId</fieldId>
+                    <fieldName>序号</fieldName>
+                    <dataType>Integer</dataType>
+                </Field>
+                <Field>
+                    <fieldId>productName</fieldId>
+                    <fieldName>成果名称</fieldName>
+                    <dataType>String</dataType>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>productCode</fieldId>
+                    <fieldName>成果编号</fieldName>
+                    <dataType>String</dataType>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>productType</fieldId>
+                    <fieldName>成果类型</fieldName>
+                    <dataType>String</dataType>
+                    <Category name="PATENT_TYPE_PRODUCT_TRANS" note="专利类型(成果转化)" type="成果">发明专利、实用新型专利、外观专利、软件著作权、技术秘密</Category>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>patentApplyDate</fieldId>
+                    <fieldName>专利申请日</fieldName>
+                    <dataType>Date</dataType>
+                </Field>
+                <Field>
+                    <fieldId>patentAuthorizeDate</fieldId>
+                    <fieldName>专利授权公告日</fieldName>
+                    <dataType>Date</dataType>
+                </Field>
+                <Field>
+                    <fieldId>patentee</fieldId>
+                    <fieldName>成果权利人</fieldName>
+                    <dataType>String</dataType>
+                    <precision>50</precision>
+                </Field>
+                <Field>
+                    <fieldId>inventorName</fieldId>
+                    <fieldName>成果完成人</fieldName>
+                    <dataType>String</dataType>
+                    <precision>50</precision>
+                </Field>
+                <Field>
+                    <fieldId>achievementMaturity</fieldId>
+                    <fieldName>成果成熟度</fieldName>
+                    <dataType>String</dataType>
+                    <Category name="ACHIEVEMENT_MATURITY" note="成果成熟度(成果转化)" type="成果">样品、小试、中试</Category>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>industrySector</fieldId>
+                    <fieldName>行业领域</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>GMJJHY_TREE</categoryName>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>isJoinStudent</fieldId>
+                    <fieldName>是否有学生参与</fieldName>
+                    <dataType>String</dataType>
+                    <categoryName>SF</categoryName>
+                    <precision>32</precision>
+                </Field>
+                <Field>
+                    <fieldId>studentWorkRatio</fieldId>
+                    <fieldName>学生贡献率(%)</fieldName>
+                    <dataType>Double</dataType>
+                </Field>
+                <Field association="ManyToOne" ignoreImport="true">
+                    <fieldId>productTrans</fieldId>
+                    <fieldName>成果转化申请</fieldName>
+                    <dataType>ProductTransProject</dataType>
+                    <joinColumn>PROJECT_ID</joinColumn>
                 </Field>
             </Fields>
         </MainModule>

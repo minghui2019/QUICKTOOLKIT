@@ -14,22 +14,13 @@ public enum DataType {
 	public String java;
 	String dataBase;
 	
-	private DataType(String java) {
+	DataType(String java) {
 		this.java = java;
-		switch (this.java) {
+		switch (java) {
 		case "String":
 			this.dataBase = DBUtils.isSqlServer() ? "varchar" : "VARCHAR2";
-//			if (precision == null) {
-//				result += "(255)";
-//			} else if (precision >= 2000) {
-//				result = DBUtils.isSqlServer() ? "text" : "clob";
-//			} else {
-//				result += "(" + precision + ")";
-//			}
 			break;
 		case "Timestamp":
-			this.dataBase = DBUtils.isSqlServer() ? "datetime" : "DATE";
-			break;
 		case "Date":
 			this.dataBase = DBUtils.isSqlServer() ? "datetime" : "DATE";
 			break;

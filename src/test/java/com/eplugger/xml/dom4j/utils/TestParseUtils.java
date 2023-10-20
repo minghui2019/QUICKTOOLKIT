@@ -1,9 +1,9 @@
 package com.eplugger.xml.dom4j.utils;
 
+import com.eplugger.onekey.entity.ModuleTables;
 import org.dom4j.Document;
 import org.junit.Test;
-
-import com.eplugger.onekey.entity.ModuleTables;
+import top.tobak.xml.dom4j.utils.ParseXmlUtils;
 
 public class TestParseUtils {
 	@Test

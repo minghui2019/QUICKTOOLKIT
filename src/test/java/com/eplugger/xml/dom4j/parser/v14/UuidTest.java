@@ -1,22 +1,21 @@
 package com.eplugger.xml.dom4j.parser.v14;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.eplugger.uuid.UUIDFun;
+import com.eplugger.uuid.entity.Uuids;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import top.tobak.xml.dom4j.XMLObject;
+import top.tobak.xml.dom4j.XMLParser;
 
-import com.eplugger.uuid.UUIDFun;
-import com.eplugger.uuid.entity.Uuids;
-import com.eplugger.xml.dom4j.XMLObject;
-import com.eplugger.xml.dom4j.XMLParser;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class UuidTest {
 	private XMLParser xmlParser;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!ELEMENT Modules (Module+)>
 <!ELEMENT Module (MainModule, AuthorModule?)>
-<!ELEMENT MainModule (beanId, moduleName?, tableName, moduleZHName, packageName, superClassMap+, Fields)>
-<!ELEMENT AuthorModule (beanId, moduleName?, tableName, moduleZHName, packageName, superClassMap+, Fields)>
+<!ELEMENT MainModule (beanId, moduleName?, tableName, moduleZHName, packageName, superClassMap+, joinColumn?, Fields)>
+<!ELEMENT AuthorModule (beanId, moduleName?, tableName, moduleZHName, packageName, superClassMap+, joinColumn?, Fields)>
 <!ATTLIST Module
 		ignore (true|false) "false">
 <!ELEMENT beanId (#PCDATA)>
@@ -14,9 +14,10 @@
 <!ELEMENT param EMPTY>
 <!ATTLIST param 
 		key (entity|bo|action) #REQUIRED 
-		value (EntityImpl|BizEntity|BusinessEntity|ProductAuthor|Product|ApplyInfo|ApplyBook|CheckBusinessEntity|BusinessBO|BusinessAction) #REQUIRED>
+		value (EntityImpl|BizEntity|BusinessEntity|ApplyInfo|ApplyBook|CheckBusinessEntity|CheckBusinessBO|CheckBusinessAction|BusinessBO|BusinessAction|
+			ProductAuthor|Product|ProductBO|ProductAction|Project|ProjectBO|ProjectAction|ProjectMember) #REQUIRED>
 <!ELEMENT Fields (Field+)>
-<!ELEMENT Field (fieldId, tableFieldId?, fieldName, dataType, categoryName?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
+<!ELEMENT Field (fieldId, tableFieldId?, fieldName, dataType, categoryName|Category?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
 <!ATTLIST Field 
 		association (OneToMany|ManyToOne) #IMPLIED 
 		onlyMeta (true|false) "false" 
@@ -28,11 +29,15 @@
 <!ELEMENT fieldName (#PCDATA)>
 <!ELEMENT dataType (#PCDATA)>
 <!ELEMENT categoryName (#PCDATA)>
+<!ELEMENT Category (#PCDATA)>
+<!ATTLIST Category
+	name CDATA #REQUIRED
+	note CDATA #REQUIRED
+	type (人员|项目|成果|系统|平台|系统图表|学术交流|评审|经费|合同|考核|系统参数|个人空间|财务同步|编号生成) #REQUIRED>
 <!ELEMENT precision (#PCDATA)>
 <!ELEMENT joinColumn (#PCDATA)>
-<!ELEMENT AppendSearch (value)>
-<!ELEMENT value (#PCDATA)>
-<!ATTLIST AppendSearch 
+<!ELEMENT AppendSearch ()>
+<!ATTLIST AppendSearch
 		relativeField CDATA #REQUIRED 
 		relativeThisProperty CDATA "id" 
 		searchValLabel (val) #IMPLIED 

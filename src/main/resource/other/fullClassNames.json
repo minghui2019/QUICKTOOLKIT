@@ -20,5 +20,8 @@
   "ProductAuthor": "com.eplugger.business.product.entity.ProductAuthor",
   "ProductBO": "com.eplugger.business.product.bo.ProductBO",
   "VProject": "com.eplugger.business.pub.entity.VProject",
-  "ZXProject": "com.eplugger.business.project.entity.ZXProject"
+  "ZXProject": "com.eplugger.business.project.entity.ZXProject",
+  "Project": "com.eplugger.business.pub.entity.Project",
+  "ProjectMember": "com.eplugger.business.pub.entity.ProjectMember",
+  "AssessTime": "com.eplugger.assess.assessTime.entity.AssessTime"
 }

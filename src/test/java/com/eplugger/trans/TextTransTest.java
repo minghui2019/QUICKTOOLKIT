@@ -1,18 +1,17 @@
 package com.eplugger.trans;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.eplugger.trans.entity.SimpleFields;
 import com.eplugger.trans.entity.SimpleField;
+import com.eplugger.trans.entity.SimpleFields;
 import com.eplugger.utils.OtherUtils;
-import com.eplugger.xml.dom4j.XMLObject;
-import com.eplugger.xml.dom4j.XMLParser;
+import org.junit.Test;
+import top.tobak.xml.dom4j.XMLObject;
+import top.tobak.xml.dom4j.XMLParser;
+
+import static org.junit.Assert.assertTrue;
 
 public class TextTransTest {
 	@Test

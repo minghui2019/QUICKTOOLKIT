@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.eplugger.common.lang.StringUtils;
+import top.tobak.common.lang.StringUtils;
 
 public class OtherUtils {
 	public static final String SPOT = ".";

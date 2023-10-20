@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.eplugger.common.io.FileUtils;
 import com.eplugger.common.lang.CustomStringBuilder;
-import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.entity.Fields;
 import com.eplugger.onekey.entity.ModuleTables;
@@ -16,11 +14,13 @@ import com.eplugger.onekey.utils.entityMeta.FieldEntityMetaFacade;
 import com.eplugger.onekey.utils.javaFile.ProduceJavaFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceMetaDataFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
-import com.eplugger.utils.DateUtils;
 import com.eplugger.uuid.UUIDFun;
-import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import top.tobak.common.io.FileUtils;
+import top.tobak.common.lang.StringUtils;
+import top.tobak.utils.DateUtils;
+import top.tobak.xml.dom4j.utils.ParseXmlUtils;
 
 /**
  * 加字段自动生成java代码，sql命令（数据库类型支持sqlServer），元数据

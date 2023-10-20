@@ -1,20 +1,45 @@
 package com.eplugger.onekey.addCategoryEntry.utils;
 
-import com.eplugger.common.lang.StringUtils;
+import java.io.File;
+import java.util.List;
+
+import top.tobak.common.io.FileUtils;
+import top.tobak.common.lang.StringUtils;
+import com.eplugger.onekey.entity.Category;
+import com.eplugger.onekey.entity.Module;
 import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
+import com.eplugger.utils.DBUtils;
 import com.eplugger.uuid.UUIDFun;
 import com.google.common.base.Strings;
 
 public class ProduceCategorySqlCodeFactory extends AbstractProduceCodeFactory {
+
 	private static class ProduceCategorySqlCodeFactorySingleton {
-		private static final ProduceCategorySqlCodeFactory FACTORY = new ProduceCategorySqlCodeFactory(); 
+
+		private static final ProduceCategorySqlCodeFactory FACTORY = new ProduceCategorySqlCodeFactory();
 	}
-	
 	public static ProduceCategorySqlCodeFactory getInstance() {
 		return ProduceCategorySqlCodeFactorySingleton.FACTORY;
 	}
-	
+
 	private ProduceCategorySqlCodeFactory() { }
+
+	public void produceSqlFiles(List<Module> validList) {
+		StringBuilder sb = new StringBuilder();
+		for (Module module : validList) {
+			sb.append(createCategoryStr(module));
+		}
+		FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\sql" + File.separator + "字典配置SQL.SQL", sb.toString());
+	}
+
+	public String createCategoryStr(Module module) {
+		List<Category> categories = module.getCategories();
+		StringBuilder sb = new StringBuilder();
+		for (Category category : categories) {
+			sb.append(createCategoryStr(null, category.getValue().split("、"), category.getName(), category.getNote(), category.getType(), DBUtils.getEadpDataType()));
+		}
+		return sb.toString();
+	}
 	
 	public String createCategoryStr(String[] keyArray, String[] valueArray, String categoryName, String bizName, String bizType, String version) {
 		UUIDFun uuidFun = UUIDFun.getInstance();

@@ -117,7 +117,7 @@
         <tableName>BIZ_PROJECT_COMPLETE</tableName>
         <described>项目结题</described>
     </ModuleTable>
-    <ModuleTable ignore="true">
+    <ModuleTable ignore="false">
         <moduleName>paper</moduleName>
         <tableName>BIZ_PAPER</tableName>
         <described>论文</described>
@@ -498,9 +498,14 @@
         <described>成果视图</described>
     </ModuleTable>
     <ModuleTable ignore="true">
-        <moduleName>projectAcceptanceApplyBook</moduleName>
+        <moduleName>zxProjectAcceptanceApplyBook</moduleName>
         <tableName>BIZ_PROJECT_ACCEPTANCE_APPLY_BOOK</tableName>
         <described>校级项目验收申请</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>projectAcceptanceApplyBook</moduleName>
+        <tableName>BIZ_PROJECT_ACCEPTANCE_APPLY_BOOK</tableName>
+        <described>纵向项目验收申请</described>
     </ModuleTable>
     <ModuleTable ignore="true">
         <moduleName>projectPayoutDetail</moduleName>
@@ -572,9 +577,14 @@
         <tableName>BIZ_NOTIFY</tableName>
         <described>通知公告</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>changeLog</moduleName>
         <tableName>SYS_CHANGE_LOG</tableName>
         <described>系统更新日志</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>ptProject</moduleName>
+        <tableName>BIZ_PT_PROJECT</tableName>
+        <described>平台团队项目</described>
     </ModuleTable>
 </ModuleTables>

@@ -6,18 +6,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.eplugger.common.lang.StringUtils;
 import com.eplugger.onekey.addField.AddFieldFun;
 import com.eplugger.onekey.entity.ModuleTable;
 import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.trans.entity.SimpleField;
 import com.eplugger.trans.entity.SimpleFields;
 import com.eplugger.utils.OtherUtils;
-import com.eplugger.xml.dom4j.utils.ParseXmlUtils;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
+import top.tobak.common.lang.StringUtils;
+import top.tobak.xml.dom4j.utils.ParseXmlUtils;
 
 @Slf4j
 public class TextTrans {

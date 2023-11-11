@@ -14,6 +14,7 @@ import com.eplugger.onekey.utils.jspFile.ProduceJspFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
 import com.eplugger.onekey.utils.xmlFile.ProduceXmlFiles;
+import com.eplugger.xml.dom4j.utils.parsers.ModuleParser;
 import top.tobak.xml.dom4j.utils.ParseXmlUtils;
 
 public class AddModuleFun {
@@ -202,6 +203,7 @@ public class AddModuleFun {
 	}
 	
 	public static void AddMultipleModuleFun1(boolean authorSwitch, String template) throws Exception {
+		ParseXmlUtils.registerBean(new ModuleParser(), Modules.class);
 		List<Module> validList = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidList();
 		ProduceCategorySqlCodeFactory.getInstance().produceSqlFiles(validList);
 		for (Module module : validList) {

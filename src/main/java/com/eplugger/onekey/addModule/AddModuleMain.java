@@ -19,7 +19,7 @@ import top.tobak.xml.dom4j.utils.ParseXmlUtils;
 public class AddModuleMain {
 	@Before
 	public void testSetSchoolCode() {
-		DBUtils.schoolInfo = SchoolInfo.广东工业大学;
+		DBUtils.schoolInfo = SchoolInfo.广州番禺职业技术学院;
 	}
 	
 	@Test
@@ -45,7 +45,7 @@ public class AddModuleMain {
 	@Test
 	public void testAddMultiModuleFun1() throws Exception {
 		boolean authorSwitch = true;
-		String template = "paper";
+		String template = "honor";
 		AddModuleFun.AddMultipleModuleFun1(authorSwitch, template);
 		try {
 			Desktop.getDesktop().open(new File(FileUtils.getUserHomeDirectory() + "AddModule"));

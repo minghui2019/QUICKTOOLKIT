@@ -21,10 +21,10 @@ public class ArchivesTest {
         ajsjfzb.getAjxx().getJnlb().getJnxx().getXstz().setYz("汉语");
         ajsjfzb.getAjxx().getJnlb().getJnxx().getXstz().setGb("正本");
         ajsjfzb.getAjxx().getJnlb().getJnxx().getXstz().setJs("1");
-        ajsjfzb.getAjxx().getJnlb().getJnxx().getXstz().setYs("1");
+        ajsjfzb.getAjxx().getJnlb().getJnxx().getXstz().setYs(1);
 
         ajsjfzb.getAjxx().getJnlb().getJnxx().getDzsx().setGsxx("PDF");
-        ajsjfzb.getAjxx().getJnlb().getJnxx().getDzsx().setXxxtms("电子文件由学校科研系统产生，该系统由北京易普拉格科技股份有限公司开发");
+//        ajsjfzb.getAjxx().getJnlb().getJnxx().getDzsx().setXxxtms("电子文件由学校科研系统产生，该系统由北京易普拉格科技股份有限公司开发");
         ajsjfzb.getAjxx().getJnlb().getJnxx().getDzsx().setJsjwjm("附件名");
         ajsjfzb.getAjxx().getJnlb().getJnxx().getDzsx().setJsjwjdx("计算");
         ajsjfzb.getAjxx().getJnlb().getJnxx().getDzsx().setWdcjcx("Adobe Acrobat Reader DC");

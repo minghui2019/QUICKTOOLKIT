@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 import top.tobak.common.io.FileUtils;
-import top.tobak.xml.dom4j.utils.ParseXmlUtils;
+import top.tobak.xml.dom4j.utils.XmlParseUtils;
 
 public class AddModuleMain {
 	@Before
@@ -56,7 +56,7 @@ public class AddModuleMain {
 
 	@Test
 	public void testName() throws Exception {
-		Modules modules = ParseXmlUtils.toBean("src/main/resource/module/Module.xml", Modules.class);
+		Modules modules = XmlParseUtils.toBean("src/main/resource/module/Module.xml", Modules.class);
 		Module module = modules.getValidModule();
 		List<Category> categories = modules.getCategories();
 		System.out.println(categories);

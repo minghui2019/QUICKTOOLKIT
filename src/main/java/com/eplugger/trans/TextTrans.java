@@ -17,7 +17,7 @@ import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import top.tobak.common.lang.StringUtils;
-import top.tobak.xml.dom4j.utils.ParseXmlUtils;
+import top.tobak.xml.dom4j.utils.XmlParseUtils;
 
 @Slf4j
 public class TextTrans {
@@ -45,7 +45,7 @@ public class TextTrans {
 		String[] srcs = src.split("、");
 		SimpleFields fields = TextTrans.bulidFields(srcs, result);
 		
-		Document document = ParseXmlUtils.fromBean(AddFieldFun.FILE_OUT_PATH_FIELD, fields, true);
+		Document document = XmlParseUtils.fromBean(AddFieldFun.FILE_OUT_PATH_FIELD, fields, true);
 		log.debug("\n" + document.asXML());
 //		FileUtils.openTaskBar(new File(AddFieldFun.FILE_OUT_PATH_FIELD).getParentFile());
 	}
@@ -90,7 +90,7 @@ public class TextTrans {
 			return;
 		}
 		Set<String> set = moduleTableList.stream().map(ModuleTable::getModuleName).collect(Collectors.toSet());
-		ModuleTables moduleTables = ParseXmlUtils.toBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
+		ModuleTables moduleTables = XmlParseUtils.toBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
 		for (ModuleTable moduleTable : moduleTables.getModuleTableList()) {
 			if (set.contains(moduleTable.getModuleName())) {
 				moduleTable.setIgnore(false);
@@ -108,7 +108,7 @@ public class TextTrans {
 			}
 			log.debug("ModuleTable.xml缺少模块" + set.toString() + "的数据，已补充。");
 		}
-		ParseXmlUtils.fromBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, moduleTables, true);
+		XmlParseUtils.fromBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, moduleTables, true);
 		createFieldXml(src);
 	}
 
@@ -121,7 +121,7 @@ public class TextTrans {
 			return;
 		}
 		Set<String> set = moduleTableList.stream().map(ModuleTable::getModuleName).collect(Collectors.toSet());
-		ModuleTables moduleTables = ParseXmlUtils.toBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
+		ModuleTables moduleTables = XmlParseUtils.toBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
 		Map<String, String> moduleTableMap = moduleTables.getModuleTableMap();
 		JsonObject jsonObject = new JsonObject();
 		for (String key : set) {

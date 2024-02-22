@@ -20,7 +20,7 @@ import com.google.common.collect.Sets;
 import top.tobak.common.io.FileUtils;
 import top.tobak.common.lang.StringUtils;
 import top.tobak.utils.DateUtils;
-import top.tobak.xml.dom4j.utils.ParseXmlUtils;
+import top.tobak.xml.dom4j.utils.XmlParseUtils;
 
 /**
  * 加字段自动生成java代码，sql命令（数据库类型支持sqlServer），元数据
@@ -40,12 +40,12 @@ public class AddFieldFun {
 	}
 	
 	public static void createSqlAndJavaFile() throws Exception {
-		ModuleTables moduleTables = ParseXmlUtils.toBean(FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
+		ModuleTables moduleTables = XmlParseUtils.toBean(FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
 		Map<String, String> map = moduleTables.getValidModuleTableMap();
 		String[] moduleNames = map.keySet().toArray(new String[0]); //模块名
 		String[] tableNames = map.values().toArray(new String[0]); //数据库表名
 		String[] beanIds = moduleNames; //beanId默认等同模块名
-		Fields fields = ParseXmlUtils.toBean(FILE_OUT_PATH_FIELD, Fields.class);
+		Fields fields = XmlParseUtils.toBean(FILE_OUT_PATH_FIELD, Fields.class);
 		List<Field> fieldList = fields.getFieldList();
 
 		StringBuilder scsb = new StringBuilder();

@@ -14,7 +14,7 @@ import com.eplugger.onekey.entity.ModuleTables;
 import com.eplugger.uuid.UUIDFun;
 import org.junit.Before;
 import org.junit.Test;
-import top.tobak.xml.dom4j.utils.ParseXmlUtils;
+import top.tobak.xml.dom4j.utils.XmlParseUtils;
 
 public class AddFieldTest {
 	private String classPath;
@@ -28,14 +28,14 @@ public class AddFieldTest {
 	
 	@Test
 	public void testParseField() throws Exception {
-		List<Field> fieldList = ParseXmlUtils.toBean(classPath + "field/Field.xml", Fields.class).getFieldList();
+		List<Field> fieldList = XmlParseUtils.toBean(classPath + "field/Field.xml", Fields.class).getFieldList();
 		System.out.println(fieldList);
 	}
 	
 	@Test
 	public void testParseModuleTable() throws Exception {
-		Map<String, String> map1 = ParseXmlUtils.toBean(classPath + "field/ModuleTable.xml", ModuleTables.class).getModuleTableMap();
-		Map<String, String> map = ParseXmlUtils.toBean(classPath + "field/ModuleTable.xml", ModuleTables.class).getValidModuleTableMap();
+		Map<String, String> map1 = XmlParseUtils.toBean(classPath + "field/ModuleTable.xml", ModuleTables.class).getModuleTableMap();
+		Map<String, String> map = XmlParseUtils.toBean(classPath + "field/ModuleTable.xml", ModuleTables.class).getValidModuleTableMap();
 		System.out.println(map1);
 		System.out.println(map);
 	}

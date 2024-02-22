@@ -23,6 +23,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import top.tobak.common.io.FileUtils;
 import top.tobak.common.lang.StringUtils;
 import top.tobak.commons.collections.CollectionUtils;
 import top.tobak.commons.lang3.reflect.FieldUtils;
@@ -31,7 +32,7 @@ import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
 import top.tobak.xml.dom4j.annotation.Dom4JTag;
 import top.tobak.xml.dom4j.parse.FieldValueParserFactory;
 import top.tobak.xml.dom4j.util.XmlFileUtils;
-import top.tobak.xml.dom4j.utils.ParserXml;
+import top.tobak.xml.dom4j.utils.IXmlParser;
 
 /**
  * Dom4j解析器抽象实现类
@@ -42,7 +43,7 @@ import top.tobak.xml.dom4j.utils.ParserXml;
 @Slf4j
 @Setter
 @Getter
-public abstract class AbstractXmlParser<T> implements ParserXml<T> {
+public abstract class AbstractXmlParser<T> implements IXmlParser<T> {
 	/** XML 文件路径 */
 	private String path;
 	/** 文件编码, 默认使用 UTF-8 */
@@ -80,8 +81,11 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 	
 	@Override
 	public T toBean(Class<T> cls, String path) {
+		if (FileUtils.isFileReadable(FileUtils.getFile(path))) {
+			throw new IllegalArgumentException("文件不存在或不可读[path=" + path + "]");
+		}
 		this.beforeToBean(path);
-        return this.toBean(cls);
+		return this.toBean(cls);
 	}
 
 	/**
@@ -458,6 +462,9 @@ public abstract class AbstractXmlParser<T> implements ParserXml<T> {
 
 			// 获取字段值
             Object fieldValue = FieldUtils.getFieldValue(data, field);
+            if (fieldValue == null) {
+            	continue;
+			}
             
             Dom4JFieldType dom4jFieldType = xmlField.type();
             if (Dom4JFieldType.ATTRIBUTE == dom4jFieldType) {

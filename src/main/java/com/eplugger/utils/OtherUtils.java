@@ -78,7 +78,19 @@ public class OtherUtils {
 		}
 		return result;
 	}
-	
+
+	public static String getMainBeanId1(String str) {
+		String[] arrs = str.split("_");
+		String result = "";
+		for (int i = 1; i < arrs.length; i++) {
+			result += arrs[i];
+			if (i < arrs.length - 1) {
+				result += "_";
+			}
+		}
+		return result;
+	}
+
 	/**
 	 * map清空
 	 * @param maps

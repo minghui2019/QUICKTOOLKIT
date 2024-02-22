@@ -6,17 +6,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.eplugger.utils.DBUtils;
+import com.eplugger.utils.OtherUtils;
+import com.google.common.collect.Maps;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-
 import top.tobak.common.io.FileUtils;
 import top.tobak.common.lang.StringUtils;
-import com.eplugger.utils.DBUtils;
 import top.tobak.utils.ExcelUtils;
-import com.eplugger.utils.OtherUtils;
 
 @SuppressWarnings("all")
 public class AutoJsonFile {
@@ -128,8 +128,12 @@ public class AutoJsonFile {
 				}
 			}
 			String sqlToMeaning = "select NAME,MEANING from SYS_ENTITY_META where UPPER(BEANID)='" + beanid + "'";
-			Map<String, String> meaningMap = DBUtils.getMeaningBySql(sqlToMeaning); // 存放表中注释
-			
+			List<String[]> entityMetas = DBUtils.getMeaningBySql(sqlToMeaning);
+			Map<String, String> meaningMap = Maps.newHashMap();// 存放表中注释
+			for (String[] entityMeta : entityMetas) {
+				meaningMap.put(entityMeta[0], entityMeta[1]);
+			}
+
 			// 建立新的sheet对象（excel的表单）
 			HSSFSheet sheet = wb.createSheet(entry.getKey());
 			sheet.setColumnWidth(0, 8000); sheet.setColumnWidth(1, 3000);

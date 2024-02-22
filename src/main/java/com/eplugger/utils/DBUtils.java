@@ -16,11 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import cn.hutool.core.lang.Assert;
-import top.tobak.common.lang.StringUtils;
 import com.eplugger.onekey.schoolInfo.entity.SchoolInfo;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import top.tobak.common.lang.StringUtils;
 
 @Slf4j
 public class DBUtils {
@@ -77,8 +80,9 @@ public class DBUtils {
 		return conn;
 	}
 	
-	public static Map<String, String> getMeaningBySql(String sql){
-		Map<String, String> map = new HashMap<String, String>();
+	public static List<String[]> getMeaningBySql(String sql){
+		List<String[]> values = Lists.newArrayList();
+		int count = getSqlColumnCount(sql);
 		Connection conn = getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -87,14 +91,18 @@ public class DBUtils {
 			log.debug("Executing SQL: " + ((LoggableStatement) ps).getQueryString());
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				map.put(rs.getString(1), rs.getString(2));
+				String[] value = new String[count];
+				for (int i = 0; i < count; i++) {
+					value[i] = rs.getString(i + 1);
+				}
+				values.add(value);
 			}
 		} catch (SQLException e) {
 			log.debug("Executing SQL: " + sql + "执行失败！");
 		} finally {
 			closeAll(conn, ps, rs);
 		}
-		return map;
+		return values;
 	}
 
 	public static Map<String, String> getEntryNameBySql(String sql) {
@@ -139,26 +147,53 @@ public class DBUtils {
 	}
 	
 	public static String[] getStrsBySql(String sql){
-		String[] strs = new String[2];
+		String[] columnValues = new String[getSqlColumnCount(sql)];
 		Connection conn = getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			ps = new LoggableStatement(conn, sql);
+
 			log.debug("Executing SQL: " + ((LoggableStatement) ps).getQueryString());
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				strs[0] = rs.getString(1);
-				strs[1] = rs.getString(2);
+				for (int i = 0; i < columnValues.length; i++) {
+					columnValues[i] = rs.getString(i+1);
+				}
 			}
 		} catch (SQLException e) {
 			log.debug("Executing SQL: " + sql + "执行失败！");
 		} finally {
 			closeAll(conn, ps, rs);
 		}
-		return strs;
+		return columnValues;
 	}
-	
+
+	public static <T> List<T> getListBySql(String sql, Map<String, Object> params, Class<T> clazz) {
+		Connection conn = getConnection();
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(conn);
+		return namedParameterJdbcTemplate.queryForList(sql, params, clazz);
+	}
+
+	public static <T> List<T> getListBySql(String sql, Map<String, Object> params, RowMapper<T> rowMapper) {
+		Connection conn = getConnection();
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(conn);
+		return namedParameterJdbcTemplate.query(sql, params, rowMapper);
+	}
+
+	private static int getSqlColumnCount(String sql) {
+		// 使用正则表达式提取SELECT和FROM之间的列名
+		Pattern pattern = Pattern.compile("SELECT\\s+(.*?)\\s+FROM", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+		Matcher matcher = pattern.matcher(sql);
+
+		if (matcher.find()) {
+			String columnsSection = matcher.group(1).trim();
+			String[] columns = columnsSection.split("\\s*,\\s*");
+			return columns.length;
+		}
+		return 1;
+	}
+
 	public static void closeAll(Connection conn, PreparedStatement ps, ResultSet rs) {
 		try {
 			if (conn != null) {

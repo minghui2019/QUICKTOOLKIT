@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Categories (Category+)>
+<!ELEMENT Category (#PCDATA)>
+<!ATTLIST Category
+    categoryName CDATA #REQUIRED
+    bizName CDATA #REQUIRED
+    bizType (人员|项目|成果|系统|平台|系统图表|学术交流|评审|经费|合同|考核|系统参数|个人空间|财务同步|编号生成) #REQUIRED
+    fromBiz (0|1|2) #REQUIRED
+    tableName CDATA #IMPLIED
+    codeColumn CDATA #IMPLIED
+    valueColumn CDATA #IMPLIED
+    >

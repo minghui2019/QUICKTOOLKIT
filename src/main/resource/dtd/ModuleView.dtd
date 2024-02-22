@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-        <!ELEMENT ModuleViews (ModuleView+)>
-        <!ELEMENT ModuleView (beanId, tableName, sheetName?, viewName, described)>
-        <!-- 是否忽略 -->
-        <!ATTLIST ModuleView ignore (true|false) "false">
-        <!-- 模块英文名称 -->
-        <!ELEMENT beanId (#PCDATA)>
-        <!-- 表格名称 -->
-        <!ELEMENT tableName (#PCDATA)>
-        <!-- 表格名称 -->
-        <!ELEMENT sheetName (#PCDATA)>
-        <!-- 视图名称 -->
-        <!ELEMENT viewName (#PCDATA)>
-        <!-- 模块中文名称 -->
-        <!ELEMENT described (#PCDATA)>
+<!ELEMENT ModuleViews (ModuleView+)>
+<!ELEMENT ModuleView (beanId, tableName, sheetName?, viewName, checkStatus?, described)>
+<!-- 是否忽略 -->
+<!ATTLIST ModuleView ignore (true|false) "false">
+<!-- 模块英文名称 -->
+<!ELEMENT beanId (#PCDATA)>
+<!-- 表格名称 -->
+<!ELEMENT tableName (#PCDATA)>
+<!-- 表格名称 -->
+<!ELEMENT sheetName (#PCDATA)>
+<!-- 视图名称 -->
+<!ELEMENT viewName (#PCDATA)>
+<!-- 模块中文名称 -->
+<!ELEMENT described (#PCDATA)>
+<!-- 审核状态 -->
+<!ELEMENT checkStatus (#PCDATA)>

@@ -27,10 +27,12 @@ public class ModuleView {
 	private String described;
 	@Dom4JField
 	private String viewName;
+	@Dom4JField
+	private String checkStatus;
 
 	@Override
 	public String toString() {
-		return "\nModuleTable [beanId=" + beanId + ", tableName='" + tableName + ", sheetName='" + sheetName + ", viewName='" + viewName
+		return "\nModuleTable [beanId=" + beanId + ", tableName='" + tableName + ", sheetName='" + sheetName + ", viewName='" + viewName + ", checkStatus='" + checkStatus
 				+ ", ignore=" + ignore + ", described=" + described + "]";
 	}
 
@@ -41,11 +43,4 @@ public class ModuleView {
 		return sheetName;
 	}
 
-	public ModuleView(String beanId, String tableName, String described, String viewName) {
-		this(beanId, tableName, tableName, false, described, viewName);
-	}
-
-	public ModuleView(String beanId, String tableName, String sheetName, String described, String viewName) {
-		this(beanId, tableName, sheetName, false, described, viewName);
-	}
 }

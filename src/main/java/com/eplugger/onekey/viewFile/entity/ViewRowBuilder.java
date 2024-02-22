@@ -3,6 +3,7 @@ package com.eplugger.onekey.viewFile.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 
 public class ViewRowBuilder {
     private ViewRow viewRow;
@@ -15,23 +16,27 @@ public class ViewRowBuilder {
         this.viewRow = viewRow;
     }
 
-    public ViewRowBuilder setLieMing(Cell lieMing) {
-        if (lieMing != null) {
-            viewRow.setLieMing(lieMing.toString());
+    public ViewRowBuilder setColumnName(Cell columnName) {
+        if (columnName != null) {
+            viewRow.setColumnName(columnName.toString());
         }
         return this;
     }
 
-    public ViewRowBuilder setBieMing(Cell bieMing) {
-        if (bieMing != null) {
-            viewRow.setBieMing(bieMing.toString());
+    public ViewRowBuilder setAlias(Cell alias) {
+        if (alias != null) {
+            viewRow.setAlias(alias.toString());
         }
         return this;
     }
 
     public ViewRowBuilder setNullValue(Cell nullValue) {
         if (nullValue != null) {
-            viewRow.setNullValue(nullValue.toString());
+            if (CellType.NUMERIC == nullValue.getCellType()) {
+                viewRow.setNullValue(Integer.toString(new Double(nullValue.getNumericCellValue()).intValue()));
+            } else {
+                viewRow.setNullValue(nullValue.toString());
+            }
         }
         return this;
     }
@@ -46,6 +51,13 @@ public class ViewRowBuilder {
     public ViewRowBuilder setJoinTable(Cell joinTable) {
         if (joinTable != null) {
             viewRow.setJoinTable(joinTable.toString());
+        }
+        return this;
+    }
+
+    public ViewRowBuilder setMeaning(Cell meaning) {
+        if (meaning != null) {
+            viewRow.setMeaning(meaning.toString());
         }
         return this;
     }
@@ -65,17 +77,19 @@ public class ViewRowBuilder {
     @Getter
     public class ViewRow {
         /** 列名 */
-        private String lieMing;
+        private String columnName;
         /** 别名 */
-        private String bieMing;
+        private String alias;
         /** 是否为空值 */
         private String nullValue;
         /** 自定义字典 */
         private String ownDictionary;
         /** 关联表加查询列 */
         private String joinTable = null;
-        /** 注释 */
-        private String note;
+        /** 中文简称 */
+        private String meaning;
+        /** 备注 */
+        private String note = null;
     }
 }
 

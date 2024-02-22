@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Categories SYSTEM "../dtd/Category.dtd">
+
+<Categories>
+    <Category categoryName="AUTHOR_TYPE" bizName="成员类型" bizType="项目" fromBiz="0"/>
+    <Category categoryName="UNIT_ALL" bizName="所有单位" bizType="人员" fromBiz="1" tableName="BIZ_UNIT" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="PROJECT_TYPE_HX" bizName="项目分类（横向）" bizType="合同" fromBiz="1" tableName="DM_PROJECT_TYPE" codeColumn="CODE" valueColumn="NAME"/>
+    <Category categoryName="TRANSFER_TYPE" bizName="专利转让（实施）类型" bizType="合同" fromBiz="0"/>
+    <Category categoryName="VALID_STATE" bizName="进账合同有效状态" bizType="合同" fromBiz="0"/>
+    <Category categoryName="PROJECT_STATE" bizName="项目状态" bizType="项目" fromBiz="0"/>
+    <Category categoryName="PAY_WAY" bizName="支付方式" bizType="合同" fromBiz="0"/>
+    <Category categoryName="XT_SF_Y_N" bizName="是或否（存储值：是/否）" bizType="系统" fromBiz="0"/>
+    <Category categoryName="BUYER_TYPE" bizName="甲方类别" bizType="合同" fromBiz="0"/>
+    <Category categoryName="JF_LOCATION" bizName="甲方地区" bizType="合同" fromBiz="1" tableName="DM_LOCATION" codeColumn="LOCATION_ID" valueColumn="LOCATION_NAME"/>
+    <Category categoryName="JF_CITY" bizName="甲方所属地市" bizType="合同" fromBiz="1" tableName="DM_LOCATION" codeColumn="LOCATION_ID" valueColumn="LOCATION_NAME"/>
+    <Category categoryName="STA_CLASS" bizName="教育部统计归属" bizType="系统" fromBiz="0"/>
+    <Category categoryName="PROJECT_SHJJMB" bizName="社会经济目标" bizType="项目" fromBiz="1" tableName="DM_SHJJMB" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="PROJECT_SOURCE" bizName="项目来源" bizType="项目" fromBiz="1" tableName="DM_PROJECT_STAT_SOURCE" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="RESEARCH_TYPE" bizName="研究类别" bizType="项目" fromBiz="1" tableName="DM_RESEARCH_TYPE" codeColumn="CODE" valueColumn="NAME"/>
+    <Category categoryName="PROJECT_COOPERATE" bizName="合作形式" bizType="项目" fromBiz="0"/>
+    <Category categoryName="GMJJHY_TREE" bizName="国民经济行业" bizType="项目" fromBiz="1" tableName="dm_gmjjhy" codeColumn="id" valueColumn="name"/>
+    <Category categoryName="SUBJECT1" bizName="一级学科" bizType="系统" fromBiz="1" tableName="DM_SUBJECT" codeColumn="CODE" valueColumn="NAME"/>
+    <Category categoryName="SF" bizName="是或否（存储值：1/0）" bizType="系统" fromBiz="0"/>
+    <Category categoryName="ALL_TITLE" bizName="所有职称" bizType="人员" fromBiz="1" tableName="DM_TITLE_DEFINE" codeColumn="SRMS_ID" valueColumn="NAME"/>
+    <Category categoryName="EDU_DEGREE" bizName="学位" bizType="人员" fromBiz="0"/>
+    <Category categoryName="BEAR_TYPE" bizName="项目-承担角色" bizType="项目" fromBiz="0"/>
+    <Category categoryName="PROJECT_TYPE_XJ" bizName="项目分类（校级）" bizType="项目" fromBiz="1" tableName="DM_PROJECT_TYPE" codeColumn="CODE" valueColumn="NAME"/>
+    <Category categoryName="XJ_PROJECT_CALCULATE_TYPE" bizName="校级项目计分类别" bizType="项目" fromBiz="1" tableName="DM_PRODUCT_GRADE" codeColumn="code" valueColumn="name"/>
+    <Category categoryName="PROJECT_TYPE_ZX" bizName="项目分类（纵向）" bizType="项目" fromBiz="1" tableName="DM_PROJECT_TYPE" codeColumn="CODE" valueColumn="NAME"/>
+    <Category categoryName="PROJECT_LEVEL_ID" bizName="项目级别" bizType="项目" fromBiz="0"/>
+    <Category categoryName="GZR_SUBJECT_CODE" bizName="国自然学科代码标准" bizType="项目" fromBiz="1" tableName="DM_GZR_SUBJECT" codeColumn="CODE" valueColumn="CODENAME"/>
+    <Category categoryName="kT_PROJECT_TYPE" bizName="课题类型" bizType="项目" fromBiz="0"/>
+    <Category categoryName="KT_NATURE" bizName="课题性质" bizType="项目" fromBiz="0"/>
+    <Category categoryName="ZX_CLASSIFICATION" bizName="纵向项目计分类别" bizType="项目" fromBiz="1" tableName="DM_PRODUCT_GRADE" codeColumn="code" valueColumn="name"/>
+    <Category categoryName="TITLE_SELECT" bizName="职称单选" bizType="人员" fromBiz="1" tableName="DM_TITLE_DEFINE" codeColumn="SRMS_ID" valueColumn="NAME"/>
+    <Category categoryName="CW_INCOME_TYPE" bizName="来款类型" bizType="经费" fromBiz="0"/>
+    <Category categoryName="FEE_SCHEME" bizName="管理费提取方案" bizType="经费" fromBiz="1" tableName="BIZ_FEE_SCHEME" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="MEETING_TYPE" bizName="会议类型" bizType="学术交流" fromBiz="0"/>
+    <Category categoryName="HOME_ABROAD" bizName="国内国外" bizType="学术交流" fromBiz="0"/>
+    <Category categoryName="LECTURE_TYPE" bizName="讲座类型" bizType="成果" fromBiz="0"/>
+    <Category categoryName="LECTURE_LEVEL" bizName="讲座级别" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PAPER_TYPE" bizName="论文类型" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PAPER_LEVEL" bizName="刊物级别" bizType="成果" fromBiz="1" tableName="DM_PAPER_LEVEL" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="EMBODY_TYPE" bizName="收录类别" bizType="成果" fromBiz="1" tableName="DM_PAPER_LEVEL" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="PUBLISH_RANGE" bizName="发表范围" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PARTITION" bizName="大类分区" bizType="成果" fromBiz="0"/>
+    <Category categoryName="SCHOOL_SIGN" bizName="承担单位排名" bizType="项目" fromBiz="0"/>
+    <Category categoryName="DM_MAGAZINE_SOURCE" bizName="期刊源" bizType="成果" fromBiz="1" tableName="DM_MAGAZINE_SOURCE" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="BOOK_TYPE" bizName="著作类别" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PUBLISHUNIT_LEVEL" bizName="出版单位级别" bizType="成果" fromBiz="0"/>
+    <Category categoryName="LANGUAGE" bizName="外语" bizType="人员" fromBiz="0"/>
+    <Category categoryName="PUBLICATION" bizName="出版地" bizType="成果" fromBiz="0"/>
+    <Category categoryName="BOOK_MARK" bizName="著作标注" bizType="成果" fromBiz="0"/>
+    <Category categoryName="BOOK_BE_SELECTED" bizName="著作入选" bizType="成果" fromBiz="0"/>
+    <Category categoryName="BOOK_CALCULATE_TYPE" bizName="著作计分类别" bizType="成果" fromBiz="1" tableName="DM_PRODUCT_GRADE" codeColumn="code" valueColumn="name"/>
+    <Category categoryName="EDU_LEVEL" bizName="学历" bizType="人员" fromBiz="0"/>
+    <Category categoryName="BEAR_ROLE" bizName="承担角色-著作" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PATENT_TYPE" bizName="专利类型" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PATENT_STATE" bizName="专利状态" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PATENT_COOPERATION_TYPE" bizName="合作类型" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PATENT_SCOPE" bizName="专利范围" bizType="成果" fromBiz="0"/>
+    <Category categoryName="RAGION" bizName="国家地区" bizType="成果" fromBiz="0"/>
+    <Category categoryName="INVALID_FLAG" bizName="有效状态" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PATENT_CALCULATE_TYPE" bizName="专利计分类别" bizType="成果" fromBiz="1" tableName="DM_PRODUCT_GRADE" codeColumn="code" valueColumn="name"/>
+    <Category categoryName="NEW_HONOR_TYPE" bizName="新获奖类型" bizType="成果" fromBiz="1" tableName="DM_HONOR_GUANLIAN" codeColumn="CODE_ID" valueColumn="NAME"/>
+    <Category categoryName="NEW_HONOR_LEVEL" bizName="新获奖级别" bizType="成果" fromBiz="1" tableName="DM_HONOR_GUANLIAN" codeColumn="CODE_ID" valueColumn="NAME"/>
+    <Category categoryName="HONOR_GRADE" bizName="获奖等级" bizType="成果" fromBiz="0"/>
+    <Category categoryName="NEW_HONOR_TYPE_ID" bizName="新获奖类别" bizType="成果" fromBiz="1" tableName="DM_HONOR_GUANLIAN" codeColumn="CODE_ID" valueColumn="NAME"/>
+    <Category categoryName="UNIT_ORDER" bizName="单位排名" bizType="成果" fromBiz="0"/>
+    <Category categoryName="HONOR_CALCULATE_TYPE" bizName="获奖计分类别" bizType="成果" fromBiz="1" tableName="DM_PRODUCT_GRADE" codeColumn="code" valueColumn="name"/>
+    <Category categoryName="APPRAISAL_TYPE" bizName="鉴定类别" bizType="成果" fromBiz="0"/>
+    <Category categoryName="JD_RESULT" bizName="鉴定结论" bizType="成果" fromBiz="0"/>
+    <Category categoryName="COMPLETE_TYPE" bizName="完成形式" bizType="成果" fromBiz="0"/>
+    <Category categoryName="COPYRIGHT_TYPE" bizName="著作权类型" bizType="成果" fromBiz="0"/>
+    <Category categoryName="COPYRIGHT_CALCULATE_TYPE" bizName="著作权计分类别" bizType="成果" fromBiz="1" tableName="DM_PRODUCT_GRADE" codeColumn="code" valueColumn="name"/>
+    <Category categoryName="RESEARCH_REPORT_TYPE_ID" bizName="报告类别" bizType="成果" fromBiz="0"/>
+    <Category categoryName="ACCEPT_TYPE" bizName="采纳方式" bizType="成果" fromBiz="0"/>
+    <Category categoryName="ACCEPT_OBJECT" bizName="采纳对象" bizType="成果" fromBiz="0"/>
+    <Category categoryName="PROJECT_SOURCE_SK" bizName="项目来源 社科" bizType="系统" fromBiz="1" tableName="DM_PROJECT_STAT_SOURCE" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="SUBJECT1_SK" bizName="一级学科（社科统计）" bizType="系统" fromBiz="1" tableName="DM_SUBJECT" codeColumn="CODE" valueColumn="NAME"/>
+    <Category categoryName="RESEARCH_REPORT_CALCULATE_TYPE" bizName="研究报告计分类别" bizType="成果" fromBiz="1" tableName="DM_PRODUCT_GRADE" codeColumn="code" valueColumn="name"/>
+    <Category categoryName="FORMULATION_TYPE" bizName="制定方式" bizType="成果" fromBiz="0"/>
+    <Category categoryName="STANDARD_PROPERTY" bizName="标准属性" bizType="成果" fromBiz="0"/>
+    <Category categoryName="STANDARD_TYPE" bizName="标准类别" bizType="成果" fromBiz="0"/>
+    <Category categoryName="INDUSTRY" bizName="国民经济行业（大类）" bizType="系统" fromBiz="1" tableName="DM_GMJJHY" codeColumn="ID" valueColumn="NAME"/>
+    <Category categoryName="STANDARD_CALCULATE_TYPE" bizName="标准计分类别" bizType="成果" fromBiz="1" tableName="DM_PRODUCT_GRADE" codeColumn="code" valueColumn="name"/>
+</Categories>

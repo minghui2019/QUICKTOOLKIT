@@ -14,7 +14,7 @@ import com.eplugger.onekey.utils.jspFile.ProduceJspFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
 import com.eplugger.onekey.utils.xmlFile.ProduceXmlFiles;
-import com.eplugger.xml.dom4j.utils.parsers.ModuleParser;
+import top.tobak.xml.dom4j.utils.parsers.ModuleParser;
 import top.tobak.xml.dom4j.utils.XmlParseUtils;
 
 public class AddModuleFun {

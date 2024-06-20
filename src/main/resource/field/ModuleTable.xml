@@ -117,7 +117,7 @@
         <tableName>BIZ_PROJECT_COMPLETE</tableName>
         <described>项目结题</described>
     </ModuleTable>
-    <ModuleTable ignore="false">
+    <ModuleTable ignore="true">
         <moduleName>paper</moduleName>
         <tableName>BIZ_PAPER</tableName>
         <described>论文</described>
@@ -287,7 +287,7 @@
         <tableName>BIZ_HONOR_APPLY_BOOK_MEMBER</tableName>
         <described>获奖申请材料成员</described>
     </ModuleTable>
-    <ModuleTable ignore="true">
+    <ModuleTable ignore="false">
         <moduleName>honor</moduleName>
         <tableName>BIZ_HONOR</tableName>
         <described>获奖</described>
@@ -586,5 +586,10 @@
         <moduleName>ptProject</moduleName>
         <tableName>BIZ_PT_PROJECT</tableName>
         <described>平台团队项目</described>
+    </ModuleTable>
+    <ModuleTable ignore="true">
+        <moduleName>cWIncomeClaim</moduleName>
+        <tableName>BIZ_CW_INCOME_CLAIM</tableName>
+        <described>财务来款认领</described>
     </ModuleTable>
 </ModuleTables>

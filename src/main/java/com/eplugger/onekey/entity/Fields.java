@@ -1,6 +1,7 @@
 package com.eplugger.onekey.entity;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import top.tobak.xml.dom4j.annotation.Dom4JField;
 import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
@@ -28,13 +29,17 @@ public class Fields implements ICategory {
 
 	@Override
 	public List<Category> getCategories() {
-		List<Category> categories = Lists.newArrayList();
-		fieldList.forEach(field -> {
-			if (field.getCategory() != null) {
-				field.setCategoryName(field.getCategory().getName());
-				categories.add(field.getCategory());
-			}
-		});
-		return categories;
+		return fieldList.stream().filter(field -> field.getCategory() != null).map(field -> {
+				field.setCategoryName(field.getCategory().getCategoryName());
+				return field.getCategory();
+			}).collect(Collectors.toList());
+//		List<Category> categories = Lists.newArrayList();
+//		fieldList.forEach(field -> {
+//			if (field.getCategory() != null) {
+//				field.setCategoryName(field.getCategory().getCategoryName());
+//				categories.add(field.getCategory());
+//			}
+//		});
+//		return categories;
 	}
 }

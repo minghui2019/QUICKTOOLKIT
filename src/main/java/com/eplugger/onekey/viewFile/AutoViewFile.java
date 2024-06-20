@@ -3,7 +3,7 @@ package com.eplugger.onekey.viewFile;
 import java.io.IOException;
 
 import com.eplugger.onekey.schoolInfo.entity.SchoolInfo;
-import com.eplugger.onekey.viewFile.entity.Categories;
+import com.eplugger.onekey.entity.Categories;
 import com.eplugger.onekey.viewFile.entity.ModuleViews;
 import com.eplugger.utils.DBUtils;
 import top.tobak.xml.dom4j.utils.parsers.CategoryParser;

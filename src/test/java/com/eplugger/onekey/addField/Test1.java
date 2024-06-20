@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import top.tobak.common.io.FileUtils;
 import top.tobak.common.lang.StringUtils;
-import com.eplugger.uuid.UUIDFun;
+import com.eplugger.uuid.UUIDFactory;
 
 public class Test1 {
 	@Test
@@ -13,11 +13,11 @@ public class Test1 {
 		String preSql = "INSERT INTO \"RDSYSCASV85220053\".\"SYS_WEB_FLOW_STEP_DATA_LOG\" (\"ID\", \"BEAN_ID\", \"DATA_ID\", \"CUR_STEP_NUM\", \"CREATEUSERID\", \"CREATEUSERNAME\", \"CREATEDATE\", \"LASTEDITUSERID\", \"LASTEDITUSERNAME\", \"LASTEDITDATE\") VALUES ('";
 		String minSql = ", '1', 'ff8080817cf44124017cf45aa8d20002', '系统管理员', TO_DATE('2022-06-10 03:50:04', 'SYYYY-MM-DD HH24:MI:SS'), 'ff8080817cf44124017cf45aa8d20002', '系统管理员', TO_DATE('2022-06-10 03:50:04', 'SYYYY-MM-DD HH24:MI:SS'));";
 		StringBuilder sb = new StringBuilder();
-		String[] uuids = UUIDFun.getInstance().getUuidsArray(strs.length);
+		String[] uuids = UUIDFactory.getInstance().getUUIDsArray(strs.length);
 		for (int i = 0; i < strs.length; i++) {
 			sb.append(preSql).append(uuids[i]).append("', ").append(strs[i]).append(minSql).append(StringUtils.CRLF);
 		}
-		UUIDFun.getInstance().destroyUuids();
+		UUIDFactory.getInstance().destroy();
 		FileUtils.write(FileUtils.getUserHomeDirectory() + "Product.sql", sb);
 	}
 	
@@ -27,11 +27,11 @@ public class Test1 {
 		String preSql = "INSERT INTO \"RDSYSCASV85220053\".\"SYS_WEB_FLOW_STEP_DATA_LOG\" (\"ID\", \"BEAN_ID\", \"DATA_ID\", \"CUR_STEP_NUM\", \"CREATEUSERID\", \"CREATEUSERNAME\", \"CREATEDATE\", \"LASTEDITUSERID\", \"LASTEDITUSERNAME\", \"LASTEDITDATE\") VALUES ('";
 		String minSql = ", '1', 'ff8080817cf44124017cf45aa8d20002', '系统管理员', TO_DATE('2022-06-10 03:50:04', 'SYYYY-MM-DD HH24:MI:SS'), 'ff8080817cf44124017cf45aa8d20002', '系统管理员', TO_DATE('2022-06-10 03:50:04', 'SYYYY-MM-DD HH24:MI:SS'));";
 		StringBuilder sb = new StringBuilder();
-		String[] uuids = UUIDFun.getInstance().getUuidsArray(strs.length);
+		String[] uuids = UUIDFactory.getInstance().getUUIDsArray(strs.length);
 		for (int i = 0; i < strs.length; i++) {
 			sb.append(preSql).append(uuids[i]).append("', ").append(strs[i]).append(minSql).append(StringUtils.CRLF);
 		}
-		UUIDFun.getInstance().destroyUuids();
+		UUIDFactory.getInstance().destroy();
 		FileUtils.write(FileUtils.getUserHomeDirectory() + "Project.sql", sb);
 	}
 }

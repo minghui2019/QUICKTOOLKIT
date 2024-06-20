@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import top.tobak.common.io.FileUtils;
 import com.eplugger.common.lang.CustomStringBuilder;
-import top.tobak.common.lang.StringUtils;
 import com.eplugger.onekey.addModule.Constants;
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.entity.ModuleInfo;
@@ -16,7 +14,9 @@ import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.DBUtils;
 import com.eplugger.utils.OtherUtils;
-import com.eplugger.uuid.UUIDFun;
+import com.eplugger.uuid.UUIDFactory;
+import top.tobak.common.io.FileUtils;
+import top.tobak.common.lang.StringUtils;
 
 public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	private static class ProduceSqlFactorySingleton {
@@ -124,19 +124,9 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 			if (field.isTranSient() || field.isOnlyMeta() == true) {
 				continue;
 			}
-			if (DBUtils.isSqlServer()) {
-				dsb.append("ALTER TABLE ").append(tableName).append(" ADD ").append(field.getTableFieldId()).append(" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL");
-				dsb.appendln("GO").appendln();
-			}
-			if (DBUtils.isOracle()) {
-				dsb.append("ALTER TABLE ").append(tableName).append(" ADD ").append(field.getTableFieldId()).append(" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL ; ");
-//				dsb.append("ADD ( \"").append(field.getTableFieldId()).append("\" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).appendln(" NULL ) ");
-			}
+			dsb.append("ALTER TABLE ").append(tableName).append(" ADD ").append(field.getTableFieldId()).append(" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(";").appendln();
 		}
-//		if (DBUtils.isOracle() && dsb.length() > 0) {
-//			dsb.appendln(";");
-//			dsb.insert(0, "ALTER TABLE \"" + DBUtils.getDatabaseName() + "\".\"" + tableName + "\"" + StringUtils.CRLF);
-//		}
+
 		return dsb.toString();
 	}
 
@@ -152,6 +142,6 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 			String authorsqlCode = produceCreateTableSql(authorModule, true, joinColumn_, mainModule.getTableName());
 			FileUtils.write(FileUtils.getUserHomeDirectory() + "AddModule\\sql" + File.separator + authorModule.getModuleName() + ".SQL", authorsqlCode);
 		}
-		UUIDFun.getInstance().destroyUuids();
+		UUIDFactory.getInstance().destroy();
 	}
 }

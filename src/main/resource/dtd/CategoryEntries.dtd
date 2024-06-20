@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT CategoryEntries (CategoryEntry, CategoryEntry+)>
+<!ELEMENT CategoryEntry EMPTY>
+<!ATTLIST CategoryEntry
+    code CDATA #IMPLIED
+    name CDATA #REQUIRED
+    >

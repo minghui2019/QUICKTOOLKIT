@@ -1,14 +1,14 @@
 package com.eplugger.guava;
 
+import java.util.Arrays;
 import java.util.Map;
-
-import org.junit.Test;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Joiner.MapJoiner;
 import com.google.common.collect.Maps;
-
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
 @Slf4j
 public class JoinerTest {
@@ -65,5 +65,16 @@ public class JoinerTest {
 		map.put(2, "b");
 		MapJoiner joiner = Joiner.on(";").withKeyValueSeparator("->");
 		log.debug(joiner.join(map));
+	}
+
+	/**
+	 * print: start: a;b;c
+	 * @throws Exception
+	 */
+	@Test
+	public void testAppendTo2() throws Exception {
+		String[] array = { "a", "b", "c" };
+		String collect = Arrays.stream(array).map(s -> "'" + s + "'").collect(Collectors.joining(","));
+		log.debug(collect);
 	}
 }

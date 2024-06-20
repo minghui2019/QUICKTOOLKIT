@@ -2,10 +2,11 @@ package top.tobak.xml.dom4j.simple;
 
 import com.eplugger.onekey.entity.Fields;
 import com.eplugger.onekey.entity.ModuleTables;
-import com.eplugger.uuid.entity.Uuids;
+import com.eplugger.uuid.entity.UUIDS;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import top.tobak.xml.dom4j.utils.XmlParseUtils;
+import top.tobak.xml.dom4j.utils.parsers.AbstractXmlParser;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -13,8 +14,9 @@ import static org.junit.Assert.assertNotNull;
 public class TestXmlToBean {
 	@Test
 	public void testUUID() throws Exception {
-		String xmlPath = TestXmlToBean.class.getResource("/").getPath() + "../../src/test/resource/uuid/UUID.xml";
-		Uuids bean = XmlParseUtils.toBean(xmlPath, Uuids.class);
+		XmlParseUtils.registerBean(new AbstractXmlParser<UUIDS>() {}, UUIDS.class);
+		String xmlPath = TestXmlToBean.class.getResource("/uuid/UUID.xml").getFile();
+		UUIDS bean = XmlParseUtils.toBean(xmlPath, UUIDS.class);
         assertNotNull(bean);
         log.debug(bean.toString());
 	}

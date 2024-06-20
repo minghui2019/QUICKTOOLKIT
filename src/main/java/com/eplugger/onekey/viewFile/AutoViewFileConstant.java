@@ -3,8 +3,8 @@ package com.eplugger.onekey.viewFile;
 import java.util.List;
 import java.util.Map;
 
-import com.eplugger.onekey.viewFile.entity.Categories;
-import com.eplugger.onekey.viewFile.entity.Category;
+import com.eplugger.onekey.entity.Categories;
+import com.eplugger.onekey.entity.Category;
 import com.eplugger.onekey.viewFile.entity.ModuleView;
 import com.eplugger.onekey.viewFile.entity.ModuleViews;
 import com.google.common.collect.Lists;

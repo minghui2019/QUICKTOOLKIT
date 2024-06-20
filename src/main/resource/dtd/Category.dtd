@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!ELEMENT Categories (Category+)>
-<!ELEMENT Category (#PCDATA)>
+<!ENTITY % CategoryEntries SYSTEM "CategoryEntries.dtd">
+%CategoryEntries;
+<!ELEMENT Category (CategoryEntries)>
 <!ATTLIST Category
     categoryName CDATA #REQUIRED
     bizName CDATA #REQUIRED

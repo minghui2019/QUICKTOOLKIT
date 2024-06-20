@@ -1,4 +1,4 @@
-package com.eplugger.onekey.viewFile.entity;
+package com.eplugger.onekey.entity;
 
 import java.util.LinkedHashMap;
 import java.util.List;

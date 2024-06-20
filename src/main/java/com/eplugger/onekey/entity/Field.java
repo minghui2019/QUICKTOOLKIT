@@ -61,6 +61,10 @@ public class Field {
 	private String businessFilterType = "no";
 	@Dom4JField(comment = "状态，启用-use，禁用-unuse")
 	private String useState = "use";
+	private String id;
+	private Integer orders;
+	private String eadpDataType;
+	private String beanId;
 
 	public String getTableFieldId() {
 		return Strings.isNullOrEmpty(tableFieldId) ? StringUtils.lowerCamelCase2UnderScoreCase(fieldId) : tableFieldId;

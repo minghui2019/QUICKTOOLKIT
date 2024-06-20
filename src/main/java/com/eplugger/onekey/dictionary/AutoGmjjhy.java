@@ -158,6 +158,7 @@ public class AutoGmjjhy {
                 }
             }
             if (lastRow - firstRow > 1) {
+                // 合并单元格
                 CellRangeAddress region = new CellRangeAddress(firstRow, lastRow, 0, 0);
                 sheet.addMergedRegion(region);
                 HSSFCell cell = sheet.getRow(firstRow).getCell(0);

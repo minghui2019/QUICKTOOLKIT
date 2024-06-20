@@ -8,13 +8,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import top.tobak.common.io.FileUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharSink;
 import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
+import com.google.common.io.LineProcessor;
+import top.tobak.common.io.FileUtils;
 
 public class SceneSQLFileMerge {
     private static final String parentPath = "C:\\Users\\ningm\\Documents\\场景语句";
@@ -99,6 +100,43 @@ public class SceneSQLFileMerge {
                 continue;
             }
             nfileSink.write(line + "\n\r");
+        }
+    }
+
+    public static void merge(String parent, String child, String exclusionCriteria) throws IOException {
+        File parentFile = FileUtils.getFile(parent);
+        File nfile = new File(parentFile, child);
+        boolean directory = parentFile.isDirectory();
+        if (!directory) {
+            return;
+        }
+        File[] files = parentFile.listFiles();
+        for (File file : files) {
+            if (file.length() == 0 || file.getName().indexOf(exclusionCriteria) == -1) {
+                continue;
+            }
+            CharSink charSink = Files.asCharSink(nfile, StandardCharsets.UTF_8, FileWriteMode.APPEND);
+            charSink.write("-- " + file.getName() + "\n\r");
+            charSink.write("truncate table " + file.getName().replace(exclusionCriteria, "") + ";\n\r");
+            charSink.writeLines(Files.asCharSource(file, Charset.forName("UTF-8")).readLines(new LineProcessor<List<String>> () {
+                private final List<String> lines = Lists.newArrayList();
+                @Override
+                public boolean processLine(String line) throws IOException {
+                    if (line.contains("; go") || line.contains("; GO")) {
+                        lines.add(line.replace("; go", ";")
+                                      .replace("; GO", ";")
+                                      .replace("[", "")
+                                      .replace("]", ""));
+                    }
+                    return true;
+                }
+
+                @Override
+                public List<String> getResult() {
+                    return lines;
+                }
+            }));
+            charSink.write("\n\r\n\r");
         }
     }
 

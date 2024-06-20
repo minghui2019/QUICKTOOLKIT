@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import com.eplugger.uuid.UUIDFun;
-import com.eplugger.uuid.entity.Uuids;
+import com.eplugger.uuid.entity.UUIDS;
+import com.eplugger.uuid.utils.UUIDUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,15 +35,15 @@ public class UuidTest {
     public void testParse() throws Exception {
     	XMLObject root = xmlParser.parse();
     	assertNotNull(root);
-    	Uuids uuids = root.toBean(Uuids.class);
+    	UUIDS uuids = root.toBean(UUIDS.class);
     	assertNotNull(uuids);
     	System.out.println(uuids);
     }
 	
 	@Test
     public void testTransfer() throws IOException {
-		Uuids uuids = new Uuids();
-		uuids.setUuidList(UUIDFun.getInstance().buildUuids(30));
+		UUIDS uuids = new UUIDS();
+		uuids.addAll(UUIDUtils.generateUUID(30));
     	
     	// Bean 转化为 XMLObject
     	XMLObject root = XMLObject.of(uuids);

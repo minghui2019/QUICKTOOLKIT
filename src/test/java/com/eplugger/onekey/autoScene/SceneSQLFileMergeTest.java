@@ -20,7 +20,7 @@ public class SceneSQLFileMergeTest {
 
     @Test
     public void merge() throws IOException {
-        SceneSQLFileMerge.merge();
+        SceneSQLFileMerge.merge("C:\\Users\\ningm\\Desktop\\财务中间表", "kyjk6.sql", ".sql");
     }
 
     @Test

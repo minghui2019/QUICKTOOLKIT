@@ -11,7 +11,9 @@ public enum SchoolInfo {
     深圳市人工智能与机器人研究院("RDSYSCASV85220053", "V8.5.2", "oracle"),
     广州美术学院("RDSYSEDUV82210586", "V8.2.2", "oracle"),
     惠州学院("RDSYSEDUV830110577", "V8.3.0", "sqlserver"),
-    广东工业大学("RDSYSEDUV856111845", "V8.5.6.1", "oracle");
+    广东工业大学("RDSYSEDUV856111845", "V8.5.6.1", "oracle"),
+    梧州职业学院("RDSYSEDUV856114171", "V8.5.6.1", "oracle"),
+    ;
 
     public String dbName;
     public String version;

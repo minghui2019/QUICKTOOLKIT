@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 
 import cn.hutool.core.lang.Assert;
 import com.eplugger.onekey.schoolInfo.entity.SchoolInfo;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import top.tobak.common.lang.StringUtils;
@@ -266,13 +267,23 @@ public class DBUtils {
 		Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
 		return schoolInfo.dbName;
 	}
+	private static String eadpDataType;
 
 	/**
 	 * 从数据库名称获取系统版本
 	 * @return
 	 */
 	public static String getEadpDataType() {
-		Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
-		return schoolInfo.version;
+		if (Strings.isNullOrEmpty(eadpDataType)) {
+			Assert.notNull(schoolInfo, "必须首先在@Before设置学校的信息！");
+			String sql = "select PMVAL from SYS_PARAM where PMKEY='system.version'";
+			String[] strs = DBUtils.getStrsBySql(sql);
+			if (strs != null && strs.length > 0) {
+				eadpDataType = strs[0];
+			} else {
+				eadpDataType = schoolInfo.version;
+			}
+		}
+		return eadpDataType;
 	}
 }

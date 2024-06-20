@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Dom4JTag("uuid")
-public class Uuid {
+public class UUID {
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE)
 	private int id;
 	@Dom4JField(type = Dom4JFieldType.NONE)
 	private String text;
 	@Override
 	public String toString() {
-		return "\nUuid [id=" + id + ", text=" + text + "]";
+		return "\nUUID [id=" + id + ", text=" + text + "]";
 	}
 }

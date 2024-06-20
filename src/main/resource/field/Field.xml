@@ -3,17 +3,93 @@
 
 <Fields>
     <Field>
-        <fieldId>isTranslated</fieldId>
-        <fieldName>是否为译文</fieldName>
+        <fieldId>participatingUnits</fieldId>
+        <fieldName>参与单位</fieldName>
         <dataType>String</dataType>
-        <categoryName>SF</categoryName>
-        <precision>4</precision>
+        <precision>1000</precision>
     </Field>
     <Field>
-        <fieldId>pageSpace</fieldId>
-        <fieldName>版面</fieldName>
+        <fieldId>issuingAgency</fieldId>
+        <fieldName>颁发机构</fieldName>
         <dataType>String</dataType>
-        <categoryName>PAPER_SPACE</categoryName>
-        <precision>4</precision>
+        <Category categoryName="HONOR_ISSUING_AGENCY" bizName="颁发机构(获奖)" bizType="成果" fromBiz="0">
+            <CategoryEntries>
+                <CategoryEntry name="广西壮族自治区人民政府"/>
+                <CategoryEntry name="梧州市教育局"/>
+                <CategoryEntry name="梧州职业学院"/>
+            </CategoryEntries>
+        </Category>
+        <precision>32</precision>
+    </Field>
+    <Field>
+        <fieldId>awardGroup</fieldId>
+        <fieldName>获奖组</fieldName>
+        <dataType>String</dataType>
+        <Category categoryName="HONOR_AWARD_GROUP" bizName="获奖组(获奖)" bizType="成果" fromBiz="0">
+            <CategoryEntries>
+                <CategoryEntry name="中职组获奖"/>
+                <CategoryEntry name="高职组获奖"/>
+            </CategoryEntries>
+        </Category>
+        <precision>32</precision>
+    </Field>
+    <Field>
+        <fieldId>track</fieldId>
+        <fieldName>赛道</fieldName>
+        <dataType>String</dataType>
+        <Category categoryName="HONOR_TRACK" bizName="赛道(获奖)" bizType="成果" fromBiz="0">
+            <CategoryEntries>
+                <CategoryEntry name="职教赛道"/>
+                <CategoryEntry name="高教主赛道"/>
+                <CategoryEntry name="优秀创新创业导师"/>
+                <CategoryEntry name="“青年红色筑梦之旅”赛道"/>
+            </CategoryEntries>
+        </Category>
+        <precision>32</precision>
+    </Field>
+    <Field>
+        <fieldId>participatingGroups</fieldId>
+        <fieldName>参赛组别</fieldName>
+        <dataType>String</dataType>
+        <Category categoryName="HONOR_PARTICIPATING_GROUPS" bizName="参赛组别(获奖)" bizType="成果" fromBiz="0">
+            <CategoryEntries>
+                <CategoryEntry name="创意组"/>
+                <CategoryEntry name="创业组"/>
+                <CategoryEntry name="公益组"/>
+                <CategoryEntry name="鲁花杯"/>
+                <CategoryEntry name="高职组"/>
+                <CategoryEntry name="本科生创意组"/>
+            </CategoryEntries>
+        </Category>
+        <precision>32</precision>
+    </Field>
+    <Field>
+        <fieldId>competitionCategory</fieldId>
+        <fieldName>参赛类别</fieldName>
+        <dataType>String</dataType>
+        <Category categoryName="HONOR_COMPETITION_CATEGORY" bizName="参赛类别(获奖)" bizType="成果" fromBiz="0">
+            <CategoryEntries>
+                <CategoryEntry name="创新类"/>
+                <CategoryEntry name="商业类"/>
+                <CategoryEntry name="“互联网+”现代农业"/>
+                <CategoryEntry name="“互联网+”文化创意服务"/>
+                <CategoryEntry name="“互联网+”社会服务"/>
+                <CategoryEntry name="“互联网+”制造业"/>
+                <CategoryEntry name="“互联网+”信息技术服务"/>
+            </CategoryEntries>
+        </Category>
+        <precision>32</precision>
+    </Field>
+    <Field>
+        <fieldId>teamName</fieldId>
+        <fieldName>团队名称</fieldName>
+        <dataType>String</dataType>
+        <precision>500</precision>
+    </Field>
+    <Field>
+        <fieldId>className</fieldId>
+        <fieldName>班级</fieldName>
+        <dataType>String</dataType>
+        <precision>500</precision>
     </Field>
 </Fields>

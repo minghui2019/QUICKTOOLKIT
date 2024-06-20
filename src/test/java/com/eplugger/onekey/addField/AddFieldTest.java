@@ -6,12 +6,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.entity.Fields;
 import com.eplugger.onekey.entity.ModuleTables;
-import com.eplugger.uuid.UUIDFun;
 import org.junit.Before;
 import org.junit.Test;
 import top.tobak.xml.dom4j.utils.XmlParseUtils;
@@ -38,12 +36,5 @@ public class AddFieldTest {
 		Map<String, String> map = XmlParseUtils.toBean(classPath + "field/ModuleTable.xml", ModuleTables.class).getValidModuleTableMap();
 		System.out.println(map1);
 		System.out.println(map);
-	}
-	
-	@Test
-	public void testJoinUUID() throws Exception {
-		List<String> uuidList = UUIDFun.getInstance().getUuidsList(10);
-		String collect = uuidList.stream().map(u -> "'" + u + "'").collect(Collectors.joining(", "));
-		System.out.println(collect);
 	}
 }

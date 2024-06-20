@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ModuleViews SYSTEM "../dtd/ModuleView.dtd">
+
+<ModuleViews>
+    <ModuleView ignore="true">
+        <beanId>researchUnit</beanId>
+        <tableName>BIZ_RESEARCH_UNIT</tableName>
+        <viewName>V_KY_JG</viewName>
+        <described>研究机构</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>educationStat</beanId>
+        <tableName>BIZ_EDUCATION_STAT</tableName>
+        <viewName>V_KY_JG_JF</viewName>
+        <described>研究机构-教育部统计</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>researchUnitPerson</beanId>
+        <tableName>BIZ_RESEARCH_PERSON</tableName>
+        <viewName>V_KY_JG_RY</viewName>
+        <described>研究机构-成员</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>yfContract</beanId>
+        <tableName>BIZ_YF_CONTRACT</tableName>
+        <viewName>V_KY_HXXM</viewName>
+        <described>横向项目</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>yfContractMember</beanId>
+        <tableName>BIZ_YF_CONTRACT_MEMBER</tableName>
+        <viewName>V_KY_HXXM_RY</viewName>
+        <described>横向项目成员</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>zXProject</beanId>
+        <tableName>BIZ_ZX_PROJECT</tableName>
+        <viewName>V_KY_ZXXM</viewName>
+        <described>纵向项目</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>zXProjectMember</beanId>
+        <tableName>BIZ_ZX_PROJECT_MEMBER</tableName>
+        <viewName>V_KY_ZXXM_RY</viewName>
+        <described>纵向项目成员</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>xJProject</beanId>
+        <tableName>BIZ_XJ_PROJECT</tableName>
+        <viewName>V_KY_XJXM</viewName>
+        <described>校级项目</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>xJProjectMember</beanId>
+        <tableName>BIZ_XJ_PROJECT_MEMBER</tableName>
+        <viewName>V_KY_XJXM_RY</viewName>
+        <described>校级项目成员</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>zXProjectCooperationUnit</beanId>
+        <tableName>BIZ_PROJECT_COOPERATION_UNIT</tableName>
+        <viewName>V_KY_XM_XZDW</viewName>
+        <described>合作单位</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>projectPayoutDetail</beanId>
+        <tableName>BIZ_PROJECT_PAYOUT_DETAIL</tableName>
+        <viewName>V_KY_XM_JFZC</viewName>
+        <described>经费报销明细</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>projectIncome</beanId>
+        <tableName>BIZ_PROJECT_INCOME</tableName>
+        <viewName>V_KY_XM_JFRK</viewName>
+        <described>经费到账</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>projectFeeCard</beanId>
+        <tableName>BIZ_PROJECT_FEE_CARD</tableName>
+        <viewName>V_KY_XM_JFK</viewName>
+        <described>项目经费卡</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>paper</beanId>
+        <tableName>BIZ_PAPER</tableName>
+        <viewName>V_KY_LW</viewName>
+        <described>论文</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>paperInclude</beanId>
+        <tableName>BIZ_PAPER_INCLUDE</tableName>
+        <viewName>V_KY_LW_SL</viewName>
+        <described>论文收录</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>paperAuthor</beanId>
+        <tableName>BIZ_PAPER_AUTHOR</tableName>
+        <viewName>V_KY_LW_RY</viewName>
+        <described>论文作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>magazine</beanId>
+        <tableName>DM_MAGAZINE</tableName>
+        <viewName>V_KY_LW_QKYXYZ</viewName>
+        <described>期刊信息</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>jdProduct</beanId>
+        <tableName>BIZ_APPRAISAL_PRODUCT</tableName>
+        <viewName>V_KY_CG</viewName>
+        <described>鉴定成果</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>jdProductAuthor</beanId>
+        <tableName>BIZ_APPRAISAL_PRODUCT_AUTHOR</tableName>
+        <viewName>V_KY_CG_RY</viewName>
+        <described>鉴定成果作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>book</beanId>
+        <tableName>BIZ_BOOK</tableName>
+        <viewName>V_KY_ZZ</viewName>
+        <described>著作</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>bookAuthor</beanId>
+        <tableName>BIZ_BOOK_AUTHOR</tableName>
+        <viewName>V_KY_ZZ_RY</viewName>
+        <described>著作作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>honor</beanId>
+        <tableName>BIZ_HONOR</tableName>
+        <viewName>V_KY_CGHJ</viewName>
+        <described>获奖</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>honorAuthor</beanId>
+        <tableName>BIZ_HONOR_AUTHOR</tableName>
+        <viewName>V_KY_CGHJ_RY</viewName>
+        <described>获奖完成人</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>patent</beanId>
+        <tableName>BIZ_PATENT</tableName>
+        <viewName>V_KY_ZL</viewName>
+        <described>专利成果</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>patentAuthor</beanId>
+        <tableName>BIZ_PATENT_AUTHOR</tableName>
+        <viewName>V_KY_ZL_RY</viewName>
+        <described>专利成果作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>productTrans</beanId>
+        <tableName>BIZ_PRODUCT_TRANS</tableName>
+        <viewName>V_KY_JSZR</viewName>
+        <described>成果转化</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>productTransAuthor</beanId>
+        <tableName>BIZ_PRODUCT_TRANS_AUTHOR</tableName>
+        <viewName>V_KY_JSZR_RY</viewName>
+        <described>成果转化作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>meeting</beanId>
+        <tableName>BIZ_MEETING</tableName>
+        <viewName>V_KY_XSHY</viewName>
+        <described>主办会议</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>joinMeeting</beanId>
+        <tableName>BIZ_JOIN_MEETING</tableName>
+        <viewName>V_KY_HYJLQK</viewName>
+        <described>参加会议</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>lecture</beanId>
+        <tableName>BIZ_LECTURE</tableName>
+        <viewName>V_KY_XSBG</viewName>
+        <described>学术讲座</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>personnelAccept</beanId>
+        <tableName>BIZ_PERSONNEL_ACCEPT</tableName>
+        <viewName>V_KY_XSJLJSRY</viewName>
+        <described>人员接受</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>personnelDispatch</beanId>
+        <tableName>BIZ_PERSONNEL_DISPATCH</tableName>
+        <viewName>V_KY_XSJLPCRY</viewName>
+        <described>人员派遣</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>researchReport</beanId>
+        <tableName>BIZ_RESEARCH_REPORT</tableName>
+        <viewName>V_KY_YJYZXBG</viewName>
+        <described>研究与咨询报告</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>researchReportAuthor</beanId>
+        <tableName>BIZ_RESEARCH_REPORT_AUTHOR</tableName>
+        <viewName>V_KY_YJYZXBG_RY</viewName>
+        <described>研究与咨询报告作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>artProduct</beanId>
+        <tableName>BIZ_ART_PRODUCT</tableName>
+        <viewName>V_KY_YSZP</viewName>
+        <described>艺术作品</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>artProductAuthor</beanId>
+        <tableName>BIZ_ART_PRODUCT_AUTHOR</tableName>
+        <viewName>V_KY_YSZP_RY</viewName>
+        <described>艺术作品作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>sciTechProductRecord</beanId>
+        <tableName>BIZ_SCITECH_PRODUCT_RECORD</tableName>
+        <viewName>V_KY_KJCGBA</viewName>
+        <described>科技成果备案</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>sciTechProductRecordAuthor</beanId>
+        <tableName>BIZ_SCITECH_PRODUCT_RECORD_AUTH</tableName>
+        <viewName>V_KY_KJCGBA_RY</viewName>
+        <described>科技成果备案成员</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>copyRight</beanId>
+        <tableName>BIZ_COPYRIGHT</tableName>
+        <viewName>V_KY_ZZQ</viewName>
+        <described>著作权</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>copyRightAuthor</beanId>
+        <tableName>BIZ_COPYRIGHT_AUTHOR</tableName>
+        <viewName>V_KY_ZZQ_RY</viewName>
+        <described>著作权作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>standard</beanId>
+        <tableName>BIZ_STANDARD</tableName>
+        <viewName>V_KY_BZ</viewName>
+        <described>标准</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>standardAuthor</beanId>
+        <tableName>BIZ_STANDARD_AUTHOR</tableName>
+        <viewName>V_KY_BZ_RY</viewName>
+        <described>标准作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>molectronLayout</beanId>
+        <tableName>BIZ_MOLECTRON_LAYOUT</tableName>
+        <viewName>V_KY_JCDLBT</viewName>
+        <described>集成电路布图</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>molectronLayoutAuthor</beanId>
+        <tableName>BIZ_MOLECTRON_LAYOUT_AUTHOR</tableName>
+        <viewName>V_KY_JCDLBT_RY</viewName>
+        <described>电路布图作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>medicine</beanId>
+        <tableName>BIZ_MEDICINE</tableName>
+        <viewName>V_KY_YZ</viewName>
+        <described>药证</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>medicineAuthor</beanId>
+        <tableName>BIZ_MEDICINE_AUTHOR</tableName>
+        <viewName>V_KY_YZ_RY</viewName>
+        <described>药证作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>breed</beanId>
+        <tableName>BIZ_BREED</tableName>
+        <viewName>V_KY_XPZ</viewName>
+        <described>新品种</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>breedAuthor</beanId>
+        <tableName>BIZ_BREED_AUTHOR</tableName>
+        <viewName>V_KY_XPZ_RY</viewName>
+        <described>新品种作者</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>trademark</beanId>
+        <tableName>BIZ_TRADEMARK</tableName>
+        <viewName>V_KY_SB</viewName>
+        <described>商标</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>trademarkAuthor</beanId>
+        <tableName>BIZ_TRADEMARK_AUTHOR</tableName>
+        <viewName>V_KY_SB_RY</viewName>
+        <described>商标完成人</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>socialOrganization</beanId>
+        <tableName>BIZ_SOCIAL_ORGANIZATION</tableName>
+        <viewName>V_KY_CYSHTTZZ</viewName>
+        <described>参与社会团体组织</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>socialOrganizationAuthor</beanId>
+        <tableName>BIZ_SOCIAL_ORGANIZATION_AUTHOR</tableName>
+        <viewName>V_KY_CYSHTTZZ_RY</viewName>
+        <described>参与社会团体组织人员</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>customTeam</beanId>
+        <tableName>BIZ_CUSTOM_TEAM</tableName>
+        <viewName>V_KY_ZDYTD</viewName>
+        <described>自定义团队</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>customTeamEducationStat</beanId>
+        <tableName>BIZ_CUSTOM_TEAM_EDUCATION_STAT</tableName>
+        <viewName>V_KY_ZDYTD_JF</viewName>
+        <described>自定义团队-教育部统计</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>customTeamPerson</beanId>
+        <tableName>BIZ_CUSTOM_TEAM_PERSON</tableName>
+        <viewName>V_KY_ZDYTD_RY</viewName>
+        <described>自定义团队-成员</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>cwIncome</beanId>
+        <tableName>BIZ_CW_INCOME</tableName>
+        <viewName>V_KY_XM_JF</viewName>
+        <described>财务来款</described>
+    </ModuleView>
+    <ModuleView ignore="true">
+        <beanId>projectOutbound</beanId>
+        <tableName>BIZ_PROJECT_OUTBOUND</tableName>
+        <viewName>V_KY_XM_JFBR</viewName>
+        <described>经费外拨</described>
+    </ModuleView>
+    <ModuleView ignore="false">
+        <beanId>patentProposal</beanId>
+        <tableName>BIZ_PATENT_PROPOSAL</tableName>
+        <viewName>V_KY_ZSCQSQ</viewName>
+        <described>知识产权申请</described>
+    </ModuleView>
+    <ModuleView ignore="false">
+        <beanId>patentProposalAuthor</beanId>
+        <tableName>BIZ_PATENT_PROPOSAL_AUTHOR</tableName>
+        <viewName>V_KY_ZSCQSQ_RY</viewName>
+        <described>知识产权申请作者</described>
+    </ModuleView>
+    <ModuleView ignore="false">
+        <beanId>intellectualPropertyRight</beanId>
+        <tableName>BIZ_INTELLECTUAL_PROPERTY_RIGHT</tableName>
+        <viewName>V_KY_QTZSCQ</viewName>
+        <described>其他知识产权</described>
+    </ModuleView>
+    <ModuleView ignore="false">
+        <beanId>intellectualPropertyRightAuthor</beanId>
+        <tableName>BIZ_INTELLECTUAL_PROPERTY_RIGHT_AUTHOR</tableName>
+        <sheetName>BIZ_IPR_AUTHOR</sheetName>
+        <viewName>V_KY_QTZSCQ_RY</viewName>
+        <described>其他知识产权作者</described>
+    </ModuleView>
+
+</ModuleViews>

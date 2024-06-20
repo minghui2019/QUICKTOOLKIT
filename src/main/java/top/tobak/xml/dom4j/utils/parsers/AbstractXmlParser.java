@@ -81,7 +81,7 @@ public abstract class AbstractXmlParser<T> implements IXmlParser<T> {
 	
 	@Override
 	public T toBean(Class<T> cls, String path) {
-		if (FileUtils.isFileReadable(FileUtils.getFile(path))) {
+		if (!FileUtils.isFileReadable(FileUtils.getFile(path))) {
 			throw new IllegalArgumentException("文件不存在或不可读[path=" + path + "]");
 		}
 		this.beforeToBean(path);
@@ -159,6 +159,32 @@ public abstract class AbstractXmlParser<T> implements IXmlParser<T> {
 		for (Element element : elements) {
 			D bean = toBean(cls, element);
 			beans.add(bean);
+		}
+		return beans;
+	}
+
+	/**
+	 * 指定控件解析为列表
+	 *
+	 * @see #toBean(Class, Element)
+	 * @param childTagName	子标签名
+	 * @param cls			实体类字节码
+	 * @param root			当前解析的根元素
+	 * @param path			设置路径会在解析之前跳转到指定子标签
+	 * @return
+	 */
+	public <D> List<D> toBeans(String childTagName, Class<D> cls, Element root, String[] path) {
+		List<D> beans = Lists.newArrayList();
+
+		List<Element> elements = root.elements(childTagName);
+		for (Element element : elements) {
+			for (String childPath : path) {
+				List<Element> childElements = element.elements(childPath);
+				for (Element childElement : childElements) {
+					D bean = toBean(cls, childElement);
+					beans.add(bean);
+				}
+			}
 		}
 		return beans;
 	}
@@ -350,8 +376,16 @@ public abstract class AbstractXmlParser<T> implements IXmlParser<T> {
 				return true;
 			}
 
-			String childTagName = getTargetTagName(xmlField, type.getSimpleName());
-			List<?> val = toBeans(childTagName, type, element);
+			// 试着从泛型类里取得子标签名
+			String childTagName = getTargetTagName(xmlField, type);
+//			String childTagName = getTargetTagName(xmlField, type.getSimpleName());
+			String[] path = xmlField.path();
+			List<?> val;
+			if (path.length > 0) {
+				val = toBeans(childTagName, type, element, path);
+			} else {
+				val = toBeans(childTagName, type, element);
+			}
 
 			// 如果目标集合是Set集合, 从List集合转
 			if (FieldUtils.CollectionType.SET == collectionType)
@@ -634,6 +668,17 @@ public abstract class AbstractXmlParser<T> implements IXmlParser<T> {
     private static String getTargetTagName(Dom4JTag dom4jTag, String defaultName) {
         return StringUtils.defaultIfBlank(dom4jTag.value(), defaultName);
     }
+
+	private static String getTargetTagName(Dom4JField dom4jField, Class<?> clz) {
+		String defaultName = clz.getSimpleName();
+		if (Strings.isNullOrEmpty(dom4jField.name())) {
+			Dom4JTag dom4JTag = clz.getAnnotation(Dom4JTag.class);
+			if (dom4JTag != null) {
+				return getTargetTagName(dom4JTag, defaultName);
+			}
+		}
+		return StringUtils.defaultIfBlank(dom4jField.name(), defaultName);
+	}
 }
 
 class DocType {

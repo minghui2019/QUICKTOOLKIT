@@ -1,6 +1,8 @@
 package com.aspose.words.shape;
 
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 
 import com.aspose.words.ApiExampleBase;
@@ -8,8 +10,11 @@ import com.aspose.words.DashStyle;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.aspose.words.EndCap;
+import com.aspose.words.GroupShape;
 import com.aspose.words.HorizontalAlignment;
 import com.aspose.words.JoinStyle;
+import com.aspose.words.NodeCollection;
+import com.aspose.words.NodeType;
 import com.aspose.words.OoxmlCompliance;
 import com.aspose.words.OoxmlSaveOptions;
 import com.aspose.words.Paragraph;
@@ -23,9 +28,9 @@ import com.aspose.words.ShapeType;
 import com.aspose.words.Stroke;
 import com.aspose.words.VerticalAlignment;
 import com.aspose.words.WrapType;
-import top.tobak.common.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import top.tobak.common.io.FileUtils;
 
 public class ShapeTest {
 
@@ -200,5 +205,48 @@ public class ShapeTest {
 
         // Insert shape object
         builder.insertNode(rectangle);
+    }
+
+    @Test
+    public void testName2() throws Exception {
+        // Here we get all shapes from the document node, but you can do this for any smaller
+        // node too, for example delete shapes from a single section or a paragraph
+        Document doc = new Document();
+        DocumentBuilder builder = new DocumentBuilder(doc);
+
+        // Insert 2 shapes
+        builder.insertShape(ShapeType.RECTANGLE, 400.0, 200.0);
+        builder.insertShape(ShapeType.STAR, 300.0, 300.0);
+
+        // Insert a GroupShape with an inner shape
+        GroupShape group = new GroupShape(doc);
+        group.setBounds(new Rectangle2D.Float(100f, 50f, 200f, 100f));
+        group.setCoordOrigin(new Point(-1000, -500));
+
+        Shape subShape = new Shape(doc, ShapeType.CUBE);
+        subShape.setWidth(500.0);
+        subShape.setHeight(700.0);
+        subShape.setLeft(0.0);
+        subShape.setTop(0.0);
+        group.appendChild(subShape);
+        builder.insertNode(group);
+
+        Assert.assertEquals(doc.getChildNodes(NodeType.SHAPE, true).getCount(), 3);
+        Assert.assertEquals(doc.getChildNodes(NodeType.GROUP_SHAPE, true).getCount(), 1);
+
+        // Delete all Shape nodes
+        NodeCollection shapes = doc.getChildNodes(NodeType.SHAPE, true);
+        shapes.clear();
+
+        // The GroupShape node is still present even though there are no sub Shapes
+        Assert.assertEquals(doc.getChildNodes(NodeType.GROUP_SHAPE, true).getCount(), 1);
+        Assert.assertEquals(doc.getChildNodes(NodeType.SHAPE, true).getCount(), 0);
+
+        // GroupShapes also have to be deleted manually
+        NodeCollection groupShapes = doc.getChildNodes(NodeType.GROUP_SHAPE, true);
+        groupShapes.clear();
+
+        Assert.assertEquals(doc.getChildNodes(NodeType.GROUP_SHAPE, true).getCount(), 0);
+        Assert.assertEquals(doc.getChildNodes(NodeType.SHAPE, true).getCount(), 0);
     }
 }

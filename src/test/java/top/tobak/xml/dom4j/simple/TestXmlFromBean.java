@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.eplugger.onekey.entity.ModuleTable;
 import com.eplugger.onekey.entity.ModuleTables;
-import com.eplugger.uuid.UUIDFun;
-import com.eplugger.uuid.entity.Uuids;
+import com.eplugger.uuid.entity.UUIDS;
+import com.eplugger.uuid.utils.UUIDUtils;
 import org.dom4j.Document;
 import org.junit.Test;
 import top.tobak.xml.dom4j.utils.XmlParseUtils;
@@ -28,9 +28,9 @@ public class TestXmlFromBean {
 	
 	@Test
 	public void testUUID() throws Exception {
-		Uuids uuids = new Uuids();
-		uuids.setUuidList(UUIDFun.getInstance().buildUuids(30));
-		String xmlPath = TestXmlFromBean.class.getResource("/").getPath() + "/test_uuid.xml";
+		UUIDS uuids = new UUIDS();
+		uuids.addAll(UUIDUtils.generateUUID(30));
+		String xmlPath = TestXmlFromBean.class.getResource("/").getPath() + "test_uuid.xml";
 		Document document = XmlParseUtils.fromBean(xmlPath, uuids, true);
 		assertNotNull(document);
 	}

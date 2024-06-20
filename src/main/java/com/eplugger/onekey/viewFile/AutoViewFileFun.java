@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.eplugger.onekey.viewFile.entity.Categories;
+import com.eplugger.onekey.entity.Categories;
+import com.eplugger.onekey.entity.Category;
 import com.eplugger.onekey.viewFile.entity.ModuleView;
 import com.eplugger.onekey.viewFile.entity.ViewRowBuilder;
 import com.eplugger.onekey.viewFile.entity.ViewRowBuilder.ViewRow;
@@ -388,7 +389,7 @@ public class AutoViewFileFun {
                 if (Strings.isNullOrEmpty(categoryName)) {
                     categoryName = categoryMap.get(fieldId);
                 }
-                com.eplugger.onekey.viewFile.entity.Category category = new com.eplugger.onekey.viewFile.entity.Category();
+                Category category = new Category();
                 if (!Strings.isNullOrEmpty(categoryName)) {
                     if ("unitId".equals(fieldId)) {
                         categoryName = "UNIT_ALL";
@@ -396,15 +397,15 @@ public class AutoViewFileFun {
                     String sql = "SELECT TABLENAME,CODECOLUMN,VALUECOLUMN,CATEGORYNAME,BIZNAME,BIZTYPE,FROMBIZ FROM CFG_CATEGORY CC LEFT JOIN CFG_CATEGORY_MAPPING CCM ON CC.ID=CCM.CATEGORYID WHERE CATEGORYNAME=:categoryName";
                     Map<String, Object> params = Maps.newHashMap();
                     params.put("categoryName", categoryName);
-                    List<com.eplugger.onekey.viewFile.entity.Category> categoryList = DBUtils.getListBySql(sql, params, (rs, rowNum) -> {
-                        com.eplugger.onekey.viewFile.entity.Category category1 = new com.eplugger.onekey.viewFile.entity.Category();
+                    List<Category> categoryList = DBUtils.getListBySql(sql, params, (rs, rowNum) -> {
+                        Category category1 = new Category();
                         category1.setTableName(rs.getString("TABLENAME"));
                         category1.setCodeColumn(rs.getString("CODECOLUMN"));
                         category1.setValueColumn(rs.getString("VALUECOLUMN"));
                         category1.setCategoryName(rs.getString("CATEGORYNAME"));
                         category1.setBizName(rs.getString("BIZNAME"));
                         category1.setBizType(rs.getString("BIZTYPE"));
-                        category1.setFromBiz(rs.getString("FROMBIZ"));
+                        category1.setFromBiz(rs.getInt("FROMBIZ"));
                         return category1;
                     });
                     category = categoryList.get(0);

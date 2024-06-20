@@ -2,6 +2,8 @@ package com.eplugger.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -12,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.filechooser.FileSystemView;
 
+import bsh.EvalError;
+import bsh.Interpreter;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.StreamProgress;
 import cn.hutool.core.lang.Console;
@@ -532,5 +536,65 @@ public class Test3 {
 		writer.setColumnWidth(4, 50);
 		Workbook workbook = writer.write(data).getWorkbook();
 		ExcelUtils.outExcel(workbook, new File("xlsx/", filename).getCanonicalFile());
+	}
+
+	@Test
+	public void testName10() {
+		String str1 = "V8.5.6.1_update1.0.sql";
+		String str2 = "V8.5.6.1_update9.9.sql";
+		String str3 = "V8.5.6.1_update10.0.sql";
+
+		boolean isStr1Newer = isNewerVersion(str1, str2);
+		boolean isStr3Newer = isNewerVersion(str3, str2);
+
+		System.out.println("str1 是否比 str2 新：" + isStr1Newer);
+		System.out.println("str3 是否比 str2 新：" + isStr3Newer);
+
+		String str4 = "V8.5.6.1_update1_0.sql";
+		String str5 = "V8.5.6.1_update9_9.sql";
+		String str6 = "V8.5.6.1_update10_0.sql";
+
+
+	}
+
+	public static boolean isNewerVersion(String str1, String str2) {
+		String update = str1.substring(0, str1.lastIndexOf("_update") + "_update".length());
+		str1 = str1.replace(update, "");
+		str2 = str2.replace(update, "");
+		// 提取版本号部分
+		String version1 = str1.replaceAll("[^\\d.]", "");
+		String version2 = str2.replaceAll("[^\\d.]", "");
+
+		// 比较版本号
+		String[] arr1 = version1.split("\\.");
+		String[] arr2 = version2.split("\\.");
+
+		for (int i = 0; i < Math.min(arr1.length, arr2.length); i++) {
+			int num1 = Integer.parseInt(arr1[i]);
+			int num2 = Integer.parseInt(arr2[i]);
+			if (num1 != num2) {
+				return num1 > num2; // 如果num1大于num2，则str1更新
+			}
+		}
+
+		// 如果版本号长度不同，长度更长的版本更新
+		return arr1.length > arr2.length;
+	}
+
+	@Test
+	public void testName11() throws EvalError {
+		Interpreter interpreter = new Interpreter();
+		double value = (double) interpreter.eval("Math.round(1/6.0 * 100)/ 100.0");
+		System.out.println(value);
+		System.out.println(BigDecimal.valueOf(value).setScale(2, RoundingMode.HALF_UP));
+		System.out.println(Math.round(value * 100) / 100.0);
+	}
+
+	@Test
+	public void testName12() {
+		Integer i1 = 1000;
+		Double d1 = 1000d;
+		System.out.println(new BigDecimal(i1));
+		System.out.println(new BigDecimal(d1));
 	}
 }

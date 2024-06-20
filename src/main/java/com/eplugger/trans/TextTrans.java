@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.eplugger.onekey.addField.AddFieldFun;
 import com.eplugger.onekey.entity.ModuleTable;
@@ -73,6 +74,10 @@ public class TextTrans {
 			dests[i] = dest;
 		}
 		return dests;
+	}
+
+	public static void createFieldXml(String src, String... moduleTables) throws Exception {
+		createFieldXml(src, Stream.of(moduleTables).map(moduleTable -> new ModuleTable(moduleTable)).collect(Collectors.toList()));
 	}
 
 	public static void createFieldXml(String src, ModuleTable... moduleTables) throws Exception {

@@ -454,7 +454,7 @@ public class AutoViewFileFun {
         }
         ExcelUtils.outExcel(wb, filePath + File.separator + "xls" + File.separator, xlsName);
 
-        Document document = XmlParseUtils.fromBean("src/main/resource/view/Category.xml", categories, true);
+        Document document = XmlParseUtils.fromBean(categories, "src/main/resource/view/Category.xml", true);
         log.debug("\n" + document.asXML());
     }
 

@@ -11,10 +11,11 @@ import top.tobak.xml.dom4j.annotation.Dom4JTag;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import lombok.Data;
+import top.tobak.xml.entity.IXmlEntity;
 
 @Data
 @Dom4JTag
-public class ModuleViews {
+public class ModuleViews implements IXmlEntity {
 	@Dom4JField(type = Dom4JFieldType.TAG)
 	List<ModuleView> moduleViewList = Lists.newArrayList();
 

@@ -46,7 +46,7 @@ public class TextTrans {
 		String[] srcs = src.split("、");
 		SimpleFields fields = TextTrans.bulidFields(srcs, result);
 		
-		Document document = XmlParseUtils.fromBean(AddFieldFun.FILE_OUT_PATH_FIELD, fields, true);
+		Document document = XmlParseUtils.fromBean(fields, AddFieldFun.FILE_OUT_PATH_FIELD, true);
 		log.debug("\n" + document.asXML());
 //		FileUtils.openTaskBar(new File(AddFieldFun.FILE_OUT_PATH_FIELD).getParentFile());
 	}
@@ -95,7 +95,7 @@ public class TextTrans {
 			return;
 		}
 		Set<String> set = moduleTableList.stream().map(ModuleTable::getModuleName).collect(Collectors.toSet());
-		ModuleTables moduleTables = XmlParseUtils.toBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
+		ModuleTables moduleTables = XmlParseUtils.toBean(ModuleTables.class, AddFieldFun.FILE_OUT_PATH_MODULETABLE);
 		for (ModuleTable moduleTable : moduleTables.getModuleTableList()) {
 			if (set.contains(moduleTable.getModuleName())) {
 				moduleTable.setIgnore(false);
@@ -113,7 +113,7 @@ public class TextTrans {
 			}
 			log.debug("ModuleTable.xml缺少模块" + set.toString() + "的数据，已补充。");
 		}
-		XmlParseUtils.fromBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, moduleTables, true);
+		XmlParseUtils.fromBean(moduleTables, AddFieldFun.FILE_OUT_PATH_MODULETABLE, true);
 		createFieldXml(src);
 	}
 
@@ -126,7 +126,7 @@ public class TextTrans {
 			return;
 		}
 		Set<String> set = moduleTableList.stream().map(ModuleTable::getModuleName).collect(Collectors.toSet());
-		ModuleTables moduleTables = XmlParseUtils.toBean(AddFieldFun.FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
+		ModuleTables moduleTables = XmlParseUtils.toBean(ModuleTables.class, AddFieldFun.FILE_OUT_PATH_MODULETABLE);
 		Map<String, String> moduleTableMap = moduleTables.getModuleTableMap();
 		JsonObject jsonObject = new JsonObject();
 		for (String key : set) {

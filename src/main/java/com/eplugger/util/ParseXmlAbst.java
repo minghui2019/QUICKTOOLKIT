@@ -10,6 +10,7 @@ import org.dom4j.Element;
 import top.tobak.common.lang.StringUtils;
 import top.tobak.utils.ClassUtils;
 
+@Deprecated
 public abstract class ParseXmlAbst<T> implements IParseXml<T> {
 
 	@Override

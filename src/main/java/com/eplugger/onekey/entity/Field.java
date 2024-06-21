@@ -9,6 +9,7 @@ import top.tobak.common.lang.StringUtils;
 import com.eplugger.utils.OtherUtils;
 import top.tobak.xml.dom4j.annotation.Dom4JField;
 import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
+import top.tobak.xml.dom4j.annotation.Dom4JIgnore;
 import top.tobak.xml.dom4j.annotation.Dom4JTag;
 import com.google.common.base.Strings;
 
@@ -40,6 +41,7 @@ public class Field {
 	@Dom4JField(comment = "级联列")
 	private String joinColumn;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "虚拟字段")
+	@Dom4JIgnore(fromBean = "false")
 	private boolean tranSient = false;
 	@Dom4JField(type = Dom4JFieldType.TAG, comment = "虚拟字段的查询条件")
 	private AppendSearch appendSearch;
@@ -52,14 +54,19 @@ public class Field {
 	@Dom4JField(comment = "查询关联集合注解")
 	private String fetch;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "updatable = false, insertable = false")
+	@Dom4JIgnore(fromBean = "true")
 	private boolean updateInsert = true;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "忽略导入包，默认导入")
+	@Dom4JIgnore(fromBean = "false")
 	private boolean ignoreImport = false;
 	@Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "生成java方法，默认不生成")
+	@Dom4JIgnore(fromBean = "false")
 	private boolean onlyMeta = false;
 	@Dom4JField(comment = "业务过滤类型，否-no，用户属性-userinfo，值-value，字典-dictionary")
+	@Dom4JIgnore(fromBean = "no")
 	private String businessFilterType = "no";
 	@Dom4JField(comment = "状态，启用-use，禁用-unuse")
+	@Dom4JIgnore(fromBean = "use")
 	private String useState = "use";
 	private String id;
 	private Integer orders;
@@ -197,10 +204,10 @@ public class Field {
 			sb.append("ignoreImport=").append(ignoreImport).append(", ");
 		}
 		if (onlyMeta) {
-			sb.append("onlyMeta=").append(onlyMeta).append("]").append(", ");
+			sb.append("onlyMeta=").append(onlyMeta).append(", ");
 		}
 		if (!Strings.isNullOrEmpty(businessFilterType)) {
-			sb.append("businessFilterType=").append(businessFilterType);
+			sb.append("businessFilterType=").append(businessFilterType).append(", ");
 		}
 		if (sb.lastIndexOf("]") == -1) {
 			sb.replace(sb.length() - 2, sb.length(), "");

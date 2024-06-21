@@ -56,7 +56,7 @@ public class AddModuleMain {
 
 	@Test
 	public void testName() throws Exception {
-		Modules modules = XmlParseUtils.toBean("src/main/resource/module/Module.xml", Modules.class);
+		Modules modules = XmlParseUtils.toBean(Modules.class, "src/main/resource/module/Module.xml");
 		Module module = modules.getValidModule();
 		List<Category> categories = modules.getCategories();
 		System.out.println(categories);

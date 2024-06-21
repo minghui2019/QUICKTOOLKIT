@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
-import com.eplugger.util.Stack;
 import com.eplugger.uuid.entity.UUID;
 import com.eplugger.uuid.entity.UUIDS;
 import com.eplugger.uuid.utils.UUIDUtils;
@@ -14,23 +13,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
+import top.tobak.util.Stack;
 import top.tobak.xml.dom4j.utils.XmlParseUtils;
-import top.tobak.xml.dom4j.utils.parsers.AbstractXmlParser;
 
 @Slf4j
 public class UUIDFactory {
 	private static class UUIDFactorySingleton {
 		private static UUIDFactory instance = new UUIDFactory();
-	}
-	
-	private UUIDFactory() {
-		XmlParseUtils.registerBean(new AbstractXmlParser<UUIDS>() {
-			@Override
-			protected void beforeFromBean(String path) {
-				super.beforeFromBean(path);
-				this.setDocType("uuids", null, "../dtd/UUID.dtd");
-			}
-		}, UUIDS.class);
 	}
 	
 	/**
@@ -65,17 +54,9 @@ public class UUIDFactory {
 	 * 初始化内部的Uuids
 	 */
 	private void init() {
-//		XMLParser xmlParser = new XMLParser(URL_XML_UUIDS);
-//		try {
-//			XMLObject root = xmlParser.parse();
-//			this.uuids = root.toBean(UUIDS.class);
-//			afterInitUUIDs();
-//		} catch (Exception e) {
-//			this.uuids = new UUIDS();
-//		}
 		try {
 			log.info("xml parse start...");
-			UUIDS uuids = XmlParseUtils.toBean(URL_XML_UUIDS, UUIDS.class);
+			UUIDS uuids = XmlParseUtils.toBean(UUIDS.class, URL_XML_UUIDS);
 			queue = Queues.newArrayDeque(uuids);
 			log.info("xml parse end...");
 		} catch (Exception e) {
@@ -188,7 +169,7 @@ public class UUIDFactory {
 		}
 
 		try {
-			Document document = XmlParseUtils.fromBean(URL_XML_UUIDS, uuids, true);
+			Document document = XmlParseUtils.fromBean(uuids, URL_XML_UUIDS, true);
 			log.debug("\n" + document.asXML());
 		} catch (Exception e) {
 			log.error("回收 uuid 失败！请注意清空当前xml[{}]文件！", URL_XML_UUIDS);

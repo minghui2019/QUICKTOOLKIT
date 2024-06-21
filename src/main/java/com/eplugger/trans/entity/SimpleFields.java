@@ -10,13 +10,14 @@ import lombok.Setter;
 import top.tobak.xml.dom4j.annotation.Dom4JField;
 import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
 import top.tobak.xml.dom4j.annotation.Dom4JTag;
+import top.tobak.xml.entity.IXmlEntity;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Dom4JTag("Fields")
-public class SimpleFields {
+public class SimpleFields implements IXmlEntity {
 	@Dom4JField(type = Dom4JFieldType.TAG, comment = "字段列表")
 	private List<SimpleField> fieldList = Lists.newArrayList();
 

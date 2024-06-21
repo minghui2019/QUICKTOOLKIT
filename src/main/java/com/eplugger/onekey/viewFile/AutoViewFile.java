@@ -6,8 +6,8 @@ import com.eplugger.onekey.schoolInfo.entity.SchoolInfo;
 import com.eplugger.onekey.entity.Categories;
 import com.eplugger.onekey.viewFile.entity.ModuleViews;
 import com.eplugger.utils.DBUtils;
-import top.tobak.xml.dom4j.utils.parsers.CategoryParser;
-import top.tobak.xml.dom4j.utils.parsers.ModuleViewParser;
+import top.tobak.xml.dom4j.utils.parsers.impl.CategoryParser;
+import top.tobak.xml.dom4j.utils.parsers.impl.ModuleViewParser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +18,8 @@ public class AutoViewFile {
 	@Before
 	public void testSetSchoolCode() {
 		DBUtils.schoolInfo = SchoolInfo.惠州学院;
-		XmlParseUtils.registerBean(new ModuleViewParser(), ModuleViews.class);
-		XmlParseUtils.registerBean(new CategoryParser(), Categories.class);
+		XmlParseUtils.registerParser(ModuleViews.class, new ModuleViewParser());
+		XmlParseUtils.registerParser(Categories.class, new CategoryParser());
 	}
 	
 	/**

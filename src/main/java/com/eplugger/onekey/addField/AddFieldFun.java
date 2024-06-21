@@ -25,7 +25,7 @@ import top.tobak.common.io.FileUtils;
 import top.tobak.common.lang.StringUtils;
 import top.tobak.utils.DateUtils;
 import top.tobak.xml.dom4j.utils.XmlParseUtils;
-import top.tobak.xml.dom4j.utils.parsers.FieldParser;
+import top.tobak.xml.dom4j.utils.parsers.impl.FieldParser;
 
 /**
  * 加字段自动生成java代码，sql命令（数据库类型支持sqlServer），元数据
@@ -41,8 +41,8 @@ public class AddFieldFun {
 	public static final String FILE_OUT_PATH_FIELD = "src/main/resource/field/Field.xml";
 	public static final String FILE_OUT_PATH_MODULETABLE = "src/main/resource/field/ModuleTable.xml";
 	public static void main(String[] args) throws Exception {
-		XmlParseUtils.registerBean(new FieldParser(), Fields.class);
-		Fields fields = XmlParseUtils.toBean(FILE_OUT_PATH_FIELD, Fields.class);
+		XmlParseUtils.registerParser(Fields.class, new FieldParser());
+		Fields fields = XmlParseUtils.toBean(Fields.class, FILE_OUT_PATH_FIELD);
 		List<Category> categories = fields.getCategories();
 		UUIDFactory factory = UUIDFactory.getInstance().start();
 		for (Category category : categories) {
@@ -61,12 +61,12 @@ public class AddFieldFun {
 	}
 	
 	public static void createSqlAndJavaFile() throws Exception {
-		ModuleTables moduleTables = XmlParseUtils.toBean(FILE_OUT_PATH_MODULETABLE, ModuleTables.class);
+		ModuleTables moduleTables = XmlParseUtils.toBean(ModuleTables.class, FILE_OUT_PATH_MODULETABLE);
 		Map<String, String> map = moduleTables.getValidModuleTableMap();
 		String[] moduleNames = map.keySet().toArray(new String[0]); //模块名
 		String[] tableNames = map.values().toArray(new String[0]); //数据库表名
 		String[] beanIds = moduleNames; //beanId默认等同模块名
-		Fields fields = XmlParseUtils.toBean(FILE_OUT_PATH_FIELD, Fields.class);
+		Fields fields = XmlParseUtils.toBean(Fields.class, FILE_OUT_PATH_FIELD);
 		List<Field> fieldList = fields.getFieldList();
 		List<Category> categories = fields.getCategories();
 

@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import top.tobak.xml.entity.IXmlEntity;
 
 /**
  * <p>模块信息</p>
@@ -22,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Dom4JTag
-public class Modules {
+public class Modules implements IXmlEntity {
 	@Dom4JField(type = Dom4JFieldType.TAG)
 	private List<Module> moduleList = Lists.newArrayList();
 

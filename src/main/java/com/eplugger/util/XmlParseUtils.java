@@ -12,6 +12,7 @@ import top.tobak.xml.dom4j.util.XmlFileUtils;
  *
  * @param <T>
  */
+@Deprecated
 public class XmlParseUtils<T> {
 	/** 具体的解析工具 */
 	private IParseXml<T> utils;

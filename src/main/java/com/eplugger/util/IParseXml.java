@@ -12,6 +12,7 @@ import org.dom4j.Element;
  *
  * @param <T>
  */
+@Deprecated
 public interface IParseXml<T> {
 	public static Map<String, Boolean> BooleanerMap = new HashMap<>();
 	

@@ -14,12 +14,12 @@ import com.eplugger.onekey.utils.jspFile.ProduceJspFiles;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFactory;
 import com.eplugger.onekey.utils.sqlFile.ProduceSqlFiles;
 import com.eplugger.onekey.utils.xmlFile.ProduceXmlFiles;
-import top.tobak.xml.dom4j.utils.parsers.ModuleParser;
+import top.tobak.xml.dom4j.utils.parsers.impl.ModuleParser;
 import top.tobak.xml.dom4j.utils.XmlParseUtils;
 
 public class AddModuleFun {
 	public static void main(String[] args) throws Exception {
-		Modules modules = XmlParseUtils.toBean("src/main/resource/module/Module.xml", Modules.class);
+		Modules modules = XmlParseUtils.toBean(Modules.class, "src/main/resource/module/Module.xml");
 		Module module = modules.getValidModule();
 		List<Category> categories = modules.getCategories();
 		System.out.println(categories);
@@ -104,7 +104,7 @@ public class AddModuleFun {
 //	}
 	
 	public static void AddMultipleModuleFun() throws Exception {
-		Module module = XmlParseUtils.toBean("src/resource/module/Module.xml", Modules.class).getValidModule();
+		Module module = XmlParseUtils.toBean(Modules.class, "src/resource/module/Module.xml").getValidModule();
 		module.getMainModule().setPackageName("com.eplugger.business.project");
 //		String packageName = "com.eplugger.assess.personAssess";
 		Map<String, String> superClassMap = new HashMap<String, String>();
@@ -160,7 +160,7 @@ public class AddModuleFun {
 	 * @throws Exception 
 	 */
 	public static void AddListModuleFun() throws Exception {
-		Module module = XmlParseUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidModule();
+		Module module = XmlParseUtils.toBean(Modules.class, "src/main/resource/module/Module.xml").getValidModule();
 //		module.getMainModule().setPackageName("com.eplugger.business.projectApply");
 //		Map<String, String> superClassMap = new HashMap<String, String>();
 //		superClassMap.put("entity", "BizEntity");
@@ -189,7 +189,7 @@ public class AddModuleFun {
 	 * @throws Exception 
 	 */
 	public static void AddMultiModuleFun() throws Exception {
-		List<Module> moduleList = XmlParseUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidList();
+		List<Module> moduleList = XmlParseUtils.toBean(Modules.class, "src/main/resource/module/Module.xml").getValidList();
 		for (Module module : moduleList) {
 			AddSingleModuleFun(module);
 			Constants.putFullClassNameMap(module.getMainModule().getModuleName(), module.getMainModule().getPackageName() + "." + module.getMainModule().getModuleName());
@@ -203,8 +203,8 @@ public class AddModuleFun {
 	}
 	
 	public static void AddMultipleModuleFun1(boolean authorSwitch, String template) throws Exception {
-		XmlParseUtils.registerBean(new ModuleParser(), Modules.class);
-		List<Module> validList = XmlParseUtils.toBean("src/main/resource/module/Module.xml", Modules.class).getValidList();
+		XmlParseUtils.registerParser(Modules.class, new ModuleParser());
+		List<Module> validList = XmlParseUtils.toBean(Modules.class, "src/main/resource/module/Module.xml").getValidList();
 		ProduceCategorySqlCodeFactory.getInstance().produceSqlFiles(validList);
 		for (Module module : validList) {
 			ProduceJavaFactory.getInstance().produceJavaFiles(module, template);

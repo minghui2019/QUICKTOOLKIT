@@ -9,12 +9,13 @@ import lombok.Data;
 import top.tobak.xml.dom4j.annotation.Dom4JField;
 import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
 import top.tobak.xml.dom4j.annotation.Dom4JTag;
+import top.tobak.xml.entity.IXmlEntity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Data
 @Dom4JTag("uuids")
-public class UUIDS implements Collection<UUID> {
+public class UUIDS implements Collection<UUID>, IXmlEntity {
 	@Dom4JField(type = Dom4JFieldType.TAG)
 	private List<UUID> uuidList;
 

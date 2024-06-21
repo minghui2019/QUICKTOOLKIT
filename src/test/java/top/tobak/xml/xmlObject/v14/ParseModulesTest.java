@@ -1,11 +1,11 @@
-package com.eplugger.onekey.addField;
+package top.tobak.xml.xmlObject.v14;
 
 import java.io.File;
 
 import com.eplugger.onekey.entity.Modules;
 import org.junit.Test;
-import top.tobak.xml.dom4j.XMLObject;
-import top.tobak.xml.dom4j.XMLParser;
+import top.tobak.xml.xmlObject.XMLObject;
+import top.tobak.xml.xmlObject.XMLParser;
 import top.tobak.xml.dom4j.utils.XmlParseUtils;
 
 import static org.junit.Assert.assertNotNull;
@@ -46,7 +46,7 @@ public class ParseModulesTest {
     @Test
     public void testParseModules1() throws Exception {
     	before1("/module/Module.xml");
-    	Modules modules = XmlParseUtils.toBean(xmlPath, Modules.class);
+    	Modules modules = XmlParseUtils.toBean(Modules.class, xmlPath);
     	assertNotNull(modules);
     	System.out.println(modules);
     }

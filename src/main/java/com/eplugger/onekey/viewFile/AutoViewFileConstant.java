@@ -55,7 +55,7 @@ public class AutoViewFileConstant {
 
     public static ModuleViews getModuleViews() {
         try {
-            ModuleViews moduleViews = XmlParseUtils.toBean("src/main/resource/view/ModuleView.xml", ModuleViews.class);
+            ModuleViews moduleViews = XmlParseUtils.toBean(ModuleViews.class, "src/main/resource/view/ModuleView.xml");
             return moduleViews;
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,7 +65,7 @@ public class AutoViewFileConstant {
 
     public static Categories getCategories() {
         try {
-            Categories categories = XmlParseUtils.toBean("src/main/resource/view/Category.xml", Categories.class);
+            Categories categories = XmlParseUtils.toBean(Categories.class, "src/main/resource/view/Category.xml");
             return categories;
         } catch (Exception e) {
             e.printStackTrace();

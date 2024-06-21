@@ -1,4 +1,4 @@
-package top.tobak.xml.dom4j.parser.v14;
+package top.tobak.xml.xmlObject.v14;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +9,10 @@ import com.eplugger.onekey.entity.ModuleTable;
 import com.eplugger.onekey.entity.ModuleTables;
 import com.google.common.base.Strings;
 import org.junit.Test;
-import top.tobak.xml.dom4j.XMLObject;
-import top.tobak.xml.dom4j.XMLParser;
-import top.tobak.xml.dom4j.parse.FieldValueParserFactory;
-import top.tobak.xml.dom4j.parse.SimpleValueParser;
+import top.tobak.xml.xmlObject.XMLObject;
+import top.tobak.xml.xmlObject.XMLParser;
+import top.tobak.xml.parse.FieldValueParserFactory;
+import top.tobak.xml.parse.SimpleValueParser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

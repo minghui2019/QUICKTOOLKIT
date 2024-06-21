@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!ENTITY % Category SYSTEM "Category.dtd">
+%Category;
 <!ELEMENT Fields (Field+)>
-<!ELEMENT Field (fieldId, fieldName, dataType, categoryName?, precision?, joinColumn?, tranSient?, AppendSearch?, genericity?, orderBy?, fetch?)>
-<!ATTLIST Field 
-		association (OneToMany|ManyToOne) #IMPLIED 
-		onlyMeta (true|false) "false" 
+<!ELEMENT Field (fieldId, fieldName, dataType, categoryName|Category?, precision?, joinColumn?, AppendSearch?, genericity?, orderBy?, fetch?)>
+<!ATTLIST Field
+		association (OneToMany|ManyToOne) #IMPLIED
+		onlyMeta (true|false) "false"
 		ignoreImport (true|false) "false"
-		updateInsert (true|false) "true">
+		updateInsert (true|false) "true"
+		tranSient (true|false) "true">
 <!ELEMENT fieldId (#PCDATA)>
 <!ELEMENT fieldName (#PCDATA)>
 <!ELEMENT dataType (#PCDATA)>
 <!ELEMENT categoryName (#PCDATA)>
+<!--<!ELEMENT Category (#PCDATA)>-->
+<!--<!ATTLIST Category-->
+<!--	name CDATA #REQUIRED-->
+<!--	note CDATA #REQUIRED-->
+<!--	type (人员|项目|成果|系统|平台|系统图表|学术交流|评审|经费|合同|考核|系统参数|个人空间|财务同步|编号生成) #REQUIRED>-->
 <!ELEMENT precision (#PCDATA)>
 <!ELEMENT joinColumn (#PCDATA)>
-<!ELEMENT tranSient (#PCDATA)>
 <!ELEMENT AppendSearch (value)>
 <!ELEMENT value (#PCDATA)>
-<!ATTLIST AppendSearch 
-		relativeField CDATA #REQUIRED 
-		relativeThisProperty CDATA "id" 
-		searchValLabel (val) #IMPLIED 
-		mergeMultiVals (true|false) "false" 
+<!ATTLIST AppendSearch
+		relativeField CDATA #REQUIRED
+		relativeThisProperty CDATA "id"
+		searchValLabel (val) #IMPLIED
+		mergeMultiVals (true|false) "false"
 		symbol CDATA ",">
 <!ELEMENT genericity (#PCDATA)>
 <!ELEMENT orderBy (#PCDATA)>

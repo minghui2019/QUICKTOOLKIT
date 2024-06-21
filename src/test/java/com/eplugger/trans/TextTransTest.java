@@ -8,8 +8,8 @@ import com.eplugger.trans.entity.SimpleField;
 import com.eplugger.trans.entity.SimpleFields;
 import com.eplugger.utils.OtherUtils;
 import org.junit.Test;
-import top.tobak.xml.dom4j.XMLObject;
-import top.tobak.xml.dom4j.XMLParser;
+import top.tobak.xml.xmlObject.XMLObject;
+import top.tobak.xml.xmlObject.XMLParser;
 
 import static org.junit.Assert.assertTrue;
 

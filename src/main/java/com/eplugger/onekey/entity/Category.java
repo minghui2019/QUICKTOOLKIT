@@ -3,6 +3,8 @@ package com.eplugger.onekey.entity;
 import java.util.Iterator;
 import java.util.List;
 
+import com.eplugger.common.lang.CustomStringBuilder;
+import com.eplugger.enums.FromBiz;
 import com.google.common.base.Strings;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,12 +14,14 @@ import top.tobak.xml.dom4j.annotation.Dom4JField;
 import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
 import top.tobak.xml.dom4j.annotation.Dom4JTag;
 
+import static top.tobak.common.lang.StringUtils.filterSqlNull;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Dom4JTag
-public class Category implements Iterable<CategoryEntry> {
+public class Category implements Iterable<CategoryEntry>, ISqlEntity {
     @Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "常量名")
     private String categoryName;
     @Dom4JField(type = Dom4JFieldType.ATTRIBUTE, comment = "业务名称")
@@ -34,6 +38,8 @@ public class Category implements Iterable<CategoryEntry> {
     private String valueColumn;
     @Dom4JField(type = Dom4JFieldType.TAG, name = "CategoryEntries", path = "CategoryEntry", comment = "字典常量表")
     private List<CategoryEntry> entries;
+    @Dom4JField(type = Dom4JFieldType.TAG, name = "CategoryMapping", comment = "业务常量映射信息")
+    private CategoryMapping categoryMapping;
     private String id;
     private String eadpDataType;
 
@@ -54,5 +60,33 @@ public class Category implements Iterable<CategoryEntry> {
     @Override
     public Iterator<CategoryEntry> iterator() {
         return entries.iterator();
+    }
+
+    @Override
+    public String sql() {
+        CustomStringBuilder sql = new CustomStringBuilder();
+        if (FromBiz.业务表.code() == this.fromBiz) {
+            sql.append("delete from CFG_CATEGORY_MAPPING WHERE CATEGORYID IN (SELECT ID FROM CFG_CATEGORY WHERE CATEGORYNAME=").append(filterSqlNull(this.categoryName)).append(");").appendln();
+        } else {
+            sql.append("delete from CFG_CATEGORY_ENTRY WHERE CATEGORYID IN (SELECT ID FROM CFG_CATEGORY WHERE CATEGORYNAME=").append(filterSqlNull(this.categoryName)).append(");").appendln();
+        }
+        sql.append("delete from CFG_CATEGORY WHERE CATEGORYNAME=").append(filterSqlNull(this.categoryName)).append(";").appendln();
+        sql.append("insert into CFG_CATEGORY(ID,BIZNAME,CATEGORYNAME,BIZTYPE,FROMBIZ,CANCFG,EADPDATATYPE,BZ,FROMJAVA) values(")
+            .append(filterSqlNull(this.id)).append(",")
+            .append(filterSqlNull(this.bizName)).append(",")
+            .append(filterSqlNull(this.categoryName)).append(",")
+            .append(filterSqlNull(this.bizType)).append(",")
+            .append(filterSqlNull(this.fromBiz)).append(",'0',")
+            .append(filterSqlNull(this.eadpDataType)).append(",NULL,NULL);").appendln();
+        if (FromBiz.业务表.code() == this.fromBiz) {
+            if (categoryMapping != null) {
+                sql.appendln(categoryMapping.sql());
+            }
+        } else {
+            for (CategoryEntry entry : entries) {
+                sql.appendln(entry.sql());
+            }
+        }
+        return sql.toString();
     }
 }

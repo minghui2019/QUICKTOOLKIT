@@ -1,13 +1,19 @@
 package com.baidu.translate.service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.baidu.translate.api.TransApi;
 import com.baidu.translate.utils.MD5;
 import com.eplugger.utils.HttpRequestFacade;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
+import top.tobak.utils.GoogleConstant;
 
 @Slf4j
 public class TransService {
@@ -15,7 +21,16 @@ public class TransService {
 
 	private static final String APP_ID = "20230406001630427";
 	private static final String SECURITY_KEY = "sIxMwt1PpG29tZ9NmL61";
-	
+
+	public static Map<String, String> transTextZh2En(List<String> query) {
+		Map<String, String> result = Maps.newHashMap();
+		List<String> transTexts = transText(query, "zh", "en");
+		for (int i= 0; i<query.size(); i++) {
+			result.put(query.get(i), transTexts.get(i));
+		}
+		return result;
+	}
+
 	/**
 	 * 中文翻译为英文
 	 {
@@ -31,17 +46,34 @@ public class TransService {
 	 * @param query
 	 * @return
 	 */
-	public static String transTextZh2En(String query) {
+	public static List<String> transTextZh2En(String query) {
 		return transText(query, "zh", "en");
 	}
 
-	public static String transText(String query, String from, String to) {
-		Map<String, Object> params = buildParams(query, APP_ID, SECURITY_KEY, from, to);
+	public static List<String> transTextZh2En(String[] query) {
+		return transText(Lists.newArrayList(query), "zh", "en");
+	}
+
+	public static List<String> transText(String query, String from, String to) {
+		query = query.replace("，", ",").replace("、", ",").replace("；", ",").replace(";", ",");
+		return transText(GoogleConstant.SPLITTER_COMMA.splitToList(query), from, to);
+	}
+
+	public static List<String> transText(List<String> query, String from, String to) {
+		Map<String, Object> params = buildParams(query.stream().collect(Collectors.joining("\n\r")), APP_ID, SECURITY_KEY, from, to);
 		try {
 			HttpRequestFacade httpRequestFacade = new HttpRequestFacade(TransApi.TRANS_VIP);
 			JsonObject jsonObject = httpRequestFacade.post(params);
+			log.info(jsonObject.toString());
 			try {
-				return jsonObject.get("trans_result").getAsJsonArray().get(0).getAsJsonObject().get("dst").getAsString();
+				JsonElement element = jsonObject.get("trans_result");
+				JsonArray transResult = element.getAsJsonArray();
+				List<String> transList = Lists.newArrayList();
+				for (JsonElement jsonElement : transResult) {
+					String dst = jsonElement.getAsJsonObject().get("dst").getAsString();
+					transList.add(dst);
+				}
+				return transList;
 			} catch (NullPointerException e) {
 				if ("52001".equals(jsonObject.get("error_code").getAsString())
 					|| "52002".equals(jsonObject.get("error_code").getAsString())

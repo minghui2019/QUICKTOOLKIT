@@ -1,5 +1,8 @@
 package com.eplugger.onekey.addField;
 
+import java.util.List;
+
+import com.baidu.translate.service.TransService;
 import com.eplugger.enums.BizType;
 import com.eplugger.onekey.addCategoryEntry.AddCategoryEntry;
 import com.eplugger.onekey.entity.ModuleTable;
@@ -15,7 +18,7 @@ import org.junit.Test;
 public class AddFieldTest {
 	@Before
 	public void testSetSchoolCode() {
-		DBUtils.schoolInfo = SchoolInfo.梧州职业学院;
+		DBUtils.schoolInfo = SchoolInfo.惠州学院;
 	}
 
 	@Test
@@ -25,8 +28,8 @@ public class AddFieldTest {
 
 	@Test
 	public void testCreateFieldXml() throws Exception {
-		TextTrans.createFieldXml("参与单位；颁发机构；获奖组；赛道；参赛组别；参赛类别；团队名称；班级",
-								 "honor");
+		TextTrans.createFieldXml(new String[] {"联系人", "联系电话", "是否已发表论文", "是否开展申请前査新检索", "专利代理机构评估意见", "新颖性", "创造性", "实用性", "应用前景", "实施方式"},
+								 "patentProposal");
 	}
 
 	@Test
@@ -36,7 +39,7 @@ public class AddFieldTest {
 
 	@Test
 	public void testTransText2En() {
-		String dst = com.baidu.translate.service.TransService.transTextZh2En("项目父类编号");
+		List<String> dst = TransService.transTextZh2En("项目父类编号");
 		System.out.println(dst);
 	}
 

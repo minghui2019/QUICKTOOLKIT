@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.eplugger.enums.FromBiz;
 import com.eplugger.onekey.entity.Categories;
 import com.eplugger.onekey.entity.Category;
 import com.eplugger.onekey.viewFile.entity.ModuleView;
@@ -428,8 +429,8 @@ public class AutoViewFileFun {
                     fieldId = "undertakingUnitRanking";
                 }
 
-                categoryName = "1".equals(category.getFromBiz()) ? "" : category.getCategoryName();
-                String joinTable = "1".equals(category.getFromBiz()) ? category.getTableName() + "," + category.getCodeColumn() + "," + category.getValueColumn() : "";
+                categoryName = FromBiz.业务表.code() == category.getFromBiz() ? "" : category.getCategoryName();
+                String joinTable = FromBiz.业务表.code() == category.getFromBiz() ? category.getTableName() + "," + category.getCodeColumn() + "," + category.getValueColumn() : "";
                 if (rowMap.containsKey(fieldId)) {
                     String[] strs = rowMap.get(fieldId);
                     strs[4] = categoryName;

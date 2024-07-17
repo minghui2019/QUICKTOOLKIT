@@ -118,4 +118,31 @@ public class OtherUtils {
 		String chiness = "中文";
 		System.out.println(StringUtils.getFirstSpell(chiness));
 	}
+
+	/**
+	 * 元数据数据类型
+	 * @param javaDataType java数据类型
+	 * @return
+	 */
+	public static String getMetadataDataType(String javaDataType) {
+		String result = "";
+		switch (javaDataType) {
+			case OtherUtils.TPYE_STRING:
+				result = "string";
+				break;
+			case OtherUtils.TPYE_TIMESTAMP:
+			case OtherUtils.TPYE_DATE:
+				result = "date";
+				break;
+			case OtherUtils.TPYE_DOUBLE:
+				result = "float";
+				break;
+			case OtherUtils.TPYE_INTEGER:
+				result = "int";
+				break;
+			default:
+				break;
+		}
+		return result;
+	}
 }

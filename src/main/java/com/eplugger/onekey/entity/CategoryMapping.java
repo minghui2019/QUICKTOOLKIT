@@ -39,6 +39,14 @@ public class CategoryMapping implements ISqlEntity {
 	private String categoryId;
 	private String eadpDataType;
 
+	public CategoryMapping(String tableName, String codeColumn, String valueColumn, String valueColumnLocal, String categoryId) {
+		this.tableName = tableName;
+		this.codeColumn = codeColumn;
+		this.valueColumn = valueColumn;
+		this.valueColumnLocal = valueColumnLocal;
+		this.categoryId = categoryId;
+	}
+
 	@Override
 	public String sql() {
 		CustomStringBuilder sql = new CustomStringBuilder();
@@ -47,7 +55,8 @@ public class CategoryMapping implements ISqlEntity {
 			.append(filterSqlNull(this.tableName)).append(",")
 			.append(filterSqlNull(this.codeColumn)).append(",")
 			.append(filterSqlNull(this.valueColumn)).append(",")
-			.append(filterSqlNull(this.upCodeColumn)).append(",NULL,")
+			.append(filterSqlNull(this.upCodeColumn)).append(",")
+			.append(filterSqlNull(this.orders)).append(",")
 			.append(filterSqlNull(this.whereSql)).append(",")
 			.append(filterSqlNull(this.categoryId)).append(",")
 			.append(filterSqlNull(this.eadpDataType)).append(",NULL,")

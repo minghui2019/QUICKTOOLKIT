@@ -17,9 +17,9 @@ public class OfCharMatcherHandler implements CharMatcherHandler {
 
 	@Override
 	public String matcherChar(String resource) {
-		log.debug("源词组为: " + resource);
 		Matcher matcher = patternOf.matcher(resource);
 		if (matcher.matches()) {
+			log.debug("源词组为: " + resource);
 			resource = matcher.group(2) + " " + matcher.group(1);
 			log.debug("处理后的词组为：" + resource);
 		}

@@ -18,9 +18,9 @@ public abstract class AbstractCharMatcherHandler implements CharMatcherHandler {
 	 */
 	@Override
 	public String matcherChar(String resource) {
-		log.debug("源词组为: " + resource);
 		Matcher matcher = getMatches(resource);
 		if (matcher.matches()) {
+			log.debug("源词组为: " + resource);
 			resource = matcher.group(1) + " " + matcher.group(2);
 			log.debug("处理后的词组为：" + matcher.group(2) + " " + matcher.group(1));
 		}

@@ -70,8 +70,8 @@ public class AddFieldFun {
 		List<Field> fieldList = fields.getFieldList();
 		List<Category> categories = fields.getCategories();
 
-		StringBuilder scsb = new StringBuilder();
-		StringBuilder mdsb = new StringBuilder();
+		CustomStringBuilder scsb = new CustomStringBuilder();
+		CustomStringBuilder mdsb = new CustomStringBuilder();
 		Set<String> set = Sets.newHashSet();
 		UUIDFactory factory = UUIDFactory.getInstance().start();
 		for (int i = 0; i < moduleNames.length; i++) {
@@ -83,7 +83,7 @@ public class AddFieldFun {
 				continue;
 			}
 			String sqlCode = ProduceSqlFactory.getInstance().produceSqlCode(tableName, fieldList);
-			scsb.append(sqlCode);
+			scsb.appendln(sqlCode);
 			set.add(tableName);
 		}
 		String javaCode = ProduceJavaFactory.getInstance().produceEntityJavaCode(fieldList);
@@ -93,7 +93,7 @@ public class AddFieldFun {
 		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH_PARENT + File.separator + dateFm + File.separator + today + ".java", javaCode);
 
 		String categoriesCode = ProduceCategorySqlCodeFactory.getInstance().produceCategoriesCode(categories);
-		scsb.append(categoriesCode);
+		scsb.appendln().append(categoriesCode);
 
 		scsb.append(StringUtils.CRLF);
 		FileUtils.writeAndBackupSrcFile(FILE_OUT_PATH_PARENT + File.separator + dateFm + File.separator + today + ".sql", scsb.toString() + mdsb.toString());

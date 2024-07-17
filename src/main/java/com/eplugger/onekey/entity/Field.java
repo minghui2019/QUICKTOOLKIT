@@ -5,25 +5,27 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import top.tobak.common.lang.StringUtils;
+import com.eplugger.common.lang.CustomStringBuilder;
 import com.eplugger.utils.OtherUtils;
-import top.tobak.xml.dom4j.annotation.Dom4JField;
-import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
-import top.tobak.xml.dom4j.annotation.Dom4JIgnore;
-import top.tobak.xml.dom4j.annotation.Dom4JTag;
 import com.google.common.base.Strings;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import top.tobak.common.lang.StringUtils;
+import top.tobak.xml.dom4j.annotation.Dom4JField;
+import top.tobak.xml.dom4j.annotation.Dom4JFieldType;
+import top.tobak.xml.dom4j.annotation.Dom4JIgnore;
+import top.tobak.xml.dom4j.annotation.Dom4JTag;
+
+import static top.tobak.common.lang.StringUtils.filterSqlNull;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Dom4JTag
-public class Field {
+public class Field implements ISqlEntity {
 	@Dom4JField(comment = "javaBean属性名")
 	private String fieldId;
 	@Dom4JField(comment = "javaBean中文名")
@@ -213,6 +215,22 @@ public class Field {
 			sb.replace(sb.length() - 2, sb.length(), "");
 			sb.append("]");
 		}
+		return sb.toString();
+	}
+
+	@Override
+	public String sql() {
+		CustomStringBuilder sb = new CustomStringBuilder();
+		sb.append("insert into SYS_ENTITY_META(ID,BEANID,CATEGORYNAME,ORDERS,MEANING,NAME,DATA_TYPE,EADPDATATYPE,BUSINESSFILTERTYPE,USESTATE) values(")
+			.append(filterSqlNull(this.getId())).append(",")
+			.append(filterSqlNull(this.getBeanId())).append(",")
+			.append(filterSqlNull(this.getCategoryName())).append(",")
+			.append(filterSqlNull(this.getOrders())).append(",")
+			.append(filterSqlNull(this.getFieldName())).append(",")
+			.append(filterSqlNull(this.getFieldId())).append(",")
+			.append(filterSqlNull(OtherUtils.getMetadataDataType(this.getDataType()))).append(",")
+			.append(filterSqlNull(this.getEadpDataType())).append(",")
+			.append(filterSqlNull(this.getBusinessFilterType())).append(",'use');").appendln();
 		return sb.toString();
 	}
 }

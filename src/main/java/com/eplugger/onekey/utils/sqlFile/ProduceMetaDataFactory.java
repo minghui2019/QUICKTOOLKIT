@@ -8,7 +8,6 @@ import com.eplugger.onekey.entity.Field;
 import com.eplugger.onekey.factory.AbstractProduceCodeFactory;
 import com.eplugger.onekey.utils.SqlUtils;
 import com.eplugger.utils.DBUtils;
-import com.eplugger.utils.OtherUtils;
 import com.eplugger.uuid.UUIDFactory;
 import com.google.common.base.Strings;
 
@@ -46,49 +45,14 @@ public class ProduceMetaDataFactory extends AbstractProduceCodeFactory {
 
 	public String produceMetadata(List<Field> fields) {
 		CustomStringBuilder sb = new CustomStringBuilder();
-		String uuidStr = fields.stream().map(f -> "'" + f.getId() + "'").collect(Collectors.joining(", "));
-		sb.appendln("delete from SYS_ENTITY_META WHERE id in (").append(uuidStr).append(");").appendln();
+		String uuidStr = fields.stream().map(f -> "'" + f.getId() + "'").collect(Collectors.joining(","));
+		sb.appendln("-- 元数据");
+		sb.append("delete from SYS_ENTITY_META WHERE id in (").append(uuidStr).append(");").appendln();
 		sb.appendln("-- 表[SYS_ENTITY_META]的数据如下:");
 		for (Field field : fields) {
-			sb.append("insert into SYS_ENTITY_META(ID,BEANID,CATEGORYNAME,ORDERS,MEANING,NAME,DATA_TYPE,")
-				.append("EADPDATATYPE,BUSINESSFILTERTYPE,USESTATE) values('")
-				.append(field.getId()).append("','").append(field.getBeanId()).append("',")
-				.append(field.getCategoryName() == null ? "NULL" : "'" + field.getCategoryName() + "'")
-				.append(",").append(field.getOrders().toString()).append(",'").append(field.getFieldName()).append("','")
-				.append(field.getFieldId()).append("','")
-				.append(this.getMetadataDataType(field.getDataType())).append("',").append("'")
-				.append(field.getEadpDataType()).append("','").append(field.getBusinessFilterType()).append("','use');")
-				.appendln();
+			sb.append(field.sql());
 		}
 		sb.appendln();
 		return sb.toString();
 	}
-	
-	/**
-	 * 元数据数据类型
-	 * @param javaDataType java数据类型
-	 * @return
-	 */
-	public String getMetadataDataType(String javaDataType) {
-		String result = "";
-		switch (javaDataType) {
-		case OtherUtils.TPYE_STRING:
-			result = "string";
-			break;
-		case OtherUtils.TPYE_TIMESTAMP:
-		case OtherUtils.TPYE_DATE:
-			result = "date";
-			break;
-		case OtherUtils.TPYE_DOUBLE:
-			result = "float";
-			break;
-		case OtherUtils.TPYE_INTEGER:
-			result = "int";
-			break;
-		default:
-			break;
-		}
-		return result;
-	}
-
 }

@@ -43,6 +43,13 @@ public class Category implements Iterable<CategoryEntry>, ISqlEntity {
     private String id;
     private String eadpDataType;
 
+    public Category(String categoryName, String bizName, String bizType, Integer fromBiz) {
+        this.categoryName = categoryName;
+        this.bizName = bizName;
+        this.bizType = bizType;
+        this.fromBiz = fromBiz;
+    }
+
     @Override
     public String toString() {
         return "Category{"
@@ -65,12 +72,14 @@ public class Category implements Iterable<CategoryEntry>, ISqlEntity {
     @Override
     public String sql() {
         CustomStringBuilder sql = new CustomStringBuilder();
+        sql.append("-- 【字典】").append(this.bizName).append(" (").append(this.categoryName).append(")").appendln();
         if (FromBiz.业务表.code() == this.fromBiz) {
             sql.append("delete from CFG_CATEGORY_MAPPING WHERE CATEGORYID IN (SELECT ID FROM CFG_CATEGORY WHERE CATEGORYNAME=").append(filterSqlNull(this.categoryName)).append(");").appendln();
         } else {
             sql.append("delete from CFG_CATEGORY_ENTRY WHERE CATEGORYID IN (SELECT ID FROM CFG_CATEGORY WHERE CATEGORYNAME=").append(filterSqlNull(this.categoryName)).append(");").appendln();
         }
         sql.append("delete from CFG_CATEGORY WHERE CATEGORYNAME=").append(filterSqlNull(this.categoryName)).append(";").appendln();
+        sql.appendln("-- 表[CFG_CATEGORY]的数据如下:");
         sql.append("insert into CFG_CATEGORY(ID,BIZNAME,CATEGORYNAME,BIZTYPE,FROMBIZ,CANCFG,EADPDATATYPE,BZ,FROMJAVA) values(")
             .append(filterSqlNull(this.id)).append(",")
             .append(filterSqlNull(this.bizName)).append(",")
@@ -79,12 +88,14 @@ public class Category implements Iterable<CategoryEntry>, ISqlEntity {
             .append(filterSqlNull(this.fromBiz)).append(",'0',")
             .append(filterSqlNull(this.eadpDataType)).append(",NULL,NULL);").appendln();
         if (FromBiz.业务表.code() == this.fromBiz) {
+            sql.appendln("-- 表[CFG_CATEGORY_MAPPING]的数据如下:");
             if (categoryMapping != null) {
                 sql.appendln(categoryMapping.sql());
             }
         } else {
+            sql.appendln("-- 表[CFG_CATEGORY_ENTRY]的数据如下:");
             for (CategoryEntry entry : entries) {
-                sql.appendln(entry.sql());
+                sql.append(entry.sql());
             }
         }
         return sql.toString();

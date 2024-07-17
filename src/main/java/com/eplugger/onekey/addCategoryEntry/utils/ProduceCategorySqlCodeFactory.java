@@ -45,6 +45,7 @@ public class ProduceCategorySqlCodeFactory extends AbstractProduceCodeFactory {
 
 	public String produceCategoriesCode(List<Category> categories) {
 		CustomStringBuilder sb = new CustomStringBuilder();
+		sb.appendln("-- 字典配置");
 		UUIDFactory factory = UUIDFactory.getInstance().start();
 		for (Category category : categories) {
 			category.setId(factory.cost());
@@ -59,7 +60,7 @@ public class ProduceCategorySqlCodeFactory extends AbstractProduceCodeFactory {
 					entry.setCode(factory.cost());
 				}
 			}
-			sb.append(produceCategoryCode(category));
+			sb.appendln(category.sql());
 		}
 		factory.destroy();
 		return sb.toString();

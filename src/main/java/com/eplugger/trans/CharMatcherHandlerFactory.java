@@ -6,6 +6,7 @@ import com.eplugger.trans.handles.AndCharMatcherHandler;
 import com.eplugger.trans.handles.DefaultCharMatcherHandler;
 import com.eplugger.trans.handles.ForCharMatcherHandler;
 import com.eplugger.trans.handles.OfCharMatcherHandler;
+import com.eplugger.trans.handles.SingleQuotationCharMatcherHandler;
 import com.eplugger.trans.handles.TheCharMatcherHandler;
 import com.google.common.collect.Maps;
 
@@ -50,6 +51,7 @@ public class CharMatcherHandlerFactory {
 		register(new OfCharMatcherHandler());
 		register(new ForCharMatcherHandler());
 		register(new DefaultCharMatcherHandler());
+		register(new SingleQuotationCharMatcherHandler());
 	}
 	
 	/**

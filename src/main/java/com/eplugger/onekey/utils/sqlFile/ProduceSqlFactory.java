@@ -120,13 +120,13 @@ public class ProduceSqlFactory extends AbstractProduceCodeFactory {
 	 */
 	public String produceSqlCode(String tableName, List<Field> fieldList) {
 		CustomStringBuilder dsb = new CustomStringBuilder();
+		dsb.appendln("-- 建表");
 		for (Field field : fieldList) {
 			if (field.isTranSient() || field.isOnlyMeta() == true) {
 				continue;
 			}
 			dsb.append("ALTER TABLE ").append(tableName).append(" ADD ").append(field.getTableFieldId()).append(" ").append(SqlUtils.getDatabaseDataType(field.getDataType(), field.getPrecision())).append(";").appendln();
 		}
-
 		return dsb.toString();
 	}
 

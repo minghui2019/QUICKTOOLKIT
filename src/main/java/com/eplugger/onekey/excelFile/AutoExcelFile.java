@@ -3,18 +3,23 @@ package com.eplugger.onekey.excelFile;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import com.baidu.translate.service.TransService;
+import com.eplugger.common.lang.CustomStringBuilder;
 import com.eplugger.onekey.entity.Categories;
-import com.eplugger.onekey.entity.Category;
 import com.eplugger.onekey.entity.ISqlBizEntity;
+import com.eplugger.trans.CharMatcherHandlerFactory;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import top.tobak.common.io.FileUtils;
 import top.tobak.common.lang.StringUtils;
 import top.tobak.poi.excel.ExcelReader;
 import top.tobak.utils.ExcelUtils;
@@ -35,18 +40,20 @@ public class AutoExcelFile {
 
     public static void createCategories(String filePath, Categories categories, List<Class<? extends ISqlBizEntity>> clzs) {
         ExcelReader reader = ExcelUtils.getReader(filePath);
-        int i = 0;
-//        List<String> categorySql = Lists.newArrayList();
-        for (Category category : categories) {
+        CustomStringBuilder sbInsert = new CustomStringBuilder();
+        CustomStringBuilder sbUpdate = new CustomStringBuilder();
+        for (int i = 0; i < clzs.size(); i++) {
+            reader.setSheet(i);
             Class<ISqlBizEntity> clz = (Class<ISqlBizEntity>) clzs.get(i);
             List<ISqlBizEntity> sqlEntityList = reader.readAll(clz);
-//            List<String> query = sqlEntityList.stream().map(e -> e.getName()).distinct().collect(Collectors.toList());
-//            Map<String, String> zh2En = TransService.transTextZh2En(query);
-            Map<String, String> zh2En = Maps.newHashMap();
-            System.out.println(zh2En);
+            List<String> query = sqlEntityList.stream().map(e -> e.getName()).distinct().collect(Collectors.toList());
+            Map<String, String> zh2En = TransService.transTextZh2En(query);
+            for (Entry<String, String> entry : zh2En.entrySet()) {
+                String result = CharMatcherHandlerFactory.getFactory().matcherChar(entry.getValue().trim());
+                entry.setValue(result);
+            }
             List<String> insertSql = Lists.newArrayList();
             List<String> updateSql = Lists.newArrayList();
-
 
             List<ISqlBizEntity> parent = sqlEntityList.stream().filter(e -> Strings.isNullOrEmpty(e.getParentCode())).sorted().collect(Collectors.toList());
             Map<String, List<ISqlBizEntity>> childs = sqlEntityList.stream().filter(e -> !Strings.isNullOrEmpty(e.getParentCode())).collect(Collectors.groupingBy(ISqlBizEntity::getParentCode));
@@ -68,15 +75,17 @@ public class AutoExcelFile {
                     updateSql.add(entity.updateSql());
                 }
             }
-            i++;
-            reader.setSheet(i);
 
-            insertSql.forEach(System.out::println);
-            updateSql.forEach(System.out::println);
-//            categorySql.add(category.sql());
+            insertSql.forEach(sbInsert::appendln);
+            updateSql.forEach(sbUpdate::appendln);
+            sbInsert.appendln();
+            sbInsert.appendln();
+            sbUpdate.appendln();
+            sbUpdate.appendln();
         }
-        System.out.println(categories.sql());
-//        categorySql.forEach(System.out::println);
+        String fileName = "字典配置SQL" + DateUtil.format(DateUtil.date(), DatePattern.PURE_DATE_FORMAT) + ".sql";
+        FileUtils.write(FileUtils.getUserHomeDirectory() + "Category\\" + fileName, sbInsert.toString() + sbUpdate.toString() + categories.sql());
+        FileUtils.openTaskBar(new File(FileUtils.getUserHomeDirectory() + "Category\\"));
     }
 
     public static String convertCode(String parentCode, String code) {
